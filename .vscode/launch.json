@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Appium AOS 디버깅",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/appium_aos/__main__.py",
+            "cwd": "${workspaceFolder}/appium_aos"
+        },
+        {
+            "name": "Appium IOS 디버깅",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/appium_ios/__main__.py",
+            "cwd": "${workspaceFolder}/appium_ios"
+        },
+        {
+            "name": "Appium MW 디버깅",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/appium_mw/__main__속도측정3.py",
+            "cwd": "${workspaceFolder}/appium_mw"
+        },
+        {
+            "name": "Selenium MW 디버깅",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/selenium_mw/__main__.py",
+            "cwd": "${workspaceFolder}/selenium_mw"
+        },
+        {
+            "name": "Selenium PC 디버깅",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/selenium_pc/__main__.py",
+            "cwd": "${workspaceFolder}/selenium_pc"
+        }
+    ] 
+}

@@ -1,0 +1,19 @@
+{
+    // 가상환경 내 파이썬 경로
+    "python.venvPath": "D:\\digital-platform-team\\.venv",
+    "python.pythonPath": "D:\\digital-platform-team\\.venv\\Scripts\\python.exe",
+    "python.linting.pylintPath": "D:\\digital-platform-team\\.venv\\Scripts\\pylint.exe",
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+
+    // "python.linting.pylintArgs": [
+    // "--rcfile",
+    // "${workspaceRoot}\\.vscode\\pylint.config"
+    // ],
+    // // vscode testing 옵션
+    // "python.testing.pytestArgs": [
+    // ".","-s"
+    // ],
+    // "python.testing.pytestEnabled": true,
+    // "python.testing.unittestEnabled": false,
+}
