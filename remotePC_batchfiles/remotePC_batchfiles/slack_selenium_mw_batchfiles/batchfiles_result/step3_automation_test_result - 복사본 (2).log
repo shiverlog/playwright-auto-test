@@ -1,0 +1,87 @@
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connectionpool.py", line 790, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    response = conn.getresponse()
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connection.py", line 461, in getresponse
+    httplib_response = super().getresponse()
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1419, in getresponse
+    response.begin()
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [WinError 10054] 현재 연결은 원격 호스트에 의해 강제로 끊겼습니다
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\__main__.py", line 100, in <module>
+    driver = WebDriver()
+             ^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\base\webdriver.py", line 99, in __init__
+    self.driver = self.setup()              # 드라이버 셋팅 
+                  ^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\base\webdriver.py", line 392, in setup
+    driver.set_window_size(400, 8200)      # 브라우저 창 조절 (남정현)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 865, in set_window_size
+    self.set_window_rect(width=int(width), height=int(height))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 946, in set_window_rect
+    return self.execute(Command.SET_WINDOW_RECT, {"x": x, "y": y, "width": width, "height": height})["value"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 346, in execute
+    response = self.command_executor.execute(driver_command, params)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 300, in execute
+    return self._request(command_info[0], url, body=data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\remote_connection.py", line 321, in _request
+    response = self._conn.request(method, url, body=body, headers=headers)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\_request_methods.py", line 118, in request
+    return self.request_encode_body(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\_request_methods.py", line 217, in request_encode_body
+    return self.urlopen(method, url, **extra_kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\poolmanager.py", line 444, in urlopen
+    response = conn.urlopen(method, u.request_uri, **kw)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connectionpool.py", line 844, in urlopen
+    retries = retries.increment(
+              ^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\util\retry.py", line 470, in increment
+    raise reraise(type(error), error, _stacktrace)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\util\util.py", line 38, in reraise
+    raise value.with_traceback(tb)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connectionpool.py", line 790, in urlopen
+    response = self._make_request(
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connectionpool.py", line 536, in _make_request
+    response = conn.getresponse()
+               ^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\urllib3\connection.py", line 461, in getresponse
+    httplib_response = super().getresponse()
+                       ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 1419, in getresponse
+    response.begin()
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\AppData\Local\Programs\Python\Python312\Lib\socket.py", line 707, in readinto
+    return self._sock.recv_into(b)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+urllib3.exceptions.ProtocolError: ('Connection aborted.', ConnectionResetError(10054, '현재 연결은 원격 호스트에 의해 강제로 끊겼습니다', None, 10054, None))

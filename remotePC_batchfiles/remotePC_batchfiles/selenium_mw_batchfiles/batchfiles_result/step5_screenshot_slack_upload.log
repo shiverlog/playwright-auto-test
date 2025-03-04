@@ -1,0 +1,952 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  432k    0     0  100  432k      0   332k  0:00:01  0:00:01 --:--:--  333k100  432k    0     0  100  432k      0   186k  0:00:02  0:00:02 --:--:--  187k100  432k    0     0  100  432k      0   130k  0:00:03  0:00:03 --:--:--  130k100  432k    0     0  100  432k      0    99k  0:00:04  0:00:04 --:--:--   99k100  432k    0     0  100  432k      0  82822  0:00:05  0:00:05 --:--:-- 82847100  432k    0     0  100  432k      0  69632  0:00:06  0:00:06 --:--:--     0100  432k    0     0  100  432k      0  60057  0:00:07  0:00:07 --:--:--     0100  432k    0     0  100  432k      0  52835  0:00:08  0:00:08 --:--:--     0100  432k    0     0  100  432k      0  47144  0:00:09  0:00:09 --:--:--     0100  434k  100  2449  100  432k    249  45065  0:00:09  0:00:09 --:--:--   546{"ok":true,"file":{"id":"F065CEK6FNZ","created":1699874995,"timestamp":1699874995,"name":"img0.png","title":"img0.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":442251,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F065CEK6FNZ/img0.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F065CEK6FNZ/download/img0.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CEK6FNZ-c121c57363/img0_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABW8ZCCeP1pJJ/LUEgnPGBQYVZiSXHPrSmBGUK2SB055oK0FV9yg9MinbqNlGygWhGZF3keYc5xjbUm0/wB79BS4G7PfFIpGTigQ4dPWikXG0Y6UtABketIPrSbh6j86Mj+9+tADqKTcPUfnRuX1H50Af//Z","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F065CEK6FNZ/img0.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F065CEK6FNZ-93c8292225","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875003.645429","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  521k    0     0  100  521k      0   398k  0:00:01  0:00:01 --:--:--  399k100  521k    0     0  100  521k      0   225k  0:00:02  0:00:02 --:--:--  225k100  521k    0     0  100  521k      0   156k  0:00:03  0:00:03 --:--:--  157k100  521k    0     0  100  521k      0   120k  0:00:04  0:00:04 --:--:--  120k100  521k    0     0  100  521k      0  99966  0:00:05  0:00:05 --:--:--   97k100  521k    0     0  100  521k      0  84047  0:00:06  0:00:06 --:--:--     0100  521k    0     0  100  521k      0  72476  0:00:07  0:00:07 --:--:--     0100  521k    0     0  100  521k      0  63750  0:00:08  0:00:08 --:--:--     0100  521k    0     0  100  521k      0  56851  0:00:09  0:00:09 --:--:--     0100  521k    0     0  100  521k      0  51346  0:00:10  0:00:10 --:--:--     0<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Server Error | Slack</title>
+	<meta name="author" content="Slack">
+	<style>
+		/* General */
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 400;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-regular.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-regular.woff) format('woff');
+		}
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 700;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-bold.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-bold.woff) format('woff');
+		}
+
+		* {
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		html, body {
+			width: 100%;
+			overflow-x: hidden;
+		}
+		html.desktop {
+			margin-top: 30px;
+		}
+		body {
+			margin: 0;
+			font-family: 'Slack-Lato', sans-serif;
+			font-variant-ligatures: common-ligatures;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			color: #555459;
+			font-size: 1.125rem;
+			line-height: 1.5rem;
+			background: #f9f9f9;
+		}
+
+		a, a:link, a:visited {
+			color: #3aa3e3;
+			text-decoration: none;
+		}
+
+		h1 {
+			font-size: 2rem;
+			line-height: 2.5rem;
+			letter-spacing: -1px;
+			font-weight: 700;
+			font-family: 'Slack-Lato', sans-serif;
+			margin: 0 0 1rem 0;
+		}
+		@media only screen and (max-width: 640px) {
+			h1 {
+				font-size: 1.75rem;
+				line-height: 2rem;
+			}
+		}
+
+		p {
+			margin: 0 0 1rem 0;
+		}
+
+		/* Page */
+		#page {
+			width: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+		#page_contents {
+			margin: 0 auto;
+			padding: 8rem 2rem;
+		}
+		@media only screen and (max-height: 768px), screen and (max-width: 640px) {
+			#page_contents {
+				padding: 6rem 2rem;
+			}
+		}
+		@media only screen and (min-width: 1024px) {
+			#page_contents {
+				width: 1024px;
+			}
+		}
+		@media only screen and (max-width: 640px) {
+			#page_contents {
+				width: 100%;
+				padding: 1rem 0.8rem;
+				margin-top: 70px;
+			}
+		}
+
+		/* Top nav */
+		nav.top.persistent, nav.top.with_color {
+			background: #fff;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		}
+		nav.top {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 70px;
+			z-index: 99;
+		}
+		html.desktop nav.top {
+			padding-top: 30px;
+			height: 100px;
+		}
+		nav.top.persistent .logo, nav.top.with_color .logo {
+			background-position: left bottom;
+		}
+		nav .logo {
+			background-size: 120px 31px;
+			height: 31px;
+			width: 120px;
+			float: left;
+			margin: 20px 0 0 20px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAfCAYAAAAslQkwAAAHLUlEQVR42u2afUxTVxiHKwIqouLUOY2zHXNb4rS3iIgofk2NMXM6s6ARysIWHcu+iCyiUakFEjVkm9M4N0w29s90c8t0LbZ0YsziqKBExYGKOKXUDzYpUlCnE7j7XXI68XpOObfUjSZ9kyeB+55e7+Xp+XjPUcUT8WXuqfH25v2gYkqpe0eC3f1E17xgNSZqrdk/gQqtxfCp7ogxStU7YjlYJWMM6O0xAKyiEA78G9PKWxLiS91tU0qbxQe4qxbWiv2kfIzNOBNS27WWbNGDYM0+HVtREKb6/+N3IMpYGACCnwIihSHAvwG5BySpcqYea14m5SHXIkmVo7MZXw0KDgTBGJZpguPtboOUR2+9RBOM6+uCggNAsDTnMgTnkB7soPZgi2FDUHAACJYWVNKcGxQc8ILZIS2opDkXUg0gp5Oy1jlBwQEpmD+CggNEcIK9ZRp6ZREWVJcw/DpYoE012hTMONk6QongGJthoWAx/Ky1GioF66btsYe2+vKg48EWsB+cI/JOgEKwEkT5QfAcsJvctw4cB7tAAsnHgXwZ7wJvMQHkgiPgAqgGJpAH1H4QrAX5FIwgXDX1mDveU+fyAtHnZl8W+/MIFmzGRY+usA3Hk8R9fTnFRoEC0AZEL/xFXizCB8GjgbWb+xeCdMr1Ui+SvgUdXu7ZBvaAobyCKe3qKe3awVJPGfQ9h1RaHbycS7DF8Cu9TjbM55AbAoqBqIDFCgVHg8uc93ZyCtaBKwqe+SKYoFBwf1DOaPfhgzLI7i71TXBLJqmDq2gCsW35ARF8gyrYakzjELye8QI3wW3K9WsgVIHgfuAUEHnhEDwGXPfhPk4wTIHgvYw2n8s3MvJ9E+yOVyF0xYZdFLkdgiU3Rspj3nXJ84Ilu22yNe8FDsHyHnMWTOySV4O3QQ3Jb1Y4B2cBkUE7+bxbkWDvI84N4PQybH/JKdjAyFtBX9lBgjgYkiuUzcEtW/4dAUo2D0Mv/e1huYZckqYINrTrirOzOOQOpLzAD16G8mVArUBwKGig5O+ADBAJPPESqOQQPJPR5iB4TjYt7OuSbwXZIIJDcBLjC1IJBqloMVsUQzHkLobodZhbN7DA4ipjennzZPnnk6qN4Vg4LRWKs9/z9FxPYAjPlOZjCYh/P/ZQ7kQVX/QBbobk+SC8h2VSIiXXAeZ6OeEp70ZwASUPkcz4inxmJOciax64w5iangYBFyVAZNACDoA3wCAfBK+l5PYCb/FmN4IvynL3wXA/1sGNlGu3wCTADkf064mOsSk24KxTp1yXcGj0Rk8e1+c61CkluH4ePxf+qUnDAzwIV100  528k  100  7295  100  521k    695  50934  0:00:10  0:00:10 --:--:--  1765100  528k  100  7295  100  521k    695  50934  0:00:10  0:00:10 --:--:--  23395GwoNEkHAZXG83a62yEGpdZu7vFHMv70lPAPZZk2UvmgH4KBG+j5NJ7KPiuLHfabxsdbLyf2tVHp8Q5xia31Y1NFh9CnfyxlHdqUmch39E1h98vXIt9K6JT7kHd/EaTVlQCJJ8Rq5N4D69fUVBy2EE4p+CdlFxyDwSHUGr1o/+B4O2AHeiVe4g4qmDINNHy9Rr9ik7BZsFGxCmiyayFOO6IBCuBTVYe0djKKTibktvWwx58VZZrBaF+FFzGuJ7hTfARmkDPEA3RNbQ8xG/qFGzSVvoi2GXWrVL5FmFk6M4C1ZSXPcspeBEQKUI0gBWfdSP4R0p+I2BFGkhSIDgaXGKUdEvo868mJYcm0KnRzybzby1VMD4n5TGv7lQs16Rtd1lixnPIfBLEdbPSrqSshMM5BEcyVqTVQCf7dyLARxxlUgol/zdYDUJkz51Ocp6pZRrnTtZEcIuSu039W0lzKXrjUdrwzCO4uShxKBZXJ5XIbSoS1qr4wghEYAHTQZgsPwLUyV7UrWCjYwcQKdwHdlBAyrJmzo2OUHCe0e4y2AsKQS2jTT7nRsdrjFq4gToCiUZjSL0mdQGG5fQ6tZ4suTkEkxArYsOainQvYz7ObDLr1jAxCemk5/JEOGig/OFrifASxnz8jQLBI8Efft6qnOXpmQq5CyYp2KrMY7SpBlGAHdyCH2/ogaiQa2CUwsOGeZTyhsU9zsOGNI7TL/kwnqrwsKEPMDHaHQZhfhGMkucsht7WTlDrukzCdy5bnD92VYaDLxT8oa6ABB/Pg+fIRgsaNWA9p2DPF8fJ8dxXwXQfjwsHg3OMtl/7S7BDPs9C9EXRHBuh8k+MBmtACWiinAGfAWvBACAPK6iSkQhoMQTkUb4UF8BGcv8l4KSMwm7+A3sGsIN22YKojJRd/Rlf7ioKkZS2z4NTjPbJ/hdMcBXpklSPJ6KABowlw5Tfg8geR3qIvyKMPPMo8ty9I7DCPkHd6FDrM73VwU0m3TuqYPT+gOCtlE2OjiuaZB3Zh/7k0VJIaHMVCy+qgtH7o0GbOhDD9C9d5Lbh9yxP3mWJH4zyqNQjFz/fh+DVqmAESpA6+Rn9DKc6Jdn5rH7cI3nRGHLTFDOr6WDMiuaiuGhVMHpN/AN0GQvJQUqdZQAAAABJRU5ErkJggg==) left top no-repeat;
+		}
+
+		/* Card */
+		.card {
+			background-color: #fff;
+			border-radius: 0.25rem;
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+			padding: 2rem 2rem 1rem;
+			margin: 0 auto 2rem;
+			position: relative;
+			border: 1px solid #e8e8e8;
+		}
+		@media only screen and (max-width: 640px) {
+			.card {
+				padding: 1rem;
+			}
+		}
+		.warning_icon {
+			margin: 0 4px;
+			transform: translateY(2px);
+		}
+	</style>
+</head>
+<body>
+	<nav class="top persistent">
+		<a href="https://status.slack.com/" class="logo" data-qa="logo"></a>
+	</nav>
+	<div id="page">
+		<div id="page_contents">
+			<h1>
+				<svg width="30px" height="27px" viewBox="0 0 60 54" class="warning_icon"><path d="M51.6 54C56.9 54 60 51 60 47 60 45.4 59.6 43.8 58.6 42.1L36.9 4.8C35 1.6 32.5 0 30 0 27.5 0 25 1.6 23.1 4.8L1.4 42.1C0.4 43.8 0 45.4 0 47 0 51 3.1 54 8.4 54L51.6 54ZM51.6 49.5L8.4 49.5C6 49.5 4.7 48.3 4.7 46.6 4.7 45.9 4.9 45.1 5.3 44.2L27.1 7C27.9 5.5 28.9 4.8 30 4.8 31.1 4.8 32.1 5.5 32.9 7L54.7 44.2C55.2 45.1 55.4 45.9 55.4 46.6 55.4 48.3 54 49.5 51.6 49.5ZM30 33C31.7 33 33 31.6 33 30L33 18C33 16.3 31.7 15 30 15 28.4 15 27 16.3 27 18L27 30C27 31.6 28.4 33 30 33ZM30 45C32.1 45 33.8 43.3 33.8 41.2 33.8 39.2 32.1 37.5 30 37.5 27.9 37.5 26.3 39.2 26.3 41.2 26.3 43.3 27.9 45 30 45Z" fill="#D94827"/></svg>
+				Server Error
+			</h1>
+			<div class="card">
+				<p>It seems like there’s a problem connecting to our servers, and we’re investigating the issue.</p>
+				<p>Please <a href="https://status.slack.com/" target="_blank" rel="noopener noreferrer">check our Status page for updates</a>.</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		if (window.desktop) {
+			document.documentElement.className = 'desktop';
+		}
+
+		var FIVE_MINS = 5 * 60 * 1000;
+		var TEN_MINS = 10 * 60 * 1000;
+
+		function randomBetween(min, max) {
+			return Math.floor(Math.random() * (max - (min + 1))) + min;
+		}
+
+		window.setTimeout(function () {
+			window.location.reload(true);
+		}, randomBetween(FIVE_MINS, TEN_MINS));
+	</script>
+</body>
+</html>
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  413k    0     0  100  413k      0   328k  0:00:01  0:00:01 --:--:--  329k100  413k    0     0  100  413k      0   183k  0:00:02  0:00:02 --:--:--  183k100  413k    0     0  100  413k      0   126k  0:00:03  0:00:03 --:--:--  126k100  413k    0     0  100  413k      0  99172  0:00:04  0:00:04 --:--:-- 99237100  413k    0     0  100  413k      0  80219  0:00:05  0:00:05 --:--:-- 80266100  413k    0     0  100  413k      0  67441  0:00:06  0:00:06 --:--:--     0100  413k    0     0  100  413k      0  58075  0:00:07  0:00:07 --:--:--     0100  413k    0     0  100  413k      0  51056  0:00:08  0:00:08 --:--:--     0100  413k    0     0  100  413k      0  45511  0:00:09  0:00:09 --:--:--     0100  413k    0     0  100  413k      0  41040  0:00:10  0:00:10 --:--:--     0<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Server Error | Slack</title>
+	<meta name="author" content="Slack">
+	<style>
+		/* General */
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 400;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-regular.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-regular.woff) format('woff');
+		}
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 700;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-bold.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-bold.woff) format('woff');
+		}
+
+		* {
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		html, body {
+			width: 100%;
+			overflow-x: hidden;
+		}
+		html.desktop {
+			margin-top: 30px;
+		}
+		body {
+			margin: 0;
+			font-family: 'Slack-Lato', sans-serif;
+			font-variant-ligatures: common-ligatures;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			color: #555459;
+			font-size: 1.125rem;
+			line-height: 1.5rem;
+			background: #f9f9f9;
+		}
+
+		a, a:link, a:visited {
+			color: #3aa3e3;
+			text-decoration: none;
+		}
+
+		h1 {
+			font-size: 2rem;
+			line-height: 2.5rem;
+			letter-spacing: -1px;
+			font-weight: 700;
+			font-family: 'Slack-Lato', sans-serif;
+			margin: 0 0 1rem 0;
+		}
+		@media only screen and (max-width: 640px) {
+			h1 {
+				font-size: 1.75rem;
+				line-height: 2rem;
+			}
+		}
+
+		p {
+			margin: 0 0 1rem 0;
+		}
+
+		/* Page */
+		#page {
+			width: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+		#page_contents {
+			margin: 0 auto;
+			padding: 8rem 2rem;
+		}
+		@media only screen and (max-height: 768px), screen and (max-width: 640px) {
+			#page_contents {
+				padding: 6rem 2rem;
+			}
+		}
+		@media only screen and (min-width: 1024px) {
+			#page_contents {
+				width: 1024px;
+			}
+		}
+		@media only screen and (max-width: 640px) {
+			#page_contents {
+				width: 100%;
+				padding: 1rem 0.8rem;
+				margin-top: 70px;
+			}
+		}
+
+		/* Top nav */
+		nav.top.persistent, nav.top.with_color {
+			background: #fff;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		}
+		nav.top {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 70px;
+			z-index: 99;
+		}
+		html.desktop nav.top {
+			padding-top: 30px;
+			height: 100px;
+		}
+		nav.top.persistent .logo, nav.top.with_color .logo {
+			background-position: left bottom;
+		}
+		nav .logo {
+			background-size: 120px 31px;
+			height: 31px;
+			width: 120px;
+			float: left;
+			margin: 20px 0 0 20px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAfCAYAAAAslQkwAAAHLUlEQVR42u2afUxTVxiHKwIqouLUOY2zHXNb4rS3iIgofk2NMXM6s6ARysIWHcu+iCyiUakFEjVkm9M4N0w29s90c8t0LbZ0YsziqKBExYGKOKXUDzYpUlCnE7j7XXI68XpOObfUjSZ9kyeB+55e7+Xp+XjPUcUT8WXuqfH25v2gYkqpe0eC3f1E17xgNSZqrdk/gQqtxfCp7ogxStU7YjlYJWMM6O0xAKyiEA78G9PKWxLiS91tU0qbxQe4qxbWiv2kfIzNOBNS27WWbNGDYM0+HVtREKb6/+N3IMpYGACCnwIihSHAvwG5BySpcqYea14m5SHXIkmVo7MZXw0KDgTBGJZpguPtboOUR2+9RBOM6+uCggNAsDTnMgTnkB7soPZgi2FDUHAACJYWVNKcGxQc8ILZIS2opDkXUg0gp5Oy1jlBwQEpmD+CggNEcIK9ZRp6ZREWVJcw/DpYoE012hTMONk6QongGJthoWAx/Ky1GioF66btsYe2+vKg48EWsB+cI/JOgEKwEkT5QfAcsJvctw4cB7tAAsnHgXwZ7wJvMQHkgiPgAqgGJpAH1H4QrAX5FIwgXDX1mDveU+fyAtHnZl8W+/MIFmzGRY+usA3Hk8R9fTnFRoEC0AZEL/xFXizCB8GjgbWb+xeCdMr1Ui+SvgUdXu7ZBvaAobyCKe3qKe3awVJPGfQ9h1RaHbycS7DF8Cu9TjbM55AbAoqBqIDFCgVHg8uc93ZyCtaBKwqe+SKYoFBwf1DOaPfhgzLI7i71TXBLJqmDq2gCsW35ARF8gyrYakzjELye8QI3wW3K9WsgVIHgfuAUEHnhEDwGXPfhPk4wTIHgvYw2n8s3MvJ9E+yOVyF0xYZdFLkdgiU3Rspj3nXJ84Ilu22yNe8FDsHyHnMWTOySV4O3QQ3Jb1Y4B2cBkUE7+bxbkWDvI84N4PQybH/JKdjAyFtBX9lBgjgYkiuUzcEtW/4dAUo2D0Mv/e1huYZckqYINrTrirOzOOQOpLzAD16G8mVArUBwKGig5O+ADBAJPPESqOQQPJPR5iB4TjYt7OuSbwXZIIJDcBLjC1IJBqloMVsUQzHkLobodZhbN7DA4ipjennzZPnnk6qN4Vg4LRWKs9/z9FxPYAjPlOZjCYh/P/ZQ7kQVX/QBbobk+SC8h2VSIiXXAeZ6OeEp70ZwASUPkcz4inxmJOciax64w5iangYBFyVAZNACDoA3wCAfBK+l5PYCb/FmN4IvynL3wXA/1sGNlGu3wCTADkf064mOsSk24KxTp1yXcGj0Rk8e1+c61CkluH4ePxf+qUnDAzwIV100  420k  100  7295  100  413k    699  40607  0:00:10  0:00:10 --:--:--  17575GwoNEkHAZXG83a62yEGpdZu7vFHMv70lPAPZZk2UvmgH4KBG+j5NJ7KPiuLHfabxsdbLyf2tVHp8Q5xia31Y1NFh9CnfyxlHdqUmch39E1h98vXIt9K6JT7kHd/EaTVlQCJJ8Rq5N4D69fUVBy2EE4p+CdlFxyDwSHUGr1o/+B4O2AHeiVe4g4qmDINNHy9Rr9ik7BZsFGxCmiyayFOO6IBCuBTVYe0djKKTibktvWwx58VZZrBaF+FFzGuJ7hTfARmkDPEA3RNbQ8xG/qFGzSVvoi2GXWrVL5FmFk6M4C1ZSXPcspeBEQKUI0gBWfdSP4R0p+I2BFGkhSIDgaXGKUdEvo868mJYcm0KnRzybzby1VMD4n5TGv7lQs16Rtd1lixnPIfBLEdbPSrqSshMM5BEcyVqTVQCf7dyLARxxlUgol/zdYDUJkz51Ocp6pZRrnTtZEcIuSu039W0lzKXrjUdrwzCO4uShxKBZXJ5XIbSoS1qr4wghEYAHTQZgsPwLUyV7UrWCjYwcQKdwHdlBAyrJmzo2OUHCe0e4y2AsKQS2jTT7nRsdrjFq4gToCiUZjSL0mdQGG5fQ6tZ4suTkEkxArYsOainQvYz7ObDLr1jAxCemk5/JEOGig/OFrifASxnz8jQLBI8Efft6qnOXpmQq5CyYp2KrMY7SpBlGAHdyCH2/ogaiQa2CUwsOGeZTyhsU9zsOGNI7TL/kwnqrwsKEPMDHaHQZhfhGMkucsht7WTlDrukzCdy5bnD92VYaDLxT8oa6ABB/Pg+fIRgsaNWA9p2DPF8fJ8dxXwXQfjwsHg3OMtl/7S7BDPs9C9EXRHBuh8k+MBmtACWiinAGfAWvBACAPK6iSkQhoMQTkUb4UF8BGcv8l4KSMwm7+A3sGsIN22YKojJRd/Rlf7ioKkZS2z4NTjPbJ/hdMcBXpklSPJ6KABowlw5Tfg8geR3qIvyKMPPMo8ty9I7DCPkHd6FDrM73VwU0m3TuqYPT+gOCtlE2OjiuaZB3Zh/7k0VJIaHMVCy+qgtH7o0GbOhDD9C9d5Lbh9yxP3mWJH4zyqNQjFz/fh+DVqmAESpA6+Rn9DKc6Jdn5rH7cI3nRGHLTFDOr6WDMiuaiuGhVMHpN/AN0GQvJQUqdZQAAAABJRU5ErkJggg==) left top no-repeat;
+		}
+
+		/* Card */
+		.card {
+			background-color: #fff;
+			border-radius: 0.25rem;
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+			padding: 2rem 2rem 1rem;
+			margin: 0 auto 2rem;
+			position: relative;
+			border: 1px solid #e8e8e8;
+		}
+		@media only screen and (max-width: 640px) {
+			.card {
+				padding: 1rem;
+			}
+		}
+		.warning_icon {
+			margin: 0 4px;
+			transform: translateY(2px);
+		}
+	</style>
+</head>
+<body>
+	<nav class="top persistent">
+		<a href="https://status.slack.com/" class="logo" data-qa="logo"></a>
+	</nav>
+	<div id="page">
+		<div id="page_contents">
+			<h1>
+				<svg width="30px" height="27px" viewBox="0 0 60 54" class="warning_icon"><path d="M51.6 54C56.9 54 60 51 60 47 60 45.4 59.6 43.8 58.6 42.1L36.9 4.8C35 1.6 32.5 0 30 0 27.5 0 25 1.6 23.1 4.8L1.4 42.1C0.4 43.8 0 45.4 0 47 0 51 3.1 54 8.4 54L51.6 54ZM51.6 49.5L8.4 49.5C6 49.5 4.7 48.3 4.7 46.6 4.7 45.9 4.9 45.1 5.3 44.2L27.1 7C27.9 5.5 28.9 4.8 30 4.8 31.1 4.8 32.1 5.5 32.9 7L54.7 44.2C55.2 45.1 55.4 45.9 55.4 46.6 55.4 48.3 54 49.5 51.6 49.5ZM30 33C31.7 33 33 31.6 33 30L33 18C33 16.3 31.7 15 30 15 28.4 15 27 16.3 27 18L27 30C27 31.6 28.4 33 30 33ZM30 45C32.1 45 33.8 43.3 33.8 41.2 33.8 39.2 32.1 37.5 30 37.5 27.9 37.5 26.3 39.2 26.3 41.2 26.3 43.3 27.9 45 30 45Z" fill="#D94827"/></svg>
+				Server Error
+			</h1>
+			<div class="card">
+				<p>It seems like there’s a problem connecting to our servers, and we’re investigating the issue.</p>
+				<p>Please <a href="https://status.slack.com/" target="_blank" rel="noopener noreferrer">check our Status page for updates</a>.</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		if (window.desktop) {
+			document.documentElement.className = 'desktop';
+		}
+
+		var FIVE_MINS = 5 * 60 * 1000;
+		var TEN_MINS = 10 * 60 * 1000;
+
+		function randomBetween(min, max) {
+			return Math.floor(Math.random() * (max - (min + 1))) + min;
+		}
+
+		window.setTimeout(function () {
+			window.location.reload(true);
+		}, randomBetween(FIVE_MINS, TEN_MINS));
+	</script>
+</body>
+</html>
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  413k    0     0  100  413k      0   312k  0:00:01  0:00:01 --:--:--  313k100  413k    0     0  100  413k      0   176k  0:00:02  0:00:02 --:--:--  177k100  413k    0     0  100  413k      0   123k  0:00:03  0:00:03 --:--:--  123k100  413k    0     0  100  413k      0  97341  0:00:04  0:00:04 --:--:-- 97389100  413k    0     0  100  413k      0  78977  0:00:05  0:00:05 --:--:-- 79008100  413k    0     0  100  413k      0  66452  0:00:06  0:00:06 --:--:--     0100  413k    0     0  100  413k      0  57324  0:00:07  0:00:07 --:--:--     0100  413k    0     0  100  413k      0  50414  0:00:08  0:00:08 --:--:--     0100  413k    0     0  100  413k      0  45043  0:00:09  0:00:09 --:--:--     0100  413k    0     0  100  413k      0  40687  0:00:10  0:00:10 --:--:--     0<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Server Error | Slack</title>
+	<meta name="author" content="Slack">
+	<style>
+		/* General */
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 400;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-regular.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-regular.woff) format('woff');
+		}
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 700;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-bold.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-bold.woff) format('woff');
+		}
+
+		* {
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		html, body {
+			width: 100%;
+			overflow-x: hidden;
+		}
+		html.desktop {
+			margin-top: 30px;
+		}
+		body {
+			margin: 0;
+			font-family: 'Slack-Lato', sans-serif;
+			font-variant-ligatures: common-ligatures;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			color: #555459;
+			font-size: 1.125rem;
+			line-height: 1.5rem;
+			background: #f9f9f9;
+		}
+
+		a, a:link, a:visited {
+			color: #3aa3e3;
+			text-decoration: none;
+		}
+
+		h1 {
+			font-size: 2rem;
+			line-height: 2.5rem;
+			letter-spacing: -1px;
+			font-weight: 700;
+			font-family: 'Slack-Lato', sans-serif;
+			margin: 0 0 1rem 0;
+		}
+		@media only screen and (max-width: 640px) {
+			h1 {
+				font-size: 1.75rem;
+				line-height: 2rem;
+			}
+		}
+
+		p {
+			margin: 0 0 1rem 0;
+		}
+
+		/* Page */
+		#page {
+			width: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+		#page_contents {
+			margin: 0 auto;
+			padding: 8rem 2rem;
+		}
+		@media only screen and (max-height: 768px), screen and (max-width: 640px) {
+			#page_contents {
+				padding: 6rem 2rem;
+			}
+		}
+		@media only screen and (min-width: 1024px) {
+			#page_contents {
+				width: 1024px;
+			}
+		}
+		@media only screen and (max-width: 640px) {
+			#page_contents {
+				width: 100%;
+				padding: 1rem 0.8rem;
+				margin-top: 70px;
+			}
+		}
+
+		/* Top nav */
+		nav.top.persistent, nav.top.with_color {
+			background: #fff;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		}
+		nav.top {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 70px;
+			z-index: 99;
+		}
+		html.desktop nav.top {
+			padding-top: 30px;
+			height: 100px;
+		}
+		nav.top.persistent .logo, nav.top.with_color .logo {
+			background-position: left bottom;
+		}
+		nav .logo {
+			background-size: 120px 31px;
+			height: 31px;
+			width: 120px;
+			float: left;
+			margin: 20px 0 0 20px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAfCAYAAAAslQkwAAAHLUlEQVR42u2afUxTVxiHKwIqouLUOY2zHXNb4rS3iIgofk2NMXM6s6ARysIWHcu+iCyiUakFEjVkm9M4N0w29s90c8t0LbZ0YsziqKBExYGKOKXUDzYpUlCnE7j7XXI68XpOObfUjSZ9kyeB+55e7+Xp+XjPUcUT8WXuqfH25v2gYkqpe0eC3f1E17xgNSZqrdk/gQqtxfCp7ogxStU7YjlYJWMM6O0xAKyiEA78G9PKWxLiS91tU0qbxQe4qxbWiv2kfIzNOBNS27WWbNGDYM0+HVtREKb6/+N3IMpYGACCnwIihSHAvwG5BySpcqYea14m5SHXIkmVo7MZXw0KDgTBGJZpguPtboOUR2+9RBOM6+uCggNAsDTnMgTnkB7soPZgi2FDUHAACJYWVNKcGxQc8ILZIS2opDkXUg0gp5Oy1jlBwQEpmD+CggNEcIK9ZRp6ZREWVJcw/DpYoE012hTMONk6QongGJthoWAx/Ky1GioF66btsYe2+vKg48EWsB+cI/JOgEKwEkT5QfAcsJvctw4cB7tAAsnHgXwZ7wJvMQHkgiPgAqgGJpAH1H4QrAX5FIwgXDX1mDveU+fyAtHnZl8W+/MIFmzGRY+usA3Hk8R9fTnFRoEC0AZEL/xFXizCB8GjgbWb+xeCdMr1Ui+SvgUdXu7ZBvaAobyCKe3qKe3awVJPGfQ9h1RaHbycS7DF8Cu9TjbM55AbAoqBqIDFCgVHg8uc93ZyCtaBKwqe+SKYoFBwf1DOaPfhgzLI7i71TXBLJqmDq2gCsW35ARF8gyrYakzjELye8QI3wW3K9WsgVIHgfuAUEHnhEDwGXPfhPk4wTIHgvYw2n8s3MvJ9E+yOVyF0xYZdFLkdgiU3Rspj3nXJ84Ilu22yNe8FDsHyHnMWTOySV4O3QQ3Jb1Y4B2cBkUE7+bxbkWDvI84N4PQybH/JKdjAyFtBX9lBgjgYkiuUzcEtW/4dAUo2D0Mv/e1huYZckqYINrTrirOzOOQOpLzAD16G8mVArUBwKGig5O+ADBAJPPESqOQQPJPR5iB4TjYt7OuSbwXZIIJDcBLjC1IJBqloMVsUQzHkLobodZhbN7DA4ipjennzZPnnk6qN4Vg4LRWKs9/z9FxPYAjPlOZjCYh/P/ZQ7kQVX/QBbobk+SC8h2VSIiXXAeZ6OeEp70ZwASUPkcz4inxmJOciax64w5iangYBFyVAZNACDoA3wCAfBK+l5PYCb/FmN4IvynL3wXA/1sGNlGu3wCTADkf064mOsSk24KxTp1yXcGj0Rk8e1+c61CkluH4ePxf+qUnDAzwIV100  420k  100  7295  100  413k    697  40495  0:00:10  0:00:10 --:--:--  17855GwoNEkHAZXG83a62yEGpdZu7vFHMv70lPAPZZk2UvmgH4KBG+j5NJ7KPiuLHfabxsdbLyf2tVHp8Q5xia31Y1NFh9CnfyxlHdqUmch39E1h98vXIt9K6JT7kHd/EaTVlQCJJ8Rq5N4D69fUVBy2EE4p+CdlFxyDwSHUGr1o/+B4O2AHeiVe4g4qmDINNHy9Rr9ik7BZsFGxCmiyayFOO6IBCuBTVYe0djKKTibktvWwx58VZZrBaF+FFzGuJ7hTfARmkDPEA3RNbQ8xG/qFGzSVvoi2GXWrVL5FmFk6M4C1ZSXPcspeBEQKUI0gBWfdSP4R0p+I2BFGkhSIDgaXGKUdEvo868mJYcm0KnRzybzby1VMD4n5TGv7lQs16Rtd1lixnPIfBLEdbPSrqSshMM5BEcyVqTVQCf7dyLARxxlUgol/zdYDUJkz51Ocp6pZRrnTtZEcIuSu039W0lzKXrjUdrwzCO4uShxKBZXJ5XIbSoS1qr4wghEYAHTQZgsPwLUyV7UrWCjYwcQKdwHdlBAyrJmzo2OUHCe0e4y2AsKQS2jTT7nRsdrjFq4gToCiUZjSL0mdQGG5fQ6tZ4suTkEkxArYsOainQvYz7ObDLr1jAxCemk5/JEOGig/OFrifASxnz8jQLBI8Efft6qnOXpmQq5CyYp2KrMY7SpBlGAHdyCH2/ogaiQa2CUwsOGeZTyhsU9zsOGNI7TL/kwnqrwsKEPMDHaHQZhfhGMkucsht7WTlDrukzCdy5bnD92VYaDLxT8oa6ABB/Pg+fIRgsaNWA9p2DPF8fJ8dxXwXQfjwsHg3OMtl/7S7BDPs9C9EXRHBuh8k+MBmtACWiinAGfAWvBACAPK6iSkQhoMQTkUb4UF8BGcv8l4KSMwm7+A3sGsIN22YKojJRd/Rlf7ioKkZS2z4NTjPbJ/hdMcBXpklSPJ6KABowlw5Tfg8geR3qIvyKMPPMo8ty9I7DCPkHd6FDrM73VwU0m3TuqYPT+gOCtlE2OjiuaZB3Zh/7k0VJIaHMVCy+qgtH7o0GbOhDD9C9d5Lbh9yxP3mWJH4zyqNQjFz/fh+DVqmAESpA6+Rn9DKc6Jdn5rH7cI3nRGHLTFDOr6WDMiuaiuGhVMHpN/AN0GQvJQUqdZQAAAABJRU5ErkJggg==) left top no-repeat;
+		}
+
+		/* Card */
+		.card {
+			background-color: #fff;
+			border-radius: 0.25rem;
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+			padding: 2rem 2rem 1rem;
+			margin: 0 auto 2rem;
+			position: relative;
+			border: 1px solid #e8e8e8;
+		}
+		@media only screen and (max-width: 640px) {
+			.card {
+				padding: 1rem;
+			}
+		}
+		.warning_icon {
+			margin: 0 4px;
+			transform: translateY(2px);
+		}
+	</style>
+</head>
+<body>
+	<nav class="top persistent">
+		<a href="https://status.slack.com/" class="logo" data-qa="logo"></a>
+	</nav>
+	<div id="page">
+		<div id="page_contents">
+			<h1>
+				<svg width="30px" height="27px" viewBox="0 0 60 54" class="warning_icon"><path d="M51.6 54C56.9 54 60 51 60 47 60 45.4 59.6 43.8 58.6 42.1L36.9 4.8C35 1.6 32.5 0 30 0 27.5 0 25 1.6 23.1 4.8L1.4 42.1C0.4 43.8 0 45.4 0 47 0 51 3.1 54 8.4 54L51.6 54ZM51.6 49.5L8.4 49.5C6 49.5 4.7 48.3 4.7 46.6 4.7 45.9 4.9 45.1 5.3 44.2L27.1 7C27.9 5.5 28.9 4.8 30 4.8 31.1 4.8 32.1 5.5 32.9 7L54.7 44.2C55.2 45.1 55.4 45.9 55.4 46.6 55.4 48.3 54 49.5 51.6 49.5ZM30 33C31.7 33 33 31.6 33 30L33 18C33 16.3 31.7 15 30 15 28.4 15 27 16.3 27 18L27 30C27 31.6 28.4 33 30 33ZM30 45C32.1 45 33.8 43.3 33.8 41.2 33.8 39.2 32.1 37.5 30 37.5 27.9 37.5 26.3 39.2 26.3 41.2 26.3 43.3 27.9 45 30 45Z" fill="#D94827"/></svg>
+				Server Error
+			</h1>
+			<div class="card">
+				<p>It seems like there’s a problem connecting to our servers, and we’re investigating the issue.</p>
+				<p>Please <a href="https://status.slack.com/" target="_blank" rel="noopener noreferrer">check our Status page for updates</a>.</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		if (window.desktop) {
+			document.documentElement.className = 'desktop';
+		}
+
+		var FIVE_MINS = 5 * 60 * 1000;
+		var TEN_MINS = 10 * 60 * 1000;
+
+		function randomBetween(min, max) {
+			return Math.floor(Math.random() * (max - (min + 1))) + min;
+		}
+
+		window.setTimeout(function () {
+			window.location.reload(true);
+		}, randomBetween(FIVE_MINS, TEN_MINS));
+	</script>
+</body>
+</html>
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  413k    0     0  100  413k      0   320k  0:00:01  0:00:01 --:--:--  320k100  413k    0     0  100  413k      0   179k  0:00:02  0:00:02 --:--:--  179k100  413k    0     0  100  413k      0   124k  0:00:03  0:00:03 --:--:--  125k100  413k    0     0  100  413k      0  97993  0:00:04  0:00:04 --:--:-- 98065100  413k    0     0  100  413k      0  79361  0:00:05  0:00:05 --:--:-- 79408100  413k    0     0  100  413k      0  66693  0:00:06  0:00:06 --:--:--     0100  413k    0     0  100  413k      0  57512  0:00:07  0:00:07 --:--:--     0100  413k    0     0  100  413k      0  50625  0:00:08  0:00:08 --:--:--     0100  413k    0     0  100  413k      0  45153  0:00:09  0:00:09 --:--:--     0100  413k    0     0  100  413k      0  40765  0:00:10  0:00:10 --:--:--     0<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Server Error | Slack</title>
+	<meta name="author" content="Slack">
+	<style>
+		/* General */
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 400;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-regular.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-regular.woff) format('woff');
+		}
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 700;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-bold.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-bold.woff) format('woff');
+		}
+
+		* {
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		html, body {
+			width: 100%;
+			overflow-x: hidden;
+		}
+		html.desktop {
+			margin-top: 30px;
+		}
+		body {
+			margin: 0;
+			font-family: 'Slack-Lato', sans-serif;
+			font-variant-ligatures: common-ligatures;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			color: #555459;
+			font-size: 1.125rem;
+			line-height: 1.5rem;
+			background: #f9f9f9;
+		}
+
+		a, a:link, a:visited {
+			color: #3aa3e3;
+			text-decoration: none;
+		}
+
+		h1 {
+			font-size: 2rem;
+			line-height: 2.5rem;
+			letter-spacing: -1px;
+			font-weight: 700;
+			font-family: 'Slack-Lato', sans-serif;
+			margin: 0 0 1rem 0;
+		}
+		@media only screen and (max-width: 640px) {
+			h1 {
+				font-size: 1.75rem;
+				line-height: 2rem;
+			}
+		}
+
+		p {
+			margin: 0 0 1rem 0;
+		}
+
+		/* Page */
+		#page {
+			width: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+		#page_contents {
+			margin: 0 auto;
+			padding: 8rem 2rem;
+		}
+		@media only screen and (max-height: 768px), screen and (max-width: 640px) {
+			#page_contents {
+				padding: 6rem 2rem;
+			}
+		}
+		@media only screen and (min-width: 1024px) {
+			#page_contents {
+				width: 1024px;
+			}
+		}
+		@media only screen and (max-width: 640px) {
+			#page_contents {
+				width: 100%;
+				padding: 1rem 0.8rem;
+				margin-top: 70px;
+			}
+		}
+
+		/* Top nav */
+		nav.top.persistent, nav.top.with_color {
+			background: #fff;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		}
+		nav.top {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 70px;
+			z-index: 99;
+		}
+		html.desktop nav.top {
+			padding-top: 30px;
+			height: 100px;
+		}
+		nav.top.persistent .logo, nav.top.with_color .logo {
+			background-position: left bottom;
+		}
+		nav .logo {
+			background-size: 120px 31px;
+			height: 31px;
+			width: 120px;
+			float: left;
+			margin: 20px 0 0 20px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAfCAYAAAAslQkwAAAHLUlEQVR42u2afUxTVxiHKwIqouLUOY2zHXNb4rS3iIgofk2NMXM6s6ARysIWHcu+iCyiUakFEjVkm9M4N0w29s90c8t0LbZ0YsziqKBExYGKOKXUDzYpUlCnE7j7XXI68XpOObfUjSZ9kyeB+55e7+Xp+XjPUcUT8WXuqfH25v2gYkqpe0eC3f1E17xgNSZqrdk/gQqtxfCp7ogxStU7YjlYJWMM6O0xAKyiEA78G9PKWxLiS91tU0qbxQe4qxbWiv2kfIzNOBNS27WWbNGDYM0+HVtREKb6/+N3IMpYGACCnwIihSHAvwG5BySpcqYea14m5SHXIkmVo7MZXw0KDgTBGJZpguPtboOUR2+9RBOM6+uCggNAsDTnMgTnkB7soPZgi2FDUHAACJYWVNKcGxQc8ILZIS2opDkXUg0gp5Oy1jlBwQEpmD+CggNEcIK9ZRp6ZREWVJcw/DpYoE012hTMONk6QongGJthoWAx/Ky1GioF66btsYe2+vKg48EWsB+cI/JOgEKwEkT5QfAcsJvctw4cB7tAAsnHgXwZ7wJvMQHkgiPgAqgGJpAH1H4QrAX5FIwgXDX1mDveU+fyAtHnZl8W+/MIFmzGRY+usA3Hk8R9fTnFRoEC0AZEL/xFXizCB8GjgbWb+xeCdMr1Ui+SvgUdXu7ZBvaAobyCKe3qKe3awVJPGfQ9h1RaHbycS7DF8Cu9TjbM55AbAoqBqIDFCgVHg8uc93ZyCtaBKwqe+SKYoFBwf1DOaPfhgzLI7i71TXBLJqmDq2gCsW35ARF8gyrYakzjELye8QI3wW3K9WsgVIHgfuAUEHnhEDwGXPfhPk4wTIHgvYw2n8s3MvJ9E+yOVyF0xYZdFLkdgiU3Rspj3nXJ84Ilu22yNe8FDsHyHnMWTOySV4O3QQ3Jb1Y4B2cBkUE7+bxbkWDvI84N4PQybH/JKdjAyFtBX9lBgjgYkiuUzcEtW/4dAUo2D0Mv/e1huYZckqYINrTrirOzOOQOpLzAD16G8mVArUBwKGig5O+ADBAJPPESqOQQPJPR5iB4TjYt7OuSbwXZIIJDcBLjC1IJBqloMVsUQzHkLobodZhbN7DA4ipjennzZPnnk6qN4Vg4LRWKs9/z9FxPYAjPlOZjCYh/P/ZQ7kQVX/QBbobk+SC8h2VSIiXXAeZ6OeEp70ZwASUPkcz4inxmJOciax64w5iangYBFyVAZNACDoA3wCAfBK+l5PYCb/FmN4IvynL3wXA/1sGNlGu3wCTADkf064mOsSk24KxTp1yXcGj0Rk8e1+c61CkluH4ePxf+qUnDAzwIV100  420k  100  7295  100  413k    699  40631  0:00:10  0:00:10 --:--:--  17905GwoNEkHAZXG83a62yEGpdZu7vFHMv70lPAPZZk2UvmgH4KBG+j5NJ7KPiuLHfabxsdbLyf2tVHp8Q5xia31Y1NFh9CnfyxlHdqUmch39E1h98vXIt9K6JT7kHd/EaTVlQCJJ8Rq5N4D69fUVBy2EE4p+CdlFxyDwSHUGr1o/+B4O2AHeiVe4g4qmDINNHy9Rr9ik7BZsFGxCmiyayFOO6IBCuBTVYe0djKKTibktvWwx58VZZrBaF+FFzGuJ7hTfARmkDPEA3RNbQ8xG/qFGzSVvoi2GXWrVL5FmFk6M4C1ZSXPcspeBEQKUI0gBWfdSP4R0p+I2BFGkhSIDgaXGKUdEvo868mJYcm0KnRzybzby1VMD4n5TGv7lQs16Rtd1lixnPIfBLEdbPSrqSshMM5BEcyVqTVQCf7dyLARxxlUgol/zdYDUJkz51Ocp6pZRrnTtZEcIuSu039W0lzKXrjUdrwzCO4uShxKBZXJ5XIbSoS1qr4wghEYAHTQZgsPwLUyV7UrWCjYwcQKdwHdlBAyrJmzo2OUHCe0e4y2AsKQS2jTT7nRsdrjFq4gToCiUZjSL0mdQGG5fQ6tZ4suTkEkxArYsOainQvYz7ObDLr1jAxCemk5/JEOGig/OFrifASxnz8jQLBI8Efft6qnOXpmQq5CyYp2KrMY7SpBlGAHdyCH2/ogaiQa2CUwsOGeZTyhsU9zsOGNI7TL/kwnqrwsKEPMDHaHQZhfhGMkucsht7WTlDrukzCdy5bnD92VYaDLxT8oa6ABB/Pg+fIRgsaNWA9p2DPF8fJ8dxXwXQfjwsHg3OMtl/7S7BDPs9C9EXRHBuh8k+MBmtACWiinAGfAWvBACAPK6iSkQhoMQTkUb4UF8BGcv8l4KSMwm7+A3sGsIN22YKojJRd/Rlf7ioKkZS2z4NTjPbJ/hdMcBXpklSPJ6KABowlw5Tfg8geR3qIvyKMPPMo8ty9I7DCPkHd6FDrM73VwU0m3TuqYPT+gOCtlE2OjiuaZB3Zh/7k0VJIaHMVCy+qgtH7o0GbOhDD9C9d5Lbh9yxP3mWJH4zyqNQjFz/fh+DVqmAESpA6+Rn9DKc6Jdn5rH7cI3nRGHLTFDOr6WDMiuaiuGhVMHpN/AN0GQvJQUqdZQAAAABJRU5ErkJggg==) left top no-repeat;
+		}
+
+		/* Card */
+		.card {
+			background-color: #fff;
+			border-radius: 0.25rem;
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+			padding: 2rem 2rem 1rem;
+			margin: 0 auto 2rem;
+			position: relative;
+			border: 1px solid #e8e8e8;
+		}
+		@media only screen and (max-width: 640px) {
+			.card {
+				padding: 1rem;
+			}
+		}
+		.warning_icon {
+			margin: 0 4px;
+			transform: translateY(2px);
+		}
+	</style>
+</head>
+<body>
+	<nav class="top persistent">
+		<a href="https://status.slack.com/" class="logo" data-qa="logo"></a>
+	</nav>
+	<div id="page">
+		<div id="page_contents">
+			<h1>
+				<svg width="30px" height="27px" viewBox="0 0 60 54" class="warning_icon"><path d="M51.6 54C56.9 54 60 51 60 47 60 45.4 59.6 43.8 58.6 42.1L36.9 4.8C35 1.6 32.5 0 30 0 27.5 0 25 1.6 23.1 4.8L1.4 42.1C0.4 43.8 0 45.4 0 47 0 51 3.1 54 8.4 54L51.6 54ZM51.6 49.5L8.4 49.5C6 49.5 4.7 48.3 4.7 46.6 4.7 45.9 4.9 45.1 5.3 44.2L27.1 7C27.9 5.5 28.9 4.8 30 4.8 31.1 4.8 32.1 5.5 32.9 7L54.7 44.2C55.2 45.1 55.4 45.9 55.4 46.6 55.4 48.3 54 49.5 51.6 49.5ZM30 33C31.7 33 33 31.6 33 30L33 18C33 16.3 31.7 15 30 15 28.4 15 27 16.3 27 18L27 30C27 31.6 28.4 33 30 33ZM30 45C32.1 45 33.8 43.3 33.8 41.2 33.8 39.2 32.1 37.5 30 37.5 27.9 37.5 26.3 39.2 26.3 41.2 26.3 43.3 27.9 45 30 45Z" fill="#D94827"/></svg>
+				Server Error
+			</h1>
+			<div class="card">
+				<p>It seems like there’s a problem connecting to our servers, and we’re investigating the issue.</p>
+				<p>Please <a href="https://status.slack.com/" target="_blank" rel="noopener noreferrer">check our Status page for updates</a>.</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		if (window.desktop) {
+			document.documentElement.className = 'desktop';
+		}
+
+		var FIVE_MINS = 5 * 60 * 1000;
+		var TEN_MINS = 10 * 60 * 1000;
+
+		function randomBetween(min, max) {
+			return Math.floor(Math.random() * (max - (min + 1))) + min;
+		}
+
+		window.setTimeout(function () {
+			window.location.reload(true);
+		}, randomBetween(FIVE_MINS, TEN_MINS));
+	</script>
+</body>
+</html>
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0 77  413k    0     0   77  320k      0  1238k --:--:-- --:--:-- --:--:-- 1245k100  413k    0     0  100  413k      0   325k  0:00:01  0:00:01 --:--:--  325k100  413k    0     0  100  413k      0   180k  0:00:02  0:00:02 --:--:--  181k100  413k    0     0  100  413k      0   125k  0:00:03  0:00:03 --:--:--  125k100  413k    0     0  100  413k      0  98208  0:00:04  0:00:04 --:--:-- 98247100  413k    0     0  100  413k      0  79724  0:00:05  0:00:05 --:--:-- 18984100  413k    0     0  100  413k      0  66948  0:00:06  0:00:06 --:--:--     0100  413k    0     0  100  413k      0  57701  0:00:07  0:00:07 --:--:--     0100  413k    0     0  100  413k      0  50695  0:00:08  0:00:08 --:--:--     0100  413k    0     0  100  413k      0  45257  0:00:09  0:00:09 --:--:--     0100  416k  100  2461  100  413k    251  43347  0:00:09  0:00:09 --:--:--   551{"ok":true,"file":{"id":"F0658P86NVC","created":1699875047,"timestamp":1699875047,"name":"img5.png","title":"img5.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":422994,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F0658P86NVC/img5.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F0658P86NVC/download/img5.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P86NVC-feeff6a347/img5_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABW8ZCCeP1pJJ/LUEgnPGBQYVZiSXHPrSmBGUK2SB055oK0FV9yg9MinbqNlGygWghB3ff8AfGBRtPZ/0FP70g6nigQDoOc+9LSL0GRiloATPsaBj3qD7Zb/APPUfrR9rtx/y0H60AWKKg+2W/8Az1H60fbLf/nqP1oA/9k=","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F0658P86NVC/img5.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F0658P86NVC-ddd55bbdce","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875055.684849","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  413k    0     0  100  413k      0   316k  0:00:01  0:00:01 --:--:--  317k100  413k    0     0  100  413k      0   178k  0:00:02  0:00:02 --:--:--  178k100  413k    0     0  100  413k      0   124k  0:00:03  0:00:03 --:--:--  124k100  413k    0     0  100  413k      0  97497  0:00:04  0:00:04 --:--:-- 97546100  413k    0     0  100  413k      0  79124  0:00:05  0:00:05 --:--:-- 79156100  413k    0     0  100  413k      0  66599  0:00:06  0:00:06 --:--:--     0100  413k    0     0  100  413k      0  57437  0:00:07  0:00:07 --:--:--     0100  413k    0     0  100  413k      0  50571  0:00:08  0:00:08 --:--:--     0100  413k    0     0  100  413k      0  45125  0:00:09  0:00:09 --:--:--     0100  416k  100  2461  100  413k    258  44425  0:00:09  0:00:09 --:--:--   588{"ok":true,"file":{"id":"F0658P8QVAS","created":1699875057,"timestamp":1699875057,"name":"img6.png","title":"img6.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":422994,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F0658P8QVAS/img6.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F0658P8QVAS/download/img6.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F0658P8QVAS-34c3650427/img6_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABW8ZCCeP1pJJ/LUEgnPGBQYVZiSXHPrSmBGUK2SB055oK0FV9yg9MinbqNlGygWghB3ff8AfGBRtPZ/0FP70g6nigQDoOc+9LSL0GRiloATPsaBj3qD7Zb/APPUfrR9rtx/y0H60AWKKg+2W/8Az1H60fbLf/nqP1oA/9k=","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F0658P8QVAS/img6.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F0658P8QVAS-a4bfe4caf6","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875065.349729","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  413k    0     0  100  413k      0   324k  0:00:01  0:00:01 --:--:--  324k100  413k    0     0  100  413k      0   180k  0:00:02  0:00:02 --:--:--  180k100  413k    0     0  100  413k      0   125k  0:00:03  0:00:03 --:--:--  125k100  413k    0     0  100  413k      0  98141  0:00:04  0:00:04 --:--:-- 98202100  413k    0     0  100  413k      0  79466  0:00:05  0:00:05 --:--:-- 79512100  413k    0     0  100  413k      0  66803  0:00:06  0:00:06 --:--:--     0100  413k    0     0  100  413k      0  57594  0:00:07  0:00:07 --:--:--     0100  413k    0     0  100  413k      0  50640  0:00:08  0:00:08 --:--:--     0100  413k    0     0  100  413k      0  45170  0:00:09  0:00:09 --:--:--     0100  413k    0     0  100  413k      0  40795  0:00:10  0:00:10 --:--:--     0100  416k  100  2461  100  413k    236  40706  0:00:10  0:00:10 --:--:--   605{"ok":true,"file":{"id":"F0664CCPSUQ","created":1699875066,"timestamp":1699875066,"name":"img7.png","title":"img7.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":422994,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F0664CCPSUQ/img7.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F0664CCPSUQ/download/img7.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F0664CCPSUQ-e4f73671a4/img7_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABW8ZCCeP1pJJ/LUEgnPGBQYVZiSXHPrSmBGUK2SB055oK0FV9yg9MinbqNlGygWghB3ff8AfGBRtPZ/0FP70g6nigQDoOc+9LSL0GRiloATPsaBj3qD7Zb/APPUfrR9rtx/y0H60AWKKg+2W/8Az1H60fbLf/nqP1oA/9k=","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F0664CCPSUQ/img7.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F0664CCPSUQ-01547c00d5","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875075.775449","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  224k    0     0  100  224k      0   182k  0:00:01  0:00:01 --:--:--  183k100  224k    0     0  100  224k      0   100k  0:00:02  0:00:02 --:--:--  100k100  224k    0     0  100  224k      0  70865  0:00:03  0:00:03 --:--:-- 70931100  224k    0     0  100  224k      0  53978  0:00:04  0:00:04 --:--:-- 54003100  224k    0     0  100  224k      0  43606  0:00:05  0:00:05 --:--:-- 43623100  224k    0     0  100  224k      0  36566  0:00:06  0:00:06 --:--:--     0100  224k    0     0  100  224k      0  31461  0:00:07  0:00:07 --:--:--     0100  224k    0     0  100  224k      0  27635  0:00:08  0:00:08 --:--:--     0100  224k    0     0  100  224k      0  24640  0:00:09  0:00:09 --:--:--     0100  226k  100  2429  100  224k    236  22401  0:00:10  0:00:10 --:--:--   487100  226k  100  2429  100  224k    236  22401  0:00:10  0:00:10 --:--:--   611{"ok":true,"file":{"id":"F065HRYCFV2","created":1699875077,"timestamp":1699875077,"name":"img8.png","title":"img8.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":229025,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F065HRYCFV2/img8.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F065HRYCFV2/download/img8.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F065HRYCFV2-ea4e7502c6/img8_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABWLzl9DR5y+hp/elxQBH5y+ho89fQ1JiigC2ltGY1Y5yRnrSiCPurD/AIFQlwgjUZIIHPFRyzFnykpUY6baBpXEuYlj27c81Dinu5ZVDOXIzzjFMzQJjTjdnvTqSigAooooA//Z","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F065HRYCFV2/img8.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F065HRYCFV2-b6128f2dc7","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875086.164009","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  214k    0     0  100  214k      0   172k  0:00:01  0:00:01 --:--:--  172k100  214k    0     0  100  214k      0  97224  0:00:02  0:00:02 --:--:-- 97369100  214k    0     0  100  214k      0  67140  0:00:03  0:00:03 --:--:-- 67210100  214k    0     0  100  214k      0  51251  0:00:04  0:00:04 --:--:-- 51291100  214k    0     0  100  214k      0  41544  0:00:05  0:00:05 --:--:-- 41571100  214k    0     0  100  214k      0  34857  0:00:06  0:00:06 --:--:--     0100  214k    0     0  100  214k      0  30037  0:00:07  0:00:07 --:--:--     0100  214k    0     0  100  214k      0  26378  0:00:08  0:00:08 --:--:--     0100  214k    0     0  100  214k      0  23519  0:00:09  0:00:09 --:--:--     0100  216k  100  2445  100  214k    237  21321  0:00:10  0:00:10 --:--:--   488100  216k  100  2445  100  214k    237  21321  0:00:10  0:00:10 --:--:--   611{"ok":true,"file":{"id":"F065CESGZLM","created":1699875087,"timestamp":1699875087,"name":"img9.png","title":"img9.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":218723,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F065CESGZLM/img9.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F065CESGZLM/download/img9.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CESGZLM-0edc77c733/img9_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABXSxzS1Xa5VHZdj8HsKT7Yv9x/yosVySLOKKjhmEoJCsMeoqSgTVhMUvNMMi44dc/UU0SjPLL+YoES0UzzF/vr+dHmL/fX86AMIde1OIGOiikGMdqMCgBKKtR2iugYzKuRnFO+xJ/z8J+n+NAH/2Q==","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F065CESGZLM/img9.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F065CESGZLM-f3b3ffa3b7","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875096.603509","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  262k    0     0  100  262k      0   210k  0:00:01  0:00:01 --:--:--  211k100  262k    0     0  100  262k      0   116k  0:00:02  0:00:02 --:--:--  116k100  262k    0     0  100  262k      0  82137  0:00:03  0:00:03 --:--:-- 82212100  262k    0     0  100  262k      0  62718  0:00:04  0:00:04 --:--:-- 62762100  262k    0     0  100  262k      0  50716  0:00:05  0:00:05 --:--:-- 50744100  262k    0     0  100  262k      0  42583  0:00:06  0:00:06 --:--:--     0100  262k    0     0  100  262k      0  36757  0:00:07  0:00:07 --:--:--     0100  262k    0     0  100  262k      0  32293  0:00:08  0:00:08 --:--:--     0100  262k    0     0  100  262k      0  28794  0:00:09  0:00:09 --:--:--     0100  262k    0     0  100  262k      0  25975  0:00:10  0:00:10 --:--:--     0<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Server Error | Slack</title>
+	<meta name="author" content="Slack">
+	<style>
+		/* General */
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 400;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-regular.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-regular.woff) format('woff');
+		}
+		@font-face {
+			font-family: 'Slack-Lato';
+			font-style: normal;
+			font-weight: 700;
+			src: local('☺'), url(https://a.slack-edge.com/80588/fonts/lato-2-compressed/lato-bold.woff2) format('woff2'), url(https://a.slack-edge.com/80588/fonts/lato-2/lato-bold.woff) format('woff');
+		}
+
+		* {
+			-ms-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			-webkit-box-sizing: border-box;
+			box-sizing: border-box;
+		}
+		html, body {
+			width: 100%;
+			overflow-x: hidden;
+		}
+		html.desktop {
+			margin-top: 30px;
+		}
+		body {
+			margin: 0;
+			font-family: 'Slack-Lato', sans-serif;
+			font-variant-ligatures: common-ligatures;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+			color: #555459;
+			font-size: 1.125rem;
+			line-height: 1.5rem;
+			background: #f9f9f9;
+		}
+
+		a, a:link, a:visited {
+			color: #3aa3e3;
+			text-decoration: none;
+		}
+
+		h1 {
+			font-size: 2rem;
+			line-height: 2.5rem;
+			letter-spacing: -1px;
+			font-weight: 700;
+			font-family: 'Slack-Lato', sans-serif;
+			margin: 0 0 1rem 0;
+		}
+		@media only screen and (max-width: 640px) {
+			h1 {
+				font-size: 1.75rem;
+				line-height: 2rem;
+			}
+		}
+
+		p {
+			margin: 0 0 1rem 0;
+		}
+
+		/* Page */
+		#page {
+			width: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+		}
+		#page_contents {
+			margin: 0 auto;
+			padding: 8rem 2rem;
+		}
+		@media only screen and (max-height: 768px), screen and (max-width: 640px) {
+			#page_contents {
+				padding: 6rem 2rem;
+			}
+		}
+		@media only screen and (min-width: 1024px) {
+			#page_contents {
+				width: 1024px;
+			}
+		}
+		@media only screen and (max-width: 640px) {
+			#page_contents {
+				width: 100%;
+				padding: 1rem 0.8rem;
+				margin-top: 70px;
+			}
+		}
+
+		/* Top nav */
+		nav.top.persistent, nav.top.with_color {
+			background: #fff;
+			box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+		}
+		nav.top {
+			position: fixed;
+			top: 0;
+			width: 100%;
+			height: 70px;
+			z-index: 99;
+		}
+		html.desktop nav.top {
+			padding-top: 30px;
+			height: 100px;
+		}
+		nav.top.persistent .logo, nav.top.with_color .logo {
+			background-position: left bottom;
+		}
+		nav .logo {
+			background-size: 120px 31px;
+			height: 31px;
+			width: 120px;
+			float: left;
+			margin: 20px 0 0 20px;
+			background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAfCAYAAAAslQkwAAAHLUlEQVR42u2afUxTVxiHKwIqouLUOY2zHXNb4rS3iIgofk2NMXM6s6ARysIWHcu+iCyiUakFEjVkm9M4N0w29s90c8t0LbZ0YsziqKBExYGKOKXUDzYpUlCnE7j7XXI68XpOObfUjSZ9kyeB+55e7+Xp+XjPUcUT8WXuqfH25v2gYkqpe0eC3f1E17xgNSZqrdk/gQqtxfCp7ogxStU7YjlYJWMM6O0xAKyiEA78G9PKWxLiS91tU0qbxQe4qxbWiv2kfIzNOBNS27WWbNGDYM0+HVtREKb6/+N3IMpYGACCnwIihSHAvwG5BySpcqYea14m5SHXIkmVo7MZXw0KDgTBGJZpguPtboOUR2+9RBOM6+uCggNAsDTnMgTnkB7soPZgi2FDUHAACJYWVNKcGxQc8ILZIS2opDkXUg0gp5Oy1jlBwQEpmD+CggNEcIK9ZRp6ZREWVJcw/DpYoE012hTMONk6QongGJthoWAx/Ky1GioF66btsYe2+vKg48EWsB+cI/JOgEKwEkT5QfAcsJvctw4cB7tAAsnHgXwZ7wJvMQHkgiPgAqgGJpAH1H4QrAX5FIwgXDX1mDveU+fyAtHnZl8W+/MIFmzGRY+usA3Hk8R9fTnFRoEC0AZEL/xFXizCB8GjgbWb+xeCdMr1Ui+SvgUdXu7ZBvaAobyCKe3qKe3awVJPGfQ9h1RaHbycS7DF8Cu9TjbM55AbAoqBqIDFCgVHg8uc93ZyCtaBKwqe+SKYoFBwf1DOaPfhgzLI7i71TXBLJqmDq2gCsW35ARF8gyrYakzjELye8QI3wW3K9WsgVIHgfuAUEHnhEDwGXPfhPk4wTIHgvYw2n8s3MvJ9E+yOVyF0xYZdFLkdgiU3Rspj3nXJ84Ilu22yNe8FDsHyHnMWTOySV4O3QQ3Jb1Y4B2cBkUE7+bxbkWDvI84N4PQybH/JKdjAyFtBX9lBgjgYkiuUzcEtW/4dAUo2D0Mv/e1huYZckqYINrTrirOzOOQOpLzAD16G8mVArUBwKGig5O+ADBAJPPESqOQQPJPR5iB4TjYt7OuSbwXZIIJDcBLjC1IJBqloMVsUQzHkLobodZhbN7DA4ipjennzZPnnk6qN4Vg4LRWKs9/z9FxPYAjPlOZjCYh/P/ZQ7kQVX/QBbobk+SC8h2VSIiXXAeZ6OeEp70ZwASUPkcz4inxmJOciax64w5iangYBFyVAZNACDoA3wCAfBK+l5PYCb/FmN4IvynL3wXA/1sGNlGu3wCTADkf064mOsSk24KxTp1yXcGj0Rk8e1+c61CkluH4ePxf+qUnDAzwIV100  269k  100  7295  100  262k    702  25904  0:00:10  0:00:10 --:--:--  17935GwoNEkHAZXG83a62yEGpdZu7vFHMv70lPAPZZk2UvmgH4KBG+j5NJ7KPiuLHfabxsdbLyf2tVHp8Q5xia31Y1NFh9CnfyxlHdqUmch39E1h98vXIt9K6JT7kHd/EaTVlQCJJ8Rq5N4D69fUVBy2EE4p+CdlFxyDwSHUGr1o/+B4O2AHeiVe4g4qmDINNHy9Rr9ik7BZsFGxCmiyayFOO6IBCuBTVYe0djKKTibktvWwx58VZZrBaF+FFzGuJ7hTfARmkDPEA3RNbQ8xG/qFGzSVvoi2GXWrVL5FmFk6M4C1ZSXPcspeBEQKUI0gBWfdSP4R0p+I2BFGkhSIDgaXGKUdEvo868mJYcm0KnRzybzby1VMD4n5TGv7lQs16Rtd1lixnPIfBLEdbPSrqSshMM5BEcyVqTVQCf7dyLARxxlUgol/zdYDUJkz51Ocp6pZRrnTtZEcIuSu039W0lzKXrjUdrwzCO4uShxKBZXJ5XIbSoS1qr4wghEYAHTQZgsPwLUyV7UrWCjYwcQKdwHdlBAyrJmzo2OUHCe0e4y2AsKQS2jTT7nRsdrjFq4gToCiUZjSL0mdQGG5fQ6tZ4suTkEkxArYsOainQvYz7ObDLr1jAxCemk5/JEOGig/OFrifASxnz8jQLBI8Efft6qnOXpmQq5CyYp2KrMY7SpBlGAHdyCH2/ogaiQa2CUwsOGeZTyhsU9zsOGNI7TL/kwnqrwsKEPMDHaHQZhfhGMkucsht7WTlDrukzCdy5bnD92VYaDLxT8oa6ABB/Pg+fIRgsaNWA9p2DPF8fJ8dxXwXQfjwsHg3OMtl/7S7BDPs9C9EXRHBuh8k+MBmtACWiinAGfAWvBACAPK6iSkQhoMQTkUb4UF8BGcv8l4KSMwm7+A3sGsIN22YKojJRd/Rlf7ioKkZS2z4NTjPbJ/hdMcBXpklSPJ6KABowlw5Tfg8geR3qIvyKMPPMo8ty9I7DCPkHd6FDrM73VwU0m3TuqYPT+gOCtlE2OjiuaZB3Zh/7k0VJIaHMVCy+qgtH7o0GbOhDD9C9d5Lbh9yxP3mWJH4zyqNQjFz/fh+DVqmAESpA6+Rn9DKc6Jdn5rH7cI3nRGHLTFDOr6WDMiuaiuGhVMHpN/AN0GQvJQUqdZQAAAABJRU5ErkJggg==) left top no-repeat;
+		}
+
+		/* Card */
+		.card {
+			background-color: #fff;
+			border-radius: 0.25rem;
+			box-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+			padding: 2rem 2rem 1rem;
+			margin: 0 auto 2rem;
+			position: relative;
+			border: 1px solid #e8e8e8;
+		}
+		@media only screen and (max-width: 640px) {
+			.card {
+				padding: 1rem;
+			}
+		}
+		.warning_icon {
+			margin: 0 4px;
+			transform: translateY(2px);
+		}
+	</style>
+</head>
+<body>
+	<nav class="top persistent">
+		<a href="https://status.slack.com/" class="logo" data-qa="logo"></a>
+	</nav>
+	<div id="page">
+		<div id="page_contents">
+			<h1>
+				<svg width="30px" height="27px" viewBox="0 0 60 54" class="warning_icon"><path d="M51.6 54C56.9 54 60 51 60 47 60 45.4 59.6 43.8 58.6 42.1L36.9 4.8C35 1.6 32.5 0 30 0 27.5 0 25 1.6 23.1 4.8L1.4 42.1C0.4 43.8 0 45.4 0 47 0 51 3.1 54 8.4 54L51.6 54ZM51.6 49.5L8.4 49.5C6 49.5 4.7 48.3 4.7 46.6 4.7 45.9 4.9 45.1 5.3 44.2L27.1 7C27.9 5.5 28.9 4.8 30 4.8 31.1 4.8 32.1 5.5 32.9 7L54.7 44.2C55.2 45.1 55.4 45.9 55.4 46.6 55.4 48.3 54 49.5 51.6 49.5ZM30 33C31.7 33 33 31.6 33 30L33 18C33 16.3 31.7 15 30 15 28.4 15 27 16.3 27 18L27 30C27 31.6 28.4 33 30 33ZM30 45C32.1 45 33.8 43.3 33.8 41.2 33.8 39.2 32.1 37.5 30 37.5 27.9 37.5 26.3 39.2 26.3 41.2 26.3 43.3 27.9 45 30 45Z" fill="#D94827"/></svg>
+				Server Error
+			</h1>
+			<div class="card">
+				<p>It seems like there’s a problem connecting to our servers, and we’re investigating the issue.</p>
+				<p>Please <a href="https://status.slack.com/" target="_blank" rel="noopener noreferrer">check our Status page for updates</a>.</p>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		if (window.desktop) {
+			document.documentElement.className = 'desktop';
+		}
+
+		var FIVE_MINS = 5 * 60 * 1000;
+		var TEN_MINS = 10 * 60 * 1000;
+
+		function randomBetween(min, max) {
+			return Math.floor(Math.random() * (max - (min + 1))) + min;
+		}
+
+		window.setTimeout(function () {
+			window.location.reload(true);
+		}, randomBetween(FIVE_MINS, TEN_MINS));
+	</script>
+</body>
+</html>
+
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100  262k    0     0  100  262k      0   213k  0:00:01  0:00:01 --:--:--  213k100  262k    0     0  100  262k      0   117k  0:00:02  0:00:02 --:--:--  117k100  262k    0     0  100  262k      0  82590  0:00:03  0:00:03 --:--:-- 82616100  262k    0     0  100  262k      0  63006  0:00:04  0:00:04 --:--:-- 63022100  262k    0     0  100  262k      0  50931  0:00:05  0:00:05 --:--:-- 51066100  262k    0     0  100  262k      0  42820  0:00:06  0:00:06 --:--:--     0100  262k    0     0  100  262k      0  36908  0:00:07  0:00:07 --:--:--     0100  262k    0     0  100  262k      0  32414  0:00:08  0:00:08 --:--:--     0100  262k    0     0  100  262k      0  28913  0:00:09  0:00:09 --:--:--     0100  264k  100  2395  100  262k    241  27148  0:00:09  0:00:09 --:--:--   517{"ok":true,"file":{"id":"F065CETTT45","created":1699875108,"timestamp":1699875108,"name":"img11.png","title":"img11.png","mimetype":"image/png","filetype":"png","pretty_type":"PNG","user":"U04G4UB82MR","user_team":"E05576J9Q8J","editable":false,"size":268263,"mode":"hosted","is_external":false,"external_type":"","is_public":false,"public_url_shared":false,"display_as_bot":false,"username":"","url_private":"https://files.slack.com/files-pri/T05576J9Q8J-F065CETTT45/img11.png","url_private_download":"https://files.slack.com/files-pri/T05576J9Q8J-F065CETTT45/download/img11.png","media_display_type":"unknown","thumb_64":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_64.png","thumb_80":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_80.png","thumb_360":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_360.png","thumb_360_w":162,"thumb_360_h":360,"thumb_480":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_480.png","thumb_480_w":216,"thumb_480_h":480,"thumb_160":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_160.png","thumb_720":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_720.png","thumb_720_w":324,"thumb_720_h":720,"thumb_800":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_800.png","thumb_800_w":800,"thumb_800_h":1777,"thumb_960":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_960.png","thumb_960_w":432,"thumb_960_h":960,"thumb_1024":"https://files.slack.com/files-tmb/T05576J9Q8J-F065CETTT45-196b7ee685/img11_1024.png","thumb_1024_w":461,"thumb_1024_h":1024,"original_w":1442,"original_h":3203,"thumb_tiny":"AwAwABXSB6+1LwRmk9eKUdKAE6UZoooAQ9D3pVGBSN905pVzjmgANFBooAQ9DmnAgjimtwp5pVxjg5oADRS0YoA//9k=","permalink":"https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F065CETTT45/img11.png","permalink_public":"https://slack-files.com/T05576J9Q8J-F065CETTT45-49541bb484","comments_count":0,"is_starred":false,"shares":{"private":{"C04F5T84SLS":[{"reply_users":[],"reply_users_count":0,"reply_count":0,"ts":"1699875117.086159","channel_name":"자동화웹훅테스트","team_id":"T03DFLXTMQ9","share_user_id":"U04G4UB82MR"}]}},"channels":[],"groups":["C04F5T84SLS"],"ims":[],"has_more_shares":false,"has_rich_preview":false,"file_access":"visible"}}
+curl: (26) Failed to open/read local data from file/application

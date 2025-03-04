@@ -1,0 +1,1213 @@
+* daemon not running; starting now at tcp:5037
+* daemon started successfully
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\appium_aos>(adb -s List shell am force-stop com.lguplus.mobile.cs ) 
+adb.exe: device 'List' not found
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\appium_aos>(adb -s R3CTA081TAW shell am force-stop com.lguplus.mobile.cs ) 
+2024-05-17 17:24:08,704 - [PASS] - u+ ID 로그인 정상 동작 확인 성공
+2024-05-17 17:26:45,915 - [PASS] - 메인 페이지(로그인 후) 정상 노출 확인 성공
+2024-05-17 17:27:17,890 - [PASS] - 마이페이지 정상 노출 및 기능 동작 확인 성공
+2024-05-17 17:27:57,983 - [PASS] - 마이페이지 > 청구요금 및 납부 > 청구요금 및 납부내역에 대한 동작 및 정보 확인 성공
+2024-05-17 17:29:07,363 - [PASS] - 마이페이지 > 사용현황 > 사용현황 대한 내역 확인 및 페이지 정상 노출 확인 성공
+2024-05-17 17:29:32,985 - [PASS] - 마이페이지 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인 성공
+C:/Users/User/.wdm/drivers/chromedriver/win32/102.0.5005.61/chromedriver.exe
+C:/Users/User/.wdm/drivers/chromedriver/win32/102.0.5005.61/chromedriver.exe
+C:/Users/User/.wdm/drivers/chromedriver/win32/102.0.5005.61/chromedriver.exe
+C:/Users/User/.wdm/drivers/chromedriver/win32/102.0.5005.61/chromedriver.exe
+C:/Users/User/.wdm/drivers/chromedriver/win32/102.0.5005.61/chromedriver.exe
+===== test thread start =====
+4723 는 사용가능한 포트 입니다.
+appium -a 0.0.0.0 -p 4723 > C:\dev\remotePC_batchfiles\pubsub\appium_aos\result\debug\server_step_4723.log 2>&1
+1
+resp.status ==> 200
+{"value":{"ready":true,"message":"The server is ready to accept new connections","build":{"version":"2.5.4"}}}
+--------------- Appium Server Starting ---------------
+parent path: C:\dev\remotePC_batchfiles\pubsub\appium_aos
+.wdm\drivers\chromedriver\win32\126.0.6478.7_beta\chromedriver.exe
+----------------------------------------
+{'platformName': 'Android', 'appium:options': {'automationName': 'UiAutomator2', 'udid': 'R3CTA081TAW', 'platformVersion': '12', 'isRealMobile': True, 'appActivity': 'com.lguplus.mobile.cs.activity.main.MainActivity', 'appPackage': 'com.lguplus.mobile.cs', 'setWebContentsDebuggingEnabled': True, 'appWaitPackage': 'com.lguplus.mobile.cs', 'noReset': True, 'disableWindowAnimation': True, 'ensureWebviewsHavePages': True, 'app': 'C:\\dev\\remotePC_batchfiles\\pubsub\\appium_aos\\mobileCS_release_v6.0.33(337)_20240205_1537.apk', 'chromedriverExecutable': 'C:\\Users\\User\\.wdm\\drivers\\chromedriver\\win32\\126.0.6478.7_beta\\chromedriver.exe'}}
+----------------------------------------
+normal
+--------------- Appium Remote AOS Devices ---------------
+<Cell 'Sheet'.A1> == <Cell 'Sheet'.A1>
+[{"type": "header", "text": {"type": "plain_text", "text": "android 실행 시작"}}]
+['NATIVE_APP']
+current => NATIVE_APP
+1
+2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 3
+3
+----------------------------------------------------
+APP 로그인 페이지 진입
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+current => WEBVIEW_com.lguplus.mobile.cs
+driver => <appium.webdriver.webdriver.WebDriver (session="bea90957-3995-40b1-aa10-46ac75c098a4")>
+----------------------------------------------------
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 3
+Success
+
+
+complete
+logout_text ->로그인
+비로그인 상태
+complete
+complete
+current_url => : https://app.lguplus.com/apcm/login
+tmk3602@naver.com
+rlaxorals1!
+complete
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+https://app.lguplus.com in https://app.lguplus.com/apcm/main
+Success
+
+
+데이터
+잔여량
+청구요금
+부가서비스 / 약정 / 할부 보기
+complete
+div.extra-service__content p
+tagName =>  p
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8364CA616CE3850B2F9A60D7D579B73.e.5290")>]
+data_txt => 부가서비스
+ p의 datas 정상 출력 확인1
+ p의 datas 정상 출력 확인2
+tagName =>  dt
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8364CA616CE3850B2F9A60D7D579B73.e.5293")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8364CA616CE3850B2F9A60D7D579B73.e.5300")>]
+data_txt => 유료
+data_txt => 무료
+ dt의 datas 정상 출력 확인1
+ dt의 datas 정상 출력 확인2
+tagName =>  dd
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8364CA616CE3850B2F9A60D7D579B73.e.5296")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8364CA616CE3850B2F9A60D7D579B73.e.5303")>]
+data_txt => 0
+data_txt => 11
+ dd의 datas 정상 출력 확인1
+ dd의 datas 정상 출력 확인2
+[' p', ' dt', ' dd']의 datas 모두 정상 출력 확인
+부가서비스
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 1
+complete
+complete
+[True, True, True, True]
+>>>>>>>>>퀵메뉴 탭 시작
+scrolling
+>>>>>>>>>>>>>>>>>>self.FC.var['mainpage_el']['퀵메뉴'] section[section-group-id="MainMobileRecommendMenuSection"]
+내 가입정보
+요금제 변경
+데이터 선물
+휴대폰 구매
+인터넷/IPTV
+이벤트
+section.benefits-section a.benefits-info__unit strong
+tagName =>  strong
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8364CA616CE3850B2F9A60D7D579B73.e.6098")>]
+data_txt => 0
+ strong의 datas 정상 출력 확인1
+ strong의 datas 정상 출력 확인2
+[' strong']의 datas 모두 정상 출력 확인
+complete
+https://app.lguplus.com/apcm/benefit/report in https://app.lguplus.com/apcm/benefit/report?tab=1
+complete
+complete
+complete
+['우수', '유쓰']
+scrolling
+complete
+https://app.lguplus.com/benefit-membership/rank-info in https://app.lguplus.com/benefit-membership/rank-info
+['우수', '유쓰'] in멤버십
+우수
+20대
+유쓰
+어떤 기준으로 혜택을 받나요?
+complete
+complete
+complete
+[True, True, True, True, True]
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+swipping 2
+swipping 3
+swipping 4
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+scrolling
+complete
+https://app.lguplus.com/benefit-event/ongoing in https://app.lguplus.com/benefit-event/ongoing
+complete
+[True, True]
+scrolling
+complete
+complete
+product_title => 샤오미 Redmi Note 13 Pro 5G 256GB
+scrolling
+complete
+complete
+complete
+complete
+https://app.lguplus.com/mobile/plan/mplan/5g-all in https://app.lguplus.com/mobile/plan/mplan/5g-all
+complete
+complete
+LTE 데이터 33 in LTE 데이터 33
+complete
+scrolling
+complete
+complete
+scrolling
+complete
+complete
+complete
+['프리미엄 안심 100M', '베이직'] in 프리미엄 안심 100M , 베이직
+https://app.lguplus.com/signup/step1/package in https://app.lguplus.com/signup/step1/package?isPhoneDiscount=N&urcHmProdGrpKwrdProdNo=50
+complete
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/mypage
+모바일 정보 있음~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+모바일 if 문으로 진입<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+총 제공량
+사용량
+잔여량
+청구 및 납부정보
+청구요금
+모바일
+모바일
+마이페이지 > 서브메인 > 인터넷 정보 없음
+마이페이지 > 서브메인 > 결합 정보 없음
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/mypage/payinfo?p=2
+complete
+이잉??????????   모바일 in 모바일    ====>      True
+모바일 정보 있음~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+납부방법
+예금주
+결제일
+청구 받는 방법
+마이페이지 > 모바일 청구내역 5개 존재
+마이페이지 > 모바일 납부내역 5개 존재
+[True, True, True]
+complete
+이잉??????????   인터넷 in 모바일    ====>      False
+이잉??????????   인터넷 in 기타    ====>      False
+마이페이지 > 청구요금 및 납부 > 인터넷 정보 없음
+complete
+이잉??????????   결합 in 모바일    ====>      False
+이잉??????????   결합 in 기타    ====>      False
+마이페이지 > 청구요금 및 납부 > 결합 정보 없음
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/mypage/bilv
+이잉??????????   모바일 in 모바일    ====>      True
+모바일 정보 있음~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+complete
+complete
+top_bill_total === > 24,258원
+bottom_bill_total === > 24,258원
+현재까지 사용한 요금
+조회기간
+남은기간
+사용기간
+실시간 이용요금
+이동통신
+월정액
+미납합계
+합계
+[True, True, True]
+메뉴
+상세항목
+비고
+금월 : 5 
+complete
+monthly ======> 5
+complete
+monthly ======> 4
+complete
+monthly ======> 3
+complete
+monthly ======> 2
+complete
+월별 사용량 상세 조회
+complete
+국내통화
+데이터
+메시지
+부가서비스
+[True, True, True]
+scrolling
+이름
+서비스 유형
+국내통화
+해외통화
+전화번호
+가까운 매장찾기
+서비스 신청방법 보기
+[True, True]
+이잉??????????   인터넷 in 모바일    ====>      False
+이잉??????????   인터넷 in 기타    ====>      False
+마이페이지 > 사용현황 > 서브메인 > 인터넷 정보 없음
+이잉??????????   결합 in 모바일    ====>      False
+이잉??????????   결합 in 기타    ====>      False
+마이페이지 > 사용현황 > 서브메인 > 결합 정보 없음
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/mypage/membership?param=use
+멤버십 카드 신청 및 재발급
+이번 달 나의 등급
+올해 누적 할인
+월별 할인 혜택 이용정보
+연월
+멤버십등급
+할인 혜택
+올해 누적할인
+기간별 이용내역 조회
+조회기간
+1주일
+1개월
+3개월
+기간설정
+조회
+누적 할인혜택
+총
+기간별 이용내역 조회 결과
+사용일
+사용처
+누적 할인 혜택
+한도
+승인
+[True, True]
+scrolling
+멤버십 등급 변경내역
+변경일
+멤버십 등급
+이용 요금제
+등급산정기준
+[True]
+신청일
+멤버십 카드번호
+발급일
+상태
+신청일
+멤버십 카드번호
+휴대폰 번호
+발급일
+사용 중지일
+상태
+[True, True, True]
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/mobile
+추천in 추천
+div[section-group-id="MoSubMainMobileDeviceSection"] div.tab-panel:not([style^="display"]) p.big-title
+tagName =>  p.big-title
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.65980")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66070")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66154")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66242")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66334")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66420")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66504")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66584")>]
+data_txt => 갤럭시 S24 Ultra
+data_txt => Galaxy Buddy3
+data_txt => 샤오미 Redmi Note 13 Pro 5G
+data_txt => iPhone 15 Pro
+data_txt => 갤럭시 A15
+data_txt => 갤럭시 A25 5G
+data_txt => U+키즈폰 춘식이2
+data_txt => 갤럭시 Z Flip5
+ p.big-title의 datas 정상 출력 확인1
+ p.big-title의 datas 정상 출력 확인2
+[' p.big-title']의 datas 모두 정상 출력 확인
+삼성in 삼성
+div[section-group-id="MoSubMainMobileDeviceSection"] div.tab-panel:not([style^="display"]) p.big-title
+tagName =>  p.big-title
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66735")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66802")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66864")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66928")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.66990")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67049")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67111")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67174")>]
+data_txt => 갤럭시 S24 Ultra
+data_txt => Galaxy Buddy3
+data_txt => 갤럭시 A15
+data_txt => 갤럭시 A25 5G
+data_txt => U+키즈폰 춘식이2
+data_txt => 갤럭시 A24
+data_txt => Galaxy Buddy 2
+data_txt => 갤럭시 Z Flip5
+ p.big-title의 datas 정상 출력 확인1
+ p.big-title의 datas 정상 출력 확인2
+[' p.big-title']의 datas 모두 정상 출력 확인
+Applein Apple
+div[section-group-id="MoSubMainMobileDeviceSection"] div.tab-panel:not([style^="display"]) p.big-title
+tagName =>  p.big-title
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67246")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67317")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67382")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67452")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67520")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67603")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67674")>]
+data_txt => iPhone 15 Pro
+data_txt => iPhone 15 Pro Max
+data_txt => iPhone 15
+data_txt => iPhone 15 PLUS
+data_txt => iPhone14
+data_txt => iPhone14 Plus
+data_txt => iPhone 13
+ p.big-title의 datas 정상 출력 확인1
+ p.big-title의 datas 정상 출력 확인2
+[' p.big-title']의 datas 모두 정상 출력 확인
+가성비폰in 가성비폰
+div[section-group-id="MoSubMainMobileDeviceSection"] div.tab-panel:not([style^="display"]) p.big-title
+tagName =>  p.big-title
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67738")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67800")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67862")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67928")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.67990")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.68049")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.68111")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.6D3E0644EFB65F95904C3D16918E72D4.e.68170")>]
+data_txt => Galaxy Buddy3
+data_txt => 갤럭시 A15
+data_txt => 샤오미 Redmi Note 13 Pro 5G
+data_txt => 갤럭시 A25 5G
+data_txt => U+키즈폰 춘식이2
+data_txt => 갤럭시 A24
+data_txt => Galaxy Buddy 2
+data_txt => U+키즈폰 with 춘식이
+ p.big-title의 datas 정상 출력 확인1
+ p.big-title의 datas 정상 출력 확인2
+[' p.big-title']의 datas 모두 정상 출력 확인
+swipe
+갤럭시 S24 Ultra 이동
+complete
+갤럭시 S24 Ultra in 갤럭시 S24 Ultra 256GB
+goto > https://app.lguplus.com/mobile
+complete
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+swipping 2
+swipping 3
+swipping 4
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+complete
+https://app.lguplus.com/mobile/plan/mplan/5g-all in https://app.lguplus.com/mobile/plan/mplan/5g-all
+goto > https://app.lguplus.com/mobile
+complete
+section[section-group-id="MoSubMainMobileRecommendPlan"] div.slide-wrap a p
+tagName =>  p
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+datas => [<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83398")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83404")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83435")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83440")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83446")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83468")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83473")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83479")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83501")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8464081D7E3552FE4DC2A1C3AFB062B.e.83511")>]
+data_txt => 5G 프리미어 플러스
+data_txt => OTT, 구독 등 최대 27,500원 무료 혜택
+data_txt => 5G 라이트+
+data_txt => 집/이동전화 무제한
+data_txt => 5G 슬림+
+data_txt => 집/이동전화 무제한
+ p 미출력
+scrolling
+{"ecom_prd_name":"5G 라이트+","ecom_prd_id":"LPZ0000437","ecom_prd_price":41250,"ecom_prd_brand":"LG유플러스","ecom_prd_category":"5g-unlimited","ecom_prd_variant":""}
+5G 라이트+ : 41,25
+complete
+5G 라이트+ in 5G 라이트+ and 41,25 in 월 55,000원
+약정 할인 시 월 41,250원
+약정 할인 시
+부가세 포함 금액
+goto > https://app.lguplus.com/mobile
+complete
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+swipping 2
+swipping 3
+swipping 4
+swipping 5
+swipping 6
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+random num => 2
+random num => 0
+random num => 1
+check_value => ['9,900', '18,700', '2,200']
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 후 뷰 : WEBVIEW_chrome
+WEBVIEW_chrome
+<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.82")>
+<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.97")>
+<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.230")>
+<html lang="ko"><head>
+	<meta charset="UTF-8">
+	<meta content="IE=edge" http-equiv="X-UA-Compatible">
+	<meta content="width=device-width,initial-scale=1.0,user-scalable=no,maximum-scale=1.0," name="viewport">
+	<meta content="유무선 결합 상담 신청하기" property="og:title">
+	<meta content="유무선 결합 상담 신청하기" property="og:description">
+	<meta property="og:image">
+	<title>유무선 결합 상담 신청하기 | 유플러스닷컴</title>
+	
+	<link rel="shortcut icon" type="image/png" href="https://fzevbqwtxlch707336.cdn.ntruss.com/mobile/evt/210220_combi/img/common/favicon_16_lgu.gif">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
+ 	<link rel="stylesheet" href="https://shopevent.uplus.co.kr/mobile/evt/210220_combi/css/common.css">
+	
+	<script type="text/javascript" async="" src="https://analytics.tiktok.com/i18n/pixel/static/main.MWNkMWZjOGNjNA.js" data-id="C69M76HR48GN82KJRCMG"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/destination?id=AW-322540409&amp;l=dataLayer&amp;cx=c"></script><script type="text/javascript" async="" src="https://www.google-analytics.com/analytics.js"></script><script type="text/javascript" async="" src="https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=C69M76HR48GN82KJRCMG&amp;lib=ttq"></script><script type="text/javascript" async="" src="https://www.googletagmanager.com/gtag/destination?id=AW-528092798&amp;l=dataLayer&amp;cx=c"></script><script type="text/javascript" async="" src="https://static.ads-twitter.com/uwt.js"></script><script type="text/javascript" async="" src="https://cdn.treasuredata.com/sdk/2.2/td.min.js"></script><script async="" src="https://www.googletagmanager.com/gtm.js?id=GTM-T4ZFHBP"></script><script src="https://connect.facebook.net/signals/config/554286651769933?v=2.9.156&amp;r=stable&amp;domain=shopevent.uplus.co.kr&amp;hme=c3a545c63044e8e9102d4f32d84a1137594d024f28e801d670bc76dc5c075575&amp;ex_m=67%2C112%2C99%2C103%2C58%2C3%2C93%2C66%2C15%2C91%2C84%2C49%2C51%2C158%2C161%2C172%2C168%2C169%2C171%2C28%2C94%2C50%2C73%2C170%2C153%2C156%2C165%2C166%2C173%2C121%2C14%2C48%2C178%2C177%2C123%2C17%2C33%2C38%2C1%2C41%2C62%2C63%2C64%2C68%2C88%2C16%2C13%2C90%2C87%2C86%2C100%2C102%2C37%2C101%2C29%2C25%2C154%2C157%2C130%2C27%2C10%2C11%2C12%2C5%2C6%2C24%2C21%2C22%2C54%2C59%2C61%2C71%2C95%2C26%2C72%2C8%2C7%2C76%2C46%2C20%2C97%2C96%2C9%2C19%2C18%2C81%2C53%2C79%2C32%2C70%2C0%2C89%2C31%2C78%2C83%2C45%2C44%2C82%2C36%2C4%2C85%2C77%2C42%2C39%2C34%2C80%2C2%2C35%2C60%2C40%2C98%2C43%2C75%2C65%2C104%2C57%2C56%2C30%2C92%2C55%2C52%2C47%2C74%2C69%2C23%2C105" async=""></script><script async="" src="https://connect.facebook.net/en_US/fbevents.js"></script><script src="https://shopevent.uplus.co.kr/mobile/evt/210220_combi/js/jquery.min.js"></script>
+	<script src="https://shopevent.uplus.co.kr/mobile/evt/210220_combi/js/jquery-ui.js"></script>
+	<script src="https://shopevent.uplus.co.kr/mobile/evt/210220_combi/js/jquery.ui.touch-punch.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="https://shopevent.uplus.co.kr/mobile/evt/210220_combi/js/event.js"></script>
+	<script src="//api3.tnkfactory.com/tnk/js/tnk-webapi-cpatrack.1.3.js"></script>
+ 	
+ 	<!-- adpick -->
+ 	<script src="https://s3.ap-northeast-2.amazonaws.com/adpick.co.kr/apis/adpickPostback.v4.js?v=0413" type="text/javascript"></script> 
+	<script type="text/javascript">adpick_webtracking({ event: 'tracking'}); </script>
+ 
+
+	<!-- Facebook Pixel Code -->
+	<script>
+	  !function(f,b,e,v,n,t,s)
+	  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+	  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+	  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+	  n.queue=[];t=b.createElement(e);t.async=!0;
+	  t.src=v;s=b.getElementsByTagName(e)[0];
+	  s.parentNode.insertBefore(t,s)}(window, document,'script',
+	  'https://connect.facebook.net/en_US/fbevents.js');
+	  fbq('init', '554286651769933');
+	  fbq('track', 'PageView');
+	</script>
+ 
+	
+	<!-- Google Tag Manager -->
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+				new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+			j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+			'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-T4ZFHBP');</script>
+	<!-- End Google Tag Manager -->
+
+	<script>
+		dataLayer.push({
+			'event': 'eventview',
+			'pageCategory': 'mobile'
+		});
+	</script>
+<script type="text/javascript" async="" src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/528092798/?random=1715934685993&amp;cv=11&amp;fst=1715934685993&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be45f0z8813538542za201&amp;gcd=13l3l3l3l1&amp;dma=0&amp;u_w=360&amp;u_h=880&amp;url=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%EC%9C%A0%EB%AC%B4%EC%84%A0%20%EA%B2%B0%ED%95%A9%20%EC%83%81%EB%8B%B4%20%EC%8B%A0%EC%B2%AD%ED%95%98%EA%B8%B0%20%7C%20%EC%9C%A0%ED%94%8C%EB%9F%AC%EC%8A%A4%EB%8B%B7%EC%BB%B4&amp;npa=0&amp;auid=1116981867.1715932219&amp;uaa=&amp;uab=&amp;uafvl=Not%252FA)Brand%3B8.0.0.0%7CChromium%3B126.0.6478.8%7CGoogle%2520Chrome%3B126.0.6478.8&amp;uamb=1&amp;uam=SM-F721N&amp;uap=Android&amp;uapv=12.0.0&amp;uaw=0&amp;fledge=1&amp;rfmt=3&amp;fmt=4"></script><script type="text/javascript" async="" src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/528092798/?random=1715934686010&amp;cv=11&amp;fst=1715934686010&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be45f0z8813538542za201&amp;gcd=13l3l3l3l1&amp;dma=0&amp;u_w=360&amp;u_h=880&amp;url=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%EC%9C%A0%EB%AC%B4%EC%84%A0%20%EA%B2%B0%ED%95%A9%20%EC%83%81%EB%8B%B4%20%EC%8B%A0%EC%B2%AD%ED%95%98%EA%B8%B0%20%7C%20%EC%9C%A0%ED%94%8C%EB%9F%AC%EC%8A%A4%EB%8B%B7%EC%BB%B4&amp;npa=0&amp;auid=1116981867.1715932219&amp;uaa=&amp;uab=&amp;uafvl=Not%252FA)Brand%3B8.0.0.0%7CChromium%3B126.0.6478.8%7CGoogle%2520Chrome%3B126.0.6478.8&amp;uamb=1&amp;uam=SM-F721N&amp;uap=Android&amp;uapv=12.0.0&amp;uaw=0&amp;fledge=1&amp;rfmt=3&amp;fmt=4"></script><script type="text/javascript" async="" src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/322540409/?random=1715934686102&amp;cv=11&amp;fst=1715934686102&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be45f0z8813538542za201&amp;gcd=13l3l3l3l1&amp;dma=0&amp;u_w=360&amp;u_h=880&amp;url=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%EC%9C%A0%EB%AC%B4%EC%84%A0%20%EA%B2%B0%ED%95%A9%20%EC%83%81%EB%8B%B4%20%EC%8B%A0%EC%B2%AD%ED%95%98%EA%B8%B0%20%7C%20%EC%9C%A0%ED%94%8C%EB%9F%AC%EC%8A%A4%EB%8B%B7%EC%BB%B4&amp;npa=0&amp;auid=1116981867.1715932219&amp;uaa=&amp;uab=&amp;uafvl=Not%252FA)Brand%3B8.0.0.0%7CChromium%3B126.0.6478.8%7CGoogle%2520Chrome%3B126.0.6478.8&amp;uamb=1&amp;uam=SM-F721N&amp;uap=Android&amp;uapv=12.0.0&amp;uaw=0&amp;fledge=1&amp;rfmt=3&amp;fmt=4"></script><script charset="utf-8" src="https://analytics.tiktok.com/i18n/pixel/static/identify_93546.js"></script></head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe height="0" src="https://www.googletagmanager.com/ns.html?id=GTM-T4ZFHBP" style="display:none;visibility:hidden" width="0"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+
+<div id="evWrap">
+	<!-- 이벤트 참여하기 Modal -->
+	<div class="modal" id="joinModal" role="dialog" style="display:block;">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button class="close" onclick="javascript:window.close()" type="button">닫기</button>
+					<h4 class="modal-title">상담 신청하기</h4>
+				</div>
+				
+				<div class="modal-body">	
+					<div class="inputCont">									
+						<div class="inputWrap">
+							<label class="txtType" for="userName">고객명</label>
+							<input id="userName" maxlength="50" name="userName" oninput="maxLengthCheck(this)" placeholder="이름 입력" type="text">
+						</div>
+						<div class="inputWrap">
+							<label class="txtType" for="phNum">휴대폰 번호</label>
+							<input id="phNum" maxlength="11" name="phNum" oninput="maxLengthCheck(this)" placeholder="'-' 없이 숫자만 입력" type="number">
+						</div>							
+					</div>
+									
+					<div class="calculatorBox">
+						<dl> 
+								<dt>휴대폰</dt>
+								
+								
+								
+								<dd>
+									<ul class="plCd">
+										<li data-plcd="P3">3대</li>
+											
+										 
+												
+										<li data-plcd-amt="9900">
+											<span>- 9,900</span>원 할인</li>											
+									</ul>
+								</dd>
+						</dl>
+						<dl> 
+								
+								<dt>인터넷</dt>
+								
+								
+								<dd>
+									<ul class="interCd">
+										<li data-intercd="I0003">가장 빠른 1GB</li>
+											
+										 
+												
+										<li data-intercd-amt="18700">
+											<span>- 18,700</span>원 할인</li>											
+									</ul>
+								</dd>
+						</dl>
+						<dl> 
+								
+								
+								<dt>IPTV</dt>
+								
+								<dd>
+									<ul class="iptvCd">
+										<li data-iptvcd="Premium">추천 채널 252채널</li>
+											
+										 
+												
+										<li data-iptvcd-amt="2200">
+											<span>- 2,200</span>원 할인</li>											
+									</ul>
+								</dd>
+						</dl>
+						<dl> 
+								
+								
+								
+								<dt>제휴카드</dt>
+								<dd>
+									<ul class="cardCd">
+										<li data-cardcd="N">미적용</li>
+											
+										 <li data-cardcd-amt="0">
+											<span> </span> </li>
+												
+																					
+									</ul>
+								</dd>
+						</dl>							 
+						<dl class="result"> 
+							<dt>결합 할인</dt>   
+							<dd>월 <span id="combiDis" data-total-amt="30800">- 30,800</span>원 할인</dd>
+						</dl>
+					</div><!-- //calculatorBox -->							
+
+					<div class="tipBox">
+						<p>
+							통신비 절감과 더 많은 혜택을 받아갈 수 있도록<br>
+							통신 플래너가 빠른 시간 내 고객님께 전화 드려 친절하게 상담해드리겠습니다.<br>
+							<br>
+							<b>고객센터 운영 시간</b><br>
+							월요일 – 금요일 : 오전 09:00 ~ 18:00<br>(토요일, 일요일, 공휴일 제외)
+						</p>
+						<p>유플러스닷컴만의 단독 추가 요금할인 혜택도 꼭 상담 받으세요!</p>
+					</div>
+					
+					<br>
+					<p class="line"></p>														
+					<div class="accodian_box">
+						<div class="chkBox">
+							<input id="agree" type="checkbox">
+							<label for="agree"></label>					
+						</div>					
+						<div class="titBox"><span>개인정보 수집 · 이용 동의 및<br>상담업무 처리위탁 안내  <em>(필수)</em></span><i class="blic"></i></div>
+						<div class="hBox">
+							<div class="agreeBox">
+								<div class="agreeTxt" tabindex="0">								
+									본인은 아래와 같이 ㈜LG유플러스가 본인의 개인정보를 수집·이용하는 것에 동의합니다.<br><br>
+									1. 개인정보 수집 · 이용 동의<br>
+									- 이용 목적: LG유플러스 서비스(휴대폰, 인터넷, IPTV, 스마트홈 서비스 등) 가입, 상품 구매 및 결합신청을 위한 전화상담<br>
+									- 수집 항목: 이름, 휴대폰 번호, 이용 중인 이동통신 서비스의 통신사 정보, 상담정보<br>
+									- 보유 및 이용기간  : <strong>상담신청일로부터 3개월까지</strong><br>
+									※ 고객님은 동의에 거부하실 수 있는 권리가 있으나, 거부 시 본 상담 신청이 제한됩니다.<br><br>
+										
+									2. 고객 상담업무를 위한 개인정보 처리위탁 안내<br>
+									LG유플러스는 서비스 가입 · 갱신을 위한 고객 상담 업무를 LG유플러스의 고객센터 ㈜씨에스리더, ㈜아인텔레서비스, ㈜씨에스원파트너, 엘비휴넷㈜에 위탁하고 있어 
+									고객님께 위 고객센터 전문상담사가 입력하신 전화번호로 연락드릴 예정입니다. 
+								</div>
+							</div>						
+						</div>						
+					</div>																																		
+				</div>
+				
+				<div class="modal-footer line">
+					<button class="btnJoin" id="joinEvtBtn" onclick="combiEvt();" type="button">신청하기</button>										
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- //이벤트 참여하기 Modal -->	
+	
+</div>
+<!-- //evWrap -->
+
+<script type="text/javascript">
+function maxLengthCheck(object){
+	if (object.value.length > object.maxLength){
+		object.value = object.value.slice(0, object.maxLength);
+	}    
+}
+</script>
+
+
+<script type="text/javascript" id="">var currentReferrer=document.referrer,referrer1=window.sessionStorage.getItem("referrer1");null!=referrer1&&window.sessionStorage.setItem("referrer2",referrer1);window.sessionStorage.setItem("referrer1",currentReferrer);</script><script type="text/javascript" id="">!function(b,c){if(void 0===c[b]){c[b]=function(){c[b].clients.push(this);this._init=[Array.prototype.slice.call(arguments)]};c[b].clients=[];for(var a=function(e){return function(){return this["_"+e]=this["_"+e]||[],this["_"+e].push(Array.prototype.slice.call(arguments)),this}},d="blockEvents setSignedMode fetchServerCookie unblockEvents setSignedMode setAnonymousMode resetUUID addRecord fetchGlobalID set trackEvent trackPageview trackClicks ready".split(" "),f=0;f<d.length;f++){var g=d[f];c[b].prototype[g]=
+a(g)}a=document.createElement("script");a.type="text/javascript";a.async=!0;a.src=("https:"===document.location.protocol?"https:":"http:")+"//cdn.treasuredata.com/sdk/2.2/td.min.js";d=document.getElementsByTagName("script")[0];d.parentNode.insertBefore(a,d)}}("Treasure",this);</script>
+<script type="text/javascript" id="">var td=new Treasure({host:"ap02.in.treasuredata.com",database:"pii_prod",writeKey:"31/0d45583791daa3ed63ee765e81fc72360c674a95",startInSignedMode:!0});td.set("$global","td_global_id","td_global_id");</script>
+
+<script type="text/javascript" id="" charset="UTF-8" src="//t1.daumcdn.net/adfit/static/kp.js"></script>
+<script type="text/javascript" id="">!function(b,e,f,g,a,c,d){b.fbq||(a=b.fbq=function(){a.callMethod?a.callMethod.apply(a,arguments):a.queue.push(arguments)},b._fbq||(b._fbq=a),a.push=a,a.loaded=!0,a.version="2.0",a.queue=[],c=e.createElement(f),c.async=!0,c.src=g,d=e.getElementsByTagName(f)[0],d.parentNode.insertBefore(c,d))}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","554286651769933");fbq("track","PageView");</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=554286651769933&amp;ev=PageView&amp;noscript=1"></noscript>
+
+<script type="text/javascript" id="">(function(){var a=document.URL;/mobile\/phone\/info/.test(a)&&(a=document.URL.split("model/")[1].split("?")[0],fbq("trackSingleCustom","554286651769933","ViewContent",{content_ids:a,content_type:"product"}))})();</script>
+    
+
+
+    <script type="text/javascript" id="">function chkGAInternalSearchValue(a){return a=a.target.value}$("#txtFldSrch, #txtRsltFldSrchPCTop, #txtRsltFldSrchQuick, #txtRsltFldSrchTop, div.lay_search_head \x3e div.sc_input_wrap \x3e input#txtKwrd").keyup(function(a){13==event.keyCode&&dataLayer.push({event:"InternalSearch_Shop",searchTxt:chkGAInternalSearchValue(a)})});</script><script type="text/javascript" id="" src="https://mtag.mman.kr/aud.mezzo/tracking?e_version=2&amp;t_tag_no=4303&amp;t_adver_no=29&amp;t_brand_no=9271"></script><script type="text/javascript" id="">!function(d,g,e){d.TiktokAnalyticsObject=e;var a=d[e]=d[e]||[];a.methods="page track identify instances debug on off once ready alias group enableCookie disableCookie".split(" ");a.setAndDefer=function(b,c){b[c]=function(){b.push([c].concat(Array.prototype.slice.call(arguments,0)))}};for(d=0;d<a.methods.length;d++)a.setAndDefer(a,a.methods[d]);a.instance=function(b){b=a._i[b]||[];for(var c=0;c<a.methods.length;c++)a.setAndDefer(b,a.methods[c]);return b};a.load=function(b,c){var f="https://analytics.tiktok.com/i18n/pixel/events.js";
+a._i=a._i||{};a._i[b]=[];a._i[b]._u=f;a._t=a._t||{};a._t[b]=+new Date;a._o=a._o||{};a._o[b]=c||{};c=document.createElement("script");c.type="text/javascript";c.async=!0;c.src=f+"?sdkid\x3d"+b+"\x26lib\x3d"+e;b=document.getElementsByTagName("script")[0];b.parentNode.insertBefore(c,b)};a.load("C69M76HR48GN82KJRCMG");a.page()}(window,document,"ttq");</script><script type="text/javascript" id="">window.appier_q=window.appier_q||[];window.appier_q.push({t:"register",content:{id:"7931",site:"shop.uplus.co.kr"}},{t:"pv_track",action_id:"PageView_30d6",track_id:"4ef3e2943b8cfc0",isCountReload:!0,counter:0},{t:"pv_track",action_id:"ViewTwoPages_a4ef",track_id:"4ef3e2943b8cfc0",isCountReload:!1,counter:1});</script>
+<script type="text/javascript" id="" src="//jscdn.appier.net/aa.js?id=shop.uplus.co.kr"></script>
+<script type="text/javascript" id="">!function(d,e,f,a,b,c){d.twq||(a=d.twq=function(){a.exe?a.exe.apply(a,arguments):a.queue.push(arguments)},a.version="1.1",a.queue=[],b=e.createElement(f),b.async=!0,b.src="//static.ads-twitter.com/uwt.js",c=e.getElementsByTagName(f)[0],c.parentNode.insertBefore(b,c))}(window,document,"script");twq("init","o8hn2");twq("track","PageView");</script>
+
+ 
+<script type="text/javascript" id="">kakaoPixel("7552871768140040363").pageView();kakaoPixel("7225000892740448650").pageView();kakaoPixel("8452016058244251387").pageView();kakaoPixel("6237297330287234857").pageView();kakaoPixel("868041764336454397").pageView();kakaoPixel("8810006701055194366").pageView();kakaoPixel("7491547012895231656").pageView();kakaoPixel("555404770023486677").pageView();kakaoPixel("8061878106405881612").pageView();kakaoPixel("2568433350062946325").pageView();kakaoPixel("4769906129590109231").pageView();kakaoPixel("5106166279045954640").pageView();
+kakaoPixel("8163120558950991823").pageView();kakaoPixel("859096748489918113").pageView();kakaoPixel("3032168840440661552").pageView();</script>
+
+
+
+
+<script type="text/javascript" id="">var url=document.URL;/mobile\/(simpDvch_rqstFnsh|mSimpDvch_rqstFnsh)/.test(url)&&kakaoPixel("7552871768140040363").purchase();url.match(/pc\/mobile\/phone\/info/);/mobile\/mTelCnslRqstCompletionNormalP/.test(url)&&kakaoPixel("7552871768140040363").purchase();url.match(/pc\/mobile\/order/);/mobile\/order\/phone\/(appCompletionNormal|mAppCompletionNormal)/.test(url)&&kakaoPixel("7552871768140040363").purchase();/mobile\/order\/phone\/(appCompletionOthers|mAppCompletionOthers)/.test(url)&&kakaoPixel("7552871768140040363").purchase();</script>
+    
+
+
+
+<script type="text/javascript" id="">(function(){var a=document.URL;/event\/eventView\?ushpPmtnNo=487/.test(a)&&kakaoPixel("7552871768140040363").pageView("LG\ud1b5\ud569\uae30\ud68d\uc804");/event\/eventView\?ushpPmtnNo=459/.test(a)&&kakaoPixel("7552871768140040363").pageView("\uc560\ud50c\ud1b5\ud569\uae30\ud68d\uc804");/event\/eventView\?ushpPmtnNo=451/.test(a)&&kakaoPixel("7552871768140040363").pageView("\uc544\uc774\ud328\ub4dc\uc5d0\uc5b4,\ubbf8\ub2c8 \uc774\ubca4\ud2b8");/event\/eventView\?ushpPmtnNo=447/.test(a)&&kakaoPixel("7552871768140040363").pageView("\ubcd1\uc0ac\uc694\uae08\uc81c\uc774\ubca4\ud2b8");
+/event\/eventView\?ushpPmtnNo=438/.test(a)&&kakaoPixel("7552871768140040363").pageView("G8\ud2f0\uc9d5\uc774\ubca4\ud2b8");/event\/eventView\?ushpPmtnNo=435/.test(a)&&kakaoPixel("7552871768140040363").pageView("S10\ud2f0\uc9d5\uc774\ubca4\ud2b8")})();</script>
+
+
+
+
+
+
+<iframe allow="join-ad-interest-group" data-tagging-id="AW-528092798" data-load-time="1715934686006" height="0" width="0" src="https://td.doubleclick.net/td/rul/528092798?random=1715934685993&amp;cv=11&amp;fst=1715934685993&amp;fmt=3&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be45f0z8813538542za201&amp;gcd=13l3l3l3l1&amp;dma=0&amp;u_w=360&amp;u_h=880&amp;url=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%EC%9C%A0%EB%AC%B4%EC%84%A0%20%EA%B2%B0%ED%95%A9%20%EC%83%81%EB%8B%B4%20%EC%8B%A0%EC%B2%AD%ED%95%98%EA%B8%B0%20%7C%20%EC%9C%A0%ED%94%8C%EB%9F%AC%EC%8A%A4%EB%8B%B7%EC%BB%B4&amp;npa=0&amp;auid=1116981867.1715932219&amp;uaa=&amp;uab=&amp;uafvl=Not%252FA)Brand%3B8.0.0.0%7CChromium%3B126.0.6478.8%7CGoogle%2520Chrome%3B126.0.6478.8&amp;uamb=1&amp;uam=SM-F721N&amp;uap=Android&amp;uapv=12.0.0&amp;uaw=0&amp;fledge=1" style="display: none; visibility: hidden;"></iframe><iframe allow="join-ad-interest-group" data-tagging-id="AW-528092798" data-load-time="1715934686012" height="0" width="0" src="https://td.doubleclick.net/td/rul/528092798?random=1715934686010&amp;cv=11&amp;fst=1715934686010&amp;fmt=3&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be45f0z8813538542za201&amp;gcd=13l3l3l3l1&amp;dma=0&amp;u_w=360&amp;u_h=880&amp;url=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%EC%9C%A0%EB%AC%B4%EC%84%A0%20%EA%B2%B0%ED%95%A9%20%EC%83%81%EB%8B%B4%20%EC%8B%A0%EC%B2%AD%ED%95%98%EA%B8%B0%20%7C%20%EC%9C%A0%ED%94%8C%EB%9F%AC%EC%8A%A4%EB%8B%B7%EC%BB%B4&amp;npa=0&amp;auid=1116981867.1715932219&amp;uaa=&amp;uab=&amp;uafvl=Not%252FA)Brand%3B8.0.0.0%7CChromium%3B126.0.6478.8%7CGoogle%2520Chrome%3B126.0.6478.8&amp;uamb=1&amp;uam=SM-F721N&amp;uap=Android&amp;uapv=12.0.0&amp;uaw=0&amp;fledge=1" style="display: none; visibility: hidden;"></iframe><iframe allow="join-ad-interest-group" data-tagging-id="AW-322540409" data-load-time="1715934686113" height="0" width="0" src="https://td.doubleclick.net/td/rul/322540409?random=1715934686102&amp;cv=11&amp;fst=1715934686102&amp;fmt=3&amp;bg=ffffff&amp;guid=ON&amp;async=1&amp;gtm=45be45f0z8813538542za201&amp;gcd=13l3l3l3l1&amp;dma=0&amp;u_w=360&amp;u_h=880&amp;url=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;hn=www.googleadservices.com&amp;frm=0&amp;tiba=%EC%9C%A0%EB%AC%B4%EC%84%A0%20%EA%B2%B0%ED%95%A9%20%EC%83%81%EB%8B%B4%20%EC%8B%A0%EC%B2%AD%ED%95%98%EA%B8%B0%20%7C%20%EC%9C%A0%ED%94%8C%EB%9F%AC%EC%8A%A4%EB%8B%B7%EC%BB%B4&amp;npa=0&amp;auid=1116981867.1715932219&amp;uaa=&amp;uab=&amp;uafvl=Not%252FA)Brand%3B8.0.0.0%7CChromium%3B126.0.6478.8%7CGoogle%2520Chrome%3B126.0.6478.8&amp;uamb=1&amp;uam=SM-F721N&amp;uap=Android&amp;uapv=12.0.0&amp;uaw=0&amp;fledge=1" style="display: none; visibility: hidden;"></iframe><script type="text/javascript" id="" src="//wcs.naver.net/wcslog.js"></script>
+ 
+<script type="text/javascript" id="">if(!wcs_add)var wcs_add={};wcs_add.wa="s_2113886cbe";if(!_nasa)var _nasa={};window.wcs&&(wcs.inflow(),wcs_do(_nasa));</script>
+<img src="https://t.co/i/adsct?bci=3&amp;eci=2&amp;event_id=0f91d93d-0b6c-4da6-aef0-2820ee368f92&amp;events=%5B%5B%22pageview%22%2C%7B%7D%5D%5D&amp;integration=advertiser&amp;p_id=Twitter&amp;p_user_id=0&amp;pl_id=3010850e-4f36-488c-bd80-a9d0efbd5064&amp;tw_document_href=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;tw_iframe_status=0&amp;tw_order_quantity=0&amp;tw_sale_amount=0&amp;txn_id=o6ovl&amp;type=javascript&amp;version=2.3.30" height="1" width="1" style="display: none;"><img src="https://analytics.twitter.com/i/adsct?bci=3&amp;eci=2&amp;event_id=0f91d93d-0b6c-4da6-aef0-2820ee368f92&amp;events=%5B%5B%22pageview%22%2C%7B%7D%5D%5D&amp;integration=advertiser&amp;p_id=Twitter&amp;p_user_id=0&amp;pl_id=3010850e-4f36-488c-bd80-a9d0efbd5064&amp;tw_document_href=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;tw_iframe_status=0&amp;tw_order_quantity=0&amp;tw_sale_amount=0&amp;txn_id=o6ovl&amp;type=javascript&amp;version=2.3.30" height="1" width="1" style="display: none;"><img src="https://t.co/i/adsct?bci=3&amp;eci=2&amp;event_id=3507353b-fc07-45c9-9886-39084c7ae6b2&amp;events=%5B%5B%22pageview%22%2C%7B%7D%5D%5D&amp;integration=advertiser&amp;p_id=Twitter&amp;p_user_id=0&amp;pl_id=3010850e-4f36-488c-bd80-a9d0efbd5064&amp;tw_document_href=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;tw_iframe_status=0&amp;tw_order_quantity=0&amp;tw_sale_amount=0&amp;txn_id=o8hn2&amp;type=javascript&amp;version=2.3.30" height="1" width="1" style="display: none;"><img src="https://analytics.twitter.com/i/adsct?bci=3&amp;eci=2&amp;event_id=3507353b-fc07-45c9-9886-39084c7ae6b2&amp;events=%5B%5B%22pageview%22%2C%7B%7D%5D%5D&amp;integration=advertiser&amp;p_id=Twitter&amp;p_user_id=0&amp;pl_id=3010850e-4f36-488c-bd80-a9d0efbd5064&amp;tw_document_href=https%3A%2F%2Fshopevent.uplus.co.kr%2FshopEvt%2F210220_combi%3FplCd%3DP3%26interCd%3DI0003%26iptvCd%3DPremium%26cardCd%3DN&amp;tw_iframe_status=0&amp;tw_order_quantity=0&amp;tw_sale_amount=0&amp;txn_id=o8hn2&amp;type=javascript&amp;version=2.3.30" height="1" width="1" style="display: none;"></body><iframe id="__JSBridgeIframe_1.0__" title="jsbridge___JSBridgeIframe_1.0__" style="display: none;"></iframe><iframe id="__JSBridgeIframe_SetResult_1.0__" title="jsbridge___JSBridgeIframe_SetResult_1.0__" style="display: none;"></iframe><iframe id="__JSBridgeIframe__" title="jsbridge___JSBridgeIframe__" style="display: none;"></iframe><iframe id="__JSBridgeIframe_SetResult__" title="jsbridge___JSBridgeIframe_SetResult__" style="display: none;"></iframe></html>2024-05-17 17:32:55,356 - [PASS] - 모바일 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인 성공
+2024-05-17 17:33:38,589 - [PASS] - 인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인 성공
+2024-05-17 17:34:52,206 - [PASS] - 혜택/멤버십 페이지 정상 노출 및 기능 동작 확인 성공
+2024-05-17 17:37:58,708 - [PASS] - 고객지원 페이지 정상 노출 및 기능 동작 확인 성공
+2024-05-17 17:40:46,525 - [FAIL] - 다이렉트페이지 정상 노출 및 기능 동작 확인 실패
+
+price_list ========================================>
+[<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.117")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.138")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.159")>, <appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.05261A22F0B27837A4CB73E719DAC7BC.d.7AFDEAE925C3CF34D625CC9D91EA920A.e.180")>]
+9,900 in - 9,900원 할인
+18,700 in - 18,700원 할인
+2,200 in - 2,200원 할인
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : WEBVIEW_chrome
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+complete
+goto > https://app.lguplus.com/mobile
+complete
+추천in 추천
+삼성in 삼성
+Applein Apple
+swipe
+Apple WatchSE_2023_40 이동
+complete
+Apple WatchSE_2023_40 in Apple WatchSE_2023_40_스포츠밴드_S
+goto > https://app.lguplus.com/mobile
+complete
+매장에서 받기 in 매장에서 받기 U⁺ 에서 주문한 상품을 내가 원하는 날짜에 매장에서 직접 받을 수 있어요!
+7% 추가요금 할인 in 7% 추가요금 할인 공시지원금,선택약정할인 상관없이 매달 7% 추가 할인을 받을 수 있어요
+다이렉트 요금제 in 다이렉트 요금제 오직 U+에서만 가입 가능한 최저가. 무약정, 제휴팩 증정 요금제
+유심 가입 in 유심 가입 사용할 휴대폰이 있다면 유심만 가입 신청하세요!
+결합 할인 in 결합 할인 가족이라면 누구나 조건 없이 할인 받을 수 있어요
+제휴카드 할인 in 제휴카드 할인 휴대폰 저렴하게 구매하고 매월 통신료도 할인 받을 수 있어요
+제휴팩 in 제휴팩 2년간 매달 채워주는 든든한 쇼핑 지원금을 받아보세요
+[<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.D8915CE0BD4C3661D847F21AE1DF9C04.e.104956")>]
+일반 구매 후기
+일반 구매 후기 입니다.
+len(views.get_property('children')) => 2
+item.get_property('children')[2].get_property('innerText') => 갤럭시 S24 Ultra 256GB
+
+울트라 굿굿!!
+
+*****
+2024-05-03
+
+역시. 좋으네요. 깔끔하고 시원하고 무엇보다 기능이 좋습니다 역시 울트라 답네요 혜택도 많이받고 도움주셔서 기쁜마음으로. 바꿨습니다. 사랑해요 엘지.
+len(views.get_property('children')) => 2
+item.get_property('children')[2].get_property('innerText') => iPhone 15 Pro_256GB
+
+아이폰 15프로
+
+usj*****@naver.com
+2024-05-03
+
+아이폰 포장 잘 되어서 왔구요.상담도 잘 해주셔서 다음 에도 여기서 구매할께요 아이폰 예쁘네요.
+len(views.get_property('children')) => 2
+item.get_property('children')[2].get_property('innerText') => 갤럭시 A25 5G
+
+가성비가 최고!
+
+mil****@daum.net
+2024-05-03
+
+음질이 괜찮습니다. 화면도 부드럽고 사진은 보급형대비 평타로 괜찮네요. 가격대비 아주 좋습니다.
+len(views.get_property('children')) => 2
+item.get_property('children')[2].get_property('innerText') => 갤럭시 S23 FE
+
+너무 잘산것 같아요^^
+
+lik****@naver.com
+2024-05-02
+
+라이브방송 보고 구매한지 3주정도 지났어요~ S20을 쓰다가 바꾼거라 화면이 커져서 더 좋아요^^ 민트로 색상을 선택했는데 너무 이쁘네요! 사진 화질까지 만족스러워요! 바꾸는 방법도 쉽게 안내되어 있네요! 라이브방송 보고 바꾸길 잘한것 같아요!^^
+len(views.get_property('children')) => 2
+item.get_property('children')[2].get_property('innerText') => Apple WatchSE_2023_40_스포츠밴드_S
+
+나도 애플워치
+
+nix***@gmail.com
+2024-04-30
+
+강아지 두마리 데리고 산책할때 더할나위 없이 좋은 아이템~ 너무 만족하고 크기도 적당합니다~ 좋은가격에 좋은 상품 감사합니다
+len(views.get_property('children')) => 2
+item.get_property('children')[2].get_property('innerText') => Galaxy Buddy3
+
+너무맘에 듭니다
+
+khi****@hanmail.net
+2024-04-30
+
+오늘 드디어 5년만에 맘에드는 새 휴대폰을 받았습니다. 모델 이름만큼이나 느낌이 귀엽고 성능 빵빵 만족스랍습니다.
+Success
+
+
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/internet-iptv
+1분 가입
+인터넷
+IPTV
+스마트홈
+가입 사은품
+IPTV - /plan
+complete
+/plan in https://app.lguplus.com/iptv/plan
+complete
+random_num => 1
+swipe
+check_iptv_item ==> {'인터넷': '프리미엄 안심 100M', 'IPTV': '베이직'}
+scrolling
+인터넷 in {'인터넷': '프리미엄 안심 100M', 'IPTV': '베이직'} => True
+프리미엄 안심 100M == 프리미엄 안심 100M
+IPTV in {'인터넷': '프리미엄 안심 100M', 'IPTV': '베이직'} => True
+베이직 == 베이직
+complete
+/signup/package in https://app.lguplus.com/signup/package?urcHmProdNoList%5B0%5D=990001790&urcHmProdNoList%5B1%5D=990001710
+['프리미엄 안심 100M', '베이직']
+프리미엄 안심 100M == 프리미엄 안심 100M
+['프리미엄 안심 100M', '베이직']
+베이직 == 베이직
+complete
+self.FC.driver.current_url =====> https://app.lguplus.com/internet-iptv
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/benefit
+KV 노출 수: 3 > 0
+멤버십
+이벤트
+장기고객 혜택
+결합할인 혜택
+선택약정 할인
+멤버십 - /rank-info
+complete
+/rank-info in https://app.lguplus.com/benefit-membership/rank-info
+complete
+complete
+https://app.lguplus.com/benefit-membership in https://app.lguplus.com/benefit-membership?urcMbspDivsCd=01&urcMbspBnftDivsCd=02
+complete
+상단 탭 > APP/기기 in APP/기기 ===> True
+1
+상단 탭 > 레저/테마파크 in 레저/테마파크 ===> True
+3
+상단 탭 > 뷰티/건강 in 뷰티/건강 ===> True
+3
+상단 탭 > 쇼핑 in 쇼핑 ===> True
+3
+상단 탭 > 생활/편의 in 생활/편의 ===> True
+3
+상단 탭 > 푸드 in 푸드 ===> True
+3
+상단 탭 > 문화/여가 in 문화/여가 ===> True
+3
+상단 탭 > 교육 in 교육 ===> True
+3
+상단 탭 > 여행/교통 in 여행/교통 ===> True
+3
+complete
+https://app.lguplus.com/benefit-membership in https://app.lguplus.com/benefit-membership?urcMbspDivsCd=01&urcMbspBnftDivsCd=02
+complete
+[True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
+complete
+https://app.lguplus.com/benefit-uplus/online-purchase-benefit/ORN0030748 in https://app.lguplus.com/benefit-uplus/online-purchase-benefit/ORN0030748
+complete
+complete
+https://app.lguplus.com/benefit-event/ongoing in https://app.lguplus.com/benefit-event/ongoing
+complete
+complete
+complete
+complete
+current_url => : https://app.lguplus.com/support
+[<appium.webdriver.webelement.WebElement (session="bea90957-3995-40b1-aa10-46ac75c098a4", element="f.4CF769C03A84673778B33192AF509AA4.d.5D8343577A9FA0BC18A54651066BC5D3.e.131180")>, True]
+search_el_id => #_uid_125
+complete
+complete
+complete
+logout_text ->김*민님 반갑습니다.
+로그아웃
+is_login =>  True
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+2024-05-17 17:41:47,756 - [PASS] - 유잼 페이지 정상 노출 및 기능 동작 확인 성공
+Success
+도움
+[True, True]
+스스로 해결
+가이드
+[True, True]
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+timeout = 7
+WEBVIEW_com.lguplus.mobile.cs
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 후 뷰 : NATIVE_APP
+timeout = 2
+NATIVE_APP
+swipping 0
+swipping 1
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+['NATIVE_APP']
+Message: An unknown server-side error occurred while processing the command. Original error: Error executing adbExec. Original error: 'Command 'C:\\Users\\User\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe -P 5037 -s R3CTA081TAW shell cat /proc/net/unix' timed out after 20000ms'. Try to increase the 20000ms adb execution timeout represented by 'adbExecTimeout' capability
+Stacktrace:
+UnknownError: An unknown server-side error occurred while processing the command. Original error: Error executing adbExec. Original error: 'Command 'C:\\Users\\User\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe -P 5037 -s R3CTA081TAW shell cat /proc/net/unix' timed out after 20000ms'. Try to increase the 20000ms adb execution timeout represented by 'adbExecTimeout' capability
+    at getResponseForW3CError (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\protocol\errors.js:1145:9)
+    at asyncHandler (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\protocol\protocol.js:491:57)
+[True, True, True]
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\common\function.py", line 368, in movepage
+    self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, hamburger_main)))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 96, in until
+    value = method(self._driver)
+            ^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 363, in _predicate
+    target = driver.find_element(*target)  # grab element at locator
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\webdriver.py", line 383, in find_element
+    return self.execute(RemoteCommand.FIND_ELEMENT, {'using': by, 'value': value})['value']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 348, in execute
+    self.error_handler.check_response(response)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: socket hang up
+Stacktrace:
+UnknownError: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: socket hang up
+    at UIA2Proxy.command (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:355:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at AndroidUiautomator2Driver.doFindElementOrEls (C:\Users\User\.appium\node_modules\appium-uiautomator2-driver\lib\commands\find.js:40:5)
+    at doFind (C:\Users\User\.appium\node_modules\appium-uiautomator2-driver\node_modules\appium-android-driver\lib\commands\find.ts:47:17)
+    at wrappedCondFn (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\timeout.ts:137:14)
+    at spin (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\asyncbox\lib\asyncbox.js:219:20)
+    at waitForCondition (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\asyncbox\lib\asyncbox.js:236:10)
+    at AndroidUiautomator2Driver.implicitWaitForCondition (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\timeout.ts:139:12)
+    at AndroidUiautomator2Driver.findElOrEls (C:\Users\User\.appium\node_modules\appium-uiautomator2-driver\node_modules\appium-android-driver\lib\commands\find.ts:70:5)
+    at AndroidUiautomator2Driver.findElOrElsWithProcessing (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\find.ts:60:12)
+    at AndroidUiautomator2Driver.findElement (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\find.ts:75:12)
+
+햄버거 메뉴로 해당 페이지로 이동하는 것에 실패했습니다. => try count: 1
+result/screenshot/img_R3CTA081TAW_0.png
+self.count =>>> 0
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\common\function.py", line 368, in movepage
+    self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, hamburger_main)))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 96, in until
+    value = method(self._driver)
+            ^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\expected_conditions.py", line 363, in _predicate
+    target = driver.find_element(*target)  # grab element at locator
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\webdriver.py", line 383, in find_element
+    return self.execute(RemoteCommand.FIND_ELEMENT, {'using': by, 'value': value})['value']
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 348, in execute
+    self.error_handler.check_response(response)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: socket hang up
+Stacktrace:
+UnknownError: An unknown server-side error occurred while processing the command. Original error: Could not proxy command to the remote server. Original error: socket hang up
+    at UIA2Proxy.command (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:355:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at AndroidUiautomator2Driver.doFindElementOrEls (C:\Users\User\.appium\node_modules\appium-uiautomator2-driver\lib\commands\find.js:40:5)
+    at doFind (C:\Users\User\.appium\node_modules\appium-uiautomator2-driver\node_modules\appium-android-driver\lib\commands\find.ts:47:17)
+    at wrappedCondFn (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\timeout.ts:137:14)
+    at spin (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\asyncbox\lib\asyncbox.js:219:20)
+    at waitForCondition (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\asyncbox\lib\asyncbox.js:236:10)
+    at AndroidUiautomator2Driver.implicitWaitForCondition (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\timeout.ts:139:12)
+    at AndroidUiautomator2Driver.findElOrEls (C:\Users\User\.appium\node_modules\appium-uiautomator2-driver\node_modules\appium-android-driver\lib\commands\find.ts:70:5)
+    at AndroidUiautomator2Driver.findElOrElsWithProcessing (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\find.ts:60:12)
+    at AndroidUiautomator2Driver.findElement (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\commands\find.ts:75:12)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\pages\direct.py", line 25, in direct
+    self.FC.movepage(self.FC.var['direct_el']['direct'],self.FC.var['iptv_el']['direct'],address=self.FC.var['direct_el']['url'])   # 상단 햄버거 버튼 클릭 동작
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\common\function.py", line 402, in movepage
+    if 'https://app.lguplus.com/gnb' in self.driver.current_url :
+                                        ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 438, in current_url
+    return self.execute(Command.GET_CURRENT_URL)["value"]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 348, in execute
+    self.error_handler.check_response(response)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\errorhandler.py", line 125, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.UnknownMethodException: Message: Method has not yet been implemented
+Stacktrace:
+NotYetImplementedError: Method has not yet been implemented
+    at AndroidUiautomator2Driver.executeCommand (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\basedriver\driver.ts:100:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at defaultBehavior (C:\Users\User\AppData\Roaming\npm\node_modules\appium\lib\appium.js:1109:14)
+    at AppiumDriver.executeWrappedCommand (C:\Users\User\AppData\Roaming\npm\node_modules\appium\lib\appium.js:1215:16)
+    at AppiumDriver.executeCommand (C:\Users\User\AppData\Roaming\npm\node_modules\appium\lib\appium.js:1121:17)
+    at asyncHandler (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\protocol\protocol.js:393:19)
+
+complete
+complete
+current_url => : https://app.lguplus.com/ujam
+movepage(address) count : 1
+complete
+complete
+current_url => : https://app.lguplus.com/ujam
+movepage(address) count : 2
+complete
+complete
+current_url => : https://app.lguplus.com/ujam
+movepage(address) count : 3
+complete
+complete
+current_url => : https://app.lguplus.com/ujam
+movepage(address) count : 4
+complete
+complete
+current_url => : https://app.lguplus.com/ujam
+movepage(address) count : 5
+[{"type": "header", "text": {"type": "plain_text", "text": "android 실행 완료"}}]
+Success
+
+
+----------- appium server stop -----------
+===== test thread end =====

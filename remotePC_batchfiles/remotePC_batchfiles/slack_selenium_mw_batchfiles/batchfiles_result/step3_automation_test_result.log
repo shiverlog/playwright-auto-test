@@ -1,0 +1,67 @@
+2025-03-04 16:38:19,687 - [PASS] - [do_login] - uplus 로그인 정상 동작 성공
+2025-03-04 16:40:48,525 - [PASS] - [mainpage_new] - 메인 페이지(로그인 후) 정상 노출 확인 성공
+2025-03-04 16:43:33,010 - [PASS] - [search] - 검색기능 정상 동작 성공
+2025-03-04 16:44:10,775 - [PASS] - [mypage] - 마이페이지 정상 노출 및 기능 동작 확인 성공
+2025-03-04 16:44:47,160 - [PASS] - [mypage_bill] - 마이페이지 > 요금 조회/납부 > 서브메인 > 요금 조회/납부내역에 대한 동작 및 정보 확인 성공
+2025-03-04 16:45:27,866 - [PASS] - [mypage_use] - 마이페이지 > 사용현황 > 사용현황 대한 내역 확인 및 페이지 정상 노출 확인 성공
+2025-03-04 16:49:09,786 - [PASS] - [mobile] - 모바일 > 페이지 정상 노출 및 기능 확인 성공
+2025-03-04 16:54:40,907 - [PASS] - [mobile_device] - 모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능 성공
+2025-03-04 16:55:30,445 - [PASS] - [iptv] - 인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인 성공
+2025-03-04 16:57:08,911 - [PASS] - [benefit] - 혜택/멤버십 페이지 정상 노출 및 기능 동작 확인 성공
+2025-03-04 16:58:19,490 - [PASS] - [membership] - 혜택/멤버십 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인 성공
+2025-03-04 17:00:03,042 - [PASS] - [support] - 고객지원 페이지 정상 노출 및 기능 동작 확인 성공
+2025-03-04 17:01:07,647 - [PASS] - [direct] - 다이렉트 페이지 정상 노출 및 기능 동작 확인 성공
+2025-03-04 17:01:31,463 - [PASS] - [ujam] - 유잼 페이지 정상 노출 및 기능 동작 확인 성공
+2025-03-04 17:01:50,851 - [PASS] - [udoc] - 유독 페이지 정상 노출 및 기능 동작 확인 성공
+C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\slack_sdk\web\internal_utils.py:417: UserWarning: client.files_upload() may cause some issues like timeouts for relatively large files. Our latest recommendation is to use client.files_upload_v2(), which is mostly compatible and much stabler, instead.
+  warnings.warn(message)
+parent path: C:\dev\remotePC_batchfiles\pubsub\selenium_mw
+현재 User : User
+크롬 드라이버 버전이 동일하지 않습니다. 차후 경로를 수정해주세요.
+현재 User : User
+set chromedriver -> {'유닉솔루션(주)': 'C:\\Users\\유닉솔루션(주)\\.wdm\\drivers\\chromedriver\\win32\\127.0.6533.88\\chromedriver-win64\\chromedriver.exe', 'PC2308': 'C:/Users/PC2308/.wdm/drivers/chromedriver/win32/129.0.6668.100/chromedriver-win64/chromedriver.exe', 'User': 'C:\\Users\\User\\.wdm\\drivers\\chromedriver\\win32\\132.0.6834.159\\chromedriver-win64\\chromedriver.exe'}
+현재 User : User
+url : http://localhost:9222
+session_id : 5abfe2fe72c11d4a91b533b7a4dfa646
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+https://m.lguplus.com/main != https://m.lguplus.com/apcm/html-push?url=%2F
+https://m.lguplus.com/main != https://m.lguplus.com/mypage
+해시태그 리스트: ['#번호변경', '#인터넷전화', '#지능형CCTV', '#디즈니', '#넷플릭스']
+Current URL: https://m.lguplus.com/search/result?searchWord=%EC%A7%80%EB%8A%A5%ED%98%95CCTV&pattern=%ED%86%B5%ED%95%A9%EA%B2%80%EC%83%89+%EC%B6%94%EC%B2%9C&category=indv, Expected URL: https://m.lguplus.com/search/result
+result -> 간편결제매니저 해지: 개인_2건, 기업_0건
+result -> 로밍: 개인_150건, 기업_1건
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+Testing tab: 5G/LTE
+해당 페이지에서 요소를 찾을 수 없습니다.
+Current URL: https://m.lguplus.com/mobile/plan/mplan/plan-all, Expected URL: https://m.lguplus.com/mobile/plan/mplan/plan-all
+Testing tab: 온라인단독
+해당 페이지에서 요소를 찾을 수 없습니다.
+Current URL: https://m.lguplus.com/mobile/plan/mplan/direct, Expected URL: https://m.lguplus.com/mobile/plan/mplan/direct
+Testing tab: 태블릿/스마트워치
+해당 페이지에서 요소를 찾을 수 없습니다.
+Current URL: https://m.lguplus.com/mobile/plan/mplan/direct, Expected URL: https://m.lguplus.com/mobile/plan/mplan/2nd-device
+Testing tab: 듀얼넘버
+해당 페이지에서 요소를 찾을 수 없습니다.
+Current URL: https://m.lguplus.com/mobile/plan/mplan/dual, Expected URL: https://m.lguplus.com/mobile/plan/mplan/dual
+[True, True, False, True]
+result/screenshot/img9222_0.png
+self.count =>>> 0
+이슈
+경로 -> result/screenshot/img9222_0.png
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+is_login =>  True
+해당 페이지에서 요소를 찾을 수 없습니다.
+https://m.lguplus.com/direct != https://m.lguplus.com/mobile/usim-detail
+[True, True, True, True, True, True, True, False, True, True, True, True, True, True, True, True]
+kill -> 9222
+현재 사용중인 포트(or URL): 9222
+(1, '\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 0 ) \nERROR: The process with PID 0 could not be terminated.\nReason: This is critical system process. Taskkill cannot end this process.\n\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 0 ) \nERROR: The process with PID 0 could not be terminated.\nReason: This is critical system process. Taskkill cannot end this process.')
+

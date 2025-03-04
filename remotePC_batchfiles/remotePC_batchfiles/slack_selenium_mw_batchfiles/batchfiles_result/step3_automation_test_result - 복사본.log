@@ -1,0 +1,103 @@
+2024-05-17 09:48:50,008 - [FAIL] - u_plus_login 정상 이동 실패
+2024-05-17 09:51:24,510 - [FAIL] - u_plus_login 정상 이동 실패
+(1, '')
+9222 사용가능한 포트 입니다.
+현재 사용 할 포트: 9222
+C:\chrometemp\9222
+0
+디버거 크롬 실행
+0
+<Cell 'Sheet'.A1> == <Cell 'Sheet'.A1>
+complete
+logout_text ->로그인
+간편 조회
+비로그인 상태
+complete
+complete
+https://m.lguplus.com/login in https://m.lguplus.com/login
+.loginList > li:nth-of-type(1) > a
+https://m.lguplus.com/login
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 3
+complete
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 3
+complete
+complete
+Message: 
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\common\function.py", line 276, in movepage
+    self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,'header button.c-btn-menu')))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 105, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+
+햄버거 메뉴로 해당 페이지로 이동하는 것에 실패했습니다. => try count: 1
+complete
+complete
+Message: 
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\common\function.py", line 276, in movepage
+    self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,'header button.c-btn-menu')))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 105, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+
+햄버거 메뉴로 해당 페이지로 이동하는 것에 실패했습니다. => try count: 2
+complete
+complete
+Message: 
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\common\function.py", line 276, in movepage
+    self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,'header button.c-btn-menu')))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 105, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+
+햄버거 메뉴로 해당 페이지로 이동하는 것에 실패했습니다. => try count: 3
+complete
+complete
+Message: 
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\common\function.py", line 276, in movepage
+    self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,'header button.c-btn-menu')))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 105, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+
+햄버거 메뉴로 해당 페이지로 이동하는 것에 실패했습니다. => try count: 4
+complete
+complete
+Message: 
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\selenium_mw\common\function.py", line 276, in movepage
+    self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,'header button.c-btn-menu')))
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\support\wait.py", line 105, in until
+    raise TimeoutException(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: 
+
+
+햄버거 메뉴로 해당 페이지로 이동하는 것에 실패했습니다. => try count: 5
+.loginList > li:nth-of-type(1) > a
+https://m.lguplus.com/login
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 3
+result/screenshot/img9222_0.png
+self.count =>>> 0
+kill -> 9222
+현재 사용중인 포트: 9222
+(128, '\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 19248 ) \nSUCCESS: The process with PID 19248 has been terminated.\n\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 19248 ) \nERROR: The process with PID 19248 could not be terminated.\nReason: There is no running instance of the task.\n\n\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 19248 ) \nERROR: The process with PID 19248 could not be terminated.\nReason: There is no running instance of the task.\n\n\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 16732 ) \nSUCCESS: The process with PID 16732 has been terminated.\n\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 16732 ) \nERROR: The process "16732" not found.\n\n(venv) C:\\dev\\remotePC_batchfiles\\pubsub\\selenium_mw>(taskkill /f /pid 17488 ) \nERROR: The process "17488" not found.')
+9222포트 브라우저를 종료하였습니다.
+{'ok': True, 'files': [{'id': 'F073SPCD8FP', 'created': 1715907088, 'timestamp': 1715907088, 'name': 'step3_automation_test_result.log', 'title': 'MW 로그 파일', 'mimetype': '', 'filetype': '', 'pretty_type': '', 'user': 'U04G4UB82MR', 'user_team': 'E05576J9Q8J', 'editable': False, 'size': 140, 'mode': 'hosted', 'is_external': False, 'external_type': '', 'is_public': False, 'public_url_shared': False, 'display_as_bot': False, 'username': '', 'url_private': 'https://files.slack.com/files-pri/T05576J9Q8J-F073SPCD8FP/step3_automation_test_result.log', 'url_private_download': 'https://files.slack.com/files-pri/T05576J9Q8J-F073SPCD8FP/download/step3_automation_test_result.log', 'media_display_type': 'unknown', 'permalink': 'https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F073SPCD8FP/step3_automation_test_result.log', 'permalink_public': 'https://slack-files.com/T05576J9Q8J-F073SPCD8FP-430ac52dc1', 'comments_count': 0, 'is_starred': False, 'shares': {}, 'channels': [], 'groups': [], 'ims': [], 'has_more_shares': False, 'has_rich_preview': False, 'file_access': 'visible'}], 'file': {'id': 'F073SPCD8FP', 'created': 1715907088, 'timestamp': 1715907088, 'name': 'step3_automation_test_result.log', 'title': 'MW 로그 파일', 'mimetype': '', 'filetype': '', 'pretty_type': '', 'user': 'U04G4UB82MR', 'user_team': 'E05576J9Q8J', 'editable': False, 'size': 140, 'mode': 'hosted', 'is_external': False, 'external_type': '', 'is_public': False, 'public_url_shared': False, 'display_as_bot': False, 'username': '', 'url_private': 'https://files.slack.com/files-pri/T05576J9Q8J-F073SPCD8FP/step3_automation_test_result.log', 'url_private_download': 'https://files.slack.com/files-pri/T05576J9Q8J-F073SPCD8FP/download/step3_automation_test_result.log', 'media_display_type': 'unknown', 'permalink': 'https://lguplus.enterprise.slack.com/files/U04G4UB82MR/F073SPCD8FP/step3_automation_test_result.log', 'permalink_public': 'https://slack-files.com/T05576J9Q8J-F073SPCD8FP-430ac52dc1', 'comments_count': 0, 'is_starred': False, 'shares': {}, 'channels': [], 'groups': [], 'ims': [], 'has_more_shares': False, 'has_rich_preview': False, 'file_access': 'visible'}}

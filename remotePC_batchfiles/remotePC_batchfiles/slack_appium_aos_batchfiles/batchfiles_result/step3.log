@@ -1,0 +1,6 @@
+
+(venv) C:\dev\remotePC_batchfiles\slack_appium_aos_batchfiles>cd "C:\dev\remotePC_batchfiles\pubsub\appium_aos" 
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\appium_aos>cd "C:\dev\remotePC_batchfiles\pubsub\appium_aos" 
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\appium_aos>python __main__.py  1>C:/dev/remotePC_batchfiles/slack_appium_aos_batchfiles/batchfiles_result/step3_automation_test_result.log 2>&1 

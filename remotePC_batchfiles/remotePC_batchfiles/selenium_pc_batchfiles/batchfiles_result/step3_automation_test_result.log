@@ -1,0 +1,163 @@
+C:\dev\remotePC_batchfiles\pubsub\selenium_pc\base\webdriver.py:115: SyntaxWarning: invalid escape sequence '\S'
+  cmd = 'reg query "HKEY_CURRENT_USER\Software\Google\Chrome\BLBeacon" /v version'
+C:\dev\remotePC_batchfiles\pubsub\selenium_pc\base\webdriver.py:213: SyntaxWarning: invalid escape sequence '\ '
+  '''
+C:\dev\remotePC_batchfiles\pubsub\selenium_pc\base\webdriver.py:287: SyntaxWarning: invalid escape sequence '\G'
+  res=os.system(f'start C:\\"Program Files"\Google\Chrome\Application\chrome.exe --remote-debugging-port={self.port} --profile-directory="{profile_u}" --no-first-run --no-default-browser-check --ash-no-nudges')
+ERROR: The process "chrome.exe" not found.
+2024-11-25 16:59:24,325 - [PASS] - [do_login] - uplus 로그인 정상 동작 확인 성공
+2024-11-25 16:59:51,038 - [PASS] - [mainpage] - 메인 페이지 정상 노출 확인 성공
+2024-11-25 17:00:02,917 - [PASS] - [mainpage_myinfo] - 메인 페이지(로그인 후) > 개인화 영역 정상 노출 확인 성공
+2024-11-25 17:00:56,350 - [PASS] - [search] - 검색기능 정상 동작 성공
+2024-11-25 17:01:44,118 - [PASS] - [mypage] - 마이페이지 정상 노출 및 기능 동작 확인 성공
+2024-11-25 17:03:03,311 - [PASS] - [mypage_bill] - 마이페이지 > 요금 조회/납부내역에 대한 동작 및 정보 확인 성공
+2024-11-25 17:04:23,882 - [PASS] - [mypage_use] - 마이페이지 > 사용현황 > 사용 내역 조회대한 내역 확인 및 페이지 정상 노출 확인 성공
+2024-11-25 17:07:17,490 - [PASS] - [mobile] - 모바일 > 서브메인 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인 성공
+2024-11-25 17:08:20,666 - [PASS] - [mobile_plan] - 모바일 > 모바일 요금제 > 5G 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인 성공
+2024-11-25 17:09:53,049 - [PASS] - [mobile_device] - 모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능 정상 동작 성공
+2024-11-25 17:10:43,302 - [PASS] - [iptv] - 인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인 성공
+2024-11-25 17:12:04,564 - [PASS] - [benefit] - 혜택/멤버십 페이지 정상 노출 및 기능 동작 확인 성공
+2024-11-25 17:12:38,197 - [PASS] - [membership] - 혜택/멤버십 > 멤버십 > 멤버십 관련 정보 및 멤버십 이용/변경 내역 정상 동작 확인 성공
+2024-11-25 17:14:21,160 - [PASS] - [support] - 고객지원 페이지 정상 노출 및 기능 동작 확인 성공
+2024-11-25 17:14:58,098 - [PASS] - [direct] - 다이렉트페이지 정상 노출 및 기능 동작 확인 성공
+2024-11-25 17:15:20,812 - [PASS] - [ujam] - 유잼 페이지 정상 노출 및 기능 동작 확인 성공
+2024-11-25 17:15:36,244 - [PASS] - [udoc] - 유독 페이지 정상 노출 및 기능 동작 확인 성공
+'ps' is not recognized as an internal or external command,
+operable program or batch file.
+directory: C:\dev\remotePC_batchfiles\pubsub\selenium_pc
+ res -> 
+ chromebrowser_list -> (1, '')
+already clear
+
+
+
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+
+
+
+
+
+
+
+
+
+
+
+
+해당 페이지에서 요소를 찾을 수 없습니다.
+result_count -> 20
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+
+
+
+https://www.lguplus.com/mypage in https://www.lguplus.com/mypage
+
+
+
+
+
+
+https://www.lguplus.com/mypage/payinfo in https://www.lguplus.com/mypage/payinfo
+
+
+
+
+
+
+https://www.lguplus.com/mypage/bilv in https://www.lguplus.com/mypage/bilv
+
+
+
+https://www.lguplus.com/mobile in https://www.lguplus.com/mobile
+
+
+
+
+
+
+
+
+
+
+
+
+check_value :  ['17,600원 할인', '15,400원 할인', '2,200원 할인'] 
+ price_list :  - 17,600원 할인 - 15,400원 할인 - 2,200원 할인
+
+
+
+
+
+
+https://www.lguplus.com/mobile/plan/mplan/5g-all in https://www.lguplus.com/mobile/plan/mplan/5g-all
+
+
+
+해당 페이지에서 요소를 찾을 수 없습니다.
+
+
+
+https://www.lguplus.com/mobile/device/phone in https://www.lguplus.com/mobile/device/phone
+modal-open
+
+
+해당 페이지에서 요소를 찾을 수 없습니다.
+해당 페이지에서 요소를 찾을 수 없습니다.
+modal-open
+
+
+
+
+
+https://www.lguplus.com/internet-iptv in https://www.lguplus.com/internet-iptv
+
+
+
+
+
+
+
+
+
+https://www.lguplus.com/benefit in https://www.lguplus.com/benefit
+
+
+
+
+
+
+해당 페이지에서 요소를 찾을 수 없습니다.
+
+
+
+https://www.lguplus.com/benefit/membership in https://www.lguplus.com/benefit/membership
+
+
+
+https://www.lguplus.com/support in https://www.lguplus.com/support
+
+
+
+
+
+
+https://www.lguplus.com/direct in https://www.lguplus.com/direct
+
+
+
+
+
+
+
+
+
+
+
+
+https://www.lguplus.com/ujam in https://www.lguplus.com/ujam
+
+
+
+[True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]

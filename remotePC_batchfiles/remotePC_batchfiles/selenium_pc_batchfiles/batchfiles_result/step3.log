@@ -1,0 +1,6 @@
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\google_pubsub_test>cd "C:\dev\remotePC_batchfiles\pubsub\selenium_pc" 
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_pc>cd "C:\dev\remotePC_batchfiles\pubsub\selenium_pc" 
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_pc>python __main__.py  1>C:/dev/remotePC_batchfiles/selenium_pc_batchfiles/batchfiles_result/step3_automation_test_result.log 2>&1 

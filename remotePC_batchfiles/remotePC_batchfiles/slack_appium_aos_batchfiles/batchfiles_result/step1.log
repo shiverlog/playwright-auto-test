@@ -1,0 +1,6 @@
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_mw>curl -k https://hooks.slack.com/services/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 -X POST -H "Authorization:xoxb-3457711939825-4548963274739-5Edb3DkHcSGcRZV306jp483n" --data "{""text"":""appium_aos 실행 시작"",""color"":""#36a64f""}" 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    55  100     2  100    53      2     70  0:00:01 --:--:--  0:00:01    73
+ok

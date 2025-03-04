@@ -1,0 +1,7 @@
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_pc>SET yyyymmdd=20230720 
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_pc>REM SET yyyymmdd=(목)-0-2 
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_pc>for /F "delims=" %t in (C:\dev\remotePC_batchfiles\pubsub\selenium_pc\result\debug\20230720_debug.log) do (curl -k https://hooks.slack.com/services/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 -X POST -H'Content-type:application/json' --data "{""text"":""%t"",""color"":""#36a64f""}" ) 
+The system cannot find the file C:\dev\remotePC_batchfiles\pubsub\selenium_pc\result\debug\20230720_debug.log.

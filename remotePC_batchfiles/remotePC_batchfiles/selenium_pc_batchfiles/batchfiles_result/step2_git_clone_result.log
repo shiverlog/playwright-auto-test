@@ -1,0 +1,89 @@
+selenium_pc file is exist
+Your branch is behind 'origin/release' by 284 commits, and can be fast-forwarded.
+  (use "git pull" to update your local branch)
+Switched to branch 'release'
+  development
+* release
+  slack-development
+  slack-release
+From http://gitlab.uhdcsre.com/digital-platform-team/qa/selenium_pc
+ * branch            release    -> FETCH_HEAD
+Updating b0dc004..03272ea
+Fast-forward
+ .gitignore                |   2 +
+ __main__.py               | 113 +++---
+ base/chrome_driver.json   |   6 +-
+ base/setting.json         |  52 ++-
+ base/webdriver.py         | 395 +++++++++----------
+ common/debug.py           | 429 ++++++++++----------
+ common/function.py        | 967 ++++++++++++++++++++--------------------------
+ common/slack.py           | 295 ++++++++++++++
+ common/variable.py        | 862 +++++++++++++++--------------------------
+ common/variable_export.py |  76 ++--
+ pages/benefit.py          | 171 ++++----
+ pages/chatbot.py          |  12 +-
+ pages/direct.py           | 165 ++------
+ pages/footer.py           |  20 +-
+ pages/iptv.py             | 252 ++----------
+ pages/login.py            | 247 +++++-------
+ pages/mainpage.py         | 165 +++-----
+ pages/mobile.py           | 496 +++++++++++++-----------
+ pages/mypage.py           | 784 +++++++++++--------------------------
+ pages/phone_plan.py       | 228 -----------
+ pages/search.py           | 100 ++---
+ pages/support.py          | 155 ++------
+ pages/udoc.py             | 218 +----------
+ pages/ujam.py             |  34 ++
+ pages/uth.py              | 108 ------
+ variables.xlsx            | Bin 29585 -> 17948 bytes
+ 26 files changed, 2481 insertions(+), 3871 deletions(-)
+ create mode 100644 common/slack.py
+ delete mode 100644 pages/phone_plan.py
+ create mode 100644 pages/ujam.py
+ delete mode 100644 pages/uth.py
+Package                  Version
+------------------------ -----------
+Appium-Python-Client     4.0.0
+attrs                    23.1.0
+cachetools               5.3.2
+certifi                  2023.11.17
+cffi                     1.16.0
+charset-normalizer       3.3.2
+cryptography             41.0.7
+et-xmlfile               1.1.0
+google-api-core          2.15.0
+google-auth              2.25.2
+google-cloud-pubsub      2.19.0
+googleapis-common-protos 1.62.0
+grpc-google-iam-v1       0.13.0
+grpcio                   1.60.0
+grpcio-status            1.60.0
+h11                      0.14.0
+idna                     3.6
+openpyxl                 3.1.2
+outcome                  1.3.0.post0
+packaging                23.2
+pip                      23.2.1
+proto-plus               1.23.0
+protobuf                 4.25.1
+pyasn1                   0.5.1
+pyasn1-modules           0.3.0
+pycparser                2.21
+PySocks                  1.7.1
+python-dotenv            1.0.0
+requests                 2.31.0
+rsa                      4.9
+selenium                 4.16.0
+setuptools               69.0.2
+slack-sdk                3.26.1
+sniffio                  1.3.0
+sortedcontainers         2.4.0
+tenacity                 8.2.3
+trio                     0.23.1
+trio-websocket           0.11.1
+urllib3                  2.1.0
+webdriver-manager        4.0.1
+wsproto                  1.2.0
+
+[notice] A new release of pip is available: 23.2.1 -> 24.3.1
+[notice] To update, run: python.exe -m pip install --upgrade pip

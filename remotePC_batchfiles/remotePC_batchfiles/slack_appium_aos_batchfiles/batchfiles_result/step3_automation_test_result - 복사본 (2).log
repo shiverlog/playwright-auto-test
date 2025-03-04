@@ -1,0 +1,1037 @@
+===== test thread start =====
+resp.status ==> 200
+{"value":{"ready":true,"message":"The server is ready to accept new connections","build":{"version":"2.2.1"}}}
+resp.status ==> 200
+{"value":{"ready":true,"message":"The server is ready to accept new connections","build":{"version":"2.2.1"}}}
+--------------- server not running ---------------
+--------------- Appium Remote AOS Devices ---------------
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839474.952599', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '----------- Z_FLIP3 ----------', 'user': 'U04G4UB82MR', 'ts': '1699839474.952599', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'xcLf', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '----------- Z_FLIP3 ----------'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+----------------------------------------------------
+APP 로그인 페이지 진입
+['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+current => WEBVIEW_com.lguplus.mobile.cs
+driver => <appium.webdriver.webdriver.WebDriver (session="3218b678-5e11-47ed-908e-1b433187afd1")>
+----------------------------------------------------
+Success
+
+
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+switch_viwe 실행 후 뷰 : NATIVE_APP
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+switch_viwe 실행 후 뷰 : NATIVE_APP
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+switch_viwe 실행 후 뷰 : WEBVIEW_chrome
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : WEBVIEW_chrome
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+https://app.lguplus.com/ == https://app.lguplus.com/
+2023-11-13 10:38:35,857 - [PASS] - 로그인 정상 동작 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839515.170169', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 로그인 정상 동작 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839515.170169', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'uXXFP', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 로그인 정상 동작 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+[WinError 5] 액세스가 거부되었습니다
+데이터
+청구금액
+전체보기
+더보기
+실시간 요금
+데이터 주고받기
+혜택 모아보기
+요금 할인 혜택
+더 받을 수 있는 혜택/정보
+나의 요금 정보
+요금제
+부가서비스
+유료
+무료
+[True, True, True]
+https://app.lguplus.com/apcm/benefit/report?tab=1
+swipping 0
+swipping 1
+swipping 2
+swipping 3
+swipping 0
+swipping 1
+swipping 2
+요금제 영역 pagenation([<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="05a4447e-c382-4f06-bed8-7cf2fa56bc1c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="9f781416-310f-4cfc-bcb1-96df94737831")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="39071257-c356-45b1-b3a0-ac25e556d4ee")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="9c7ae1e8-32c4-469f-9a0a-3e95112253d8")>]) == 콘텐츠 이미지 수([<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="05a4447e-c382-4f06-bed8-7cf2fa56bc1c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="9f781416-310f-4cfc-bcb1-96df94737831")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="39071257-c356-45b1-b3a0-ac25e556d4ee")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="9c7ae1e8-32c4-469f-9a0a-3e95112253d8")>])
+data_list => {'title': '갤럭시 Z Flip 5 256GB', 'price': '121,490'}
+임의 추천 기기 링크 이동 => 갤럭시 Z Flip 5 256GB
+title_text => 갤럭시 Z Flip 5 256GB in 갤럭시 Z Flip 5 256GB
+2023-11-13 10:39:01,932 - [PASS] - 메인 페이지(로그인 후) 정상 노출 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839541.260829', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 메인 페이지(로그인 후) 정상 노출 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839541.260829', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'IGTDL', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 메인 페이지(로그인 후) 정상 노출 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+로딩 완료
+myinfo_url current url => https://app.lguplus.com/mypage/info
+{'모바일': '모바일\n메뉴 더보기\n이용 중인 요금제\n\n(LTE) 데이터 33\n\n가입서비스명\n\n모바일 (010-66**-69**)\n\n가입일(재가입일)\n\n2012-12-21(2018-09-04)\n\n상세 보기\n요금제 변경\n번호 변경\n기기 변경', '인터넷': '인터넷\n메뉴 더보기\n가입서비스명\n\n와이파이기본_기가슬림안심_500M_주택FTTH\n\n설치장소\n\n인천시 남동구 ***\n\n가입일(재가입일)\n\n2016-08-14(-)\n\n상세 보기\n약정 변경', 'IPTV': 'IPTV\n메뉴 더보기\n가입서비스명\n\n일반형\n\n설치장소\n\n인천시 남동구 ***\n\n가입일(재가입일)\n\n2016-08-14(-)\n\n상세 보기\n약정 변경\nTV 비밀번호 변경', '인터넷 전화': '인터넷 전화\n메뉴 더보기\n가입서비스명\n\n인터넷전화 일반형_표준\n\n전화번호\n\n070-43**-69**\n\n가입일(재가입일)\n\n2018-01-20(-)\n\n상세 보기\n요금제 변경\n번호 변경\n번호이동 진행 상태', '스마트홈': '스마트홈\n메뉴 더보기\n가입서비스명\n\n하나하나 IoT\n\n설치장소\n\n인천시 남동구 ***\n\n가입일(재가입일)\n\n2016-08-14(-)', '결합': '결합\n가입서비스명\n\n모바일 / 인터넷 / IPTV / 스마트홈 / 인터넷전화 \n\n결합 할인 상품 정보\n\n가족무한사랑(유무선) 결합'}
+모바일 >>
+이용 중인 요금제
+가입서비스명
+가입일
+상세 보기
+요금제 변경
+번호 변경
+기기 변경
+인터넷 >>
+인터넷
+가입서비스명
+설치장소
+가입일
+상세 보기
+약정 변경
+IPTV >>
+가입서비스명
+설치장소
+가입일
+상세 보기
+약정 변경
+TV 비밀번호 변경
+인터넷 전화 >>
+인터넷 전화
+가입서비스명
+전화번호
+가입일
+상세 보기
+요금제 변경
+번호 변경
+번호이동 진행 상태
+스마트홈 >>
+가입서비스명
+설치장소
+가입일
+결합 >>
+결합
+가입서비스명
+결합 할인 상품 정보
+2023-11-13 10:39:07,897 - [PASS] - 내 가입정보 페이지 정상 이동 및 노출 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839547.226889', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 내 가입정보 페이지 정상 이동 및 노출 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839547.226889', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'YtI', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 내 가입정보 페이지 정상 이동 및 노출 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+loading_finished
+current_url => : https://app.lguplus.com/mypage
+마이페이지 > 서브메인 > 모바일 정보 없음
+마이페이지 > 서브메인 > 인터넷 정보 없음
+결합 정보 있음~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+결합 if 문으로 진입<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+청구 및 납부정보
+청구요금
+결합
+모바일
+인터넷
+IPTV
+인터넷전화
+스마트홈
+결합상품
+멤버십
+사용 가능한 ez포인트
+[True, True, True, True]
+2023-11-13 10:39:27,005 - [PASS] - 마이페이지 정상 노출 및 기능 동작 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839566.317009', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 마이페이지 정상 노출 및 기능 동작 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839566.317009', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'CeK', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 마이페이지 정상 노출 및 기능 동작 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+loading_finished
+current_url => : https://app.lguplus.com/mypage/payinfo
+로딩 완료
+이잉??????????   모바일 in 통합결합    ====>      False
+이잉??????????   모바일 in 결합    ====>      False
+마이페이지 > 청구요금 및 납부 > 모바일 정보 없음
+로딩 완료
+이잉??????????   인터넷 in 통합결합    ====>      False
+이잉??????????   인터넷 in 결합    ====>      False
+마이페이지 > 청구요금 및 납부 > 인터넷 정보 없음
+로딩 완료
+이잉??????????   결합 in 통합결합    ====>      True
+이잉??????????   결합 in 결합    ====>      True
+결합 정보 있음~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+납부방법
+예금주
+결제일
+청구 받는 방법
+마이페이지 > 결합 청구내역 5개 존재
+마이페이지 > 결합 납부내역 5개 존재
+[True, True, True]
+2023-11-13 10:39:52,451 - [PASS] - 마이페이지 > 청구요금 및 납부 > 청구요금 및 납부내역에 대한 동작 및 정보 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839591.757509', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 마이페이지 &gt; 청구요금 및 납부 &gt; 청구요금 및 납부내역에 대한 동작 및 정보 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839591.757509', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'e91=', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 마이페이지 > 청구요금 및 납부 > 청구요금 및 납부내역에 대한 동작 및 정보 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+로딩 완료
+current_url => : https://app.lguplus.com/mypage/bilv?p=2
+이잉??????????   모바일 in 통합결합    ====>      False
+이잉??????????   모바일 in 결합    ====>      False
+마이페이지 > 사용현황 > 서브메인 > 모바일 정보 없음
+이잉??????????   인터넷 in 통합결합    ====>      False
+이잉??????????   인터넷 in 결합    ====>      False
+마이페이지 > 사용현황 > 서브메인 > 인터넷 정보 없음
+이잉??????????   결합 in 통합결합    ====>      True
+이잉??????????   결합 in 결합    ====>      True
+결합 정보 있음~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+로딩 완료
+이름
+서비스 유형
+전화번호
+[True]
+로딩 완료
+고객정보
+이름
+요금제
+설치장소
+사용량
+일일 기본제공량
+[True, True, True]
+고객정보
+이름
+가입상품
+설치장소
+인증
+본인인증
+휴대폰
+바이오
+PASS
+TOSS
+카카오
+네이버
+아이핀
+[True, True, True, True, True, True]
+2023-11-13 10:40:15,546 - [PASS] - 마이페이지 > 사용현황 > 사용현황 대한 내역 확인 및 페이지 정상 노출 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839614.866029', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 마이페이지 &gt; 사용현황 &gt; 사용현황 대한 내역 확인 및 페이지 정상 노출 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839614.866029', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': '2kqW', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 마이페이지 > 사용현황 > 사용현황 대한 내역 확인 및 페이지 정상 노출 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+로딩 완료
+current_url => : https://app.lguplus.com/mypage/membership?param=use&p=2
+멤버십 카드 신청 및 재발급
+이번 달 멤버십 등급
+나만의 콕 혜택
+누적할인 금액
+월별 할인 혜택 이용정보
+연월
+멤버십등급
+할인 혜택
+올해 누적할인
+기간별 이용내역 조회
+조회기간
+1주일
+1개월
+3개월
+기간설정
+조회
+누적 할인혜택
+총
+기간별 이용내역 조회 결과
+사용일
+사용처
+누적 할인 혜택
+한도
+승인
+[True, True]
+scrolling
+멤버십 등급 변경내역
+연월
+멤버십 등급
+이용 요금제
+비고
+[True]
+신청일
+멤버십 카드번호
+발급일
+상태
+신청일
+멤버십 카드번호
+휴대폰 번호
+발급일
+사용 중지일
+상태
+[True, True, True]
+나만의 콕 혜택 신청내역
+[True]
+2023-11-13 10:40:30,253 - [PASS] - 마이페이지 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839629.577789', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 마이페이지 &gt; 멤버십 &gt; 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839629.577789', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'Rcje', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 마이페이지 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+로딩 완료
+current_url => : https://app.lguplus.com/plan
+price_select >>>>>>>>>>>>>>>>>>>>>>>>  105000
+내게 맞는 요금제 name =>>> (디즈니+) LTE 프리미어 플러스
+내게 맞는 요금제 price =>>> 105,000
+2023-11-13 10:40:44,861 - [PASS] - 모바일 요금제 페이지 정상 노출 및 요금제 신청/변경 기능 동작 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839644.170499', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 모바일 요금제 페이지 정상 노출 및 요금제 신청/변경 기능 동작 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839644.170499', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': 'TkiFp', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 모바일 요금제 페이지 정상 노출 및 요금제 신청/변경 기능 동작 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+로딩 완료
+current_url => : https://app.lguplus.com/plan/mplan/5g-all
+loading_finished
+loading_finished
+item_text => 유쓰 5G 슬림+ / item_price => 47,000
+로딩 완료
+len(befo_items)+5 == len(aftr_itmes) >>>> True
+로딩 완료
+item_text => LTE 프리미어 에센셜 / item_price => 85,000
+로딩 완료
+len(befo_items)+5 == len(aftr_itmes) >>>> True
+로딩 완료
+item_text => 태블릿/스마트기기 데이터 10GB / item_price => 16,500
+로딩 완료
+len(befo_items)+5 == len(aftr_itmes) >>>> False
+로딩 완료
+item_text => 5G 듀얼넘버 플러스 / item_price => 8,800
+로딩 완료
+로딩 완료
+투게더 결합
+모일수록 커지는 혜택
+지인
+인터넷
+휴대폰
+1명
+2명
+3명
+4-5명
+로딩 완료
+로딩 완료
+5G 프리미어 레귤러 in  선택한 요금제
+5G 프리미어 레귤러
+div.plan_inner_pad1 h3
+tagName =>  h3
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="35666880-5c49-4653-af75-3fcc50d0f6b2")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="fabad2ff-9ef0-48af-bd5b-f6e2474a290a")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="195bde1f-3e72-43f5-80f4-cbcc371c8a5b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="81b952ac-a4e9-45c4-beac-24f217838f40")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="14cef9f0-10ca-4889-91f7-28cef7bb01b6")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f6778776-f6bb-48e7-95ac-c386b2f949a0")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="49d54560-58c3-4ede-b79c-3c25f026935f")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="4e7af2dc-cbd0-40f3-8cee-b0ecaec43dba")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f6159eed-165d-4f99-b76c-e1c2238ea002")>]
+data_txt => 할인 상세내역
+data_txt => 데이터
+data_txt => 음성통화
+data_txt => 문자메시지
+data_txt => 프리미엄 혜택
+data_txt => 미디어 혜택
+data_txt => 스마트기기
+data_txt => 기본혜택
+ h3의 datas 정상 출력 확인1
+ h3의 datas 정상 출력 확인2
+tagName =>  strong
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1dfb73b9-a2d6-4c42-ba23-c9c88a364c98")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="dd6f83ba-10af-4e5c-8d25-b804cd8c3558")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d394e14c-6c51-4aa3-b62b-17d33395a2c1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="78dc2d16-0ca4-4259-8aa6-16a677305e91")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f9a38fed-51d2-4439-8330-8dfc5aeb5d48")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="b67593c9-5696-4b56-9b37-8c0578e62d20")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1e11c90d-48ed-496e-a51e-e7ec7abfa218")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="16424ba1-9a29-4491-9afd-6f7e01dd9bb1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="224e6093-2437-4cd5-a3f2-f86f0089bc86")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="3ae058fc-d512-48b8-b0b9-47f176905f97")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="7816810d-58e4-4c1a-9eec-d56a0dc7b061")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d98f6fb1-8b0b-4aec-b4ea-15e0c2ad213f")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f72a403b-b66d-4659-8369-4cce2b6ef090")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="52158722-1f2b-455b-a73a-61816277eb4c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="77758260-7660-4032-9ed9-ca3cfc74e3aa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="2c6bb609-180e-44ff-abe6-869f9a8fff43")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="b03288bd-ec29-443a-b605-beed2714f0aa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="7e13c836-c88b-4e3b-9286-d3637b234a14")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="935fd1a5-c1fd-4d6a-89ab-2a9dba697364")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e2757cb5-d037-4936-a7a3-ee5a6b1d8b6e")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="3cc7750c-0b3b-4a64-bbff-def3d7e100ef")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="7e503c9b-96da-43af-8321-5f9df08287cc")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="cce3549a-68e2-4e7a-9e49-eae4ba833a69")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="b10017da-b252-479e-ab8a-3a8a7fca1ecf")>]
+data_txt => 월 33,000원
+data_txt => 월 95,000원
+data_txt => 24,750
+data_txt => 66,000
+data_txt => 월 8,250원
+data_txt => 월 23,750원
+data_txt => 해당없음
+data_txt => 월5,250원
+data_txt => 1.5GB
+data_txt => 무제한
+data_txt => 해당없음
+data_txt => 테더링+쉐어링50GB
+data_txt => 집/이동전화 무제한
+data_txt => 집/이동전화 무제한
+data_txt => 기본제공
+data_txt => 기본제공
+data_txt => 총 0개
+data_txt => 총 0개
+data_txt => 총 0개
+data_txt => 해당없음
+data_txt => 1대 월정액 할인
+data_txt => 해당없음
+data_txt => U⁺ 모바일tv 무료
+ strong의 datas 정상 출력 확인1
+ strong의 datas 정상 출력 확인2
+[' h3', ' strong']의 datas 모두 정상 출력 확인
+유쓰 5G 스탠다드 에센셜 in  선택한 요금제
+유쓰 5G 스탠다드 에센셜
+div.plan_inner_pad1 h3
+tagName =>  h3
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="35666880-5c49-4653-af75-3fcc50d0f6b2")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="fabad2ff-9ef0-48af-bd5b-f6e2474a290a")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="195bde1f-3e72-43f5-80f4-cbcc371c8a5b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="81b952ac-a4e9-45c4-beac-24f217838f40")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="14cef9f0-10ca-4889-91f7-28cef7bb01b6")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f6778776-f6bb-48e7-95ac-c386b2f949a0")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="49d54560-58c3-4ede-b79c-3c25f026935f")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="4e7af2dc-cbd0-40f3-8cee-b0ecaec43dba")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f6159eed-165d-4f99-b76c-e1c2238ea002")>]
+data_txt => 할인 상세내역
+data_txt => 데이터
+data_txt => 음성통화
+data_txt => 문자메시지
+data_txt => 프리미엄 혜택
+data_txt => 미디어 혜택
+data_txt => 스마트기기
+data_txt => 기본혜택
+ h3의 datas 정상 출력 확인1
+ h3의 datas 정상 출력 확인2
+tagName =>  strong
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1dfb73b9-a2d6-4c42-ba23-c9c88a364c98")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="6316246c-9c02-4498-afae-49628657ed0c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d394e14c-6c51-4aa3-b62b-17d33395a2c1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="78dc2d16-0ca4-4259-8aa6-16a677305e91")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f9a38fed-51d2-4439-8330-8dfc5aeb5d48")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="b67593c9-5696-4b56-9b37-8c0578e62d20")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1e11c90d-48ed-496e-a51e-e7ec7abfa218")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="16424ba1-9a29-4491-9afd-6f7e01dd9bb1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="224e6093-2437-4cd5-a3f2-f86f0089bc86")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="90c952c5-f2ee-4959-9535-1829e9930b6f")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="7816810d-58e4-4c1a-9eec-d56a0dc7b061")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="62ff42c5-1574-40f6-8267-a55d565bbbac")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="f72a403b-b66d-4659-8369-4cce2b6ef090")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="52158722-1f2b-455b-a73a-61816277eb4c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="77758260-7660-4032-9ed9-ca3cfc74e3aa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="2c6bb609-180e-44ff-abe6-869f9a8fff43")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="b03288bd-ec29-443a-b605-beed2714f0aa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="7e13c836-c88b-4e3b-9286-d3637b234a14")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="935fd1a5-c1fd-4d6a-89ab-2a9dba697364")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e2757cb5-d037-4936-a7a3-ee5a6b1d8b6e")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="3cc7750c-0b3b-4a64-bbff-def3d7e100ef")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="7588b38a-2b88-4bbf-99ec-720aaf328fdf")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="cce3549a-68e2-4e7a-9e49-eae4ba833a69")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="b10017da-b252-479e-ab8a-3a8a7fca1ecf")>]
+data_txt => 월 33,000원
+data_txt => 월 70,000원
+data_txt => 24,750
+data_txt => 52,500
+data_txt => 월 8,250원
+data_txt => 월 17,500원
+data_txt => 해당없음
+data_txt => 해당없음
+data_txt => 1.5GB
+data_txt => 185GB
+data_txt => 해당없음
+data_txt => 테더링5GB+쉐어링5GB
+data_txt => 집/이동전화 무제한
+data_txt => 집/이동전화 무제한
+data_txt => 기본제공
+data_txt => 기본제공
+data_txt => 총 0개
+data_txt => 총 0개
+data_txt => 총 0개
+data_txt => 총 0개
+data_txt => 해당없음
+data_txt => 해당없음
+data_txt => 해당없음
+data_txt => U⁺ 모바일tv 무료
+ strong의 datas 정상 출력 확인1
+ strong의 datas 정상 출력 확인2
+[' h3', ' strong']의 datas 모두 정상 출력 확인
+2023-11-13 10:41:44,583 - [PASS] - 모바일 요금제 > 요금제 페이지 정상 노출 및 요금제 신청/변경 기능 동작 확인 성공
+{'ok': True, 'channel': 'C04GM3KA43G', 'ts': '1699839703.895009', 'message': {'bot_id': 'B04G5292QM8', 'type': 'message', 'text': '[PASS] - 모바일 요금제 &gt; 요금제 페이지 정상 노출 및 요금제 신청/변경 기능 동작 확인 성공', 'user': 'U04G4UB82MR', 'ts': '1699839703.895009', 'app_id': 'A04EQSRFG3H', 'blocks': [{'type': 'rich_text', 'block_id': '1jV', 'elements': [{'type': 'rich_text_section', 'elements': [{'type': 'text', 'text': '[PASS] - 모바일 요금제 > 요금제 페이지 정상 노출 및 요금제 신청/변경 기능 동작 확인 성공'}]}]}], 'team': 'T03DFLXTMQ9', 'bot_profile': {'id': 'B04G5292QM8', 'app_id': 'A04EQSRFG3H', 'name': 'jenkins-notification', 'icons': {'image_36': 'https://a.slack-edge.com/80588/img/plugins/app/bot_36.png', 'image_48': 'https://a.slack-edge.com/80588/img/plugins/app/bot_48.png', 'image_72': 'https://a.slack-edge.com/80588/img/plugins/app/service_72.png'}, 'deleted': False, 'updated': 1671612802, 'team_id': 'T03DFLXTMQ9'}}}
+loading_finished
+loading_finished
+loading_finished
+current_url => : https://app.lguplus.com/mobile
+current =>5G 휴대폰
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/5g-phone
+current =>4G 휴대폰
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/4g-phone
+current =>유심/eSIM 가입
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/sim-card/usim#
+current =>자급제폰 등록
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/direct-smart-device/mem-rate/?P=4
+current =>중고/리퍼/자급제폰
+self.FC.driver.current_url =>https://app.lguplus.com/benefit-event/ongoing/239
+current =>태블릿
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/tablet
+current =>스마트워치
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/watch
+current =>노트북
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/notebook
+current =>액세서리
+self.FC.driver.current_url =>https://app.lguplus.com/mobile/accessory
+swipping 0
+swipping 1
+추천 == 추천
+//div[contains(@class,'c-section-md') and contains(.,'태블릿')]//div[@class='tab-panel' and not(@style='display: none;')]//strong
+tagName => //strong
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1629b0ce-f7d4-414d-9c01-ed8b1253d6df")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="2c4a7649-7216-4945-baa6-ebd0ae4c4006")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="518f0d77-a3ef-4ca5-aa3b-740b869bc96b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="eed1f4b1-2263-4fcd-ae07-a6769b79aae6")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e776101f-c32a-4f54-9d60-7436c83f16a3")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d3cb6a54-a3ce-4d7c-8a3c-547db10fa87b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e35734a9-cb71-44d5-bdf4-21ebf2bc0e0c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e5ac57ce-dbce-4367-af8b-7d1669de2717")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="173ddbeb-ea54-4c6e-9d16-a22a8f176dfa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="0aa9a1ca-7b1d-45dd-ad62-ceefa4257957")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="76cb4cd8-0526-4da9-b68b-aecc6f28e408")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="934dd0b6-64a2-40fe-bee1-4e5c6478f323")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="6c50be73-22cf-4b90-bfa8-1058019324e1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="aeac78dc-9b25-413d-8f58-706306b24d11")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="5b32f93e-12c0-4216-b32c-85e143909f61")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="054eb47b-3e31-4ffe-a03e-8ce3790e23cb")>]
+data_txt => Apple Watch Ultra2_오션밴드
+data_txt => 48,700원
+data_txt => 8,250원
+data_txt => 56,950원
+data_txt => Apple Watch9_ST_45_스포츠밴드
+data_txt => 44,800원
+data_txt => 8,250원
+data_txt => 53,050원
+data_txt => Apple Watch9_ST_41_스포츠밴드
+data_txt => 41,880원
+data_txt => 8,250원
+data_txt => 50,130원
+data_txt => Apple Watch9_AL_45_스포츠밴드
+data_txt => 34,570원
+data_txt => 8,250원
+data_txt => 42,820원
+//strong의 datas 정상 출력 확인1
+//strong의 datas 정상 출력 확인2
+['//strong']의 datas 모두 정상 출력 확인
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+인기
+iPhone 15 Pro_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 75,000원
+
+통신료 63,750원
+
+최종 금액
+월
+138,750원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+인기
+iPhone 15 Pro Max_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 83,760원
+
+통신료 63,750원
+
+최종 금액
+월
+147,510원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+iPhone 15_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 61,850원
+
+통신료 63,750원
+
+최종 금액
+월
+125,600원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+iPhone 15 Plus_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 66,230원
+
+통신료 63,750원
+
+최종 금액
+월
+129,980원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+갤럭시 Z Fold 5 512GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 98,230원
+
+통신료 63,750원
+
+최종 금액
+월
+161,980원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 인기
+가성비
+갤럭시 A24
+
+추가 요금 걱정 없는 데이터 69
+
+선택약정24개월
+
+휴대폰 17,530원
+
+통신료 46,920원
+
+최종 금액
+월
+64,450원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+갤럭시 Z Flip 5 256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 61,950원
+
+통신료 63,750원
+
+최종 금액
+월
+125,700원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 갤럭시 S23 Ultra 256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 70,810원
+
+통신료 63,750원
+
+최종 금액
+월
+134,560원
+삼성 == 삼성
+//div[contains(@class,'c-section-md') and contains(.,'태블릿')]//div[@class='tab-panel' and not(@style='display: none;')]//strong
+tagName => //strong
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1629b0ce-f7d4-414d-9c01-ed8b1253d6df")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="2c4a7649-7216-4945-baa6-ebd0ae4c4006")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="518f0d77-a3ef-4ca5-aa3b-740b869bc96b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="eed1f4b1-2263-4fcd-ae07-a6769b79aae6")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e776101f-c32a-4f54-9d60-7436c83f16a3")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d3cb6a54-a3ce-4d7c-8a3c-547db10fa87b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e35734a9-cb71-44d5-bdf4-21ebf2bc0e0c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e5ac57ce-dbce-4367-af8b-7d1669de2717")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="173ddbeb-ea54-4c6e-9d16-a22a8f176dfa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="0aa9a1ca-7b1d-45dd-ad62-ceefa4257957")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="76cb4cd8-0526-4da9-b68b-aecc6f28e408")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="934dd0b6-64a2-40fe-bee1-4e5c6478f323")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="6c50be73-22cf-4b90-bfa8-1058019324e1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="aeac78dc-9b25-413d-8f58-706306b24d11")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="5b32f93e-12c0-4216-b32c-85e143909f61")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="054eb47b-3e31-4ffe-a03e-8ce3790e23cb")>]
+data_txt => Apple Watch Ultra2_오션밴드
+data_txt => 48,700원
+data_txt => 8,250원
+data_txt => 56,950원
+data_txt => Apple Watch9_ST_45_스포츠밴드
+data_txt => 44,800원
+data_txt => 8,250원
+data_txt => 53,050원
+data_txt => Apple Watch9_ST_41_스포츠밴드
+data_txt => 41,880원
+data_txt => 8,250원
+data_txt => 50,130원
+data_txt => Apple Watch9_AL_45_스포츠밴드
+data_txt => 34,570원
+data_txt => 8,250원
+data_txt => 42,820원
+//strong의 datas 정상 출력 확인1
+//strong의 datas 정상 출력 확인2
+['//strong']의 datas 모두 정상 출력 확인
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+갤럭시 Z Fold 5 512GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 98,230원
+
+통신료 63,750원
+
+최종 금액
+월
+161,980원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 인기
+가성비
+갤럭시 A24
+
+추가 요금 걱정 없는 데이터 69
+
+선택약정24개월
+
+휴대폰 17,530원
+
+통신료 46,920원
+
+최종 금액
+월
+64,450원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+갤럭시 Z Flip 5 256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 61,950원
+
+통신료 63,750원
+
+최종 금액
+월
+125,700원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 갤럭시 S23 Ultra 256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 70,810원
+
+통신료 63,750원
+
+최종 금액
+월
+134,560원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 갤럭시 S23 256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 51,130원
+
+통신료 63,750원
+
+최종 금액
+월
+114,880원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 가성비
+갤럭시 A34 5G
+
+5G 라이트+
+
+선택약정24개월
+
+휴대폰 22,110원
+
+통신료 41,250원
+
+최종 금액
+월
+63,360원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => U+키즈폰 with 춘식이
+
+LTE 키즈 22(만 12세 이하)
+
+선택약정24개월
+
+휴대폰 14,250원
+
+통신료 16,500원
+
+최종 금액
+월
+30,750원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+Z 플립5 가비지타임 장도고 에디션
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 69,250원
+
+통신료 63,750원
+
+최종 금액
+월
+133,000원
+Apple == Apple
+//div[contains(@class,'c-section-md') and contains(.,'태블릿')]//div[@class='tab-panel' and not(@style='display: none;')]//strong
+tagName => //strong
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1629b0ce-f7d4-414d-9c01-ed8b1253d6df")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="2c4a7649-7216-4945-baa6-ebd0ae4c4006")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="518f0d77-a3ef-4ca5-aa3b-740b869bc96b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="eed1f4b1-2263-4fcd-ae07-a6769b79aae6")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e776101f-c32a-4f54-9d60-7436c83f16a3")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d3cb6a54-a3ce-4d7c-8a3c-547db10fa87b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e35734a9-cb71-44d5-bdf4-21ebf2bc0e0c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e5ac57ce-dbce-4367-af8b-7d1669de2717")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="173ddbeb-ea54-4c6e-9d16-a22a8f176dfa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="0aa9a1ca-7b1d-45dd-ad62-ceefa4257957")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="76cb4cd8-0526-4da9-b68b-aecc6f28e408")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="934dd0b6-64a2-40fe-bee1-4e5c6478f323")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="6c50be73-22cf-4b90-bfa8-1058019324e1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="aeac78dc-9b25-413d-8f58-706306b24d11")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="5b32f93e-12c0-4216-b32c-85e143909f61")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="054eb47b-3e31-4ffe-a03e-8ce3790e23cb")>]
+data_txt => Apple Watch Ultra2_오션밴드
+data_txt => 48,700원
+data_txt => 8,250원
+data_txt => 56,950원
+data_txt => Apple Watch9_ST_45_스포츠밴드
+data_txt => 44,800원
+data_txt => 8,250원
+data_txt => 53,050원
+data_txt => Apple Watch9_ST_41_스포츠밴드
+data_txt => 41,880원
+data_txt => 8,250원
+data_txt => 50,130원
+data_txt => Apple Watch9_AL_45_스포츠밴드
+data_txt => 34,570원
+data_txt => 8,250원
+data_txt => 42,820원
+//strong의 datas 정상 출력 확인1
+//strong의 datas 정상 출력 확인2
+['//strong']의 datas 모두 정상 출력 확인
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+인기
+iPhone 15 Pro_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 75,000원
+
+통신료 63,750원
+
+최종 금액
+월
+138,750원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+인기
+iPhone 15 Pro Max_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 83,760원
+
+통신료 63,750원
+
+최종 금액
+월
+147,510원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+iPhone 15_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 61,850원
+
+통신료 63,750원
+
+최종 금액
+월
+125,600원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 최신
+iPhone 15 Plus_256GB
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 66,230원
+
+통신료 63,750원
+
+최종 금액
+월
+129,980원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+iPhone14 Pro Max_256
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 83,760원
+
+통신료 63,750원
+
+최종 금액
+월
+147,510원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+iPhone14 Pro_256
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 75,000원
+
+통신료 63,750원
+
+최종 금액
+월
+138,750원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 인기
+iPhone 13 mini 128G
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 41,880원
+
+통신료 63,750원
+
+최종 금액
+월
+105,630원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 지원금확대
+iPhone14 Pro_128
+
+5G 프리미어 에센셜
+
+선택약정24개월
+
+휴대폰 68,180원
+
+통신료 63,750원
+
+최종 금액
+월
+131,930원
+가성비폰 == 가성비폰
+//div[contains(@class,'c-section-md') and contains(.,'태블릿')]//div[@class='tab-panel' and not(@style='display: none;')]//strong
+tagName => //strong
+datas => [<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="1629b0ce-f7d4-414d-9c01-ed8b1253d6df")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="2c4a7649-7216-4945-baa6-ebd0ae4c4006")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="518f0d77-a3ef-4ca5-aa3b-740b869bc96b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="eed1f4b1-2263-4fcd-ae07-a6769b79aae6")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e776101f-c32a-4f54-9d60-7436c83f16a3")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d3cb6a54-a3ce-4d7c-8a3c-547db10fa87b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e35734a9-cb71-44d5-bdf4-21ebf2bc0e0c")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="e5ac57ce-dbce-4367-af8b-7d1669de2717")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="173ddbeb-ea54-4c6e-9d16-a22a8f176dfa")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="0aa9a1ca-7b1d-45dd-ad62-ceefa4257957")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="76cb4cd8-0526-4da9-b68b-aecc6f28e408")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="934dd0b6-64a2-40fe-bee1-4e5c6478f323")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="6c50be73-22cf-4b90-bfa8-1058019324e1")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="aeac78dc-9b25-413d-8f58-706306b24d11")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="5b32f93e-12c0-4216-b32c-85e143909f61")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="054eb47b-3e31-4ffe-a03e-8ce3790e23cb")>]
+data_txt => Apple Watch Ultra2_오션밴드
+data_txt => 48,700원
+data_txt => 8,250원
+data_txt => 56,950원
+data_txt => Apple Watch9_ST_45_스포츠밴드
+data_txt => 44,800원
+data_txt => 8,250원
+data_txt => 53,050원
+data_txt => Apple Watch9_ST_41_스포츠밴드
+data_txt => 41,880원
+data_txt => 8,250원
+data_txt => 50,130원
+data_txt => Apple Watch9_AL_45_스포츠밴드
+data_txt => 34,570원
+data_txt => 8,250원
+data_txt => 42,820원
+//strong의 datas 정상 출력 확인1
+//strong의 datas 정상 출력 확인2
+['//strong']의 datas 모두 정상 출력 확인
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 인기
+가성비
+갤럭시 A24
+
+추가 요금 걱정 없는 데이터 69
+
+선택약정24개월
+
+휴대폰 17,530원
+
+통신료 46,920원
+
+최종 금액
+월
+64,450원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => U+단독
+Galaxy Buddy 2
+
+5G 라이트+
+
+선택약정24개월
+
+휴대폰 17,670원
+
+통신료 41,250원
+
+최종 금액
+월
+58,920원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 가성비
+갤럭시 A34 5G
+
+5G 라이트+
+
+선택약정24개월
+
+휴대폰 22,110원
+
+통신료 41,250원
+
+최종 금액
+월
+63,360원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => U+키즈폰 with 춘식이
+
+LTE 키즈 22(만 12세 이하)
+
+선택약정24개월
+
+휴대폰 14,250원
+
+통신료 16,500원
+
+최종 금액
+월
+30,750원
+len(item.get_property('children')) => 3
+item.get_property('children')[2].get_property('innerText') => 가성비
+MIVE 스타일폴더 블랙
+
+추가 요금 걱정 없는 데이터 69
+
+선택약정24개월
+
+휴대폰 10,520원
+
+통신료 46,920원
+
+최종 금액
+월
+57,440원
+iPhone 15 Pro_256GB in iPhone 15 Pro_256GB
+loading_finished
+swipping 0
+swipping 1
+random num => 0
+random num => 2
+random num => 0
+check_value => ['0', '5,500', '5,500']
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : WEBVIEW_com.lguplus.mobile.cs
+switch_viwe 실행 후 뷰 : NATIVE_APP
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 1
+해당 페이지에서 요소를 찾을 수 없습니다. => try count: 2
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : NATIVE_APP
+switch_viwe 실행 후 뷰 : WEBVIEW_chrome
+<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="787ff110-c6e2-49da-9218-30cbfe5c9b13")>
+<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="194472ca-31f6-4310-9274-a9de739e4fc0")>
+<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d4aaf63e-86b2-405f-ae1d-7f6a5878f5ca")>
+price_list ========================================>
+[<appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="d256909b-3569-4980-b1b4-53e620218cac")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="603d075c-81db-4b06-a758-d1daeb68260b")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="23481d3b-9b86-4a57-9651-33795b392d35")>, <appium.webdriver.webelement.WebElement (session="3218b678-5e11-47ed-908e-1b433187afd1", element="dedafd9b-a9d8-4468-9085-403a97ec82d4")>]
+0 == 0원 할인
+5,500 == - 5,500원 할인
+5,500 == - 5,500원 할인
+현재 페이지 views -> ['NATIVE_APP', 'WEBVIEW_com.lguplus.mobile.cs', 'WEBVIEW_chrome']
+switch_viwe 실행 전 뷰 : WEBVIEW_chrome
+switch_viwe 실행 후 뷰 : WEBVIEW_com.lguplus.mobile.cs
+Message: Could not proxy command to the remote server. Original error: timeout of 240000ms exceeded
+Stacktrace:
+ProxyRequestError: Could not proxy command to the remote server. Original error: timeout of 240000ms exceeded
+    at JWProxy.proxy (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:280:13)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at processTimers (node:internal/timers:512:7)
+    at ProtocolConverter.proxyPerformActions (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\protocol-converter.js:198:9)
+    at ProtocolConverter.convertAndProxy (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\protocol-converter.js:234:16)
+    at JWProxy.proxyCommand (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:336:12)
+    at JWProxy.proxyReqRes (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:410:32)
+    at Chromedriver.proxyReq (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\appium-chromedriver\lib\chromedriver.js:800:12)
+2023-11-13 10:48:47,147 - [FAIL] - 모바일기기 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인 실패
+result/screenshot/img_R3CR30SD5R_0.png
+self.count =>>> 0
+Exception in thread Thread-1 (Z_FLIP3_TEST_CASE):
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\common\function.py", line 97, in swipe
+    self.driver.swipe(75,500,75,0,800)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\extensions\action_helpers.py", line 158, in swipe
+    actions.perform()
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\common\action_chains.py", line 78, in perform
+    self.w3c_actions.perform()
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\common\actions\action_builder.py", line 91, in perform
+    self.driver.execute(Command.W3C_ACTIONS, enc)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 444, in execute
+    self.error_handler.check_response(response)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\errorhandler.py", line 122, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: Could not proxy command to the remote server. Original error: timeout of 240000ms exceeded
+Stacktrace:
+ProxyRequestError: Could not proxy command to the remote server. Original error: timeout of 240000ms exceeded
+    at JWProxy.proxy (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:280:13)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:538:9)
+    at processTimers (node:internal/timers:512:7)
+    at ProtocolConverter.proxyPerformActions (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\protocol-converter.js:198:9)
+    at ProtocolConverter.convertAndProxy (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\protocol-converter.js:234:16)
+    at JWProxy.proxyCommand (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:336:12)
+    at JWProxy.proxyReqRes (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\@appium\base-driver\lib\jsonwp-proxy\proxy.js:410:32)
+    at Chromedriver.proxyReq (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\appium-uiautomator2-driver\node_modules\appium-chromedriver\lib\chromedriver.js:800:12)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\pages\mobile.py", line 240, in mobile
+    self.FC.swipe(1)
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\common\function.py", line 106, in swipe
+    raise Exception('swipe error')
+Exception: swipe error
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\threading.py", line 1038, in _bootstrap_inner
+    self.run()
+  File "C:\Users\User\AppData\Local\Programs\Python\Python311\Lib\threading.py", line 975, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\__main__.py", line 510, in Z_FLIP3_TEST_CASE
+    TEST.TestCase_Z_FLIP3()
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\__main__.py", line 98, in TestCase_Z_FLIP3
+    self.MobilePage.mobile()
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\pages\mobile.py", line 354, in mobile
+    self.DBG.screenshot()
+  File "C:\dev\remotePC_batchfiles\pubsub\appium_aos\common\debug.py", line 204, in screenshot
+    self.driver.switch_to.context('WEBVIEW_com.lguplus.mobile.cs')
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\switch_to.py", line 43, in context
+    self._driver.execute(MobileCommand.SWITCH_TO_CONTEXT, {'name': context_name})
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\selenium\webdriver\remote\webdriver.py", line 444, in execute
+    self.error_handler.check_response(response)
+  File "C:\dev\remotePC_batchfiles\pubsub\venv\Lib\site-packages\appium\webdriver\errorhandler.py", line 122, in check_response
+    raise exception_class(msg=message, stacktrace=format_stacktrace(stacktrace))
+selenium.common.exceptions.WebDriverException: Message: An unknown server-side error occurred while processing the command. Original error: An unknown server-side error occurred while processing the command. Original error: chrome not reachable
+Stacktrace:
+UnknownError: An unknown server-side error occurred while processing the command. Original error: An unknown server-side error occurred while processing the command. Original error: chrome not reachable
+    at getResponseForW3CError (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\protocol\errors.js:1092:9)
+    at asyncHandler (C:\Users\User\AppData\Roaming\npm\node_modules\appium\node_modules\@appium\base-driver\lib\protocol\protocol.js:491:57)
+===== test thread end =====

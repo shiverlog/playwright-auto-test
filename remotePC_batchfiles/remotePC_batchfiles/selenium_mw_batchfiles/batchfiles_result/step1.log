@@ -1,0 +1,6 @@
+
+(venv) C:\dev\remotePC_batchfiles\pubsub\google_pubsub_test>curl -k https://hooks.slack.com/services/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 -X POST -H "Authorization:xoxb-3457711939825-4548963274739-5Edb3DkHcSGcRZV306jp483n" --data "{""text"":""selenium_mw 실행 시작"",""color"":""#36a64f""}" 
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100    56  100     2  100    54      3     85 --:--:-- --:--:-- --:--:--    88100    56  100     2  100    54      3     85 --:--:-- --:--:-- --:--:--    88
+ok

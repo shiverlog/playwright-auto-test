@@ -1,0 +1,11 @@
+{
+  "name": "appium_aos",
+  "version": "1.0.0",
+  "description": "appium-aos",
+  "main": "__main__.py",
+  "scripts": {
+    "test": "python __main__.py"
+  },
+  "author": "",
+  "license": "ISC"
+}
