@@ -1,0 +1,152 @@
+[
+    {
+        "code": "APP_LG_1",
+        "value": "2.59",
+        "tested_at": "2025-03-05 14:03:00"
+    },
+    {
+        "code": "APP_SKT_1",
+        "value": "3.73",
+        "tested_at": "2025-03-05 14:05:00"
+    },
+    {
+        "code": "APP_KT_1",
+        "value": "3.68",
+        "tested_at": "2025-03-05 14:07:00"
+    },
+    {
+        "code": "APP_LG_2",
+        "value": "0.82",
+        "tested_at": "2025-03-05 14:08:00"
+    },
+    {
+        "code": "APP_SKT_2",
+        "value": "1.02",
+        "tested_at": "2025-03-05 14:09:00"
+    },
+    {
+        "code": "APP_KT_2",
+        "value": "0.56",
+        "tested_at": "2025-03-05 14:10:00"
+    },
+    {
+        "code": "APP_LG_3",
+        "value": "0.60",
+        "tested_at": "2025-03-05 14:11:00"
+    },
+    {
+        "code": "APP_SKT_3",
+        "value": "0.66",
+        "tested_at": "2025-03-05 14:12:00"
+    },
+    {
+        "code": "APP_KT_3",
+        "value": "1.43",
+        "tested_at": "2025-03-05 14:13:00"
+    },
+    {
+        "code": "APP_LG_4",
+        "value": "0.92",
+        "tested_at": "2025-03-05 14:15:00"
+    },
+    {
+        "code": "APP_SKT_4",
+        "value": "1.74",
+        "tested_at": "2025-03-05 14:16:00"
+    },
+    {
+        "code": "APP_KT_4",
+        "value": "2.31",
+        "tested_at": "2025-03-05 14:18:00"
+    },
+    {
+        "code": "APP_LG_5",
+        "value": "0.89",
+        "tested_at": "2025-03-05 14:19:00"
+    },
+    {
+        "code": "APP_SKT_5",
+        "value": "2.54",
+        "tested_at": "2025-03-05 14:20:00"
+    },
+    {
+        "code": "APP_KT_5",
+        "value": "3.84",
+        "tested_at": "2025-03-05 14:24:00"
+    },
+    {
+        "code": "APP_LG_6",
+        "value": "1.01",
+        "tested_at": "2025-03-05 14:25:00"
+    },
+    {
+        "code": "APP_SKT_6",
+        "value": "1.50",
+        "tested_at": "2025-03-05 14:27:00"
+    },
+    {
+        "code": "APP_KT_6",
+        "value": "1.34",
+        "tested_at": "2025-03-05 14:29:00"
+    },
+    {
+        "code": "APP_LG_7",
+        "value": "0.94",
+        "tested_at": "2025-03-05 14:30:00"
+    },
+    {
+        "code": "APP_SKT_7",
+        "value": "1.21",
+        "tested_at": "2025-03-05 14:31:00"
+    },
+    {
+        "code": "APP_KT_7",
+        "value": "2.44",
+        "tested_at": "2025-03-05 14:32:00"
+    },
+    {
+        "code": "APP_LG_8",
+        "value": "1.34",
+        "tested_at": "2025-03-05 14:34:00"
+    },
+    {
+        "code": "APP_SKT_8",
+        "value": "1.01",
+        "tested_at": "2025-03-05 14:35:00"
+    },
+    {
+        "code": "APP_KT_8",
+        "value": "1.81",
+        "tested_at": "2025-03-05 14:36:00"
+    },
+    {
+        "code": "APP_LG_9",
+        "value": "0.98",
+        "tested_at": "2025-03-05 14:37:00"
+    },
+    {
+        "code": "APP_SKT_9",
+        "value": "1.93",
+        "tested_at": "2025-03-05 14:39:00"
+    },
+    {
+        "code": "APP_KT_9",
+        "value": "1.41",
+        "tested_at": "2025-03-05 14:40:00"
+    },
+    {
+        "code": "APP_LG_10",
+        "value": "0.95",
+        "tested_at": "2025-03-05 14:42:00"
+    },
+    {
+        "code": "APP_SKT_10",
+        "value": "1.42",
+        "tested_at": "2025-03-05 14:43:00"
+    },
+    {
+        "code": "APP_KT_10",
+        "value": "1.89",
+        "tested_at": "2025-03-05 14:44:00"
+    }
+]

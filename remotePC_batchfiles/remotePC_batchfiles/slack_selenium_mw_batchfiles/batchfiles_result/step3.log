@@ -1,6 +1,0 @@
-
-(venv) C:\dev\remotePC_batchfiles\slack_selenium_mw_batchfiles>cd "C:\dev\remotePC_batchfiles\pubsub\selenium_mw" 
-
-(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_mw>cd "C:\dev\remotePC_batchfiles\pubsub\selenium_mw" 
-
-(venv) C:\dev\remotePC_batchfiles\pubsub\selenium_mw>python __main__.py  1>C:/dev/remotePC_batchfiles/slack_selenium_mw_batchfiles/batchfiles_result/step3_automation_test_result.log 2>&1 
