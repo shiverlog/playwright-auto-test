@@ -1,0 +1,12 @@
+{
+  "search_btn": "#search_button",
+  "ranking-keyword": "//div[contains(@class, 'keyword-group') and contains(@class, 'ranking-keyword')]",
+  "keyword": "//div[@class='keyword-group ranking-keyword']//a[@class='r-link']",
+  "검색창_input": ".c-inpform.is-clear > input",
+  "검색결과_검색창": ".search-term.cl-def",
+  "검색창_검색버튼": "button.c-ibtn-find",
+  "검색창_비우기": "button.c-btn-clear",
+  "검색_모달창_판단": "html[lang=\"ko\"] > body",
+  "검색결과_건수": "span.result-num",
+  "검색결과_탭": "div.search-result-tab-area"
+}

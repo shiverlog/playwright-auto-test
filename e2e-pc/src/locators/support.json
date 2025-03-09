@@ -1,0 +1,31 @@
+{
+  "support": "//*[@class=\"header-gnb-list\"]/li/a[contains(.,\"고객지원\")]",
+  "url": "https://www.lguplus.com/support",
+
+  "고객지원_검색영역": "div.top-search-wrap",
+  "고객지원_검색_플래이스홀더": "div.top-search-wrap input[placeholder=\"자주 찾는 검색어\"]",
+  "자주찾는검색어": "div.top-search-wrap div.search-keyword>div a",
+  "고객지원_검색인풋창": "div.top-search-wrap input",
+
+  "자주하는질문_메뉴탭": "div.c-tabmenu-wrap ul[role=\"tablist\"]",
+  "검색어_텍스트": "p.faq-title>span",
+  "검색결과_리스트": "div.accordion div[role=\"button\"]",
+  "검색결과": "div.collapse.show",
+  "검색결과_전체영역": "div.store-address",
+  "자주하는질문키워드": "div.search-keyword >div.keyword-link a",
+
+  "도움이될내용": "div.cs-intro-1-wrap:not([style=\"display: none;\"])",
+  "도움이될내용_버튼": "div.cs-intro-1-wrap:not([style=\"display: none;\"]) button",
+  "스스로해결가이드": "div.cs-intro-2-wrap>div",
+  "스스로해결가이드_더보기": "div.cs-intro-2-wrap div.middlearea>a",
+  "스스로해결가이드_상세_전체영역": "div.self-troubleshoot-guide",
+  "self_guide_url": "https://www.lguplus.com/support/self-troubleshoot/guide",
+
+  "이용가이드영역": "div.cs-intro-3-wrap",
+  "서비스가입안내": "div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(1)",
+  "서비스조회": "div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(2)",
+  "서비스변경_일시정지_해지": "div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(3)",
+  "매뉴얼다운로드": "div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(4)",
+
+  "안내영역": "div.cs-intro-5-wrap"
+}

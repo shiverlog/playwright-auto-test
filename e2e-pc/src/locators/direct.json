@@ -1,0 +1,23 @@
+{
+  "direct": "//*[@class=\"header-gnb-list\"]/li/a[contains(.,\"다이렉트샵\")]",
+  "url": "https://www.lguplus.com/direct",
+
+  "배너_이미지": "div.direct-kv img",
+
+  "con_01": "div.direct-usim",
+  "다이렉트_컨텐츠1": "div.direct-usim div.btn-area a",
+
+  "con_02": "div.bo-modules-plan-list .middlearea .section ul.data-list",
+  "다이렉트_컨텐츠2_tit": "div.bo-modules-plan-list .middlearea .section ul.data-list > li .plan-name",
+  "다이렉트_컨텐츠2_price": "div.bo-modules-plan-list .middlearea .section ul.data-list > li .plan-origin-price > del",
+  "다이렉트_컨텐츠2_가입버튼": "div.bo-modules-plan-list .middlearea .section ul.data-list > li > div.btn-area > a",
+  "다이렉트_컨텐츠2_전체보기": ".bo-modules-plan-list div.middlearea > div.section > div.btn-area >a.btn-view-all",
+  "다이렉트_컨텐츠2_계산영역": "div.calcu-list",
+
+  "전용요금제_가입하기_url": "https://www.lguplus.com/mobile",
+  "전용요금제_가입하기_전체영역": "div.middlearea-contents",
+
+  "다이렉트_컨텐츠3": "div.direct-benefit-info ul.direct-benefit-list li",
+  "다이렉트_컨텐츠4": "ul.swiper-wrapper li",
+  "다이렉트_컨텐츠5": ".banner-list li a"
+}

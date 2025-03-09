@@ -1,0 +1,12 @@
+{
+  "search_btn": ".header-utill button.c-btn-search",
+  "ranking-keyword": "//div[contains(@class, 'c-keyword-wrap') and .//p[@class='h4' and text()='인기 검색어']]",
+  "keyword": "//div[contains(@class, 'c-keyword-wrap') and .//p[@class='h4' and text()='인기 검색어']]//a",
+  "검색창_input": "div.c-inpform.is-clear div.c-inpitem input",
+  "검색어해시태그": "div.c-tag-wrap a",
+  "검색결과_검색창": ".c-inpform.is-clear div.c-inpitem .c-inp",
+  "검색결과_섹션": "//div[@class='section-channel']",
+  "검색결과_탭": "//div[@class='section-channel']//span[contains(text(), '개인') or contains(text(), '기업')]",
+  "입력한문자삭제_btn": "div.modal-content button[title=\"입력한 문자 삭제\"]",
+  "검색결과_url": "https://m.lguplus.com/search/result"
+}

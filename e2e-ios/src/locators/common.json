@@ -1,0 +1,22 @@
+{
+  "channel": "C06599H0H08",
+  "mention_channel": "C04F5T84SLS",
+  "mention_id": "<@U041HBBLEMR>, <@U0550LN5MJ8>, <!subteam^S06UD11GD6H>",
+  "url": "https://app.lguplus.com/apcm/main",
+  "body": "html[lang=\"ko\"]>body",
+  "gnb_url": "https://app.lguplus.com/gnb",
+  "메인_메뉴": ".c-btn-menu",
+  "전체펼침": "button.dep_all",
+  "뒤로가기": "button.history_back",
+  "이전화면": ".c-btn-prev",
+  "modal": "div.modal-content",
+  "모달창_체크박스": "div.modal-body input[type=checkbox]",
+  "모달창_닫기": "div.modal-content .c-btn-close",
+  "모달창_버튼": "div.modal-content button",
+  "modal_하단버튼": "div.modal-content footer button",
+  "딤드": "div#dimmedOverlay",
+  "모달창_버튼_ins": "div.ins-content-wrapper a[id*=\"ins-editable-button\"]",
+  "ins_overlay": "//div[contains(@class, 'ins-custom-overlay')]",
+  "ins_close_button": "//div[contains(@class, 'ins-close-button') and text()='닫기']",
+  "app": "com.lguplus.mobile.cs"
+}

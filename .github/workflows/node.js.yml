@@ -5,10 +5,12 @@ on:
     branches:
       - main
       - develop
+      - release
   pull_request:
     branches:
       - main
       - develop
+      - release
 
 jobs:
   build:
@@ -16,7 +18,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16, 18, 20]
+        node-version: [22]
 
     steps:
       - name: Checkout repository

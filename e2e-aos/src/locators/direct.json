@@ -1,0 +1,15 @@
+{
+  "direct": "//button[contains(.,'다이렉트')]",
+  "url": "https://app.lguplus.com/direct",
+
+  "kv_list": "div.direct-kv img",
+
+  "con_01": "div.direct-usim",
+
+  "con_02": "div[moduleid='PlanCombineCarousel03']",
+  "con_02_가입하기": "div[moduleid='PlanCombineCarousel03'] a[data-gtm-event-name='order_button_click']",
+  "전용요금제_가입하기_url": "https://app.lguplus.com/mobile/usim-detail",
+
+  "con_03": "div.direct-benefit-info",
+  "con_03_li": "div.direct-benefit-info ul li"
+}

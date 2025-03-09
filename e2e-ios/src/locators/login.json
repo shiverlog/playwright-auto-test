@@ -1,0 +1,22 @@
+{
+  "url": "https://app.lguplus.com/apcm/login",
+  "로그인 여부": "div.loginBox",
+  "ID로그인_btn": ".nm-app-login-way li:nth-of-type(1)",
+  "login_btn": ".loginList > li:nth-of-type(1) > a",
+  "logout_btn": ".loginList > li:nth-of-type(2) > a",
+  "uplus_login_img": "img[alt=\"u+ID\"]",
+  "uplus_id_input": "input[type=\"text\"]",
+  "uplus_pw_input": "input[type=\"password\"]",
+  "uplus_login_btn": "button.nm-login-btn",
+  "uplus_입력한문자삭제": "button[title=\"입력한 문자 삭제\"]",
+  "naver_login_img": "img[alt=\"네이버\"]",
+  "naver_id_input": "#id",
+  "naver_pw_input": "#pw",
+  "naver_login_btn": "btn_check",
+  "naver_입력한문자삭제": "#id_clear",
+  "kakao_login_img": "img[alt=\"카카오\"]",
+  "kakao_id_input": "#loginId--1",
+  "kakao_pw_input": "#password--2",
+  "kakao_login_btn": "#mainContent > div > div > form > div.confirm_btn > button.btn_g.highlight.submit",
+  "kakao_입력한문자삭제": ".btn_clear"
+}

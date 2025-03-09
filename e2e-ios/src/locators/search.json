@@ -1,0 +1,8 @@
+{
+  "검색결과_검색창" : ".c-inpform.is-clear div.c-inpitem .c-inp",
+  "입력한문자삭제_btn" : "div.modal-content button[title=\"입력한 문자 삭제\"]",
+  "search_btn" : ".header-utill button.c-btn-search",
+  "검색창_input" : "div.c-inpform.is-clear div.c-inpitem input",
+  "검색어해시태그" : "div.c-tag-wrap a",
+  "검색결과_url" : "https://app.lguplus.com/search/result"
+}

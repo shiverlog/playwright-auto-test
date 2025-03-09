@@ -1,0 +1,30 @@
+{
+  "mobile": "//button[contains(.,\"모바일\")]",
+  "direct": ".menu >ul > li > div > a",
+  "url": "https://m.lguplus.com/mobile",
+
+  "KV_링크": "div[section-group-id=\"MoSubMainMobileKVSection\"] a",
+
+  "테마배너": "div[section-group-id=\"MoSubMainMobileThemeSection\"]",
+  "테마배너_링크": "div[section-group-id=\"MoSubMainMobileThemeSection\"] li a",
+
+  "이벤트": "div[section-group-id=\"MoSubMainMobileEventSection\"]",
+  "이벤트_title": "div[section-group-id=\"MoSubMainMobileEventSection\"] div.section-title a",
+  "이벤트_콘텐츠": "div[section-group-id=\"MoSubMainMobileEventSection\"] div.swiper-slide a",
+
+  "휴대폰_title": "div[section-group-id=\"MoSubMainMobileDeviceSection\"] div.section-title a",
+  "모바일기기_휴대폰_url": "https://m.lguplus.com/mobile/device/phone",
+  "휴대폰_탭_링크": "div[section-group-id=\"MoSubMainMobileDeviceSection\"] div.m-tabs a",
+  "휴대폰_panel": "div[section-group-id=\"MoSubMainMobileDeviceSection\"] div.tab-panel:not([style^=\"display\"])",
+  "휴대폰_panel_주문하기": "div[section-group-id=\"MoSubMainMobileDeviceSection\"] div.tab-panel:not([style^=\"display\"]) div.swiper-slide-active div.card-bottom button",
+  "휴대폰_panel_상품명": "div[section-group-id=\"MoSubMainMobileDeviceSection\"] div.tab-panel:not([style^=\"display\"]) div.card-title p.big-title",
+
+  "기기상품상세_title": "p.device-kv-wrap__info--title",
+
+  "추천 요금제": "section[section-group-id=\"MoSubMainMobileRecommendPlan\"]",
+  "추천 요금제_title": "section[section-group-id=\"MoSubMainMobileRecommendPlan\"] header.title a",
+  "모바일요금제_요금제_url": "https://m.lguplus.com/mobile/plan/mplan/plan-all",
+  "추천 요금제_panel": "section[section-group-id=\"MoSubMainMobileRecommendPlan\"] div.slide-wrap",
+  "추천 요금제_링크": "section[section-group-id=\"MoSubMainMobileRecommendPlan\"] div.slide-wrap a",
+  "요금제상품상세_title": "p.h1"
+}

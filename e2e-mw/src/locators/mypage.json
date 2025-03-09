@@ -1,0 +1,84 @@
+{
+  "mypage": "//button[contains(.,\"마이페이지\")]",
+  "direct": ".menu >ul > li > div > a",
+  "mypage_url": "https://m.lguplus.com/mypage",
+
+  "dropdown": "button.c-btn-dropdown",
+  "dropdown_list": ".modal-content div.c-radio-box-3 li.service-type",
+  "dropdown_list_radio_btn": "div.modal-content input[type=\"radio\"]",
+  "dropdown_close": "footer>div>button",
+  "dropdown_select_text": "button.c-btn-dropdown>strong",
+  "dropdown_select_detail_text": "button.c-btn-dropdown>em",
+
+  "서브메인_상단 데이터 사용량": "div.service-summary > ul > li:first-child > div",
+  "서브메인_상단 청구 및 납부정보": "div.service-summary > ul > li:last-child > div",
+  "서브메인_상단 데이터": "div.service-summary > ul > li > div span.txt",
+  "주문정보": "//div[contains(.,\"주문정보\") and contains(@class,\"c-section\")]",
+  "가입서비스": "//div[contains(.,\"가입 서비스\") and contains(@class,\"c-section\")]",
+  "멤버십": "//div[contains(.,\"멤버십\") and contains(@class,\"p-mypage-main-membership\")]",
+
+  "bill_direct": "//a[contains(.,\"요금/납부\")]",
+  "bill_url": "https://m.lguplus.com/mypage/payinfo",
+
+  "상단 청구정보": "div.c-section-sm",
+  "상단 청구정보 데이터": "div.c-section-sm ul li p",
+  "청구요금 및 납부 탭": "div.m-tabs a[role=\"tab\"]",
+  "panel_list": "div.tab-panel ul li",
+  "더보기 버튼": "//div[contains(@class,'tab-panel')]//div[@class='c-btn-group']//button[contains(.,'더 보기')]",
+
+  "use_direct": "//a[contains(.,\"사용내역 조회\")]",
+  "use_url": "https://m.lguplus.com/mypage/bilv",
+
+  "사용현황_dropdown_list": "div.modal-content li.c-radio-box-3 span > label:nth-of-type(1)",
+  "사용현황_dropdown_select_text": "button.c-btn-dropdown>span",
+
+  "실시간요금조회": "//ul[@role=\"tablist\"]//a[contains(.,\"실시간 요금 조회\")]",
+  "top_bill": "//*[@class=\"p-mypage\"]/div/div[1]/div/p[1]/em",
+  "이동통신요금": "//*[@class=\"list-box-usedinfo\"]/li/ul/li/p",
+  "bottom_bill": "//*[@class=\"list-box-usedinfo\"]/li[3]/ul/li/p",
+  "현재까지_사용한_요금": "div.c-section-md",
+  "실시간이용요금_panel": "div.mypage-usedinfo div.c-section-xs",
+
+  "월별사용량조회": "//ul[@role=\"tablist\"]//a[contains(.,\"월별사용량조회\")]",
+  "월별사용량조회_column": "table.table >thead",
+  "월별사용량조회_월": "span.monthly > i",
+  "월별사용량조회_뒤로가기": "button.c-btn-month-prev",
+  "월별사용량상세조회": "div.c-section-md >div.c-btn-group >button",
+  "월별사용량상세_탭": "div.modal-content ul[role=\"tablist\"]",
+  "월별사용량상세_월": "div.modal-content span.monthly",
+  "월별사용량상세_확인": "div.modal-content div.c-btn-group>button",
+
+  "통화상세내역": "ul[role=\"tablist\"]>li:nth-of-type(3)",
+  "통화상세내역_panel": "div.mypage-usedinfo-callhistory",
+  "통화상세내역_조회": "div.c-btn-group >a",
+  "통화상세내역_조회_팝업": "div.modal-content >div.modal-body",
+  "통화상세내역_조회_팝업_확인": "div.modal-content div.c-btn-group>button.c-btn-solidbox-1",
+
+  "기가인터넷사용량": "//ul[@role=\"tablist\"]//a[contains(.,\"기가인터넷사용량\")]",
+  "기가인터넷사용량_고객정보": "div.mypage-usedinfo >div.c-section-md:not(.use-amount)",
+
+  "IPTV컨텐츠사용내역": "//ul[@role=\"tablist\"]//a[contains(.,\"IPTV컨텐츠사용내역\")]",
+  "iptv컨텐츠사용내역_고객정보": "div.used-info >div.c-section-md:nth-of-type(1)",
+  "iptv컨텐츠사용내역_본인인증": "div.used-info >div.c-section-md:nth-of-type(2) div.component__inner",
+  "iptv컨텐츠사용내역_본인인증_btns": "div.used-info >div.c-section-md:nth-of-type(2) div.component__inner label",
+
+  "상단 고객 멤버십 정보": "div.submain-section.mypage-membership > div.c-section-md",
+  "안내 문자메시지": "div.mypage-membership>div.c-section-md >button",
+  "안내 문자메시지 팝업": "div.modal-content div.modal-body div.c-section-md",
+  "안내 문자메시지 수신 여부": "div.modal-content div.modal-body div.c-section-md ul>li:nth-of-type(2)",
+  "안내 문자메시지_radio": "div.modal-content div.modal-body input[type=\"radio\"]",
+  "안내 문자메시지_text": "div.modal-content div.modal-body label.text-radio>span",
+
+  "월별 할인 혜택 이용정보": "div.tab-panel > div > div.c-section-md:nth-of-type(1)",
+
+  "기간별 이용내역 조회": "div.tab-panel > div > div.c-section-md:nth-of-type(2)",
+  "기간별 이용내역 조회 버튼": "div.tab-panel > div > div.c-section-md:nth-of-type(2) > div.c-btn-group a",
+  "기간별 이용내역 조회 결과": "div[style=\"\"]",
+
+  "멤버십 변경내역 탭": "ul[role=\"tablist\"] >li:nth-of-type(2)",
+  "멤버십 등급 변경내역": "div.tab-panel div.c-section-md:nth-of-type(1)",
+  "멤버십 카드 발급내역": "div.tab-panel div.c-section-md:nth-of-type(2)",
+  "멤버십 카드 발급내역_자세히보기": "div.tab-panel  div.c-section-md:nth-of-type(2) >div>button",
+  "멤버십 카드 발급내역_자세히보기_팝업": "div.modal-content div.c-section-md",
+  "멤버십 카드 발급내역_자세히보기_팝업닫기": "div.modal-content footer>div>button"
+}

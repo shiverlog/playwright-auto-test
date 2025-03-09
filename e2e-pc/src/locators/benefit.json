@@ -1,0 +1,19 @@
+{
+  "benefit": "//*[@class=\"header-gnb-list\"]/li/a[contains(.,\"혜택/멤버십\")]",
+  "url": "https://www.lguplus.com/benefit",
+
+  "멤버십_이용내역": "ul.sub-menu-item a[data-gtm-click-text*=\"멤버십 이용내역\"]",
+  "멤버십혜택_영역": "div.par-tabcont-area",
+  "멤버십혜택_탭메뉴": "div.par-tabcont-area ul[role=\"tablist\"]",
+  "제휴사전체보기_버튼": "div.par-tabcont-area div.all-more a",
+  "제휴사전체보기_전체영역": "div.membership-gift-data",
+  "membership_url": "https://www.lguplus.com/benefit/membership",
+
+  "온라인_가입할인_혜택": ".bo-modules-internet-event-list .event-section-ul",
+  "온라인_가입할인_혜택_컨텐츠": ".bo-modules-internet-event-list .event-section-ul li",
+  "혜택모두보기_버튼": ".bo-modules-benefit-online-product .middlearea > a",
+  "혜택모두보기_상세": "div.uplus-_combined-phone-discount",
+  "online": "https://www.lguplus.com/benefit-uplus/online-purchase-benefit",
+
+  "uth_benefit": "//*[@class=\"sub-menu-list\"]//li/a[contains(.,\"유쓰 혜택\")]"
+}

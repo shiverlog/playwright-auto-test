@@ -1,0 +1,33 @@
+{
+  "mention_channel": "C04F5T84SLS",
+  "mention_id": "<@U041HBBLEMR>, <@U0550LN5MJ8>, <!subteam^S06UD11GD6H>",
+
+  "url": "https://app.lguplus.com/apcm/main",
+  "gnb_url": "https://app.lguplus.com/gnb",
+
+  "body": "html[lang='ko']>body",
+  "모달창_체크박스": "div.modal-body input[type=checkbox]",
+  "모달창_닫기": ".c-btn-close",
+  "모달창_버튼": "div.modal-content button",
+  "딤드": "div#dimmedOverlay",
+  "모달창_버튼_ins": "div.ins-content-wrapper a[id*='ins-editable-button']",
+  "ins_overlay": "//div[contains(@class, 'ins-custom-overlay')]",
+  "ins_close_button": "//div[contains(@class, 'ins-close-button') and text()='닫기']",
+
+  "메인_메뉴": ".c-btn-menu",
+  "뒤로가기": "button.history_back",
+  "전체펼침": "button.dep_all",
+  "이전화면": ".c-btn-prev",
+
+  "다음버튼": "//android.widget.Button[@text='다음']",
+  "앱_사용중에만_허용": "com.android.permissioncontroller:id/permission_allow_foreground_only_button",
+  "모두허용_버튼": "com.android.permissioncontroller:id/permission_allow_all_button",
+  "허용_버튼": "com.android.permissioncontroller:id/permission_allow_button",
+  "동의_버튼": "com.lguplus.mobile.cs:id/agreeButton",
+
+  "로그인하지_않고_입장할게요": "//android.widget.Button[@text='로그인하지 않고 입장할게요']",
+  "로그인없이_입장하기": "//android.widget.Button[@text='로그인없이 입장하기']",
+  "닫기_버튼": "//android.widget.Button[@text='닫기']",
+
+  "withoutLogin": "button[class='withoutLogin']"
+}
