@@ -1,4 +1,4 @@
-# 1W. Playwright & Node.js & TS 학습
+# 1W. Playwright & Node.js & TS 학습(03/07 - 03/14)
 
 ## 개발툴 및 Node.js 언어 설치
 - Visual Code : https://code.visualstudio.com/download

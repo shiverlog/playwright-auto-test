@@ -1,4 +1,4 @@
-# 2W. Playwright Architecture 설명
+# 2W. Playwright Architecture 설명(03/17 - 03/21)
 
 ## 전체 프로젝트 트리 구조
 ```
