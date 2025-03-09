@@ -79,6 +79,18 @@ npm install googleapis dotenv axios
 # Mail 패키지 설치
 npm install nodemailer
 
+# Pubsub 패키지 설치
+npm install @google-cloud/pubsub --save
+
+# Appium 및 WebDriver 설치
+npm install -g appium
+npm install appium --save-dev
+npm install webdriverio --save-dev
+appium driver install uiautomator2 # Android 드라이버 설치
+appium driver install xcuitest  # iOS 드라이버 설치
+npm install --save-dev @types/webdriverio
+npm install wd
+
 # 리엑트 패키지 설치
 npm install react react-dom
 npm install --save-dev @types/react @types/react-dom
@@ -121,6 +133,7 @@ code --install-extension streetsidesoftware.code-spell-checker
 code --install-extension ms-playwright.playwright
 ```
 
+## Appium 학습
 
 ## TypeScript 학습
 

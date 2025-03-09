@@ -111,6 +111,16 @@ export const FILE_RETENTION_DAYS = {
 const USERNAME = process.env.UPLUS_ID;
 const PASSWORD = process.env.UPLUS_PW;
 
+// 슬랙 정보
+const SLACK_FILES_UPLOAD_URL = "https://lgdigitalcommerce.slack.com/api/files.upload";
+
+// pubsub 정보
+export const PUBSUB = {
+  PROJECT_ID: "gcp-dev-uhdc-id",
+  TOPIC_ID: "qa-test",
+  PUBLISHER_AUDIENCE: "https://pubsub.googleapis.com/google.pubsub.v1.Publisher"
+};
+
 // 설정값 내보내기
 export {
   BROWSERS,

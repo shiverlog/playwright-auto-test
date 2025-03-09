@@ -22,70 +22,13 @@ import common.variable as var
 
 class Function():
     # wait 반복 횟수
-    retry_count= 3 
+    retry_count= 3
     def __init__(self,Driver:WebDriver):
-        self.driver = Driver.driver 
-        self.os = Driver.os 
+        self.driver = Driver.driver
+        self.os = Driver.os
         self.wait = Driver.wait
         self.action = Driver.action
         self.var=self.set_variables()
-
-
-    def set_variables(self):
-        '''
-        variables.xlsx 파일에 저장된 요소 변수값을 가져와 dict 타입 파싱
-        '''
-        # data_only=True로 해줘야 수식이 아닌 값으로 받아온다. 
-        load_wb = load_workbook(f"{os.getcwd()}\\variables.xlsx", data_only=True)
-        # 시트 이름으로 불러오기 
-        load_ws = load_wb['Sheet']
-        
-        
-        all_values = {}
-        for row in load_ws.rows:
-            # A1 셀은 공백으로 패스
-            if row[0] == load_ws['A1']:
-                # print(f"{row[0]} == {load_ws['A1']}")
-                continue
-
-            # 데이터 유무(count number)
-            if row[0].value:
-
-                page_name =  row[1].value # B1
-                key = row[2].value # C1
-                value = row[3].value # D1
-                assert page_name or key or value, print("일부 데이터 None")
-                
-                # {} 초기화
-                try:
-                    all_values[page_name] 
-                except:
-                    all_values[page_name] = {}
-
-                all_values[page_name][key] = value
-            elif row[0].value == row[1].value == row[2].value == row[3].value is None:
-                return all_values
-            else:
-                # print(f"{row[0].value}  {row[1].value}  {row[2].value} {row[3].value}")
-                assert row[0] or row[1] or row[2] or row[3], print("일부 데이터 비어있음")
-        load_wb.close()
-        return all_values
-
-    # def find_css(self,loc):
-    #     self.find = self.driver.find_element(By.CSS_SELECTOR, loc)
-    #     return self.find
-
-    # def find_csss(self,loc):
-    #     self.find = self.driver.find_elements(By.CSS_SELECTOR, loc)
-    #     return self.find
-
-    # def find_xpath(self,loc):
-    #     self.find = self.driver.find_element(By.XPATH, loc)
-    #     return self.find
-
-    # def find_xpaths(self,loc):
-    #     self.find = self.driver.find_elements(By.XPATH, loc)
-    #     return self.find
 
     def modal_ck(self):
         try:
@@ -164,7 +107,7 @@ class Function():
                     else:
                         self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, btn)))
                         el=self.driver.find_element(By.CSS_SELECTOR, btn)
-                    # 메뉴 전체 펼침 버튼 클릭 
+                    # 메뉴 전체 펼침 버튼 클릭
                     if "전체 펼침" in self.driver.find_element(By.CSS_SELECTOR,self.var['common_el']['전체_펼침']).get_property('innerText'):
                         open_list=self.driver.find_element(By.CSS_SELECTOR,self.var['common_el']['전체_펼침'])
                         self.driver.execute_script("arguments[0].scrollIntoView(false);", open_list)
@@ -182,7 +125,7 @@ class Function():
                     return
 
             except Exception:
-                
+
                 # 만약 햄버거 사이드바가 열린 상태일 때, 닫기
                 if var.common_el['gnb_url'] in self.driver.current_url :
                     self.driver.find_element(By.CSS_SELECTOR,self.var['common_el']['뒤로가기_버튼']).click()
@@ -211,7 +154,7 @@ class Function():
                 self.driver.close()
 
         self.driver.switch_to.window(num[0])
-        
+
     def loading_find_css(self,elem) -> (WebElement):
         '''
         페이지 로드 후, css 요소 찾기
@@ -227,7 +170,7 @@ class Function():
                 if i == self.retry_count-1:
                     print("해당 페이지에서 요소를 찾을 수 없습니다.")
                     return False
-                
+
     def loading_find_csss(self,elem) -> (List[WebElement]):
         '''
         페이지 로드 후, css 요소 List 찾기
@@ -265,7 +208,7 @@ class Function():
         페이지 로드 후, xpath 요소 찾기
         '''
         for i in range(self.retry_count):
-            try: 
+            try:
                 self.wait.until(EC.visibility_of_element_located((By.XPATH,elem)))
                 self.find=self.driver.find_element(By.XPATH,elem)
                 if self.find != NoneType:
@@ -281,7 +224,7 @@ class Function():
         페이지 로드 후, 페이지의 DOM에서 xpath 요소 찾기
         '''
         for i in range(self.retry_count):
-            try: 
+            try:
                 self.wait.until(EC.presence_of_element_located((By.XPATH,elem)))
                 self.find=self.driver.find_element(By.XPATH,elem)
                 if self.find != NoneType:
@@ -297,7 +240,7 @@ class Function():
         페이지 로드 후, xpath 요소 List 찾기
         '''
         for i in range(self.retry_count):
-            try: 
+            try:
                 self.wait.until(EC.presence_of_all_elements_located((By.XPATH,elem)))
                 self.find=self.driver.find_elements(By.XPATH,elem)
                 if self.find != NoneType:
@@ -306,12 +249,12 @@ class Function():
                 if i == self.retry_count-1:
                     print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
                     return [False]
-             
+
     def loading(self,css):
         max_count=10
         count=0
         self.driver.implicitly_wait(1)
-        
+
         while True:
             try:
                 time.sleep(0.5)
@@ -332,7 +275,7 @@ class Function():
         '''
         loading_elem_css='div.c-loading-1'
         loading_elem_css1='*.b-skeleton'
-        
+
         self.loading(loading_elem_css)
         self.loading(loading_elem_css1)
         max_count=10
@@ -360,12 +303,12 @@ class Function():
                 if parent.startswith('//'):
                     parent_el=self.wait.until(EC.presence_of_element_located((By.XPATH,parent)))
                     self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", parent_el)
-                    parent_text=parent_el.get_property('innerText')                
+                    parent_text=parent_el.get_property('innerText')
                 else:
                     parent_el=self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,parent)))
                     self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", parent_el)
-                    parent_text=parent_el.get_property('innerText')                
-                        
+                    parent_text=parent_el.get_property('innerText')
+
                 if parent_text is not None:
                     pass
             except Exception:
@@ -378,11 +321,11 @@ class Function():
         for t in list:
             if t not in parent_text:
                 print("'"+ t + "' 텍스트를 찾을 수 없습니다.")
-                return False                
+                return False
         else:
             pass
-        return True    
-        
+        return True
+
     def scroll_center(self,el):
         '''
         JS Execute; el요소를 중간으로 scroll
@@ -392,7 +335,7 @@ class Function():
 
     def scroll(self,height):
         '''
-        JS Execute; height까지 scroll 
+        JS Execute; height까지 scroll
         '''
         while True:
             self.driver.execute_script(f"window.scrollTo(0,{height});")
@@ -400,7 +343,7 @@ class Function():
             time.sleep(0.5)
             if current_scrollTop >= height:
                 break
-    
+
     def scroll_el(self,loc:str|WebElement|int,view='true'):
         '''
         JS Execute; el을 view(true:상위/false:하위) 위치 까지 scroll
@@ -435,16 +378,16 @@ class Function():
         self.driver.get(var.common_el['home_url'])
         self.modal_ck()
         self.modal_ck3()
-    
+
     def goto_url(self,url:str):
         self.driver.get(url)
         self.wait_loading()
-    
+
     def is_login(self):
         '''
         로그인 상태 확인
         '''
-        hamburger_main = self.var['common_el']['메뉴_버튼'] 
+        hamburger_main = self.var['common_el']['메뉴_버튼']
         for i in range(self.retry_count):
             try:
                 obj=self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, hamburger_main)))
@@ -457,7 +400,7 @@ class Function():
             except:
                 # self.retry_count번 반복해서 요소를 찾아도 없으면 False 반환
                 if i == self.retry_count-1:
-                    return False 
+                    return False
 
         if "로그아웃" in logout_text or "반갑습니다" in logout_text:
             return True
@@ -473,12 +416,12 @@ class Function():
         '''
         JS Execute; css로 요소를 찾아 앞으로 가져오기
         '''
-        self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: relative !important; z-index: 1000000000000000000000000000000000000000000000000!important;'") 
+        self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: relative !important; z-index: 1000000000000000000000000000000000000000000000000!important;'")
         el=self.loading_find_css_pre(css)
         if el.is_displayed() is True:
             return
-        else:        
-            self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 1000000000000000000000000000000000000000000000000!important;'") 
+        else:
+            self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 1000000000000000000000000000000000000000000000000!important;'")
             el=self.loading_find_css_pre(css)
             if el.is_displayed() is True:
                 return
@@ -518,8 +461,8 @@ class Function():
                     # print(f"datas => {len(datas)}")
                     for data in datas:
                         if data.get_property('childElementCount') >0:
-                            if [child for child in data.get_property('children') if child.get_property('tag_name') in tag_names] == []: 
-                                #자식요소가 있지만, 자식 요소 중 동일한 태그명이 존재하지 않으면 내가 확인을 원하는 데이터일 확률이 높으므로 이어서 실행 
+                            if [child for child in data.get_property('children') if child.get_property('tag_name') in tag_names] == []:
+                                #자식요소가 있지만, 자식 요소 중 동일한 태그명이 존재하지 않으면 내가 확인을 원하는 데이터일 확률이 높으므로 이어서 실행
                                 pass
                             else:
                                 if len(datas)-1 == datas.index(data): # 마지막 요소면 True 반환
@@ -536,7 +479,7 @@ class Function():
                             # print(f"{tag_name}의 datas 정상 출력 확인1")
                             datas = True
                             break
-                    count+=1              
+                    count+=1
                     if count >=self.retry_count: # max_count 이상일 경우, 해당 tag_name return
                         # print(f"{tag_name} 미출력")
                         return tag_name
@@ -550,7 +493,7 @@ class Function():
             print(e)
             print(traceback.format_exc())
             self.driver.implicitly_wait(20)
-                    
+
     def animation_none(self,parent_loc):
         '''
         애니메이션 제거(현재 미사용중이지만 업데이트 가능성 있음)
@@ -636,7 +579,7 @@ class Function():
                 print(e)
                 re_el = self.redefinition_v2(re_el)
                 pass
-    
+
     def again_click(self,click_el:WebElement,display_el_selector:str=''):
         '''
         해당 요소 정상 클릭까지 반복
