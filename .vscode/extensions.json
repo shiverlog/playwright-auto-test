@@ -1,16 +1,16 @@
 {
-    "recommendations": [
-        "esbenp.prettier-vscode", // Prettier - 코드 자동 포맷팅
-        "dbaeumer.vscode-eslint", // ESLint - 코드 스타일 체크
-        "ms-playwright.playwright", // Playwright 공식 확장 프로그램
-        "Orta.vscode-jest", // Jest - 테스트 코드 실행 및 디버깅
-        "eamodio.gitlens", // GitLens - Git 히스토리 및 코드 변경 추적
-        "GitHub.copilot", // GitHub Copilot - AI 코드 자동 완성
-        "streetsidesoftware.code-spell-checker", // 코드 철자 검사 (오타 방지)
-        "mhutchie.git-graph", // Git Graph - Git 브랜치 시각화
-        "ms-vscode-remote.remote-containers", // Dev Container 환경 지원 (Docker 사용 시)
-        "oderwat.indent-rainbow", // 들여쓰기 색상화
-        "yzhang.markdown-all-in-one", // Markdown 지원
-        "gruntfuggly.todo-tree" // TODO 및 FIXME 주석 하이라이트
-    ]
+  "recommendations": [
+    "esbenp.prettier-vscode", // Prettier - 코드 자동 포맷팅
+    "dbaeumer.vscode-eslint", // ESLint - 코드 스타일 체크
+    "ms-playwright.playwright", // Playwright 공식 확장 프로그램
+    "Orta.vscode-jest", // Jest - 테스트 코드 실행 및 디버깅
+    "eamodio.gitlens", // GitLens - Git 히스토리 및 코드 변경 추적
+    "GitHub.copilot", // GitHub Copilot - AI 코드 자동 완성
+    "streetsidesoftware.code-spell-checker", // 코드 철자 검사 (오타 방지)
+    "mhutchie.git-graph", // Git Graph - Git 브랜치 시각화
+    "ms-vscode-remote.remote-containers", // Dev Container 환경 지원 (Docker 사용 시)
+    "oderwat.indent-rainbow", // 들여쓰기 색상화
+    "yzhang.markdown-all-in-one", // Markdown 지원
+    "gruntfuggly.todo-tree" // TODO 및 FIXME 주석 하이라이트
+  ]
 }
