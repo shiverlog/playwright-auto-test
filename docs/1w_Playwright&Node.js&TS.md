@@ -19,12 +19,12 @@ sudo apt-get install cmake gcc-10 g++-10 libc++-dev libc++abi-dev \
     libnuma-dev libibverbs-dev libgflags-dev libgoogle-glog-dev liburing-dev
 ```
 
-```cmd
+```powershell
 # Chocolatey 설치
 Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 ```
 
-```cmd
+```powershell
 # chocolatey를 사용하여 OpenCV 설치
 choco install opencv -y
 ```
@@ -134,20 +134,33 @@ npm install -g postman-code-generators
 npm install -g newman
 
 # Open CV 변수 선언
-# 환경변수 Path: %OPENCV_BIN_DIR%, C:\tools\opencv\build\x64\vc16\bin 추가
 setx OPENCV_INCLUDE_DIR "C:\tools\opencv\build\include"
 setx OPENCV_LIB_DIR "C:\tools\opencv\build\x64\vc16\lib"
-setx OPENCV_BIN_DIR "C:\tools\opencv\build\bin"
+setx OPENCV_BIN_DIR "C:\tools\opencv\build\x64\vc16\bin"
+setx PATH "%OPENCV_BIN_DIR%;%PATH%"
 
-# OpenCV 의존성 및 OpenCV4NodeJS 설치
+# opencv_world4110.lib -> opencv_world.lib 으로 변경
 choco install -y python visualcpp-build-tools
 npm install -g node-gyp
 npm install -g cmake-js
-set OPENCV4NODEJS_DISABLE_AUTOBUILD=1
-npm install --save opencv4nodejs
 
-# npm 캐시 정리
+# OpenCV 자동 빌드를 비활성화
+set OPENCV4NODEJS_DISABLE_AUTOBUILD=1
+
+# 외부 메모리 추적 비활성화
+set OPENCV4NODEJS_DISABLE_EXTERNAL_MEM_TRACKING=1
+
+# 기존 설치 파일 정리
+rmdir /s /q node_modules
+del package-lock.json
 npm cache clean --force
+
+# OpenCV4NodeJS 설치
+npm install opencv4nodejs --build-from-source
+npm install
+
+# node_modules 경로 확인
+npm root
 
 # depedencies.json 안의 패키지 node_modules 에 저장
 Get-Content dependencies.json
@@ -158,6 +171,8 @@ npm list --depth=0 --json > dependencies.json
 # TypeScript 컴파일
 npx tsc
 
+# 모든 사용자(Everyone)에게 해당 폴더 및 하위 폴더에 대한 전체 제어 권한 부여
+icacls "E:\playwright-auto-test" /grant Everyone:F /T
 ```
 
 ## VS Code 확장 프로그램 설치
@@ -403,12 +418,71 @@ docker-compose stop
 
 ## Appium 학습
 
-### U+ID 2.0 로그인 시 웹 인증 프로세스
+### 웹뷰(WebView)와 네이티브 뷰(Native View) 개념 및 웹 인증 프로세스
 
 - ChromeCustomTab (Android) : Android 4.3 이상에서 OAuth/OpenID Connect 인증을 웹 기반으로 실행할 때 사용
 - ASWebAuthenticationSession (iOS) : iOS 12 이상에서 OAuth/OpenID Connect 인증을 위한 공식 API, Safari 기반 인증을 실행하고, 로그인 후 앱으로 자동 복귀 가능
+- 웹뷰(WebView): 네이티브 앱 내부에서 웹 페이지를 로드할 수 있도록 하는 임베디드 브라우저, 내부적으로 HTML, CSS, JavaScript로 구성된 웹 페이지를 렌더링, 웹 페이지가 포함되어 있기 때문에, 이를 처리하려면 컨텍스트(Context) 전환이 필요, Android에서는 WebView, iOS에서는 WKWebView 또는 UIWebView를 사용하여 구현
+
+```
+// 현재 사용 가능한 모든 컨텍스트 가져오기
+const contexts = await driver.getContexts();
+
+// 웹뷰 컨텍스트로 전환
+await driver.switchContext(contexts.find(ctx => ctx.includes('WEBVIEW')));
+
+// 웹 요소 조작
+const webElement = await driver.findElement('css selector', '#login-button');
+await webElement.click();
+
+// 다시 네이티브 컨텍스트로 전환
+await driver.switchContext('NATIVE_APP');
+```
+
+- 네이티브 뷰(Native View): 모바일 운영체제(Android/iOS)가 제공하는 네이티브 UI 컴포넌트를 의미하며, 운영체제의 UI 프레임워크(Android의 View, iOS의 UIKit)를 사용하여 렌더링된 화면, Appium에서는 네이티브 뷰 요소를 찾을 때 UiAutomator2 (Android)와 XCUITest (iOS) 엔진을 사용
+
+```
+// Android에서 네이티브 요소 찾기 (ID 사용)
+const element = await driver.findElement('id', 'com.example.app:id/button');
+await element.click();
+
+// iOS에서 네이티브 요소 찾기 (Accessibility ID 사용)
+const element = await driver.findElement('accessibility id', 'login_button');
+await element.click();
+```
 
 ### Execution Context(명시적 대기 조건 EC)
+
+| 조건명                              | 설명                                                      |
+| ----------------------------------- | --------------------------------------------------------- |
+| **presenceOfElementLocated**        | 요소가 DOM에 존재할 때까지                                |
+| **presenceOfAllElementsLocatedBy**  | 특정 요소가 여러 개 존재할 때까지                         |
+| **visibilityOfElementLocated**      | 요소가 DOM에 존재하며 화면에 표시될 때까지                |
+| **visibilityOf**                    | 주어진 요소가 화면에 표시될 때까지                        |
+| **invisibilityOfElementLocated**    | 요소가 화면에서 사라질 때까지                             |
+| **invisibilityOf**                  | 주어진 요소가 화면에서 사라질 때까지                      |
+| **stalenessOf**                     | 요소가 더 이상 유효하지 않을 때까지                       |
+| **elementToBeClickable**            | 요소가 클릭 가능해질 때까지                               |
+| **elementToBeSelected**             | 요소가 선택될 때까지                                      |
+| **elementSelectionStateToBe**       | 요소의 선택 상태가 특정 값과 일치할 때까지                |
+| **numberOfElementsToBe**            | 특정 개수만큼 요소가 존재할 때까지                        |
+| **numberOfElementsToBeMoreThan**    | 특정 개수보다 많아질 때까지                               |
+| **numberOfElementsToBeLessThan**    | 특정 개수보다 적어질 때까지                               |
+| **textToBePresentInElement**        | 특정 요소의 텍스트가 특정 값과 일치할 때까지              |
+| **textToBePresentInElementLocated** | 특정 요소의 텍스트가 특정 값과 일치할 때까지              |
+| **textToBePresentInElementValue**   | 특정 요소의 `value` 속성이 특정 값과 일치할 때까지        |
+| **attributeToBe**                   | 특정 요소의 속성이 특정 값과 일치할 때까지                |
+| **attributeContains**               | 특정 요소의 속성이 특정 값을 포함할 때까지                |
+| **titleIs**                         | 현재 페이지의 제목이 특정 값과 일치할 때까지              |
+| **titleContains**                   | 현재 페이지의 제목이 특정 값을 포함할 때까지              |
+| **urlToBe**                         | 현재 URL이 특정 값과 일치할 때까지                        |
+| **urlContains**                     | 현재 URL이 특정 값을 포함할 때까지                        |
+| **frameToBeAvailableAndSwitchToIt** | 특정 프레임이 사용 가능해질 때까지                        |
+| **numberOfWindowsToBe**             | 열린 브라우저 탭(윈도우) 개수가 특정 개수와 일치할 때까지 |
+| **alertIsPresent**                  | 경고창(Alert)이 나타날 때까지                             |
+| **and**                             | 여러 개의 조건을 모두 만족할 때까지                       |
+| **or**                              | 여러 개의 조건 중 하나라도 만족하면 종료                  |
+| **not**                             | 특정 조건이 충족되지 않을 때까지                          |
 
 ## TypeScript 학습
 

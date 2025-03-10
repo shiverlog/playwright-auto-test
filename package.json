@@ -42,7 +42,8 @@
   "main": "index.js",
   "directories": {
     "doc": "docs",
-    "example": "example"
+    "example": "example",
+    "test": "tests"
   },
   "dependencies": {
     "@google-cloud/pubsub": "^4.10.0",
@@ -78,7 +79,9 @@
     "mime-db": "^1.52.0",
     "mime-types": "^2.1.35",
     "morgan": "^1.10.0",
+    "node-gyp": "^11.1.0",
     "nodemailer": "^6.10.0",
+    "opencv4nodejs": "^5.6.0",
     "p-retry": "^6.2.1",
     "picomatch": "^2.3.1",
     "playwright-core": "^1.50.1",
@@ -108,9 +111,23 @@
     "xmlbuilder": "^15.1.1",
     "yn": "^3.1.1"
   },
+  "opencv4nodejs": {
+    "disableAutoBuild": 1,
+    "opencvIncludeDir": "C:\\tools\\opencv\\build\\include",
+    "opencvLibDir": "C:\\tools\\opencv\\build\\x64\\vc16\\lib",
+    "opencvBinDir": "C:\\tools\\opencv\\build\\x64\\vc16\\bin"
+  },
   "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shiverlog/playwright-auto-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/shiverlog/playwright-auto-test/issues"
+  },
+  "homepage": "https://github.com/shiverlog/playwright-auto-test#readme",
   "description": ""
 }
