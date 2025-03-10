@@ -1,13 +1,36 @@
 {
   "name": "@myorg/common",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "dist/index.ts",
+  "types": "dist/index.d.ts",
+  "description": "Common Utilities For The Auto Test Project",
   "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "files": [
+    "config",
+    "constants",
+    "formatters",
+    "handlers",
+    "logger",
+    "notifications",
+    "utils",
+    "index.ts"
+  ],
+  "keywords": [
+    "typescript",
+    "common",
+    "utilities",
+    "helpers",
+    "shared",
+    "config",
+    "constants",
+    "logger",
+    "formatters",
+    "handlers"
+  ],
+  "author": "Shiwoo Min",
+  "license": "MIT"
 }

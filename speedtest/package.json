@@ -1,0 +1,19 @@
+{
+  "name": "@your-org/speedtest",
+  "version": "1.0.0",
+  "description": "Speed test module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node speedtest.js",
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "@your-org/common": "file:../common"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "eslint": "^8.0.0"
+  }
+}

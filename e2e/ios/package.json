@@ -1,0 +1,19 @@
+{
+  "name": "@your-org/e2e-ios",
+  "version": "1.0.0",
+  "description": "iOS E2E testing module",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "playwright test",
+    "lint": "eslint . --fix"
+  },
+  "dependencies": {
+    "@your-org/common": "file:../../common"
+  },
+  "devDependencies": {
+    "playwright": "^1.39.0",
+    "typescript": "^5.0.0"
+  }
+}
