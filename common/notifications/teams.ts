@@ -1,6 +1,7 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import { teamsForm } from "../formatters/teamsForm";
+import { logger } from "../logger/customLogger";
 
 dotenv.config();
 
@@ -15,7 +16,10 @@ export class Teams {
   /**
    * Microsoft Teams 메시지 전송
    */
-  public static async sendTeamsMessage(message: string, isSuccess: boolean = true) {
+  public static async sendTeamsMessage(
+    message: string,
+    isSuccess: boolean = true
+  ) {
     if (!Teams.webhookUrl) {
       console.warn("⚠ Microsoft Teams Webhook URL이 설정되지 않았습니다.");
       return;
@@ -29,13 +33,13 @@ export class Teams {
       const payload = {
         "@type": "MessageCard",
         "@context": "http://schema.org/extensions",
-        "themeColor": isSuccess ? "0078D7" : "FF0000",
-        "summary": "자동화 테스트 알림",
-        "sections": [
+        themeColor: isSuccess ? "0078D7" : "FF0000",
+        summary: "자동화 테스트 알림",
+        sections: [
           {
-            "activityTitle": "Playwright 테스트 결과",
-            "activitySubtitle": new Date().toISOString(),
-            "text": formattedMessage,
+            activityTitle: "Playwright 테스트 결과",
+            activitySubtitle: new Date().toISOString(),
+            text: formattedMessage,
           },
         ],
       };
@@ -44,9 +48,9 @@ export class Teams {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log(`Teams 메시지 전송 완료: ${message}`);
+      logger.info(`Teams 메시지 전송 완료: ${message}`);
     } catch (error) {
-      console.error("Teams 메시지 전송 실패:", error);
+      logger.error("Teams 메시지 전송 실패:", error);
     }
   }
 
@@ -62,9 +66,9 @@ export class Teams {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log("Teams 실행 로그 메시지 전송 완료");
+      logger.info("Teams 실행 로그 메시지 전송 완료");
     } catch (error) {
-      console.error("Teams 실행 로그 메시지 전송 실패:", error);
+      logger.error("Teams 실행 로그 메시지 전송 실패:", error);
     }
   }
 
@@ -81,9 +85,9 @@ export class Teams {
         headers: { "Content-Type": "application/json" },
       });
 
-      console.log(`Teams 테스트 결과 (${resultText}) 전송 완료`);
+      logger.info(`Teams 테스트 결과 (${resultText}) 전송 완료`);
     } catch (error) {
-      console.error(`Teams 테스트 결과 (${resultText}) 전송 실패:`, error);
+      logger.error(`Teams 테스트 결과 (${resultText}) 전송 실패:`, error);
     }
   }
 }

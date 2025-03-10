@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import { logger } from "../logger/customLogger";
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ export const sendEmail = async (
   to: string = EMAIL_TO
 ) => {
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !to) {
-    console.warn("⚠ 이메일 환경 변수가 설정되지 않았습니다.");
+    logger.warn("이메일 환경 변수가 설정되지 않았습니다.");
     return;
   }
 
@@ -50,8 +51,8 @@ export const sendEmail = async (
     };
 
     const info = await transporter.sendMail(mailOptions);
-    console.log(`📧 이메일 전송 완료: ${info.messageId} (To: ${to})`);
+    logger.info(`이메일 전송 완료: ${info.messageId} (To: ${to})`);
   } catch (error) {
-    console.error("❌ 이메일 전송 실패:", error);
+    logger.error("이메일 전송 실패:", error);
   }
 };

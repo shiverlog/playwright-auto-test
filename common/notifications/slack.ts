@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import pRetry from "p-retry";
 import { slackForm } from "../formatters/slackForm";
+import { logger } from "../logger/customLogger";
 
 dotenv.config();
 
@@ -65,18 +66,21 @@ export class Slack {
   /**
    * Slack 메시지 전송
    */
-  public static async sendSlackMessage(message: string, isSuccess: boolean = true) {
+  public static async sendSlackMessage(
+    message: string,
+    isSuccess: boolean = true
+  ) {
     try {
       const formattedMessage = isSuccess
-        ? `✅ ${message} 성공`
-        : `❌ ${message} 실패`;
+        ? `${message} 성공`
+        : `${message} 실패`;
 
       await slackClient.chat.postMessage({
         channel: Slack.channel,
         text: formattedMessage,
       });
     } catch (error) {
-      console.error("❌ Slack 메시지 전송 실패:", error);
+      logger.error("Slack 메시지 전송 실패:", error);
     }
   }
 
@@ -85,7 +89,13 @@ export class Slack {
    */
   public static async sendSlackServerTitle() {
     const now = new Date();
-    const formattedBlocks = Slack.formatBlocks(slackForm(Slack.poc).serverTitle, now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes());
+    const formattedBlocks = Slack.formatBlocks(
+      slackForm(Slack.poc).serverTitle,
+      now.getMonth() + 1,
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes()
+    );
 
     try {
       const response = await slackClient.chat.postMessage({
@@ -96,7 +106,7 @@ export class Slack {
 
       Slack.setServerThreadTS(response.ts || "");
     } catch (error) {
-      console.error("❌ Slack 실행 로그 메시지 전송 실패:", error);
+      logger.error("Slack 실행 로그 메시지 전송 실패:", error);
     }
   }
 
@@ -105,7 +115,10 @@ export class Slack {
    */
   public static async sendSlackServerResult(testResult: boolean) {
     const result = testResult ? "PASS" : "FAIL";
-    const formattedBlocks = Slack.formatBlocks(slackForm(Slack.poc).serverResult, result);
+    const formattedBlocks = Slack.formatBlocks(
+      slackForm(Slack.poc).serverResult,
+      result
+    );
 
     try {
       await slackClient.chat.postMessage({
@@ -118,7 +131,7 @@ export class Slack {
         Slack.sendSlackMention();
       }
     } catch (error) {
-      console.error("❌ Slack 테스트 결과 전송 실패:", error);
+      logger.error("Slack 테스트 결과 전송 실패:", error);
     }
   }
 
@@ -135,7 +148,7 @@ export class Slack {
         text: `${result} - ${log}`,
       });
     } catch (error) {
-      console.error("❌ Slack 로그 메시지 전송 실패:", error);
+      logger.error("Slack 로그 메시지 전송 실패:", error);
     }
   }
 
@@ -143,7 +156,7 @@ export class Slack {
    * Slack 스크린샷 업로드
    */
   public static async sendSlackImage(imgComment: string = "이슈") {
-    if (!Slack.getFilePath()) throw new Error("❌ 파일 경로가 올바르지 않습니다.");
+    if (!Slack.getFilePath()) throw new Error("파일 경로가 올바르지 않습니다.");
 
     try {
       await slackClient.files.upload({
@@ -154,7 +167,7 @@ export class Slack {
         initial_comment: imgComment,
       });
     } catch (error) {
-      console.error("❌ Slack 스크린샷 업로드 실패:", error);
+      logger.error("Slack 스크린샷 업로드 실패:", error);
     }
   }
 
@@ -169,7 +182,7 @@ export class Slack {
         text: SLACK_MENTION_ID,
       });
     } catch (error) {
-      console.error("❌ Slack 멘션 전송 실패:", error);
+      logger.error("Slack 멘션 전송 실패:", error);
     }
   }
 
@@ -177,7 +190,10 @@ export class Slack {
    * Slack 로그 파일 업로드
    */
   public static async sendSlackLogFile() {
-    const logFilePath = path.join("result/debug/", `${new Date().toISOString().slice(0, 10)}_info.log`);
+    const logFilePath = path.join(
+      "result/debug/",
+      `${new Date().toISOString().slice(0, 10)}_info.log`
+    );
 
     try {
       await slackClient.files.upload({
@@ -186,7 +202,7 @@ export class Slack {
         title: `${Slack.poc}_log_file`,
       });
     } catch (error) {
-      console.error("❌ Slack 로그 파일 업로드 실패:", error);
+      logger.error("Slack 로그 파일 업로드 실패:", error);
     }
   }
 
@@ -194,6 +210,8 @@ export class Slack {
    * 블록 템플릿에 데이터 적용하는 함수
    */
   private static formatBlocks(template: any, ...args: any[]): any {
-    return JSON.parse(JSON.stringify(template).replace(/{}/g, () => args.shift()));
+    return JSON.parse(
+      JSON.stringify(template).replace(/{}/g, () => args.shift())
+    );
   }
 }

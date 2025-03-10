@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { logger } from "../logger/customLogger";
 
 export class PageUtils {
   /**

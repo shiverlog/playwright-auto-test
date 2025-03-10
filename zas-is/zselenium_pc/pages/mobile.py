@@ -1,15 +1,4 @@
-import random
-import json
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-
-
 class MobilePage():
-
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     # 모바일 > 서브메인
     def mobile(self):
@@ -223,17 +212,17 @@ class MobilePage():
                 print(f"Testing tab: {key}")
                 self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mobile_el'][f'{key}_tab']))
                 self.FC.wait_loading()
-                
+
                 # 인터스티셜 창 닫기 추가
                 self.FC.is_exists_element_click(self.FC.loading_find_xpath_pre(self.FC.var['common_el']['ins_close_button']))
-                
+
                 current_url = self.FC.driver.current_url
                 expected_url = self.FC.var['mobile_el'][f'{key}_url']
                 print(f"Current URL: {current_url}, Expected URL: {expected_url}")
                 result.append(expected_url in current_url)
-                
+
             assert self.DBG.print_res(result),self.DBG.logger.debug(f"모바일 > 모바일 요금제 > 5G/LTE > {key}탭 정상 이동 및 콘텐츠 확인 실패")
-            
+
             # 5G/LTE탭으로 이동하여 임의 요금제 비교하기
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mobile_el']['5G/LTE_tab']))
             self.FC.wait_loading()
@@ -260,7 +249,7 @@ class MobilePage():
                 result.append(datas[key] in self.FC.loading_find_css_pre(self.FC.var['mobile_el'][f'요금제비교함_{key}']).get_property('innerText'))
             result.append(self.FC.wait_datas(self.FC.var['mobile_el']['요금제비교함'],'p:not(.small)','span:not(.small,.blind)'))
             assert self.DBG.print_res(result),self.DBG.logger.debug("모바일 > 모바일 요금제 > 5G/LTE > 요금제 비교하기 > 비교함 %s 정상 노출 확인 실패", datas['요금제명'])
-            
+
             # 요금제 비교 운영결함으로 주석처리
             # # 요금제 비교함 > 비교 요금제 드롭다운 변경
             # self.FC.loading_find_css(self.FC.var['mobile_el']['요금제비교함_드롭다운']).click()
@@ -343,10 +332,10 @@ class MobilePage():
             self.FC.modal_ck()
             # self.FC.wait_datas(self.FC.var['mobile_el']['phone_info'],self.FC.var['mobile_el']['phone_name'])
             self.FC.wait_loading()
-            
+
             result = []
             phone_name = self.FC.loading_find_css_pre(self.FC.var['mobile_el']['phone_name']).get_property('innerText').split('(')[0]
-            
+
             self.FC.move_to_click(self.FC.loading_find_xpaths(self.FC.var['mobile_el']['장바구니_가입유형'])[0], True)
 
             self.FC.is_exists_move_to_click(self.FC.loading_find_xpaths(self.FC.var['mobile_el']['장바구니_요금제'])[0],True)
@@ -386,13 +375,13 @@ class MobilePage():
             self.FC.wait_loading()
 
             assert self.FC.driver.current_url in self.FC.var['mobile_el']['장바구니_url'], self.DBG.logger.debug("모바일 > 모바일 기기 > 휴대폰 > 장바구니 이동 실패")
-            
+
             cart_list = self.FC.loading_find_csss(self.FC.var['mobile_el']['장바구니_상품_영역'])
             is_text_in_cart=[]
             for cart in cart_list:
                 res = all([True if text in cart.get_property('innerText') else False for text in [phone_name,phone_plan,phone_price]])
                 is_text_in_cart.append(res)
-            
+
             assert self.DBG.print_res(result),self.DBG.logger.debug("모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능 정상 동작 실패")
 
             del_btns = self.FC.loading_find_csss(self.FC.var['mobile_el']['장바구니_삭제_버튼'])
@@ -411,12 +400,3 @@ class MobilePage():
         else :
             self.DBG.print_dbg("모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능 정상 동작")
             return True
-
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    mobile = MobilePage(driver, fc)
-
-    mobile.mobile()

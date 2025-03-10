@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import dotenv from "dotenv";
 import pRetry from "p-retry";
+import { logger } from "../logger/customLogger";
 
 dotenv.config();
 
@@ -18,27 +19,35 @@ const slackClient = new WebClient(SLACK_TOKEN);
  * @param message - 전송할 메시지
  * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
  */
-export const sendSlackMessage = async (message: string, isSuccess: boolean = true) => {
+export const sendSlackMessage = async (
+  message: string,
+  isSuccess: boolean = true
+) => {
   if (!SLACK_TOKEN || !SLACK_CHANNEL) {
-    console.warn("Slack 토큰 또는 채널 ID가 설정되지 않았습니다.");
+    logger.warn("Slack 토큰 또는 채널 ID가 설정되지 않았습니다.");
     return;
   }
 
   try {
-    const formattedMessage = isSuccess ? `✅ ${message} 성공` : `❌ ${message} 실패`;
+    const formattedMessage = isSuccess
+      ? `✅ ${message} 성공`
+      : `❌ ${message} 실패`;
     await slackClient.chat.postMessage({
       channel: SLACK_CHANNEL,
       text: formattedMessage,
     });
   } catch (error) {
-    console.error("Slack 메시지 전송 실패:", error);
+    logger.error("Slack 메시지 전송 실패:", error);
   }
 };
 
 /**
  * Slack 메시지를 재시도하여 전송하는 함수
  */
-export const sendSlackMessageWithRetry = async (message: string, isSuccess: boolean = true) => {
+export const sendSlackMessageWithRetry = async (
+  message: string,
+  isSuccess: boolean = true
+) => {
   await pRetry(() => sendSlackMessage(message, isSuccess), {
     retries: 3,
     factor: 2,
@@ -53,7 +62,7 @@ export const sendSlackMessageWithRetry = async (message: string, isSuccess: bool
  */
 export const sendSlackErrorMessage = async (message: string, error: Error) => {
   if (!SLACK_TOKEN || !SLACK_CHANNEL) {
-    console.warn("⚠ Slack 토큰 또는 채널 ID가 설정되지 않았습니다.");
+    logger.warn("Slack 토큰 또는 채널 ID가 설정되지 않았습니다.");
     return;
   }
 
@@ -62,12 +71,12 @@ export const sendSlackErrorMessage = async (message: string, error: Error) => {
 
     await slackClient.chat.postMessage({
       channel: SLACK_CHANNEL,
-      text: `❌ *에러 발생:* ${message}${stackTrace}`,
+      text: `*에러 발생:* ${message}${stackTrace}`,
     });
 
-    console.log("📤 Slack 에러 메시지 전송 완료");
+    logger.info("Slack 에러 메시지 전송 완료");
   } catch (error) {
-    console.error("❌ Slack 에러 메시지 전송 실패:", error);
+    logger.error("Slack 에러 메시지 전송 실패:", error);
   }
 };
 
@@ -76,14 +85,17 @@ export const sendSlackErrorMessage = async (message: string, error: Error) => {
  * @param filePath - 업로드할 파일 경로
  * @param title - 파일 제목
  */
-export const uploadSlackFile = async (filePath: string, title: string = "첨부 파일") => {
+export const uploadSlackFile = async (
+  filePath: string,
+  title: string = "첨부 파일"
+) => {
   if (!SLACK_TOKEN || !SLACK_CHANNEL) {
-    console.warn("Slack 토큰 또는 채널 ID가 설정되지 않았습니다.");
+    logger.warn("Slack 토큰 또는 채널 ID가 설정되지 않았습니다.");
     return;
   }
 
   if (!fs.existsSync(filePath)) {
-    console.warn(`파일이 존재하지 않습니다: ${filePath}`);
+    logger.warn(`파일이 존재하지 않습니다: ${filePath}`);
     return;
   }
 
@@ -93,8 +105,8 @@ export const uploadSlackFile = async (filePath: string, title: string = "첨부 
       file: fs.createReadStream(filePath),
       title: title || path.basename(filePath),
     });
-    console.log(`Slack 파일 업로드 완료: ${filePath}`);
+    logger.info(`Slack 파일 업로드 완료: ${filePath}`);
   } catch (error) {
-    console.error("Slack 파일 업로드 실패:", error);
+    logger.error("Slack 파일 업로드 실패:", error);
   }
 };

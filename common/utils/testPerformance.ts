@@ -1,4 +1,5 @@
 import { Page } from "@playwright/test";
+import { logger } from "../logger/customLogger";
 
 export class TestPerformance {
   /**
@@ -11,7 +12,7 @@ export class TestPerformance {
     await page.waitForLoadState("load");
     const endTime = Date.now();
     const loadTime = endTime - startTime;
-    console.log(`⏳ 페이지 로드 시간: ${loadTime} ms`);
+    logger.info(`페이지 로드 시간: ${loadTime} ms`);
     return loadTime;
   }
 
@@ -21,12 +22,15 @@ export class TestPerformance {
    * @param selector - LCP (Largest Contentful Paint) 요소 선택자
    * @returns LCP 로딩 완료 시간 (ms)
    */
-  public static async measureElementLoadTime(page: Page, selector: string): Promise<number> {
+  public static async measureElementLoadTime(
+    page: Page,
+    selector: string
+  ): Promise<number> {
     const startTime = Date.now();
     await page.waitForSelector(selector, { state: "visible" });
     const endTime = Date.now();
     const loadTime = endTime - startTime;
-    console.log(`📸 요소 (${selector}) 로드 시간: ${loadTime} ms`);
+    logger.info(`요소 (${selector}) 로드 시간: ${loadTime} ms`);
     return loadTime;
   }
 
@@ -36,13 +40,13 @@ export class TestPerformance {
    */
   public static async measureNetworkRequests(page: Page) {
     page.on("request", (request) => {
-      console.log(`📡 요청: ${request.url()} - ${request.method()}`);
+      logger.info(`요청: ${request.url()} - ${request.method()}`);
     });
 
     page.on("response", async (response) => {
       const status = response.status();
       const url = response.url();
-      console.log(`✅ 응답 (${status}): ${url}`);
+      logger.info(`응답 (${status}): ${url}`);
     });
   }
 
@@ -54,12 +58,17 @@ export class TestPerformance {
     const client = await page.context().newCDPSession(page);
     const metrics = await client.send("Performance.getMetrics");
 
-    const cpuUsage = metrics.metrics.find((m) => m.name === "TaskDuration")?.value || 0;
-    const jsHeapUsed = metrics.metrics.find((m) => m.name === "JSHeapUsedSize")?.value || 0;
-    const jsHeapTotal = metrics.metrics.find((m) => m.name === "JSHeapTotalSize")?.value || 0;
+    const cpuUsage =
+      metrics.metrics.find((m) => m.name === "TaskDuration")?.value || 0;
+    const jsHeapUsed =
+      metrics.metrics.find((m) => m.name === "JSHeapUsedSize")?.value || 0;
+    const jsHeapTotal =
+      metrics.metrics.find((m) => m.name === "JSHeapTotalSize")?.value || 0;
 
-    console.log(`🖥 CPU 사용량: ${cpuUsage.toFixed(2)} ms`);
-    console.log(`📊 메모리 사용량: ${(jsHeapUsed / 1024 / 1024).toFixed(2)} MB / ${(jsHeapTotal / 1024 / 1024).toFixed(2)} MB`);
+    logger.info(`CPU 사용량: ${cpuUsage.toFixed(2)} ms`);
+    logger.info(
+      `메모리 사용량: ${(jsHeapUsed / 1024 / 1024).toFixed(2)} MB / ${(jsHeapTotal / 1024 / 1024).toFixed(2)} MB`
+    );
   }
 
   /**
@@ -69,9 +78,9 @@ export class TestPerformance {
   public static async detectConsoleErrors(page: Page) {
     page.on("console", (message) => {
       if (message.type() === "error") {
-        console.error(`❌ 콘솔 에러: ${message.text()}`);
+        logger.error(`콘솔 에러: ${message.text()}`);
       } else if (message.type() === "warning") {
-        console.warn(`⚠ 콘솔 경고: ${message.text()}`);
+        logger.warn(`콘솔 경고: ${message.text()}`);
       }
     });
   }
@@ -96,8 +105,8 @@ export class TestPerformance {
       });
     `;
 
-    const lcpTime = await page.evaluate(script) as number;
-    console.log(`📊 LCP 시간: ${lcpTime} ms`);
+    const lcpTime = (await page.evaluate(script)) as number;
+    logger.info(`LCP 시간: ${lcpTime} ms`);
     return lcpTime;
   }
 
@@ -108,19 +117,24 @@ export class TestPerformance {
     await page.waitForLoadState("load");
 
     const fullLoadTime = await page.evaluate(() => {
-      const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+      const navEntry = performance.getEntriesByType(
+        "navigation"
+      )[0] as PerformanceNavigationTiming;
       return navEntry ? navEntry.loadEventEnd - navEntry.startTime : 0;
     });
 
-    console.log(`🚀 전체 페이지 로드 시간: ${fullLoadTime / 1000} 초`);
+    logger.info(`전체 페이지 로드 시간: ${fullLoadTime / 1000} 초`);
     return fullLoadTime;
   }
 
   /**
    * 특정 이벤트 발생까지 대기
    */
-  public static async waitForPerformanceEvent(page: Page, script: string): Promise<number> {
-    const result = await page.evaluate(script) as number;
+  public static async waitForPerformanceEvent(
+    page: Page,
+    script: string
+  ): Promise<number> {
+    const result = (await page.evaluate(script)) as number;
     return result;
   }
 }

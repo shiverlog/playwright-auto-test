@@ -28,4 +28,3 @@ export function cleanupOldFiles(dirPath: string, maxDays: number) {
     }
   });
 }
-

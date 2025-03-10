@@ -1,9 +1,3 @@
-import random
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
 
 class SupportPage():
     def __init__(self,WebDriver:WebDriver,FC:Function):
@@ -19,7 +13,7 @@ class SupportPage():
 
             # KV
             kv_list=self.FC.loading_find_csss(self.FC.var['support_el']['kv_list'])
-            assert len(kv_list) >= 4, self.DBG.logger.debug("고객지원 > 서브메인 > KV 정상 출력 실패") 
+            assert len(kv_list) >= 4, self.DBG.logger.debug("고객지원 > 서브메인 > KV 정상 출력 실패")
 
             # 자주 찾는 검색어 영역 콘텐츠 및 기능 정상 확인
             # 수동입력 검색
@@ -27,7 +21,7 @@ class SupportPage():
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['support_el']['자주찾는검색어_section']))
             result.append(self.FC.loading_find_css_pre(self.FC.var['support_el']['자주찾는검색창']))
             result.append(6 == len(self.FC.loading_find_csss(self.FC.var['support_el']['자주찾는검색어_list'])))
-            assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 상단 자주찾는 검색어 정상 노출 실패") 
+            assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 상단 자주찾는 검색어 정상 노출 실패")
 
             # 수동 검색어 검색
             test_keyword='테스트'   #검색할 키워드
@@ -42,7 +36,7 @@ class SupportPage():
             self.FC.wait_loading()
 
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_탭']))
-            assert self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_검색결과_키워드']).get_property('innerText')==test_keyword, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 테스트 키워드:'{test_keyword}' 정상 노출 확인 실패") 
+            assert self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_검색결과_키워드']).get_property('innerText')==test_keyword, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 테스트 키워드:'{test_keyword}' 정상 노출 확인 실패")
 
             # TODO 기존 이슈로인해 일시 주석처리
             # assert self.FC.loading_find_css('input#addr-1-1').get_property('value')==test_keyword, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 테스트 키워드:'{test_keyword}' 정상 노출 확인 실패")                  #현재 이슈로인해 Fail 반환 - DCBGQA-336
@@ -58,7 +52,7 @@ class SupportPage():
                     self.FC.move_to_click(el)
                 res=test_keyword in el.get_property('innerText') or self.FC.loading_find_csss(self.FC.var['support_el']['검색결과'])[search_result_list_el.index(el)]
                 search_result.append(res)
-            assert all(search_result), self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 검색 결과 콘텐츠 정상 출력 실패") 
+            assert all(search_result), self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 검색 결과 콘텐츠 정상 출력 실패")
 
             # 자동 입력 검색(자주하는 질문 검색어 클릭 시, 정상 검색 되는지 확인)
             result.clear()
@@ -68,18 +62,18 @@ class SupportPage():
             question_keyword_text=question_keyword.get_property('innerText')
             question_keyword_text=question_keyword_text[1:]
             self.FC.scroll_center(question_keyword)
-            self.FC.driver.execute_script("arguments[0].click();", question_keyword) 
+            self.FC.driver.execute_script("arguments[0].click();", question_keyword)
             self.FC.wait_loading()
 
             self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_탭']).click()  #키워드로 찾기 탭 이동
-            assert self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_검색결과_키워드']).get_property('innerText')==question_keyword_text, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 자주하는 질문 검색어:{question_keyword} >  콘텐츠 정상 출력 실패") 
-            assert self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_검색창']).get_property('value')==question_keyword_text, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 자주하는 질문 검색어:{question_keyword} >  콘텐츠 정상 출력 실패") 
+            assert self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_검색결과_키워드']).get_property('innerText')==question_keyword_text, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 자주하는 질문 검색어:{question_keyword} >  콘텐츠 정상 출력 실패")
+            assert self.FC.loading_find_css(self.FC.var['support_el']['키워드로찾기_검색창']).get_property('value')==question_keyword_text, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 자주하는 질문 검색어:{question_keyword} >  콘텐츠 정상 출력 실패")
             search_result_list_el=self.FC.loading_find_csss(self.FC.var['support_el']['키워드로찾기_검색결과_list'])
 
 
             # # 검색 결과 콘텐츠가 검색한 키워드를 포함하는지 확인
             # search_result.clear()
-            # # for el in search_result_list_el:        #슬라이드 애니메이션 대기시간 때문에 미리 클릭 
+            # # for el in search_result_list_el:        #슬라이드 애니메이션 대기시간 때문에 미리 클릭
             # n=0
             # for el in search_result_list_el:
             #     if el.get_property('nextElementSibling').get_attribute('style') == 'display: none;':
@@ -106,7 +100,7 @@ class SupportPage():
             # select_text_list=[]
             # for option in self.FC.loading_find_csss('select.c-select >option'):
             #     select_text_list.append(option.get_property('text'))
-            # print(f"select list => {str(select_text_list)}") 
+            # print(f"select list => {str(select_text_list)}")
             # self.FC.bring_el_to_front_css('div.tab-panel > div.c-section-xs > div.section-wide >div.c-selform > select.c-select')
             # select=Select(self.FC.loading_find_css('div.tab-panel > div.c-section-xs > div.section-wide >div.c-selform > select.c-select'))
             # # for text in select_text_list:           # TODO 이슈로 인해 fail 반환 - DCBGQA-336
@@ -136,10 +130,10 @@ class SupportPage():
                 text_list=['도움']
                 result.append(self.FC.text_list_in_element(self.FC.var['support_el']['도움이 될 내용'],text_list))
                 result.append(len(self.FC.loading_find_csss(self.FC.var['support_el']['도움이 될 내용_list']))>1)
-                
+
             else:
                 raise Exception("support 로그인 판별 에러")
-            
+
             assert self.DBG.print_res(result), self.DBG.logger.debug(f"고객지원 > 서브메인 > 도움이 될 내용 콘텐츠 정상 출력 실패")
 
 
@@ -154,7 +148,7 @@ class SupportPage():
             video_list_el=self.FC.loading_find_csss(self.FC.var['support_el']['스스로 해결 가이드_list'])
             result.append(len(video_list_el) == 4)
             assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 스스로 해결 가이드 콘텐츠 정상 노출 확인 실패")
-    
+
 
 
 
@@ -173,7 +167,7 @@ class SupportPage():
                 if self.FC.var['support_el']['url'] != self.FC.driver.current_url:
                     self.FC.goto_url(self.FC.var['support_el']['url'])
                     self.FC.scroll(1300)
-            
+
             # info_list_el=self.FC.loading_find_csss('div.submain-section > div.c-section-md > ul>li a')
             # self.FC.action.move_to_element(info_list_el[-1]).click().perform()
             # self.FC.action.reset_actions()
@@ -181,9 +175,9 @@ class SupportPage():
             # print(self.FC.loading_find_css_pre('div.cont_01').get_property('innerText'))
             # result.append("고객의 소리" in self.FC.loading_find_css_pre('div.cont_01').get_property('innerText'))
             # self.FC.close_popup(self.FC.driver.window_handles)
-            
+
             assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 정보 버튼(마지막 섹션) 정상 노출 확인 실패")
-            
+
 
 
         except  Exception :
@@ -194,21 +188,3 @@ class SupportPage():
         else :
             self.DBG.print_dbg("고객지원 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    support = SupportPage(driver,fc)
-    login = LoginPage(driver,fc)
-
-    # 공통모듈로 분리?
-    if fc.is_login():
-        login.logout()
-        
-    login.u_plus_login()
-
-    support.support()
-    driver.driver.quit()
-    driver.kill()
-

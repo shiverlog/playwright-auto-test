@@ -1,19 +1,4 @@
-import random
-import sys  # 현재 호출하는 함수명 반환 모듈
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-
-sys.path.append(r'C:\lg-uplus\project\selenium_pc')
-
-
-
 class DirectPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
-
 
     def direct(self):
         self.FC.gotoHome()
@@ -83,13 +68,3 @@ class DirectPage():
             self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인")
             self.FC.modal_ck4()
             return True
-
-
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    direct = DirectPage(driver, fc)
-
-    direct.direct()

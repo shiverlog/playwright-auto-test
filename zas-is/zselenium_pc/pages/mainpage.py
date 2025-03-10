@@ -1,13 +1,4 @@
-import random
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-
 class MainPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     # 로그인 후 메인페이지 내정보 출력 확인
     def mainpage_myinfo(self):
@@ -66,7 +57,7 @@ class MainPage():
             rcmd_tab_list = self.FC.loading_find_csss(self.FC.var['mainpage_el']['RCMD_tab'])
             num = random.randrange(0, len(rcmd_tab_list))
             self.FC.move_to_click(rcmd_tab_list[num])
-            
+
             rcmd_device = self.FC.loading_find_csss(self.FC.var['mainpage_el']['RCMD_device'])
             num = random.randrange(1, len(rcmd_device)) # 키즈폰 무너에디션 예외처리
             rcmd_device_info = rcmd_device[num].get_property('outerHTML').replace(" ", "")
@@ -107,13 +98,3 @@ class MainPage():
             self.FC.move_to_element(self.FC.loading_find_css(self.FC.var['mainpage_el']['company']))
             contents_list=self.FC.loading_find_csss(self.FC.var['mainpage_el']['company_content'])
             assert len(contents_list) == 3,self.DBG.logger.debug("메인 > 유잼 콘텐츠 정상 노출 확인 실패")
-
-        
-
-        except Exception:
-            self.DBG.print_dbg("메인 페이지 정상 노출 확인",False)
-            return False
-
-        else :
-            self.DBG.print_dbg("메인 페이지 정상 노출 확인")
-            return True

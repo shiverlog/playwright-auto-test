@@ -1,4 +1,4 @@
-
+class MainPage():
     def u_plus_login_retry(self, max_retries, login_type):
         for retry_count in range(max_retries):
             # 로그인 시도

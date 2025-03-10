@@ -1,14 +1,4 @@
-import random
-import re
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-
 class MypagePage():
-    bill_count='2'
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     # 마이페이지 서브메인
     def mypage(self):

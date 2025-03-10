@@ -1,14 +1,4 @@
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-
-
 class UjamPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        # self.driver=WebDriver.driver
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
-
 
     def ujam(self):
         self.FC.gotoHome()
@@ -19,7 +9,7 @@ class UjamPage():
             self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['common_el']['전체_펼침']))
             self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['ujam_el']['ujam']))
 
-            
+
         except  Exception :
             self.DBG.print_dbg("유잼 페이지 정상 노출 및 기능 동작 확인",False)
             return False

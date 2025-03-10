@@ -1,4 +1,5 @@
 import { Page, Locator } from "@playwright/test";
+import { logger } from "../logger/customLogger";
 
 export class ElementActions {
   /**
@@ -39,7 +40,10 @@ export class ElementActions {
    * @param selector - 확인할 요소의 선택자
    * @returns 요소가 존재하면 true, 없으면 false
    */
-  public static async isElementVisible(page: Page, selector: string): Promise<boolean> {
+  public static async isElementVisible(
+    page: Page,
+    selector: string
+  ): Promise<boolean> {
     return await page.isVisible(selector);
   }
 }

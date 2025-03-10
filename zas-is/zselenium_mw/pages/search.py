@@ -1,15 +1,3 @@
-import random
-import re
-import string
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-from selenium.webdriver.common.keys import Keys
-
-
 class Search():
     def __init__(self, WebDriver:WebDriver, FC:Function):
         self.FC = FC
@@ -41,14 +29,14 @@ class Search():
             if keyword == self.special_characters:
                 print(f"특수문자 '{keyword}' 검색 결과가 없어야하나, 개인_{result_counts[0]}건, 기업_{result_counts[1]}건의 검색 결과가 노출됩니다.")
                 # raise AssertionError(f"특수문자 '{keyword}' 검색 결과가 없어야하나, 개인_{result_counts[0]}건, 기업_{result_counts[1]}건의 검색 결과가 노출됩니다.")
-            
+
             # 검색 결과가 나온다면, 건수와 상관없이, 개인, 기업 탭 둘 다 노출되어야 함
-            assert len(results) == 2, self.DBG.logger.debug(f"검색 결과 오류: 키워드 '{keyword}' 검색 시 개인, 기업 탭이 모두 노출되지 않음")  
+            assert len(results) == 2, self.DBG.logger.debug(f"검색 결과 오류: 키워드 '{keyword}' 검색 시 개인, 기업 탭이 모두 노출되지 않음")
         else:
             # 검색 결과가 나오지 않는다면 검색결과 섹션이 노출 되지 않아야 함
             assert keyword in self.FC.loading_find_css(self.FC.var['search_el']['검색결과_검색창']).get_property("innerText"), self.DBG.logger.debug(f"검색 > 테스트 키워드 '{keyword}'가 검색창에 표시되지 않음")
-            assert self.FC.loading_find_xpath_pre(self.FC.var['search_el']['검색결과_섹션']) is False, self.DBG.logger.debug(f"검색 > 테스트 키워드 '{keyword}' 검색 시 결과가 없으나 검색결과 섹션이 표시됨")  
-    
+            assert self.FC.loading_find_xpath_pre(self.FC.var['search_el']['검색결과_섹션']) is False, self.DBG.logger.debug(f"검색 > 테스트 키워드 '{keyword}' 검색 시 결과가 없으나 검색결과 섹션이 표시됨")
+
     def hashtag_search(self):
         '''
         해시태그 검색하기
@@ -57,7 +45,7 @@ class Search():
         # 해시태그 갯수가 3개 이상일 시, 해시태그 검색어 정상 노출이라 판단
         self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['search_el']['검색창_input']))
         result.append(3 <= len(self.FC.loading_find_csss(self.FC.var['search_el']['검색어해시태그'])))
-        assert self.DBG.print_res(result), self.DBG.logger.debug("검색 > 검색창 하단 해시태그 검색어 정상 노출 실패") 
+        assert self.DBG.print_res(result), self.DBG.logger.debug("검색 > 검색창 하단 해시태그 검색어 정상 노출 실패")
 
         # 랜덤 해시태그 선택 후 클릭
         hashtag_btn = self.FC.loading_find_csss(self.FC.var['search_el']['검색어해시태그'])
@@ -75,8 +63,8 @@ class Search():
         search_word = self.FC.loading_find_css(self.FC.var['search_el']['검색결과_검색창']).get_property("innerText")
         search_word = '#'+ search_word
 
-        assert self.FC.var['search_el']['검색결과_url'] in self.FC.driver.current_url , self.DBG.logger.debug("검색 > 검색창 하단 해시태그 클릭 > 검색결과 정상 노출 실패") 
-        assert search_word == hashtag_word, self.DBG.logger.debug("검색 > 검색창 하단 해시태그 클릭 > 검색어 정상 노출 실패") 
+        assert self.FC.var['search_el']['검색결과_url'] in self.FC.driver.current_url , self.DBG.logger.debug("검색 > 검색창 하단 해시태그 클릭 > 검색결과 정상 노출 실패")
+        assert search_word == hashtag_word, self.DBG.logger.debug("검색 > 검색창 하단 해시태그 클릭 > 검색어 정상 노출 실패")
 
     # 메인페이지 로그인 후
     def search(self):
@@ -110,17 +98,3 @@ class Search():
         else :
             self.DBG.print_dbg("검색기능 정상 동작")
             return True
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    main = Search(driver,fc)
-    login = LoginPage(driver,fc)
-
-    if fc.is_login():
-        login.logout()
-    login.u_plus_login()
-    main.search()
-
-    driver.driver.quit()
-    driver.kill()

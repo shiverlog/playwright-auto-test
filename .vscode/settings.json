@@ -6,7 +6,7 @@
     "editor.formatOnPaste": true, // 붙여넣기 시 자동 포맷팅
     "editor.defaultFormatter": "esbenp.prettier-vscode", // Prettier 사용
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true // 저장 시 ESLint 자동 수정
+      "source.fixAll.eslint": "explicit"
     },
     "editor.quickSuggestions": {
         "strings": true // 문자열 입력 시 자동 완성 활성화
@@ -33,7 +33,7 @@
     "typescript.updateImportsOnFileMove.enabled": "always", // 파일 이동 시 import 경로 자동 업데이트
 
     "workbench.editor.enablePreview": false, // 파일을 새 탭에서 열기
-    "workbench.editor.showTabs": true, // 열린 탭 표시
+    "workbench.editor.showTabs": "multiple", // 열린 탭 표시
     "workbench.iconTheme": "material-icon-theme", // 아이콘 테마
     "workbench.colorTheme": "One Dark Pro", // VS Code 테마
 

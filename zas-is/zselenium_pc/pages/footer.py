@@ -1,19 +1,4 @@
-import random
-import time  
-import traceback
-from base.webdriver import WebDriver        # 콘솔창에 오류 메세지 출력
-import common.variable as var      # 지정한 변수 모듈 
-import sys
-from common.function import Function
-from common.debug import Debug
-
-
-
 class FooterArea():
-    def __init__(self,WebDriver:WebDriver):
-        self.FC=Function(WebDriver)
-        self.DBG=Debug(WebDriver)
-
 
     # 혜택테스트 부분
     def footer_link(self):

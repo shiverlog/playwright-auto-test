@@ -1,12 +1,4 @@
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-
-
 class UjamPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     def ujam(self):
         self.FC.gotoHome()
@@ -22,11 +14,3 @@ class UjamPage():
         else :
             self.DBG.print_dbg("유잼 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    ujam = UjamPage(driver, fc)
-
-    ujam.ujam()

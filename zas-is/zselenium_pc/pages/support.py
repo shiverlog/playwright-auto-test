@@ -1,13 +1,4 @@
-import random
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from selenium.webdriver.common.keys import Keys
-
 class SupportPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     def support(self):
         self.FC.gotoHome()
@@ -23,7 +14,7 @@ class SupportPage():
 
             # 랜덤 키워드 검색
             if self.FC.loading_find_css_pre(self.FC.var['support_el']['고객지원_검색영역']):
-                
+
                 keywords = self.FC.loading_find_csss(self.FC.var['support_el']['자주찾는검색어'])
                 keyword_list = [keyword.text for keyword in keywords]
                 random_keyword = random.sample(keyword_list)
@@ -126,12 +117,3 @@ class SupportPage():
         else :
             self.DBG.print_dbg("고객지원 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    support = SupportPage(driver, fc)
-
-    if support.FC.is_login():
-        support.support()

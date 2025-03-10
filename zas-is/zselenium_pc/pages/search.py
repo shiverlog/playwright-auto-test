@@ -1,10 +1,3 @@
-import random
-import re
-import string
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
 
 class Search():
     def __init__(self,WebDriver:WebDriver,FC:Function):
@@ -39,8 +32,8 @@ class Search():
                 # raise AssertionError(f"특수문자 '{keyword}' 검색 결과가 없어야하나, {result_count}개의 검색 결과가 노출됩니다.")
             assert result_count in self.FC.loading_find_css(self.FC.var['search_el']['검색결과_탭']).get_property("innerText"), self.DBG.logger.debug("검색 > 테스트 키워드:'%s' 정상 노출 확인 실패", keyword)
         else:
-            assert self.FC.loading_find_css_pre(self.FC.var['search_el']['검색결과_검색창']) is False, self.DBG.logger.debug("검색 > 테스트 키워드:'%s' 정상 노출 확인 실패", keyword)  
-            
+            assert self.FC.loading_find_css_pre(self.FC.var['search_el']['검색결과_검색창']) is False, self.DBG.logger.debug("검색 > 테스트 키워드:'%s' 정상 노출 확인 실패", keyword)
+
     # 메인페이지 로그인 후
     def search(self):
         self.FC.gotoHome()
@@ -48,7 +41,7 @@ class Search():
             # 모달창 노출 확인
             self.FC.loading_find_css(self.FC.var['search_el']['search_btn']).click()
             assert self.FC.loading_find_css(self.FC.var['search_el']['검색_모달창_판단']).get_property('className') == "modal-open",self.DBG.logger.debug("검색 모달창 노출 실패")
-            
+
             # 랜덤 키워드
             if self.FC.loading_find_xpath_pre(self.FC.var['search_el']['ranking-keyword']):
                 keywords = self.FC.loading_find_xpaths(self.FC.var['search_el']['keyword'])
@@ -61,11 +54,11 @@ class Search():
 
             # 메인 검색창 기능 확인
             self.searching(test_keywords[0])
-            
+
             # 서치 페이지 기능 확인
             for keyword in test_keywords[1:4]:
                 self.searching(keyword)
-                
+
         except  Exception :
             self.DBG.print_dbg("검색기능 정상 동작", False)
             return False
@@ -73,20 +66,3 @@ class Search():
         else :
             self.DBG.print_dbg("검색기능 정상 동작")
             return True
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    main = Search(driver,fc)
-    login = LoginPage(driver,fc)
-
-    if fc.is_login():
-        login.logout()
-
-    login.u_plus_login()
-
-
-    main.search()
-
-    driver.driver.quit()
-    # driver.kill()

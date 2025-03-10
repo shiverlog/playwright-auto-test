@@ -1,15 +1,5 @@
-import random
-
-from base.webdriver import WebDriver
-import common.variable as var
-from common.function import Function
-from common.debug import Debug
-
-
 class InternetIptvPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
+
     def iptv(self):
         self.FC.gotoHome()
         try :
@@ -76,10 +66,3 @@ class InternetIptvPage():
         else :
             self.DBG.print_dbg("인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    iptv = InternetIptvPage(driver, fc)
-
-    iptv.iptv()

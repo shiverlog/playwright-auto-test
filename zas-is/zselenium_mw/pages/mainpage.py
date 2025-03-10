@@ -1,18 +1,5 @@
-from datetime import datetime
-import re
-import sys
-sys.path.append('C:\dev\lg_regression\selenium_mw')
-import random
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
 
 class MainPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     def mainpage_new(self):
         '''
@@ -41,7 +28,7 @@ class MainPage():
             self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['닷컴 회원 전용 혜택']).click()
             self.FC.wait_loading()
             result.append(self.FC.var['mainpage_el']['닷컴 회원 전용 혜택_url'] in self.FC.driver.current_url)
-            
+
             assert self.DBG.print_res(result), self.DBG.logger.debug("메인(로그인 후) > 개인화/다운로드 콘텐츠 노출 및 기능 정상 동작 실패")
             self.FC.gotoHome()
             result.clear()
@@ -51,21 +38,21 @@ class MainPage():
             self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천기기']))
             self.FC.loading_find_css(self.FC.var['mainpage_el']['추천기기_title']).click()
             self.FC.wait_loading()
-            result.append(self.FC.var['mobile_el']['모바일기기_휴대폰_url'] in self.FC.driver.current_url)            
+            result.append(self.FC.var['mobile_el']['모바일기기_휴대폰_url'] in self.FC.driver.current_url)
             self.FC.gotoHome()
 
             # 기기 리스트 노출 및 링크 이동
-            self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천기기']))        
+            self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천기기']))
             product_list = self.FC.loading_find_csss(self.FC.var['mainpage_el']['추천기기_링크'])
             product_name_list = self.FC.loading_find_csss(self.FC.var['mainpage_el']['추천기기_기기명'])
-            result.append(len(product_list) >=1) 
+            result.append(len(product_list) >=1)
             index = random.randrange(0,len(product_name_list))
             product_name = product_name_list[index].get_property('innerText')
             self.FC.move_to_click(product_list[index])
             name = self.FC.loading_find_css_pre(self.FC.var['mobile_el']['기기상품상세_title']).get_property('innerText')
             result.append(product_name in name)
             self.FC.gotoHome()
-            self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천기기']))        
+            self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천기기']))
             assert self.DBG.print_res(result),self.DBG.logger.debug("메인(로그인 후) > 추천 기기 콘텐츠 및 링크 정상 노출 실패")
             result.clear()
 
@@ -118,7 +105,7 @@ class MainPage():
             self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['진행중인_이벤트_헤더']))
             result.append(self.FC.var['mainpage_el']['진행중인_이벤트_url'] in self.FC.driver.current_url)
             self.FC.gotoHome()
-            
+
             # 현재 시간과, a alt 안의 이벤트 시간과 비교 후 기간내의 이벤트이면 True로 넘어가도록 수정
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['진행중인_이벤트']))
             current_date = datetime.now()
@@ -163,19 +150,3 @@ class MainPage():
         else :
             self.DBG.print_dbg("메인 페이지(로그인 후) 정상 노출 확인")
             return True
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    main = MainPage(driver,fc)
-    login = LoginPage(driver,fc)
-
-    if fc.is_login():
-        login.logout()
-    
-    login.u_plus_login()
-
-    main.mainpage_new()
-
-    driver.driver.quit()
-    driver.kill()

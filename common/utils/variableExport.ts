@@ -1,7 +1,8 @@
 import * as XLSX from "xlsx";
 import * as fs from "fs";
 import * as path from "path";
-import { POCType, LOCATOR_PATH } from "../config/config"
+import { POCType, LOCATOR_PATH } from "../config/config";
+import { logger } from "../logger/customLogger";
 
 class Variable {
   private poc: POCType;
@@ -20,7 +21,7 @@ class Variable {
         .filter((file) => file.endsWith(".json")) // JSON 파일만 필터링
         .map((file) => path.basename(file, ".json")); // 확장자 제거 후 파일명만 가져오기
     } catch (error) {
-      console.error(`❌ Error reading locator path (${locatorPath}):`, error);
+      logger.error(`Error reading locator path (${locatorPath}):`, error);
       return [];
     }
   }
@@ -55,7 +56,7 @@ class Variable {
     // 파일 저장
     const filePath = path.join(process.cwd(), "variables.xlsx");
     XLSX.writeFile(workbook, filePath);
-    console.log(`Excel file saved to: ${filePath}`);
+    logger.info(`Excel file saved to: ${filePath}`);
   }
 
   setVariables(): Record<string, Record<string, string>> {
@@ -79,7 +80,7 @@ class Variable {
     data.slice(1).forEach((row) => {
       const [pageName, key, value] = row;
       if (!pageName || !key || !value) {
-        console.warn("Some data is missing:", row);
+        logger.warn("Some data is missing:", row);
         return;
       }
 
@@ -108,5 +109,5 @@ if (require.main === module) {
   if (args.length > 0) {
     pocType = args[0] as POCType;
   }
-  console.log(`✅ POC 타입: ${pocType}`);
+  logger.info(`POC 타입: ${pocType}`);
 }

@@ -1,13 +1,3 @@
-import random
-import time
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-
-
 class BenefitPage():
     def __init__(self,WebDriver:WebDriver,FC:Function):
         self.FC=FC
@@ -20,11 +10,11 @@ class BenefitPage():
 
             # KV 콘텐츠 노출 확인
             kv_list=self.FC.loading_find_csss(self.FC.var['benefit_el']['KV_링크'])
-            assert len(kv_list) > 0, self.DBG.logger.debug("혜택/멤버십 > 서브메인 > KV 정상 출력 실패") 
+            assert len(kv_list) > 0, self.DBG.logger.debug("혜택/멤버십 > 서브메인 > KV 정상 출력 실패")
 
             # 서브메인 테마배너
             check_text_list=['멤버십','이벤트','장기고객 혜택','결합할인 혜택','선택약정 할인']
-            assert self.FC.text_list_in_element(self.FC.var['benefit_el']['테마배너'],check_text_list),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 테마베너 정상 출력 실패") 
+            assert self.FC.text_list_in_element(self.FC.var['benefit_el']['테마배너'],check_text_list),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 테마베너 정상 출력 실패")
             theme_list_link=self.FC.loading_find_csss(self.FC.var['benefit_el']['테마배너_링크'])
             random_num= random.randrange(0,len(theme_list_link))
             check_link=theme_list_link[random_num].get_attribute('href')
@@ -33,7 +23,7 @@ class BenefitPage():
             self.FC.move_to_click(theme_list_link[random_num])
             assert check_link in self.FC.driver.current_url,self.DBG.logger.debug(f"혜택/멤버십 > 서브메인 > 테마베너 > {tab_name}탭 정상 동작 실패")
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
-            
+
             # 제휴사 혜택
             self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['benefit_el']['제휴사 혜택_title']))
             assert self.FC.var['benefit_el']['멤버십 혜택_url'] in self.FC.driver.current_url,self.DBG.logger.debug(f"혜택/멤버십 > 서브메인 > 제휴사 혜택 타이틀 링크 정상 이동 실패")
@@ -54,8 +44,8 @@ class BenefitPage():
             result.append(self.FC.var['benefit_el']['멤버십 혜택_url'] in self.FC.driver.current_url)
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
 
-            assert self.DBG.print_res(result), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 제휴사 혜택 정상 노출 확인 실패") 
-            
+            assert self.DBG.print_res(result), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 제휴사 혜택 정상 노출 확인 실패")
+
             # 온라인 가입하고 할인 헤택 영역 콘텐츠 노출 확인
             result.clear()
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['benefit_el']['온라인 가입 혜택_title']), True)
@@ -134,7 +124,7 @@ class BenefitPage():
             text_list=['누적 할인혜택','총','기간별 이용내역 조회 결과','사용일','사용처','누적 할인 혜택','한도','승인']
             assert self.FC.text_list_in_element(self.FC.var['mypage']['기간별 이용내역 조회 결과'],text_list), self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 서브메인 > 기간별 이용내역 조회 액션 정상 동작 실패")
 
-            
+
             # TODO 인터넷 데이터 부족으로 스크립트 작성 불가
             # ...
 
@@ -166,7 +156,7 @@ class BenefitPage():
             assert all(text_list_result), self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 변경내역 탭 > 멤버십카드 발급내역 기능 및 컨텐츠 정상 노출 확인 실패")
 
             self.FC.is_exists_element_click(self.FC.loading_find_css(self.FC.var['mypage']['멤버십 카드 발급내역_자세히보기_팝업닫기']))
-            
+
         except  Exception :
             self.DBG.print_dbg("혜택/멤버십 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인",False)
             return False
@@ -174,20 +164,3 @@ class BenefitPage():
         else :
             self.DBG.print_dbg("혜택/멤버십 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인")
             return True
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    benefit = BenefitPage(driver,fc)
-    login = LoginPage(driver,fc)
-
-    # 공통모듈로 분리?
-    if fc.is_login():
-        login.logout()
-        
-    login.u_plus_login()
-
-    benefit.benefit()
-    driver.driver.quit()
-    driver.kill()

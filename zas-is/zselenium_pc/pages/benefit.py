@@ -1,16 +1,4 @@
-import random
-
-from base.webdriver import WebDriver
-import common.variable as var
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-
 class BenefitPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     # 혜택테스트 부분
     def benefit(self):
@@ -125,20 +113,3 @@ class BenefitPage():
         else :
             self.DBG.print_dbg("혜택/멤버십 > 멤버십 > 멤버십 관련 정보 및 멤버십 이용/변경 내역 정상 동작 확인")
             return True
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    benefit = BenefitPage(driver,fc)
-    login = LoginPage(driver,fc)
-
-    # 공통모듈로 분리?
-    if fc.is_login():
-        login.logout()
-
-    login.u_plus_login()
-
-    benefit.benefit()
-    driver.driver.quit()
-   

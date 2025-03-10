@@ -1,10 +1,3 @@
-import random
-
-from base.webdriver import WebDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
 class InternetIptvPage():
     def __init__(self,WebDriver:WebDriver,FC:Function):
         self.FC=FC
@@ -22,7 +15,7 @@ class InternetIptvPage():
 
             # 서브메인 테마배너
             check_text_list=['맞춤상품찾기','인터넷','IPTV','스마트홈','가입 사은품']
-            assert self.FC.text_list_in_element(self.FC.var['iptv_el']['테마배너'],check_text_list),self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 테마베너 정상 출력 실패") 
+            assert self.FC.text_list_in_element(self.FC.var['iptv_el']['테마배너'],check_text_list),self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 테마베너 정상 출력 실패")
             theme_list_link=self.FC.loading_find_csss(self.FC.var['iptv_el']['테마배너_링크'])
             random_num= random.randrange(0,len(theme_list_link))
             if random_num == 0:
@@ -43,11 +36,11 @@ class InternetIptvPage():
             # 무작위로 추천 결합 상품 링크 이동 확인
             carousel=self.FC.loading_find_css_pre(self.FC.var['iptv_el']['추천 결합상품_carousel'])
             self.FC.move_to_element(carousel)
-            
+
             # 무작위로 임의 결합 상품 선택
             random_num=random.randrange(0,3)
-            for _ in range(0,random_num):                                           
-                self.FC.action.click_and_hold(carousel).move_by_offset(-150,0).release().perform()       
+            for _ in range(0,random_num):
+                self.FC.action.click_and_hold(carousel).move_by_offset(-150,0).release().perform()
 
             ######## 가입상담 신청 버튼 UI 사라짐 ########
             # # 임의 선택된 결합 상품 데이터 저장
@@ -59,7 +52,7 @@ class InternetIptvPage():
             # self.FC.scroll_center(btn)
             # self.FC.wait_loading()
             # self.FC.move_to_click(btn)
-            
+
             # # 가입신청 상담 팝업 정상 노출 확인
             # assert "가입상담 신청" in self.FC.loading_find_css(self.FC.var['iptv_el']['가입상담_신청_팝업']).get_property('innerText'), self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 가입신청 상담 페이지 정상 노출 실패")
             # consult_text = self.FC.loading_find_css(self.FC.var['iptv_el']['apply_consult']).get_property('innerText')
@@ -83,15 +76,15 @@ class InternetIptvPage():
             #     check_value_list=list(check_iptv_item.values())
             #     value=product_value_list[num].get_property('innerText')     # 스마트기가 최대 1G/ 프리미엄 디즈니+/ 펫케어 스탠다드 등
             #     assert value == check_value_list[num],self.DBG.logger.debug(f"인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 가입신청 상담 페이지 데이터('{value}') 정상 노출 실패")
-            
+
             self.FC.move_to_element(self.FC.loading_find_css('div[section-group-id="MoSubMainInternetIptvBenefit1Section"]'))
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['iptv_el']['추천 결합상품_온라인가입']))
             assert self.FC.var['iptv_el']['온라인가입_url'] in self.FC.driver.current_url, self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 온라인가입 페이지 정상노출 실패")
-            
+
             self.FC.goto_url(self.FC.var['iptv_el']['iptv_url'])
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['iptv_el']['혜택_콘텐츠']))
             assert len(self.FC.loading_find_csss(self.FC.var['iptv_el']['혜택_콘텐츠_링크'])) > 0,self.DBG.logger.debug(f"인터넷/IPTV > 서브메인 > 혜택 콘텐츠 정상 노출 실패")
-        
+
         except  Exception :
             self.DBG.print_dbg("인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인",False)
             return False
@@ -99,21 +92,3 @@ class InternetIptvPage():
         else :
             self.DBG.print_dbg("인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-
-if __name__ == "__main__":
-    driver = WebDriver()
-    fc = Function(driver)
-    iptv = InternetIptvPage(driver,fc)
-    login = LoginPage(driver,fc)
-
-    # 공통모듈로 분리?
-    if fc.is_login():
-        login.logout()
-        
-    login.u_plus_login()
-
-    iptv.iptv()
-
-    driver.driver.quit()
-    driver.kill()

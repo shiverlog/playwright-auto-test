@@ -1,10 +1,13 @@
-version: '3.9'
+version: "3.9"
 
 services:
   mosaic-db:
     build: ./mosaic-db
     container_name: mosaic-db
     restart: unless-stopped
+    volumes:
+      - ./db/conf.d:/etc/mosaic-db/conf.d
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
     ports:
       - "5000:5000"
     environment:
@@ -12,6 +15,9 @@ services:
       - DB_HOST=db
       - DB_USER=user
       - DB_PASS=password
+      - DB_DATABASE=test
+      - DB_ROOT_PASSWORD=test1234
+      - TZ=Asia/Seoul
     depends_on:
       - db
 

@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import { logger } from "../logger/customLogger";
 
 dotenv.config();
 
@@ -11,9 +12,12 @@ const TEAMS_WEBHOOK_URL = process.env.TEAMS_WEBHOOK_URL || "";
  * @param message - 전송할 메시지
  * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
  */
-export const sendTeamsMessage = async (message: string, isSuccess: boolean = true) => {
+export const sendTeamsMessage = async (
+  message: string,
+  isSuccess: boolean = true
+) => {
   if (!TEAMS_WEBHOOK_URL) {
-    console.warn("⚠ Microsoft Teams Webhook URL이 설정되지 않았습니다.");
+    logger.warn("Microsoft Teams Webhook URL이 설정되지 않았습니다.");
     return;
   }
 
@@ -25,23 +29,23 @@ export const sendTeamsMessage = async (message: string, isSuccess: boolean = tru
     const payload = {
       "@type": "MessageCard",
       "@context": "http://schema.org/extensions",
-      "themeColor": isSuccess ? "0078D7" : "FF0000",
-      "summary": "자동화 테스트 알림",
-      "sections": [
+      themeColor: isSuccess ? "0078D7" : "FF0000",
+      summary: "자동화 테스트 알림",
+      sections: [
         {
-          "activityTitle": "Playwright 테스트 결과",
-          "activitySubtitle": new Date().toISOString(),
-          "text": formattedMessage
-        }
-      ]
+          activityTitle: "Playwright 테스트 결과",
+          activitySubtitle: new Date().toISOString(),
+          text: formattedMessage,
+        },
+      ],
     };
 
     await axios.post(TEAMS_WEBHOOK_URL, payload, {
       headers: { "Content-Type": "application/json" },
     });
 
-    console.log(`Teams 메시지 전송 완료: ${message}`);
+    logger.info(`Teams 메시지 전송 완료: ${message}`);
   } catch (error) {
-    console.error("Teams 메시지 전송 실패:", error);
+    logger.error("Teams 메시지 전송 실패:", error);
   }
 };
