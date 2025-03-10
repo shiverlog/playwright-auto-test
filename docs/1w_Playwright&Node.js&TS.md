@@ -403,7 +403,10 @@ docker-compose stop
 
 ## Appium 학습
 
-###
+### U+ID 2.0 로그인 시 웹 인증 프로세스
+
+- ChromeCustomTab (Android) : Android 4.3 이상에서 OAuth/OpenID Connect 인증을 웹 기반으로 실행할 때 사용
+- ASWebAuthenticationSession (iOS) : iOS 12 이상에서 OAuth/OpenID Connect 인증을 위한 공식 API, Safari 기반 인증을 실행하고, 로그인 후 앱으로 자동 복귀 가능
 
 ### Execution Context(명시적 대기 조건 EC)
 
