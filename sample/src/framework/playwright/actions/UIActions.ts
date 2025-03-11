@@ -1,11 +1,12 @@
-import { test, Page } from "@playwright/test";
-import CommonConstants from "../../constants/CommonConstants";
-import HTMLConstants from "../../constants/HTMLConstants";
-import AlertActions from "./AlertActions";
-import CheckBoxActions from "./CheckBoxActions";
-import DropDownActions from "./DropDownActions";
-import EditBoxActions from "./EditBoxActions";
-import UIElementActions from "./UIElementActions";
+import { Page, test } from '@playwright/test';
+
+import CommonConstants from '../../constants/CommonConstants';
+import HTMLConstants from '../../constants/HTMLConstants';
+import AlertActions from './AlertActions';
+import CheckBoxActions from './CheckBoxActions';
+import DropDownActions from './DropDownActions';
+import EditBoxActions from './EditBoxActions';
+import UIElementActions from './UIElementActions';
 
 export default class UIActions {
   private elementAction: UIElementActions;
@@ -42,8 +43,8 @@ export default class UIActions {
   }
 
   /**
-   * Close page 
-   * @returns 
+   * Close page
+   * @returns
    */
   public closePage() {
     this.page.close();
@@ -177,7 +178,7 @@ export default class UIActions {
    */
   public async waitForDomContentLoaded() {
     await test.step(`Waiting for load event`, async () => {
-      await this.page.waitForLoadState("domcontentloaded", { timeout: 5000 });
+      await this.page.waitForLoadState('domcontentloaded', { timeout: 5000 });
     });
   }
 
@@ -186,17 +187,14 @@ export default class UIActions {
    * @param selector
    * @param description
    */
-  public async switchToNewWindow(
-    selector: string,
-    description: string,
-  ): Promise<Page> {
+  public async switchToNewWindow(selector: string, description: string): Promise<Page> {
     let [newPage] = [this.page];
     await test.step(`Opening  ${description} Window`, async () => {
       [newPage] = await Promise.all([
-        this.page.context().waitForEvent("page"),
+        this.page.context().waitForEvent('page'),
         await this.elementAction.setElement(selector, description).click(),
       ]);
-      await newPage.waitForLoadState("domcontentloaded");
+      await newPage.waitForLoadState('domcontentloaded');
     });
     return newPage;
   }
@@ -207,10 +205,7 @@ export default class UIActions {
    * @param description description of element
    * @returns alert message
    */
-  public async acceptAlertOnElementClick(
-    selector: string,
-    description: string,
-  ): Promise<string> {
+  public async acceptAlertOnElementClick(selector: string, description: string): Promise<string> {
     const message = this.alert().accept();
     return this.handleAlert(selector, description, message);
   }
@@ -221,10 +216,7 @@ export default class UIActions {
    * @param description description of element
    * @returns alert message
    */
-  public async dismissAlertOnElementClick(
-    selector: string,
-    description: string,
-  ): Promise<string> {
+  public async dismissAlertOnElementClick(selector: string, description: string): Promise<string> {
     const message = this.alert().dismiss();
     return this.handleAlert(selector, description, message);
   }
@@ -245,11 +237,7 @@ export default class UIActions {
     return this.handleAlert(selector, description, message);
   }
 
-  private async handleAlert(
-    selector: string,
-    description: string,
-    message: Promise<string>,
-  ) {
+  private async handleAlert(selector: string, description: string, message: Promise<string>) {
     await this.elementAction.setElement(selector, description).click();
     return message;
   }
@@ -277,7 +265,7 @@ export default class UIActions {
     await test.step(`Downloading ${description} file`, async () => {
       const [download] = await Promise.all([
         this.page.waitForEvent('download'),
-        await this.page.locator(selector).click({ modifiers: ["Alt"] }),
+        await this.page.locator(selector).click({ modifiers: ['Alt'] }),
       ]);
       fileName = download.suggestedFilename();
       const filePath = `${CommonConstants.DOWNLOAD_PATH}${fileName}`;
@@ -292,7 +280,7 @@ export default class UIActions {
    */
   public async pauseInSecs(sec: number) {
     // eslint-disable-next-line no-promise-executor-return
-    return new Promise((resolve) => setTimeout(resolve, sec * CommonConstants.ONE_THOUSAND));
+    return new Promise(resolve => setTimeout(resolve, sec * CommonConstants.ONE_THOUSAND));
   }
 
   /**
@@ -300,16 +288,16 @@ export default class UIActions {
    * @param page
    */
   public async waitForLoadingImage() {
-    await test.step("Waiting for Loading Image to disappear", async () => {
+    await test.step('Waiting for Loading Image to disappear', async () => {
       try {
         await this.page.locator(HTMLConstants.LOADING_IMAGE).waitFor({
-          state: "visible",
+          state: 'visible',
           timeout: CommonConstants.ONE_THOUSAND * CommonConstants.THREE,
         });
       } catch (error) {
         // console.log("Loading Image was not displayed");
       }
-      await this.page.locator(HTMLConstants.LOADING_IMAGE).waitFor({ state: "hidden" });
+      await this.page.locator(HTMLConstants.LOADING_IMAGE).waitFor({ state: 'hidden' });
       await this.pauseInSecs(CommonConstants.HALF);
     });
   }

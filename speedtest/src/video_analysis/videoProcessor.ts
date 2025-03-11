@@ -1,6 +1,6 @@
-import cv2 from "opencv4nodejs";
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import cv2 from 'opencv4nodejs';
+import path from 'path';
 
 export class VideoProcessor {
   private videoPath: string;
@@ -33,7 +33,7 @@ export class VideoProcessor {
       if (frameCount % this.frameInterval === 0) {
         const filename = path.join(
           this.outputFolder,
-          `frame_${(frameCount / this.fps).toFixed(2)}.jpg`
+          `frame_${(frameCount / this.fps).toFixed(2)}.jpg`,
         );
         cv2.imwrite(filename, frame);
         frameFiles.push(filename);

@@ -1,0 +1,59 @@
+/**
+ * Description : appium.code-snippets - 📌 VS Code Appium 관련 스니펫 설정 파일
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+{
+  "Appium Basic Setup": {
+    "prefix": "appiumSetup",
+    "body": [
+      "const wdio = require('webdriverio');",
+      "",
+      "const opts = {",
+      "  path: '/wd/hub',",
+      "  port: 4723,",
+      "  capabilities: {",
+      "    platformName: '${1:Android}',",
+      "    deviceName: '${2:emulator-5554}',",
+      "    app: '${3:/path/to/app.apk}',",
+      "    automationName: 'UiAutomator2'",
+      "  }",
+      "};",
+      "",
+      "const driver = await wdio.remote(opts);",
+      "",
+      "await driver.quit();",
+    ],
+    "description": "Appium 기본 설정",
+  },
+  "Appium Find Element": {
+    "prefix": "appiumFind",
+    "body": [
+      "const element = await driver.$('${1:selector}');",
+      "await element.${2:click()}();",
+    ],
+    "description": "Appium에서 요소 찾기 및 액션 수행",
+  },
+  "Appium Wait for Element": {
+    "prefix": "appiumWait",
+    "body": [
+      "await driver.waitUntil(",
+      "  async () => (await driver.$('${1:selector}')).isDisplayed(),",
+      "  { timeout: ${2:5000}, timeoutMsg: 'Element not found' }",
+      ");",
+    ],
+    "description": "Appium에서 특정 요소가 나타날 때까지 대기",
+  },
+  "Appium Swipe Action": {
+    "prefix": "appiumSwipe",
+    "body": [
+      "await driver.touchAction([",
+      "  { action: 'press', x: ${1:100}, y: ${2:500} },",
+      "  { action: 'wait', ms: 500 },",
+      "  { action: 'moveTo', x: ${3:100}, y: ${4:100} },",
+      "  'release'",
+      "]);",
+    ],
+    "description": "Appium에서 스와이프 액션 실행",
+  },
+}

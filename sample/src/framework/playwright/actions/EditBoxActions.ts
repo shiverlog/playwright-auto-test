@@ -1,5 +1,6 @@
-import { test, Locator } from "@playwright/test";
-import UIElementActions from "./UIElementActions";
+import { Locator, test } from '@playwright/test';
+
+import UIElementActions from './UIElementActions';
 
 export default class EditBoxActions extends UIElementActions {
   /**
@@ -55,7 +56,7 @@ export default class EditBoxActions extends UIElementActions {
   public async fillAndTab(value: string) {
     await test.step(`Entering ${this.description} as ${value} and Tab`, async () => {
       await this.getLocator().fill(value);
-      await this.getLocator().press("Tab");
+      await this.getLocator().press('Tab');
     });
     return this;
   }
@@ -68,7 +69,7 @@ export default class EditBoxActions extends UIElementActions {
   public async typeAndTab(value: string) {
     await test.step(`Entering ${this.description} as ${value} and Tab`, async () => {
       await this.getLocator().type(value);
-      await this.getLocator().press("Tab");
+      await this.getLocator().press('Tab');
     });
     return this;
   }

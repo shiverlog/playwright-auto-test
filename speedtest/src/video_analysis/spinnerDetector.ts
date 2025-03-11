@@ -1,4 +1,4 @@
-import cv2 from "opencv4nodejs";
+import cv2 from 'opencv4nodejs';
 
 export class SpinnerDetector {
   private spinnerTemplate: cv2.Mat;
@@ -13,10 +13,7 @@ export class SpinnerDetector {
     const frame = cv2.imread(framePath);
     if (frame.empty) return false;
 
-    const result = frame.matchTemplate(
-      this.spinnerTemplate,
-      cv2.TM_CCOEFF_NORMED
-    );
+    const result = frame.matchTemplate(this.spinnerTemplate, cv2.TM_CCOEFF_NORMED);
     const minMax = result.minMaxLoc();
     return minMax.maxVal > this.threshold;
   }

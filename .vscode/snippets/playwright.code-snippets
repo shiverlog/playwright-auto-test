@@ -1,0 +1,52 @@
+/**
+ * Description : appium.code-snippets - 📌 VS Code Playwright 관련 스니펫 설정 파일
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+{
+  "Playwright Basic Test": {
+    "prefix": "pwTest",
+    "body": [
+      "import { test, expect } from '@playwright/test';",
+      "",
+      "test('${1:Test Name}', async ({ page }) => {",
+      "  await page.goto('${2:http://example.com}');",
+      "  await expect(page).toHaveTitle('${3:Expected Title}');",
+      "});",
+    ],
+    "description": "Playwright 기본 테스트 템플릿",
+  },
+  "Playwright Click Element": {
+    "prefix": "pwClick",
+    "body": ["await page.locator('${1:selector}').click();"],
+    "description": "Playwright에서 요소 클릭",
+  },
+  "Playwright Fill Input": {
+    "prefix": "pwFill",
+    "body": ["await page.locator('${1:selector}').fill('${2:input value}');"],
+    "description": "Playwright에서 입력 필드 채우기",
+  },
+  "Playwright Wait for Element": {
+    "prefix": "pwWait",
+    "body": [
+      "await page.waitForSelector('${1:selector}', { timeout: ${2:5000} });",
+    ],
+    "description": "Playwright에서 요소가 나타날 때까지 대기",
+  },
+  "Playwright Screenshot": {
+    "prefix": "pwScreenshot",
+    "body": [
+      "await page.screenshot({ path: '${1:screenshot.png}', fullPage: true });",
+    ],
+    "description": "Playwright에서 스크린샷 저장",
+  },
+  "Playwright API Request": {
+    "prefix": "pwAPI",
+    "body": [
+      "const response = await page.request.get('${1:/api/endpoint}');",
+      "const data = await response.json();",
+      "console.log(data);",
+    ],
+    "description": "Playwright에서 API 요청 보내기",
+  },
+}

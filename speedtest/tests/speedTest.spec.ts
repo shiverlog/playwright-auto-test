@@ -1,15 +1,16 @@
-import { test } from "@playwright/test";
-import { SpeedTest } from "./speedTest";
-import { saveResults } from "./saveLogs";
-import { sendResults } from "./sendResults";
+import { test } from '@playwright/test';
 
-test("웹 페이지 속도 측정", async ({ page }) => {
+import { saveResults } from './saveLogs';
+import { sendResults } from './sendResults';
+import { SpeedTest } from './speedTest';
+
+test('웹 페이지 속도 측정', async ({ page }) => {
   const speedTest = new SpeedTest(page);
 
   const testUrls = [
-    { page: "홈", url: "https://m.lguplus.com" },
-    { page: "KT", url: "https://m.kt.com/" },
-    { page: "SKT", url: "https://m.tworld.co.kr/v6/main" },
+    { page: '홈', url: 'https://m.lguplus.com' },
+    { page: 'KT', url: 'https://m.kt.com/' },
+    { page: 'SKT', url: 'https://m.tworld.co.kr/v6/main' },
   ];
 
   let results = [];
@@ -36,5 +37,5 @@ test("웹 페이지 속도 측정", async ({ page }) => {
   saveResults(results);
 
   // 서버 전송
-  await sendResults("https://dcms.uhdcsre.com/dcms/qa");
+  await sendResults('https://dcms.uhdcsre.com/dcms/qa');
 });

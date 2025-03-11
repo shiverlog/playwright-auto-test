@@ -7,7 +7,7 @@ const Logger = winston.createLogger({
         winston.format.uncolorize({ level: true, message: true, raw: true }),
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.align(),
-        winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
+        winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
       ),
     }),
     new winston.transports.File({
@@ -16,7 +16,7 @@ const Logger = winston.createLogger({
         winston.format.uncolorize({ level: true, message: true, raw: true }),
         winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
         winston.format.align(),
-        winston.format.printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
+        winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message}`),
       ),
     }),
   ],

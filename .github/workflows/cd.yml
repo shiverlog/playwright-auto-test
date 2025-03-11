@@ -1,30 +1,31 @@
+# Description : cd.yml - 📌 CI/CD 워크플로우
+# Author : Shiwoo Min
+# Date : 2024-03-10
 name: CD - Deploy Application
-
 on:
   push:
-    branches:
-      - main
+    branches: [main, develop, release]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
+      # repository 에서 최신 코드 가져오기
       - name: Checkout repository
         uses: actions/checkout@v3
-
+      # Node.js 패키지  설치
       - name: Install dependencies
         run: npm install
-
+      # Playwright Browsers 브라우저 설치
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
-
+      # 배포 전 Playwright 테스트 실행
       - name: Run Playwright tests before deployment
         run: npx playwright test
-
+      # 애플리케이션 빌드
       - name: Build application
         run: npm run build
-
+      # Docker Hub 로그인
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:

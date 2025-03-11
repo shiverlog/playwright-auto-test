@@ -1,5 +1,5 @@
-import randomString from "randomstring";
-import format from "string-format";
+import randomString from 'randomstring';
+import format from 'string-format';
 
 export default class StringUtil {
   /**
@@ -36,7 +36,7 @@ export default class StringUtil {
    * @param str Original string
    * @param searchValue searches for and replace matches within the string.
    * @param replaceValue A string containing the text to replace for every successful match of searchValue in this string.
-   * @returns 
+   * @returns
    */
   public static replaceAll(str: string, searchValue: string, replaceValue: string): string {
     const replacer = new RegExp(searchValue, 'g');
@@ -46,10 +46,10 @@ export default class StringUtil {
 
   /**
    * replaces the regex with string value
-   * @param str 
-   * @param regex 
-   * @param value 
-   * @returns 
+   * @param str
+   * @param regex
+   * @param value
+   * @returns
    */
   public static getRegXLocator(str: string, regex: RegExp, value: string) {
     return str.replace(regex, value);
@@ -57,8 +57,8 @@ export default class StringUtil {
 
   /**
    * Generates random alphanumeric string of given length
-   * @param length 
-   * @returns 
+   * @param length
+   * @returns
    */
   public static randomAlphanumericString(length: number): string {
     const str = randomString.generate(length);
@@ -81,7 +81,11 @@ export default class StringUtil {
    * @returns
    */
   public static randomUppercaseString(length: number): string {
-    const str = randomString.generate({ length: length, charset: 'alphabetic', capitalization: "uppercase" });
+    const str = randomString.generate({
+      length: length,
+      charset: 'alphabetic',
+      capitalization: 'uppercase',
+    });
     return str;
   }
 
@@ -91,7 +95,11 @@ export default class StringUtil {
    * @returns
    */
   public static randomLowercaseString(length: number): string {
-    const str = randomString.generate({ length: length, charset: 'alphabetic', capitalization: "lowercase" });
+    const str = randomString.generate({
+      length: length,
+      charset: 'alphabetic',
+      capitalization: 'lowercase',
+    });
     return str;
   }
 
@@ -107,9 +115,9 @@ export default class StringUtil {
 
   /**
    * This method will return the formatted String by replacing value in {key} from Object
-   * @param str 
-   * @param obj 
-   * @returns 
+   * @param str
+   * @param obj
+   * @returns
    */
   public static formatStringFromObject(str: string, obj: any): string {
     return format(str, obj);

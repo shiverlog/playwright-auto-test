@@ -1,8 +1,9 @@
-import * as XLSX from "xlsx";
-import * as fs from "fs";
-import * as path from "path";
-import { POCType, LOCATOR_PATH } from "../config/config";
-import { logger } from "../logger/customLogger";
+import * as fs from 'fs';
+import * as path from 'path';
+import * as XLSX from 'xlsx';
+
+import { LOCATOR_PATH, POCType } from '../config/config';
+import { logger } from '../logger/customLogger';
 
 class Variable {
   private poc: POCType;
@@ -18,8 +19,8 @@ class Variable {
     try {
       return fs
         .readdirSync(locatorPath) // 해당 경로의 파일 목록 가져오기
-        .filter((file) => file.endsWith(".json")) // JSON 파일만 필터링
-        .map((file) => path.basename(file, ".json")); // 확장자 제거 후 파일명만 가져오기
+        .filter(file => file.endsWith('.json')) // JSON 파일만 필터링
+        .map(file => path.basename(file, '.json')); // 확장자 제거 후 파일명만 가져오기
     } catch (error) {
       logger.error(`Error reading locator path (${locatorPath}):`, error);
       return [];
@@ -29,7 +30,7 @@ class Variable {
   exportExcelVariables(): void {
     const workbook = XLSX.utils.book_new();
     const worksheetData: any[][] = [
-      ["Page Key(페이지명)", "Element Key(요소명)", "Variable(요소값)"],
+      ['Page Key(페이지명)', 'Element Key(요소명)', 'Variable(요소값)'],
     ];
 
     const locatorPath = LOCATOR_PATH(this.poc);
@@ -40,7 +41,7 @@ class Variable {
       const filePath = path.join(locatorPath, `${page}.json`);
 
       if (fs.existsSync(filePath)) {
-        const elements = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+        const elements = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
         for (const key in elements) {
           worksheetData.push([page, key, elements[key]]);
@@ -51,23 +52,23 @@ class Variable {
 
     // 시트 생성
     const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Variables");
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Variables');
 
     // 파일 저장
-    const filePath = path.join(process.cwd(), "variables.xlsx");
+    const filePath = path.join(process.cwd(), 'variables.xlsx');
     XLSX.writeFile(workbook, filePath);
     logger.info(`Excel file saved to: ${filePath}`);
   }
 
   setVariables(): Record<string, Record<string, string>> {
-    const filePath = path.join(process.cwd(), "variables.xlsx");
+    const filePath = path.join(process.cwd(), 'variables.xlsx');
 
     if (!fs.existsSync(filePath)) {
-      throw new Error("Excel file not found.");
+      throw new Error('Excel file not found.');
     }
 
     const workbook = XLSX.readFile(filePath);
-    const sheet = workbook.Sheets["Variables"];
+    const sheet = workbook.Sheets['Variables'];
 
     if (!sheet) {
       throw new Error("Sheet 'Variables' not found in Excel file.");
@@ -77,10 +78,10 @@ class Variable {
 
     const allValues: Record<string, Record<string, string>> = {};
 
-    data.slice(1).forEach((row) => {
+    data.slice(1).forEach(row => {
       const [pageName, key, value] = row;
       if (!pageName || !key || !value) {
-        logger.warn("Some data is missing:", row);
+        logger.warn('Some data is missing:', row);
         return;
       }
 

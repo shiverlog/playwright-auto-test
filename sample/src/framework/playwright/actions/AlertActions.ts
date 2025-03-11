@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page } from '@playwright/test';
 
 export default class AlertActions {
   constructor(private page: Page) {}
@@ -9,8 +9,8 @@ export default class AlertActions {
    * @returns alert message
    */
   public async accept(promptText?: string): Promise<string> {
-    return this.page.waitForEvent("dialog").then(async (dialog) => {
-      if (dialog.type() === "prompt") {
+    return this.page.waitForEvent('dialog').then(async dialog => {
+      if (dialog.type() === 'prompt') {
         await dialog.accept(promptText);
       } else {
         await dialog.accept();
@@ -24,7 +24,7 @@ export default class AlertActions {
    * @returns alert message
    */
   public async dismiss(): Promise<string> {
-    return this.page.waitForEvent("dialog").then(async (d) => {
+    return this.page.waitForEvent('dialog').then(async d => {
       await d.dismiss();
       return d.message().trim();
     });

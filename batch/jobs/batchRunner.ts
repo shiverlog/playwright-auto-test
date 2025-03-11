@@ -1,25 +1,25 @@
-import { exec } from "child_process";
+import { exec } from 'child_process';
 
 // POC 키 값 (각 환경별 식별자)
-export type POCType = "pc" | "mw" | "aos" | "ios";
+export type POCType = 'pc' | 'mw' | 'aos' | 'ios';
 
 // 각 POC에 대한 실행할 스크립트 및 설명 설정
 const CONFIG: Record<POCType, { script: string; description: string }> = {
   pc: {
-    script: "scripts/pc.sh",
-    description: "PC POC 배치 실행",
+    script: 'scripts/pc.sh',
+    description: 'PC POC 배치 실행',
   },
   mw: {
-    script: "scripts/mw.sh",
-    description: "MW POC 배치 실행",
+    script: 'scripts/mw.sh',
+    description: 'MW POC 배치 실행',
   },
   aos: {
-    script: "scripts/aos.sh",
-    description: "AOS POC 배치 실행",
+    script: 'scripts/aos.sh',
+    description: 'AOS POC 배치 실행',
   },
   ios: {
-    script: "scripts/ios.sh",
-    description: "iOS POC 배치 실행",
+    script: 'scripts/ios.sh',
+    description: 'iOS POC 배치 실행',
   },
 };
 
@@ -27,9 +27,7 @@ const CONFIG: Record<POCType, { script: string; description: string }> = {
 const pocType = process.argv[2] as POCType;
 
 if (!pocType || !CONFIG[pocType]) {
-  console.error(
-    "❌ 잘못된 POCType 입니다. 사용 가능한 값: pc | mw | aos | ios"
-  );
+  console.error('❌ 잘못된 POCType 입니다. 사용 가능한 값: pc | mw | aos | ios');
   process.exit(1);
 }
 

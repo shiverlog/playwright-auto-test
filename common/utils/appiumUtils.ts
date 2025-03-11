@@ -1,5 +1,6 @@
-import { Page, Locator, expect } from "@playwright/test";
-import { logger } from "../logger/customLogger";
+import { Locator, Page, expect } from '@playwright/test';
+
+import { logger } from '../logger/customLogger';
 
 /**
  * Appium 및 Playwright 공통 유틸리티 클래스
@@ -25,17 +26,16 @@ export class AppiumUtils {
    */
   async findVisibleElement(selector: string): Promise<Locator> {
     const element = this.page.locator(selector);
-    await element.waitFor({ state: "visible" });
+    await element.waitFor({ state: 'visible' });
     return element;
   }
-
 
   /**
    * Playwright: 클릭 가능한 요소 찾기
    */
   async findClickableElement(selector: string): Promise<Locator> {
     const element = this.page.locator(selector);
-    await element.waitFor({ state: "visible" });
+    await element.waitFor({ state: 'visible' });
     return element;
   }
 
@@ -59,9 +59,8 @@ export class AppiumUtils {
    * Appium: 요소 찾기 (네이티브 앱)
    */
   async findAppiumElement(selector: string): Promise<WebdriverIO.Element> {
-    return await this.driver.$(selector) as unknown as WebdriverIO.Element;
+    return (await this.driver.$(selector)) as unknown as WebdriverIO.Element;
   }
-
 
   /**
    * Appium: 요소 클릭
@@ -107,14 +106,14 @@ export class AppiumUtils {
    * Playwright: 특정 요소가 나타날 때까지 대기
    */
   async waitForElementToAppear(selector: string, timeout = 5000): Promise<void> {
-    await this.page.waitForSelector(selector, { state: "visible", timeout });
+    await this.page.waitForSelector(selector, { state: 'visible', timeout });
   }
 
   /**
    * Playwright: 특정 요소가 사라질 때까지 대기
    */
   async waitForElementToDisappear(selector: string, timeout = 5000): Promise<void> {
-    await this.page.waitForSelector(selector, { state: "hidden", timeout });
+    await this.page.waitForSelector(selector, { state: 'hidden', timeout });
   }
 
   /**

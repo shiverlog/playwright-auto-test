@@ -1,4 +1,4 @@
-import { test, Locator } from "@playwright/test";
+import { Locator, test } from '@playwright/test';
 
 export default class CheckBoxActions {
   private locator: Locator;
@@ -43,11 +43,10 @@ export default class CheckBoxActions {
   public async isChecked(): Promise<boolean> {
     let status: boolean;
     await test.step(`Checking status of checkbox ${this.description}`, async () => {
-        const element = this.locator;
-        await element.waitFor();
-        status = await element.isChecked();
-      },
-    );
+      const element = this.locator;
+      await element.waitFor();
+      status = await element.isChecked();
+    });
     return status;
   }
 }

@@ -1,7 +1,8 @@
-import fs from "fs";
-import path from "path";
-import { logger } from "../logger/customLogger";
-import { FILE_RETENTION_DAYS } from "../config/config";
+import fs from 'fs';
+import path from 'path';
+
+import { FILE_RETENTION_DAYS } from '../config/config';
+import { logger } from '../logger/customLogger';
 
 /**
  * 특정 폴더에서 일정 기간 지난 파일 자동 삭제
@@ -18,7 +19,7 @@ export function cleanupOldFiles(dirPath: string, maxDays: number) {
   }
 
   const files = fs.readdirSync(dirPath);
-  files.forEach((file) => {
+  files.forEach(file => {
     const filePath = path.join(dirPath, file);
     const stats = fs.statSync(filePath);
 

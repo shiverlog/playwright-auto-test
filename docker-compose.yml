@@ -1,6 +1,144 @@
+# Description : docker-compose.yml - 📌 Dockerizing 실행 환경 정의 파일
+# Author : Shiwoo Min
+# Date : 2024-03-10
+
 version: "3.9"
 
 services:
+  # common 패키지
+  common:
+    image: common-base-image
+    container_name: common
+    networks:
+      - app_network
+    volumes:
+      - common_data:/data
+
+  # batch 폴더
+  batch:
+    build:
+      context: ./batch
+      dockerfile: Dockerfile
+    container_name: batch_service
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - batch_data:/app/batch_result
+    environment:
+      - NODE_ENV=production
+
+  # E2E 테스트 - PC Web
+  e2e-pc:
+    build:
+      context: ./e2e/pc
+      dockerfile: Dockerfile
+    container_name: e2e_pc
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_pc_data:/app/results
+    environment:
+      - NODE_ENV=test
+
+  # E2E 테스트 - Mobile Web
+  e2e-mw:
+    build:
+      context: ./e2e/mw
+      dockerfile: Dockerfile
+    container_name: e2e_mw
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_mw_data:/app/results
+    environment:
+      - NODE_ENV=test
+
+  # E2E 테스트 - AOS (Android)
+  e2e-aos:
+    build:
+      context: ./e2e/aos
+      dockerfile: Dockerfile
+    container_name: e2e_aos
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_aos_data:/app/results
+    environment:
+      - NODE_ENV=test
+
+  # E2E 테스트 - iOS
+  e2e-ios:
+    build:
+      context: ./e2e/ios
+      dockerfile: Dockerfile
+    container_name: e2e_ios
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_ios_data:/app/results
+    environment:
+      - NODE_ENV=test
+
+  # E2E 테스트 - API
+  e2e-api:
+    build:
+      context: ./e2e/api
+      dockerfile: Dockerfile
+    container_name: e2e_api
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_api_data:/app/results
+    environment:
+      - NODE_ENV=test
+
+  # 3사 속도 테스트 서비스
+  speedtest:
+    build:
+      context: ./speedtest
+      dockerfile: Dockerfile
+    container_name: speedtest_service
+    networks:
+      - app_network
+    volumes:
+      - speedtest_data:/app/results
+    environment:
+      - NODE_ENV=production
+
+  networks:
+    app_network:
+      driver: bridge
+
+  # Pub/Sub 서비스
+  pubsub:
+    build:
+      context: ./pubsub
+      dockerfile: Dockerfile
+    container_name: pubsub_service
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - pubsub_data:/app/data
+    environment:
+      - NODE_ENV=production
+        # Google Pub/Sub 에뮬레이터 호스트 (로컬 실행 시)
+      - PUBSUB_EMULATOR_HOST=0.0.0.0:8085
+
+  # Mosaic DB 연동
   mosaic-db:
     build: ./mosaic-db
     container_name: mosaic-db

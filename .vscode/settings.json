@@ -1,51 +1,87 @@
+/**
+ * Description : settings.json - 📌 VS Code 프로젝트 설정 파일 (코드 스타일 및 확장 프로그램 설정)
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
 {
-    "editor.tabSize": 2, // 탭 크기
-    "editor.insertSpaces": true, // 탭 대신 공백 사용
-    "editor.detectIndentation": false, // 파일마다 다른 들여쓰기 감지 방지
-    "editor.formatOnSave": true, // 저장 시 자동 포맷팅
-    "editor.formatOnPaste": true, // 붙여넣기 시 자동 포맷팅
-    "editor.defaultFormatter": "esbenp.prettier-vscode", // Prettier 사용
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    },
-    "editor.quickSuggestions": {
-        "strings": true // 문자열 입력 시 자동 완성 활성화
-    },
-    "editor.guides.bracketPairs": true, // 중괄호 가이드라인
-    "editor.bracketPairColorization.enabled": true, // 중괄호 색상 구별
-    "editor.minimap.enabled": true, // 코드 미니맵 표시
-    "editor.wordWrap": "on", // 긴 코드 자동 줄 바꿈
-    "editor.inlineSuggest.enabled": true, // AI 코드 추천 (GitHub Copilot, CodeWhisperer 등 사용 가능)
-
-    "files.autoSave": "afterDelay", // 일정 시간 후 자동 저장
-    "files.trimTrailingWhitespace": true, // 저장 시 불필요한 공백 제거
-    "files.insertFinalNewline": true, // 파일 끝에 빈 줄 추가
-    "files.exclude": { // 숨길 파일/폴더 설정
-        "**/node_modules": false,
-        "**/dist": true,
-        "**/out": true,
-        "**/.vscode": false,
-        "**/.git": true,
-        "**/.DS_Store": true
-    },
-
-    "typescript.preferences.importModuleSpecifier": "relative", // 상대 경로 import 사용
-    "typescript.updateImportsOnFileMove.enabled": "always", // 파일 이동 시 import 경로 자동 업데이트
-
-    "workbench.editor.enablePreview": false, // 파일을 새 탭에서 열기
-    "workbench.editor.showTabs": "multiple", // 열린 탭 표시
-    "workbench.iconTheme": "material-icon-theme", // 아이콘 테마
-    "workbench.colorTheme": "One Dark Pro", // VS Code 테마
-
-    "playwright.trace.viewer": true, // Playwright 트레이스 뷰어 활성화
-    "playwright.testExplorer.output": "terminal", // Playwright 테스트 결과를 터미널에서 출력
-    "playwright.reuseBrowser": true, // 브라우저 인스턴스 재사용 (테스트 속도 향상)
-
-    "terminal.integrated.defaultProfile.windows": "Git Bash", // Windows에서 기본 터미널 설정 (Git Bash 추천)
-    "terminal.integrated.defaultProfile.mac": "zsh", // macOS 기본 터미널 (zsh)
-    "terminal.integrated.defaultProfile.linux": "bash", // Linux 기본 터미널 (bash)
-    "terminal.integrated.fontSize": 14, // 터미널 글자 크기
-    "terminal.integrated.scrollback": 10000, // 터미널 스크롤 백 로그 길이
-    "terminal.integrated.tabs.enabled": true, // 터미널 탭 활성화
-    "terminal.integrated.copyOnSelection": true // 터미널에서 선택하면 자동 복사
+  // 탭 크기
+  "editor.tabSize": 2,
+  // 탭 대신 공백 사용
+  "editor.insertSpaces": true,
+  // 파일마다 다른 들여쓰기 감지 방지
+  "editor.detectIndentation": false,
+  // 저장 시 자동 포맷팅
+  "editor.formatOnSave": true,
+  // 붙여넣기 시 자동 포맷팅
+  "editor.formatOnPaste": true,
+  // Prettier 사용
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  // 문자열 입력 시 자동 완성 활성화
+  "editor.quickSuggestions": {
+    "comments": false,
+    "strings": true,
+    "other": true
+  },
+  // 150자 길이의 가이드 라인(세로선) 표시
+  "editor.rulers": [150],
+  // 중괄호 가이드라인
+  "editor.guides.bracketPairs": true,
+  // 중괄호 색상 구별
+  "editor.bracketPairColorization.enabled": true,
+  // 코드 미니맵 표시
+  "editor.minimap.enabled": true,
+  // 긴 코드 자동 줄 바꿈
+  "editor.wordWrap": "on",
+  // AI 코드 추천 (GitHub Copilot, CodeWhisperer 등 사용 가능)
+  "editor.inlineSuggest.enabled": true,
+  // 일정 시간 후 자동 저장
+  "files.autoSave": "afterDelay",
+  // 저장 시 불필요한 공백 제거
+  "files.trimTrailingWhitespace": true,
+  // 파일 끝에 빈 줄 추가
+  "files.insertFinalNewline": true,
+  // 숨길 파일/폴더 설정
+  "files.exclude": {
+    "**/node_modules": false,
+    "**/dist": true,
+    "**/out": true,
+    "**/.vscode": false,
+    "**/.git": true,
+    "**/.DS_Store": true
+  },
+  // 상대 경로 import 사용
+  "typescript.preferences.importModuleSpecifier": "relative",
+  // 파일 이동 시 import 경로 자동 업데이트
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  // 파일을 새 탭에서 열기
+  "workbench.editor.enablePreview": false,
+  // 열린 탭 표시
+  "workbench.editor.showTabs": "multiple",
+  // 아이콘 테마
+  "workbench.iconTheme": "material-icon-theme",
+  // VS Code 테마
+  "workbench.colorTheme": "Chromodynamics",
+  // Playwright 트레이스 뷰어 활성화
+  "playwright.trace.viewer": true,
+  // Playwright 테스트 결과를 터미널에서 출력
+  "playwright.testExplorer.output": "terminal",
+  // 브라우저 인스턴스 재사용 (테스트 속도 향상)
+  "playwright.reuseBrowser": true,
+  // Windows에서 기본 터미널 설정 (Git Bash 추천)
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  // macOS 기본 터미널 (zsh)
+  "terminal.integrated.defaultProfile.mac": "zsh",
+  // Linux 기본 터미널 (bash)
+  "terminal.integrated.defaultProfile.linux": "bash",
+  // 터미널 글자 크기
+  "terminal.integrated.fontSize": 14,
+  // 터미널 스크롤 백 로그 길이
+  "terminal.integrated.scrollback": 10000,
+  // 터미널 탭 활성화
+  "terminal.integrated.tabs.enabled": true,
+  // 터미널에서 선택하면 자동 복사
+  "terminal.integrated.copyOnSelection": true,
 }

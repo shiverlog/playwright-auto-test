@@ -1,0 +1,51 @@
+# Description : dependabot.yml - 📌 npm 패키지, Docker 이미지, GitHub Actions 등의 의존성을 자동으로 업데이트 파일
+# Author : Shiwoo Min
+# Date : 2024-03-10
+
+version: 2
+updates:
+  # GitHub Actions 워크플로우의 의존성 자동 업데이트
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 10
+
+  # npm 패키지의 의존성 자동 업데이트
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "friday"
+      time: "09:00"
+      timezone: "Asia/Seoul"
+    open-pull-requests-limit: 5
+
+  # Docker 이미지 자동 업데이트
+  - package-ecosystem: "docker"
+    directory: "/e2e/pc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/e2e/pc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/e2e/pc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/e2e/pc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/e2e/pc"
+    schedule:
+      interval: "weekly"
+  - package-ecosystem: "docker"
+    directory: "/e2e/pc"
+    schedule:
+      interval: "weekly"

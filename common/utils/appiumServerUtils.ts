@@ -1,14 +1,15 @@
-import { exec } from "child_process";
-import * as fs from "fs";
-import * as path from "path";
-import wd from "webdriverio";
-import { logger } from "../logger/customLogger";
+import { exec } from 'child_process';
+import * as fs from 'fs';
+import * as path from 'path';
+import wd from 'webdriverio';
+
+import { logger } from '../logger/customLogger';
 
 /**
  * Appium 관련 설정 (기본 포트 및 서버 옵션)
  */
 const APPIUM_PORT = 4723; // 기본 Appium 포트
-const APPIUM_LOG_FILE = path.resolve(__dirname, "../logs/appium.log");
+const APPIUM_LOG_FILE = path.resolve(__dirname, '../logs/appium.log');
 
 /**
  * 실행 중인 포트 확인 및 종료 (Windows)
@@ -22,7 +23,7 @@ export function checkAndKillPort(startPort: number = APPIUM_PORT): void {
       if (stdout.includes(port.toString())) {
         logger.info(`실행 중인 포트 발견: ${port}, 종료 중...`);
         exec(
-          `for /f "tokens=5" %t in ('netstat -ano ^| findstr ${port}') do (taskkill /f /pid %t)`
+          `for /f "tokens=5" %t in ('netstat -ano ^| findstr ${port}') do (taskkill /f /pid %t)`,
         );
       }
     });
@@ -39,16 +40,10 @@ export function startAppiumServer(port: number = APPIUM_PORT): void {
   const command = `appium --port ${port} --log ${APPIUM_LOG_FILE}`;
   const serverProcess = exec(command);
 
-  serverProcess.stdout?.on("data", (data) =>
-    logger.info(`Appium: ${data.toString()}`)
-  );
-  serverProcess.stderr?.on("data", (error) =>
-    logger.error(`오류: ${error.toString()}`)
-  );
+  serverProcess.stdout?.on('data', data => logger.info(`Appium: ${data.toString()}`));
+  serverProcess.stderr?.on('data', error => logger.error(`오류: ${error.toString()}`));
 
-  serverProcess.on("close", (code) =>
-    logger.info(`Appium 서버 종료 (코드: ${code})`)
-  );
+  serverProcess.on('close', code => logger.info(`Appium 서버 종료 (코드: ${code})`));
 }
 
 /**
@@ -177,10 +172,10 @@ async function startAndroidSession() {
   const options: WebdriverIO.Options = {
     capabilities: [
       {
-        platformName: "Android",
-        deviceName: "emulator-5554", // 에뮬레이터 또는 실제 기기 이름
-        app: "/path/to/your/app.apk", // 설치할 APK 경로
-        automationName: "UiAutomator2", // Appium 2.x에서 지원하는 Android automation name
+        platformName: 'Android',
+        deviceName: 'emulator-5554', // 에뮬레이터 또는 실제 기기 이름
+        app: '/path/to/your/app.apk', // 설치할 APK 경로
+        automationName: 'UiAutomator2', // Appium 2.x에서 지원하는 Android automation name
       },
     ],
   };
@@ -196,10 +191,10 @@ async function startIosSession() {
   const options: WebdriverIO.Options = {
     capabilities: [
       {
-        platformName: "iOS",
-        deviceName: "iPhone 14 Pro Max", // 사용 가능한 iOS 시뮬레이터 또는 실제 기기 이름
-        app: "/path/to/your/app.app", // 설치할 iOS 앱 경로
-        automationName: "XCUITest", // iOS 자동화 드라이버
+        platformName: 'iOS',
+        deviceName: 'iPhone 14 Pro Max', // 사용 가능한 iOS 시뮬레이터 또는 실제 기기 이름
+        app: '/path/to/your/app.app', // 설치할 iOS 앱 경로
+        automationName: 'XCUITest', // iOS 자동화 드라이버
       },
     ],
   };

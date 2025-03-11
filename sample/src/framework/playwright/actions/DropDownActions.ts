@@ -1,5 +1,6 @@
-import { test, Locator } from "@playwright/test";
-import HTMLConstants from "../../constants/HTMLConstants";
+import { Locator, test } from '@playwright/test';
+
+import HTMLConstants from '../../constants/HTMLConstants';
 
 export default class DropDownActions {
   private locator: Locator;
@@ -60,12 +61,9 @@ export default class DropDownActions {
    */
   public async getAllOptions(): Promise<string[]> {
     let selectOptions: string[];
-    await test.step(
-      `Getting all the options of ${this.description}`,
-      async () => {
-        selectOptions = await this.locator.locator(HTMLConstants.OPTION).allTextContents();
-      },
-    );
+    await test.step(`Getting all the options of ${this.description}`, async () => {
+      selectOptions = await this.locator.locator(HTMLConstants.OPTION).allTextContents();
+    });
     return selectOptions;
   }
 
@@ -76,14 +74,9 @@ export default class DropDownActions {
    */
   public async getAllSelectedOptions(): Promise<string[]> {
     let selectOptions: string[];
-    await test.step(
-      `Getting all the selected options of ${this.description}`,
-      async () => {
-        selectOptions = await this.locator
-          .locator(HTMLConstants.SELECTED_OPTION)
-          .allTextContents();
-      },
-    );
+    await test.step(`Getting all the selected options of ${this.description}`, async () => {
+      selectOptions = await this.locator.locator(HTMLConstants.SELECTED_OPTION).allTextContents();
+    });
     return selectOptions;
   }
 }

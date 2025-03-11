@@ -1,16 +1,12 @@
+# Description : ci.yml - 📌 CI/CD 워크플로우
+# Author : Shiwoo Min
+# Date : 2024-03-10
 name: CI - Playwright Tests
-
 on:
   push:
-    branches:
-      - main
-      - develop
-      - release
+    branches: [main, develop, release]
   pull_request:
-    branches:
-      - main
-      - develop
-      - release
+    branches: [main, develop, release]
 
 jobs:
   test:

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable global-require */
 /* eslint-disable @typescript-eslint/no-var-requires */
-import * as sql from "mssql";
-import oracledb from "oracledb";
-import CommonConstants from "../constants/CommonConstants";
-import DBConstants from "../constants/DBConstants";
+import * as sql from 'mssql';
+import oracledb from 'oracledb';
+
+import CommonConstants from '../constants/CommonConstants';
+import DBConstants from '../constants/DBConstants';
 
 export default class DBUtil {
   /**
@@ -34,7 +35,9 @@ export default class DBUtil {
     const config = {
       user: configs[0].replace(DBConstants.USER, CommonConstants.BLANK).trim(),
       password: configs[1].replace(DBConstants.PASSWORD, CommonConstants.BLANK).trim(),
-      connectString: configs[2].replace(DBConstants.CONNECTION_STRING, CommonConstants.BLANK).trim(),
+      connectString: configs[2]
+        .replace(DBConstants.CONNECTION_STRING, CommonConstants.BLANK)
+        .trim(),
     };
     let connection: oracledb.Connection;
     try {

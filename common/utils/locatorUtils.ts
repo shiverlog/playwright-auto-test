@@ -1,12 +1,13 @@
-import * as fs from "fs";
-import * as path from "path";
-import { logger } from "../logger/customLogger";
+import * as fs from 'fs';
+import * as path from 'path';
+
+import { logger } from '../logger/customLogger';
 
 /**
  * LocatorUtils: JSON 기반 로케이터 로드 유틸리티
  */
 export class LocatorUtils {
-  private static LOCATOR_DIR = path.resolve(__dirname, "../locators"); // locators 폴더 경로
+  private static LOCATOR_DIR = path.resolve(__dirname, '../locators'); // locators 폴더 경로
 
   /**
    * 특정 JSON 파일에서 로케이터 로드
@@ -21,7 +22,7 @@ export class LocatorUtils {
         throw new Error(`Locator file not found: ${locatorPath}`);
       }
 
-      const rawData = fs.readFileSync(locatorPath, "utf-8");
+      const rawData = fs.readFileSync(locatorPath, 'utf-8');
       const locators = JSON.parse(rawData);
 
       logger.info(`로케이터 파일 로드 완료: ${section}.json`);
@@ -55,6 +56,16 @@ export class LocatorUtils {
 export function getSelector(locatorType: string, value: string): string {
   const locatorTypeLower = locatorType.toLowerCase();
 
+  // XPath 자동 감지: XPath 패턴이면 `xpath=` 붙이기
+  if (
+    locatorTypeLower === 'xpath' ||
+    value.startsWith('//') ||
+    value.startsWith('./') ||
+    value.startsWith('(')
+  ) {
+    return `xpath=${value}`;
+  }
+
   const locatorMapping: Record<string, string> = {
     id: `#${value}`,
     name: `[name="${value}"]`,
@@ -68,7 +79,7 @@ export function getSelector(locatorType: string, value: string): string {
 
   if (!(locatorTypeLower in locatorMapping)) {
     logger.error(`❌ Unsupported locator type: ${locatorType}`);
-    return "";
+    return '';
   }
 
   return locatorMapping[locatorTypeLower];

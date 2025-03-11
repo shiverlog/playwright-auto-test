@@ -2,23 +2,22 @@ name: Main Workflow
 
 on:
   push:
-    branches:
-      - main
-      - develop
-      - release
+    branches: [main, develop, release]
   pull_request:
-
+    branches: [main, develop, release]
 jobs:
+  # ci.yml 실행
   ci:
-    uses: ./.github/workflows/ci.yml  # ci.yml 실행
-
+    uses: ./.github/workflows/ci.yml
+  # Node.js 버전별 테스트 실행
   node-test:
-    uses: ./.github/workflows/node.js.yml  # Node.js 버전별 테스트 실행
-
+    uses: ./.github/workflows/node.js.yml
+  # Playwright 테스트 실행
   playwright:
-    uses: ./.github/workflows/playwright.yml  # Playwright 테스트 실행
-
+    uses: ./.github/workflows/playwright.yml
+  # CI와 Playwright 테스트가 성공하면 실행
   cd:
     if: github.ref == 'refs/heads/main'
-    needs: [ci, node-test, playwright]  # CI와 Playwright 테스트가 성공하면 실행
-    uses: ./.github/workflows/cd.yml  # 배포 실행
+    needs: [ci, node-test, playwright]
+    # 배포 실행
+    uses: ./.github/workflows/cd.yml

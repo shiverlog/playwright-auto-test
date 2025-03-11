@@ -1,9 +1,9 @@
-import { PubSub, Message } from "@google-cloud/pubsub";
+import { Message, PubSub } from '@google-cloud/pubsub';
 
 // 프로젝트 및 구독 정보 설정
-const PROJECT_ID = "gc-automation-test";  // Google Cloud 프로젝트 ID
-const SUBSCRIPTION_ID = "my-sub";  // Pub/Sub 구독 ID
-const NUM_MESSAGES = 3;  // 최대 메시지 개수
+const PROJECT_ID = 'gc-automation-test'; // Google Cloud 프로젝트 ID
+const SUBSCRIPTION_ID = 'my-sub'; // Pub/Sub 구독 ID
+const NUM_MESSAGES = 3; // 최대 메시지 개수
 
 // Google Cloud Pub/Sub 클라이언트 생성
 const pubsub = new PubSub({ projectId: PROJECT_ID });
@@ -29,18 +29,17 @@ async function pullMessages(): Promise<void> {
       // 최대 메시지 개수 도달 시 구독 종료
       if (receivedCount >= NUM_MESSAGES) {
         console.log(`✅ Successfully acknowledged ${receivedCount} messages.`);
-        subscription.removeListener("message", messageHandler);
+        subscription.removeListener('message', messageHandler);
       }
     };
 
     // 메시지 수신 시작
-    subscription.on("message", messageHandler);
+    subscription.on('message', messageHandler);
 
     // 오류 처리
-    subscription.on("error", (error) => {
+    subscription.on('error', error => {
       console.error(`❌ Subscription error: ${error}`);
     });
-
   } catch (error) {
     console.error(`❌ Error pulling messages: ${error}`);
   }

@@ -1,5 +1,6 @@
-import { Page } from "@playwright/test";
-import { logger } from "../logger/customLogger";
+import { Page } from '@playwright/test';
+
+import { logger } from '../logger/customLogger';
 
 export class TestPerformance {
   /**
@@ -9,7 +10,7 @@ export class TestPerformance {
    */
   public static async measurePageLoadTime(page: Page): Promise<number> {
     const startTime = Date.now();
-    await page.waitForLoadState("load");
+    await page.waitForLoadState('load');
     const endTime = Date.now();
     const loadTime = endTime - startTime;
     logger.info(`페이지 로드 시간: ${loadTime} ms`);
@@ -22,12 +23,9 @@ export class TestPerformance {
    * @param selector - LCP (Largest Contentful Paint) 요소 선택자
    * @returns LCP 로딩 완료 시간 (ms)
    */
-  public static async measureElementLoadTime(
-    page: Page,
-    selector: string
-  ): Promise<number> {
+  public static async measureElementLoadTime(page: Page, selector: string): Promise<number> {
     const startTime = Date.now();
-    await page.waitForSelector(selector, { state: "visible" });
+    await page.waitForSelector(selector, { state: 'visible' });
     const endTime = Date.now();
     const loadTime = endTime - startTime;
     logger.info(`요소 (${selector}) 로드 시간: ${loadTime} ms`);
@@ -39,11 +37,11 @@ export class TestPerformance {
    * @param page - Playwright Page 객체
    */
   public static async measureNetworkRequests(page: Page) {
-    page.on("request", (request) => {
+    page.on('request', request => {
       logger.info(`요청: ${request.url()} - ${request.method()}`);
     });
 
-    page.on("response", async (response) => {
+    page.on('response', async response => {
       const status = response.status();
       const url = response.url();
       logger.info(`응답 (${status}): ${url}`);
@@ -56,18 +54,15 @@ export class TestPerformance {
    */
   public static async getPerformanceMetrics(page: Page) {
     const client = await page.context().newCDPSession(page);
-    const metrics = await client.send("Performance.getMetrics");
+    const metrics = await client.send('Performance.getMetrics');
 
-    const cpuUsage =
-      metrics.metrics.find((m) => m.name === "TaskDuration")?.value || 0;
-    const jsHeapUsed =
-      metrics.metrics.find((m) => m.name === "JSHeapUsedSize")?.value || 0;
-    const jsHeapTotal =
-      metrics.metrics.find((m) => m.name === "JSHeapTotalSize")?.value || 0;
+    const cpuUsage = metrics.metrics.find(m => m.name === 'TaskDuration')?.value || 0;
+    const jsHeapUsed = metrics.metrics.find(m => m.name === 'JSHeapUsedSize')?.value || 0;
+    const jsHeapTotal = metrics.metrics.find(m => m.name === 'JSHeapTotalSize')?.value || 0;
 
     logger.info(`CPU 사용량: ${cpuUsage.toFixed(2)} ms`);
     logger.info(
-      `메모리 사용량: ${(jsHeapUsed / 1024 / 1024).toFixed(2)} MB / ${(jsHeapTotal / 1024 / 1024).toFixed(2)} MB`
+      `메모리 사용량: ${(jsHeapUsed / 1024 / 1024).toFixed(2)} MB / ${(jsHeapTotal / 1024 / 1024).toFixed(2)} MB`,
     );
   }
 
@@ -76,10 +71,10 @@ export class TestPerformance {
    * @param page - Playwright Page 객체
    */
   public static async detectConsoleErrors(page: Page) {
-    page.on("console", (message) => {
-      if (message.type() === "error") {
+    page.on('console', message => {
+      if (message.type() === 'error') {
         logger.error(`콘솔 에러: ${message.text()}`);
-      } else if (message.type() === "warning") {
+      } else if (message.type() === 'warning') {
         logger.warn(`콘솔 경고: ${message.text()}`);
       }
     });
@@ -91,7 +86,7 @@ export class TestPerformance {
    * @returns LCP 시간 (ms)
    */
   public static async measureLCP(page: Page): Promise<number> {
-    await page.waitForLoadState("load");
+    await page.waitForLoadState('load');
 
     const script = `
       new Promise((resolve) => {
@@ -114,12 +109,10 @@ export class TestPerformance {
    * 전체 페이지 로드 시간 측정 (Performance API 활용)
    */
   public static async measureFullLoadTime(page: Page): Promise<number> {
-    await page.waitForLoadState("load");
+    await page.waitForLoadState('load');
 
     const fullLoadTime = await page.evaluate(() => {
-      const navEntry = performance.getEntriesByType(
-        "navigation"
-      )[0] as PerformanceNavigationTiming;
+      const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
       return navEntry ? navEntry.loadEventEnd - navEntry.startTime : 0;
     });
 
@@ -130,10 +123,7 @@ export class TestPerformance {
   /**
    * 특정 이벤트 발생까지 대기
    */
-  public static async waitForPerformanceEvent(
-    page: Page,
-    script: string
-  ): Promise<number> {
+  public static async waitForPerformanceEvent(page: Page, script: string): Promise<number> {
     const result = (await page.evaluate(script)) as number;
     return result;
   }

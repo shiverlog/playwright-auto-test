@@ -1,0 +1,28 @@
+/**
+ * Description : general-testing.code-snippets - 📌 VS Code 테스팅 공통 스니펫 설정 파일
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+{
+  "Describe Test Block": {
+    "prefix": "testDescribe",
+    "body": [
+      "describe('${1:Test Suite Name}', () => {",
+      "  it('${2:should do something}', async () => {",
+      "    ${3:// test code here}",
+      "  });",
+      "});",
+    ],
+    "description": "Jest/Mocha Describe 블록 생성",
+  },
+  "Expect Assertion": {
+    "prefix": "testExpect",
+    "body": ["expect(${1:value}).toEqual(${2:expectedValue});"],
+    "description": "테스트에서 기대값 비교",
+  },
+  "Mock Function": {
+    "prefix": "testMock",
+    "body": ["jest.fn(() => ${1:returnValue});"],
+    "description": "Jest에서 함수 목킹",
+  },
+}

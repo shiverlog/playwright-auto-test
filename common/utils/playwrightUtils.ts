@@ -1,15 +1,13 @@
-import { Page, Locator, Browser, BrowserContext } from "playwright";
-import { test, expect } from "@playwright/test";
+import { expect, test } from '@playwright/test';
+import { Browser, BrowserContext, Locator, Page } from 'playwright';
 
 /**
  * Playwright - 현재 화면 크기 가져오기
  */
-export async function getScreenSize(
-  page: Page
-): Promise<{ width: number; height: number }> {
+export async function getScreenSize(page: Page): Promise<{ width: number; height: number }> {
   const viewport = page.viewportSize();
   if (!viewport) {
-    throw new Error("화면 크기를 가져올 수 없습니다.");
+    throw new Error('화면 크기를 가져올 수 없습니다.');
   }
   return { width: viewport.width, height: viewport.height };
 }
@@ -25,9 +23,9 @@ export async function getCurrentScrollTop(page: Page): Promise<number> {
  * Playwright - 브라우저 시작 및 페이지 열기 (공통 유틸)
  */
 export async function launchBrowser(
-  headless: boolean = true
+  headless: boolean = true,
 ): Promise<{ browser: Browser; context: BrowserContext; page: Page }> {
-  const browser = await require("playwright").chromium.launch({ headless });
+  const browser = await require('playwright').chromium.launch({ headless });
   const context = await browser.newContext();
   const page = await context.newPage();
   return { browser, context, page };
@@ -41,7 +39,7 @@ export async function launchBrowser(
 export async function reClick(page: Page, locator: Locator): Promise<void> {
   const boundingBox = await locator.boundingBox();
   if (!boundingBox) {
-    throw new Error("요소의 위치 정보를 가져올 수 없습니다.");
+    throw new Error('요소의 위치 정보를 가져올 수 없습니다.');
   }
 
   const x = boundingBox.x + boundingBox.width / 2;
@@ -56,13 +54,10 @@ export async function reClick(page: Page, locator: Locator): Promise<void> {
  * @param page Playwright Page 객체
  * @param locator 더블 클릭할 요소의 Locator
  */
-export async function reDoubleClick(
-  page: Page,
-  locator: Locator
-): Promise<void> {
+export async function reDoubleClick(page: Page, locator: Locator): Promise<void> {
   const boundingBox = await locator.boundingBox();
   if (!boundingBox) {
-    throw new Error("요소의 위치 정보를 가져올 수 없습니다.");
+    throw new Error('요소의 위치 정보를 가져올 수 없습니다.');
   }
 
   const x = boundingBox.x + boundingBox.width / 2;
@@ -77,11 +72,8 @@ export async function reDoubleClick(
  * @param page Playwright Page 객체
  * @param selector 확인할 요소의 CSS 또는 XPath 선택자
  */
-export async function waitForElementVisible(
-  page: Page,
-  selector: string
-): Promise<void> {
-  await page.waitForSelector(selector, { state: "visible" });
+export async function waitForElementVisible(page: Page, selector: string): Promise<void> {
+  await page.waitForSelector(selector, { state: 'visible' });
 }
 
 /**
@@ -89,10 +81,7 @@ export async function waitForElementVisible(
  * @param page Playwright Page 객체
  * @param selector 스크롤할 요소의 CSS 선택자
  */
-export async function scrollToElement(
-  page: Page,
-  selector: string
-): Promise<void> {
+export async function scrollToElement(page: Page, selector: string): Promise<void> {
   await page.locator(selector).scrollIntoViewIfNeeded();
 }
 
@@ -105,7 +94,7 @@ export async function scrollToElement(
 export async function verifyTextInElement(
   page: Page,
   selector: string,
-  text: string
+  text: string,
 ): Promise<boolean> {
   const elementText = await page.locator(selector).innerText();
   return elementText.includes(text);
@@ -116,10 +105,7 @@ export async function verifyTextInElement(
  * @param context Playwright BrowserContext 객체
  * @param url 이동할 URL
  */
-export async function openNewTab(
-  context: BrowserContext,
-  url: string
-): Promise<Page> {
+export async function openNewTab(context: BrowserContext, url: string): Promise<Page> {
   const newPage = await context.newPage();
   await newPage.goto(url);
   return newPage;

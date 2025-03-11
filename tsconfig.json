@@ -1,36 +1,60 @@
+/**
+ * Description : tsconfig.json - 📌 컴파일러 옵션 및 빌드 설정을 정의하는 구성 파일
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
 {
   "compilerOptions": {
+    // 프로젝트의 기본 경로 지정 (모듈 경로 설정을 위한 기준)
     "baseUrl": ".",
+    // 모듈화를 위한 Path 설정
     "paths": {
       "@common/*": ["common/*"],
       "@e2e/*": ["e2e/*"],
-      "@e2e/aos/*": ["e2e/aos/*"],
+      "@e2e/aos/*": ["e2e/android/*"],
       "@e2e/api/*": ["e2e/api/*"],
       "@e2e/ios/*": ["e2e/ios/*"],
-      "@e2e/mw/*": ["e2e/mw/*"],
-      "@e2e/pc/*": ["e2e/pc/*"],
+      "@e2e/mw/*": ["e2e/mobile/*"],
+      "@e2e/pc/*": ["e2e/pc-web/*"],
       "@batch/*": ["batch/*"],
       "@pubsub/*": ["pubsub/*"],
       "@mosaic-db/*": ["mosaic-db/*"],
       "@sample/*": ["sample/*"]
     },
+    // 컴파일된 JavaScript 파일이 저장될 디렉터리
     "outDir": "dist",
+    // TypeScript 파일의 루트 디렉터리 지정
     "rootDir": "./",
+    // Node.js 환경에서 사용하기 위한 모듈 시스템 설정
     "module": "CommonJS",
+    // 컴파일된 코드의 타겟 ES 버전 (ECMAScript 6)
     "target": "ES6",
+    // TypeScript 타입 선언 파일(.d.ts) 생성
     "declaration": true,
+    // 엄격한 타입 검사 모드 활성화 (타입 안정성을 높임)
     "strict": true,
+    // CommonJS 및 ES 모듈 간 상호 운용성 지원
     "esModuleInterop": true,
-    "skipLibCheck": true
+    // 라이브러리 파일(.d.ts)의 타입 검사를 건너뜀 (빌드 속도 향상)
+    "skipLibCheck": true,
+    // TS 디버깅 - 소스 맵 활성화
+    "sourceMap": true,
+    // 외부 .map 파일을 생성하여 브라우저에서 인식 가능하게 함
+    "inlineSourceMap": false,
+    // 디버깅 시 TypeScript 원본 코드 표시
+    "inlineSources": true,
+    // 오류 발생 시에도 컴파일된 파일을 출력
+    "noEmitOnError": false
   },
+  // TypeScript 컴파일 대상
   "include": [
     "common",
     "e2e",
-    "e2e/aos",
+    "e2e/android",
     "e2e/api",
     "e2e/ios",
-    "e2e/mw",
-    "e2e/pc",
+    "e2e/mobile",
+    "e2e/pc-web",
     "batch",
     "pubsub",
     "mosaic-db",
@@ -39,5 +63,6 @@
     "tests-examples",
     "playwright.config.ts"
   ],
+  // TypeScript 컴파일 대상에서 제외
   "exclude": ["node_modules", "dist", "example", "speedtest", "zas-is"]
 }

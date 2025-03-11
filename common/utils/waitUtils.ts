@@ -1,6 +1,7 @@
-import { Page } from "@playwright/test";
-import { Browser } from "webdriverio";
-import { logger } from "../logger/customLogger";
+import { Page } from '@playwright/test';
+import { Browser } from 'webdriverio';
+
+import { logger } from '../logger/customLogger';
 
 export class WaitUtils {
   private page?: Page;
@@ -18,7 +19,7 @@ export class WaitUtils {
    */
   async waitForElementToBeVisible(selector: string, timeout: number = 5000) {
     if (this.page) {
-      await this.page.locator(selector).waitFor({ state: "visible", timeout });
+      await this.page.locator(selector).waitFor({ state: 'visible', timeout });
     }
   }
 
@@ -27,10 +28,7 @@ export class WaitUtils {
    * @param selector - 대기할 요소 선택자
    * @param timeout - 최대 대기 시간 (기본값: 5000ms)
    */
-  async waitForElementToBeVisibleInAppium(
-    selector: string,
-    timeout: number = 5000
-  ) {
+  async waitForElementToBeVisibleInAppium(selector: string, timeout: number = 5000) {
     if (this.driver) {
       const element = await this.driver.$(selector);
       await element.waitForDisplayed({ timeout });
@@ -43,11 +41,7 @@ export class WaitUtils {
    * @param selector - 대기할 요소 선택자
    * @param timeout - 최대 대기 시간 (기본값: 5000ms)
    */
-  public static async waitForElement(
-    page: Page,
-    selector: string,
-    timeout: number = 5000
-  ) {
+  public static async waitForElement(page: Page, selector: string, timeout: number = 5000) {
     await page.waitForSelector(selector, { timeout });
   }
 
@@ -56,7 +50,7 @@ export class WaitUtils {
    * @param milliseconds - 대기할 시간 (ms)
    */
   public static async wait(milliseconds: number) {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
   }
 
   /**
@@ -68,13 +62,13 @@ export class WaitUtils {
   public static async waitForCondition(
     condition: () => Promise<boolean>,
     timeout: number = 10000,
-    interval: number = 500
+    interval: number = 500,
   ) {
     const startTime = Date.now();
     while (Date.now() - startTime < timeout) {
       if (await condition()) return;
       await this.wait(interval);
     }
-    throw new Error("Condition timeout exceeded");
+    throw new Error('Condition timeout exceeded');
   }
 }

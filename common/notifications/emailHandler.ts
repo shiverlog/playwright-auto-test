@@ -1,16 +1,17 @@
-import nodemailer from "nodemailer";
-import dotenv from "dotenv";
-import { logger } from "../logger/customLogger";
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+
+import { logger } from '../logger/customLogger';
 
 dotenv.config();
 
 // 환경 변수에서 이메일 설정 가져오기
-const SMTP_HOST = process.env.SMTP_HOST || "";
+const SMTP_HOST = process.env.SMTP_HOST || '';
 const SMTP_PORT = Number(process.env.SMTP_PORT) || 587;
-const SMTP_USER = process.env.SMTP_USER || "";
-const SMTP_PASS = process.env.SMTP_PASS || "";
+const SMTP_USER = process.env.SMTP_USER || '';
+const SMTP_PASS = process.env.SMTP_PASS || '';
 const EMAIL_FROM = process.env.EMAIL_FROM || SMTP_USER;
-const EMAIL_TO = process.env.EMAIL_TO || ""; // 기본 수신자 설정
+const EMAIL_TO = process.env.EMAIL_TO || ''; // 기본 수신자 설정
 
 // Nodemailer Transporter 설정
 const transporter = nodemailer.createTransport({
@@ -34,10 +35,10 @@ export const sendEmail = async (
   subject: string,
   text: string,
   html?: string,
-  to: string = EMAIL_TO
+  to: string = EMAIL_TO,
 ) => {
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !to) {
-    logger.warn("이메일 환경 변수가 설정되지 않았습니다.");
+    logger.warn('이메일 환경 변수가 설정되지 않았습니다.');
     return;
   }
 
@@ -53,6 +54,6 @@ export const sendEmail = async (
     const info = await transporter.sendMail(mailOptions);
     logger.info(`이메일 전송 완료: ${info.messageId} (To: ${to})`);
   } catch (error) {
-    logger.error("이메일 전송 실패:", error);
+    logger.error('이메일 전송 실패:', error);
   }
 };
