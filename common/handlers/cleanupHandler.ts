@@ -4,36 +4,54 @@
  * Date : 2024-03-10
  */
 import { FILE_RETENTION_DAYS } from '@common/config/config';
+import { POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/constants';
 import { logger } from '@common/logger/customLogger';
 import fs from 'fs';
 import path from 'path';
 
-
-
-
-
 /**
- * 특정 폴더에서 일정 기간 지난 파일 자동 삭제
- * @param dirPath - 정리할 디렉토리
- * @param maxDays - 최대 보관 일수
+ * 특정 POC 타입에 대해 오래된 파일을 정리하는 함수
+ * @param {POCType} poc - POC 타입
  */
-export function cleanupOldFiles(dirPath: string, maxDays: number) {
-  const now = Date.now();
-  const maxAgeMs = maxDays * 24 * 60 * 60 * 1000; // 밀리초 변환
+export async function cleanupOldFiles(poc: POCType): Promise<void> {
+  try {
+    const now = Date.now();
+    const basePath = POC_PATH(poc);
+    const basePaths = typeof basePath === 'string' ? [basePath] : basePath;
 
-  if (!fs.existsSync(dirPath)) {
-    logger.warn(`정리할 폴더가 없음: ${dirPath}`);
-    return;
-  }
+    for (const basePath of basePaths) {
+      const resultPaths = POC_RESULT_PATHS(basePath);
 
-  const files = fs.readdirSync(dirPath);
-  files.forEach(file => {
-    const filePath = path.join(dirPath, file);
-    const stats = fs.statSync(filePath);
+      for (const [key, dirPath] of Object.entries(resultPaths)) {
+        const maxAgeMs =
+          (FILE_RETENTION_DAYS[key as keyof typeof FILE_RETENTION_DAYS] || 14) *
+          24 *
+          60 *
+          60 *
+          1000;
 
-    if (now - stats.mtimeMs > maxAgeMs) {
-      fs.unlinkSync(filePath);
-      logger.info(`오래된 파일 삭제됨: ${filePath}`);
+        if (!fs.existsSync(dirPath)) {
+          logger.warn(`정리할 폴더가 없음: ${dirPath}`);
+          continue;
+        }
+
+        try {
+          const files = fs.readdirSync(dirPath);
+          for (const file of files) {
+            const filePath = path.join(dirPath, file);
+            const stats = fs.statSync(filePath);
+
+            if (now - stats.mtimeMs > maxAgeMs) {
+              await fs.promises.unlink(filePath);
+              logger.info(`오래된 파일 삭제됨: ${filePath}`);
+            }
+          }
+        } catch (error) {
+          logger.error(`폴더 처리 중 오류 발생: ${dirPath}, 오류: ${error}`);
+        }
+      }
     }
-  });
+  } catch (error) {
+    logger.error(`파일 정리 중 예기치 않은 오류 발생: ${error}`);
+  }
 }

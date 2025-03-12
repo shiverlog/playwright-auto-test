@@ -4,6 +4,7 @@
  * Date : 2024-03-10
  */
 {
+  // Appium 기본 설정
   "Appium Basic Setup": {
     "prefix": "appiumSetup",
     "body": [
@@ -24,36 +25,90 @@
       "",
       "await driver.quit();",
     ],
-    "description": "Appium 기본 설정",
   },
-  "Appium Find Element": {
-    "prefix": "appiumFind",
-    "body": [
-      "const element = await driver.$('${1:selector}');",
-      "await element.${2:click()}();",
-    ],
-    "description": "Appium에서 요소 찾기 및 액션 수행",
+
+  // 특정 좌표를 탭하는 Appium 액션
+  "Appium Tap Action": {
+    "prefix": "appiumTap",
+    "body": ["await driver.touchAction({", "  action: 'tap',", "  x: ${1:100}, y: ${2:200}", "});"],
   },
-  "Appium Wait for Element": {
-    "prefix": "appiumWait",
-    "body": [
-      "await driver.waitUntil(",
-      "  async () => (await driver.$('${1:selector}')).isDisplayed(),",
-      "  { timeout: ${2:5000}, timeoutMsg: 'Element not found' }",
-      ");",
-    ],
-    "description": "Appium에서 특정 요소가 나타날 때까지 대기",
-  },
-  "Appium Swipe Action": {
-    "prefix": "appiumSwipe",
+
+  // 특정 위치를 길게 누르는 Appium 액션
+  "Appium Long Press": {
+    "prefix": "appiumLongPress",
     "body": [
       "await driver.touchAction([",
-      "  { action: 'press', x: ${1:100}, y: ${2:500} },",
-      "  { action: 'wait', ms: 500 },",
-      "  { action: 'moveTo', x: ${3:100}, y: ${4:100} },",
+      "  { action: 'press', x: ${1:100}, y: ${2:200} },",
+      "  { action: 'wait', ms: ${3:2000} },",
       "  'release'",
       "]);",
     ],
-    "description": "Appium에서 스와이프 액션 실행",
+  },
+
+  // 특정 입력 필드에 텍스트를 입력하는 Appium 스니펫
+  "Appium Input Text": {
+    "prefix": "appiumInput",
+    "body": [
+      "const inputField = await driver.$('${1:selector}');",
+      "await inputField.setValue('${2:input text}');",
+    ],
+  },
+
+  // 입력 필드의 내용을 지우는 Appium 스니펫
+  "Appium Clear Input": {
+    "prefix": "appiumClear",
+    "body": [
+      "const inputField = await driver.$('${1:selector}');",
+      "await inputField.clearValue();",
+    ],
+    "description": "Appium에서 입력 필드 내용 지우기",
+  },
+
+  // 현재 화면의 스크린샷을 저장하는 Appium 스니펫
+  "Appium Screenshot": {
+    "prefix": "appiumScreenshot",
+    "body": [
+      "const screenshot = await driver.takeScreenshot();",
+      "require('fs').writeFileSync('${1:screenshot.png}', screenshot, 'base64');",
+    ],
+  },
+
+  // 클립보드에서 텍스트를 가져오는 Appium 스니펫
+  "Appium Get Clipboard Text": {
+    "prefix": "appiumGetClipboard",
+    "body": [
+      "const clipboardText = await driver.getClipboard();",
+      "console.log('Clipboard content:', clipboardText);",
+    ],
+  },
+
+  // 클립보드에 텍스트를 설정하는 Appium 스니펫
+  "Appium Set Clipboard Text": {
+    "prefix": "appiumSetClipboard",
+    "body": ["await driver.setClipboard('${1:text}');"],
+  },
+
+  // 가상 키보드를 숨기는 Appium 스니펫
+  "Appium Hide Keyboard": {
+    "prefix": "appiumHideKeyboard",
+    "body": ["await driver.hideKeyboard();"],
+  },
+
+  // 현재 디바이스의 시간을 가져오는 Appium 스니펫
+  "Appium Get Device Info": {
+    "prefix": "appiumDeviceInfo",
+    "body": [
+      "const deviceTime = await driver.getDeviceTime();",
+      "console.log('Device time:', deviceTime);",
+    ],
+  },
+
+  // 현재 실행 중인 Android 앱의 Activity를 가져오는 Appium 스니펫
+  "Appium Get Current Activity (Android)": {
+    "prefix": "appiumGetActivity",
+    "body": [
+      "const activity = await driver.getCurrentActivity();",
+      "console.log('Current Activity:', activity);",
+    ],
   },
 }

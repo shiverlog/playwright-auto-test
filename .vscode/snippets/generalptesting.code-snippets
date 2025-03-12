@@ -4,6 +4,7 @@
  * Date : 2024-03-10
  */
 {
+  // Jest/Mocha Describe 블록 생성
   "Describe Test Block": {
     "prefix": "testDescribe",
     "body": [
@@ -13,16 +14,17 @@
       "  });",
       "});",
     ],
-    "description": "Jest/Mocha Describe 블록 생성",
   },
+
+  // 테스트에서 기대값 비교
   "Expect Assertion": {
     "prefix": "testExpect",
     "body": ["expect(${1:value}).toEqual(${2:expectedValue});"],
-    "description": "테스트에서 기대값 비교",
   },
+
+  // Jest에서 함수 목킹
   "Mock Function": {
     "prefix": "testMock",
     "body": ["jest.fn(() => ${1:returnValue});"],
-    "description": "Jest에서 함수 목킹",
   },
 }

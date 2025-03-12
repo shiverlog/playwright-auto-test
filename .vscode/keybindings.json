@@ -10,29 +10,34 @@
     "command": "workbench.action.tasks.runTask",
     "args": "Run Playwright Tests"
   },
+
   // Appium 서버 실행
   {
     "key": "ctrl+shift+a",
     "command": "workbench.action.tasks.runTask",
     "args": "Run Appium Server"
   },
+
   // Playwright 테스트 UI 모드 실행
   {
     "key": "ctrl+shift+u",
     "command": "workbench.action.tasks.runTask",
     "args": "Run Playwright UI Mode"
   },
+
   // Playwright 브라우저 열기(비헤드리스 모드)
   {
     "key": "ctrl+shift+b",
     "command": "workbench.action.tasks.runTask",
     "args": "Open Playwright Browser"
   },
+
   // Playwright 디버깅 실행 (VS Code Debugger)
   {
     "key": "ctrl+shift+d",
     "command": "workbench.action.debug.start"
   },
+
   // Appium Inspector 실행
   {
     "key": "ctrl+shift+i",
@@ -44,24 +49,28 @@
       "shellArgs": ["appium-inspector"]
     }
   },
+
   // 특정 Playwright 테스트 파일 실행 (현재 열려 있는 파일)
   {
     "key": "ctrl+shift+r",
     "command": "workbench.action.tasks.runTask",
     "args": "Run Current Playwright Test"
   },
+
   // Playwright 테스트 결과 확인 (Report 보기)
   {
     "key": "ctrl+shift+e",
     "command": "workbench.action.tasks.runTask",
     "args": "Show Playwright Report"
   },
+
   // Playwright 테스트 다시 실행 (Watch Mode)
   {
     "key": "ctrl+shift+w",
     "command": "workbench.action.tasks.runTask",
     "args": "Run Playwright Watch Mode"
   },
+
   // 터미널 열기/닫기 (Appium & Playwright 공용)
   {
     "key": "ctrl+shift+`",

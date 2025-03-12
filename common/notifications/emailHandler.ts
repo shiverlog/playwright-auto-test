@@ -1,7 +1,12 @@
+/**
+ * Description : emailHandler.ts - 📌 E-mail 전송 핸들러
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+import { emailConfig } from '@common/config/config';
+import { logger } from '@common/logger/customLogger';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
-
-import { logger } from '../logger/customLogger';
 
 dotenv.config();
 

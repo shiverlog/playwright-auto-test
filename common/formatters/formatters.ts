@@ -25,5 +25,27 @@ const getFormattedTime = (): string => {
   return `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
 };
 
+// 천 단위 콤마 포맷
+const formatNumberWithCommas = (num: number): string => {
+  return num.toLocaleString();
+};
+
+// 콤마(,) 제거 후 숫자(number)로 반환
+const parseNumberFromCommas = (formatted: string): number => {
+  return Number(formatted.replace(/,/g, ''));
+};
+
+// 소수점 → 퍼센트로 변환
+const formatPercent = (num: number, decimals = 0): string => {
+  return `${(num * 100).toFixed(decimals)}%`;
+};
+
 // 설정값 내보내기
-export { getCurrentTimestamp, getFormattedDate, getFormattedTime };
+export {
+  getCurrentTimestamp,
+  getFormattedDate,
+  getFormattedTime,
+  formatNumberWithCommas,
+  parseNumberFromCommas,
+  formatPercent,
+};

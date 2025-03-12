@@ -84,4 +84,6 @@
   "terminal.integrated.tabs.enabled": true,
   // 터미널에서 선택하면 자동 복사
   "terminal.integrated.copyOnSelection": true,
+  // 스펠링 검사 제외 키워드
+  "cSpell.words": ["UPLUS, uhdc, Shiwoo"]
 }

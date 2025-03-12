@@ -3,8 +3,9 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { POCType, getScreenshotFile, getTraceFile, getVideoFile } from '@common/config/config';
+import { POCType, SCREENSHOT_PATH, TRACE_PATH, VIDEO_PATH } from '@common/constants/constants';
 import { logger } from '@common/logger/customLogger';
+import path from 'path';
 import { Page } from 'playwright';
 
 /**
@@ -44,7 +45,7 @@ export async function errorHandler(
       logger.warn('페이지 네비게이션 중 오류가 발생했습니다.');
       break;
     case 'AssertionError':
-      logger.warn('테스트 검증 실패 (Assertion Error).');
+      logger.warn('테스트 검증에 실패하였습니다. (Assertion Error)');
       break;
     case 'PageError':
       logger.warn('페이지에서 오류가 발생했습니다.');
@@ -55,7 +56,7 @@ export async function errorHandler(
   }
 
   // 오류 발생 시 파일 저장 (스크린샷, 비디오, 트레이스)
-  await screenshotOnError(page, poc, error, message);
+  await screenshotOnError(page, poc);
   await saveTestTrace(page, poc);
   await saveTestVideo(page, poc);
 
@@ -65,9 +66,9 @@ export async function errorHandler(
 /**
  * 오류 발생 시 스크린샷 저장
  */
-async function screenshotOnError(page: Page, poc: POCType, error: any, message: string) {
+async function screenshotOnError(page: Page, poc: POCType) {
   try {
-    const filePath = getScreenshotFile(poc);
+    const filePath = path.join(SCREENSHOT_PATH, `${poc}_error.png`);
     await page.screenshot({ path: filePath, fullPage: true });
     logger.info(`스크린샷 저장됨: ${filePath}`);
   } catch (err) {
@@ -81,7 +82,7 @@ async function screenshotOnError(page: Page, poc: POCType, error: any, message: 
 async function saveTestTrace(page: Page, poc: POCType) {
   try {
     const context = page.context();
-    const filePath = getTraceFile(poc);
+    const filePath = path.join(TRACE_PATH, `${poc}_trace.zip`);
 
     await context.tracing.stop({ path: filePath });
     logger.info(`트레이스 파일 저장됨: ${filePath}`);
@@ -95,7 +96,7 @@ async function saveTestTrace(page: Page, poc: POCType) {
  */
 async function saveTestVideo(page: Page, poc: POCType) {
   try {
-    const filePath = getVideoFile(poc);
+    const filePath = path.join(VIDEO_PATH, `${poc}_video.mp4`);
     logger.info(`비디오 파일 저장됨: ${filePath}`);
   } catch (err) {
     logger.error('비디오 저장 중 오류 발생:', err);

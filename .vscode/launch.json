@@ -6,48 +6,63 @@
 {
   "version": "0.2.0",
   "configurations": [
+    // e2e 로 시작하는 모든 테스트 폴더 실행 (Headless)
     {
-      // e2e- 로 시작하는 모든 테스트 폴더 실행
       "name": "Run Playwright All E2E Tests (Headless)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "e2e-*", "--reporter=html"],
+      "args": ["test", "e2e/**", "--reporter=html"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // e2e 로 시작하는 모든 테스트 폴더 실행
     {
-      // e2e- 로 시작하는 모든 테스트 폴더 실행
       "name": "Run Playwright All E2E Tests (Headed - Debug)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "e2e-*", "--headed", "--debug"],
+      "args": ["test", "e2e/**", "--headed", "--debug"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // e2e-pc 폴더의 테스트 실행
     {
-      // e2e-aos 폴더의 테스트 실행
+      "name": "Run Playwright E2E-PC",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "e2e/pc-web", "--reporter=html"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+
+    // e2e/mw 폴더의 테스트 실행
+    {
+      "name": "Run Playwright E2E-MW",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "e2e/mobile-web", "--reporter=html"],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+
+    // e2e/android 폴더의 테스트 실행
+    {
       "name": "Run Playwright E2E-AOS",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "e2e-aos", "--reporter=html"],
+      "args": ["test", "e2e/android", "--reporter=html"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // e2e/ios 폴더의 테스트 실행
     {
-      // e2e-api 폴더의 테스트 실행
-      "name": "Run Playwright E2E-API",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "e2e-api", "--reporter=html"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-    },
-    {
-      // e2e-ios 폴더의 테스트 실행
       "name": "Run Playwright E2E-IOS",
       "type": "node",
       "request": "launch",
@@ -56,28 +71,20 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // e2e/api 폴더의 테스트 실행
     {
-      // e2e-mw 폴더의 테스트 실행
-      "name": "Run Playwright E2E-MW",
+      "name": "Run Playwright E2E-API",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "e2e-mw", "--reporter=html"],
+      "args": ["test", "e2e/api", "--reporter=html"],
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // speedtest 폴더의 테스트 실행
     {
-      // e2e-pc 폴더의 테스트 실행
-      "name": "Run Playwright E2E-PC",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/.bin/playwright",
-      "args": ["test", "e2e-pc", "--reporter=html"],
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-    },
-    {
-      // speedtest 폴더의 테스트 실행
       "name": "Run Playwright Speedtest",
       "type": "node",
       "request": "launch",
@@ -86,6 +93,8 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // UI 테스트 실행
     {
       "name": "Run Playwright UI Mode",
       "type": "node",

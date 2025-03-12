@@ -62,11 +62,17 @@ npm init playwright@latest
 # TypeScript 개발 환경 패키지
 npm install --save-dev typescript ts-node @types/node
 
+# Dotenv 환경변수 라이브러리
+npm install dotenv
+
 # ESLint 및 코드 스타일링
 npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-prettier eslint-plugin-prettier prettier eslint-plugin-import
 
-# Husky는 Git Hooks 관리 도구
+# Husky 설치 및 초기화 (Git Hooks 설정을 위한 기본 환경 구성)
 npx husky-init && npm install
+
+# lint-staged 설치 (커밋 시 변경된 파일만 대상으로 린트 실행)
+npm install --save-dev lint-staged
 
 # Playwright 기본 테스트 및 확장
 npm install --save-dev @playwright/test playwright-bdd playwright-expect
@@ -114,6 +120,7 @@ npm install googleapis dotenv axios
 
 # Mail 패키지 설치
 npm install nodemailer
+npm i --save-dev @types/nodemailer
 
 # Pubsub 패키지 설치
 npm install @google-cloud/pubsub --save

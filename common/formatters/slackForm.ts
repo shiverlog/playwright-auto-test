@@ -4,6 +4,7 @@
  * Date : 2024-03-10
  */
 
+// Slack 메시지 전송 폼
 export const slackForm = (poc: string) => ({
   serverTitle: [
     {

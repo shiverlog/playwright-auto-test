@@ -1,3 +1,8 @@
+/**
+ * Description : config.ts - 📌 환경설정 및 경로 관련 기본 세팅을 관리
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
 import { getCurrentTimestamp } from '@common/formatters/formatters';
 import dotenv from 'dotenv';
 import path from 'path';
@@ -35,27 +40,6 @@ const BASE_URL = BASE_URLS[ENV];
 // 프로젝트 기본 경로 설정
 const BASE_PATH = path.resolve(__dirname, '..');
 
-// POC 키 값 (각 환경별 식별자)
-type POCType = 'pc' | 'mw' | 'aos' | 'ios' | 'api';
-
-// POC 별 폴더 이름 매핑 함수
-const getFolderName = (poc: POCType): string => {
-  switch (poc) {
-    case 'pc':
-      return 'pc-web';
-    case 'mw':
-      return 'mobile-web';
-    case 'aos':
-      return 'android';
-    case 'ios':
-      return 'ios';
-    case 'api':
-      return 'api';
-    default:
-      throw new Error(`Unknown POC type: ${poc}`);
-  }
-};
-
 // Playwright 실행 설정
 const WORKERS = parseInt(process.env.WORKERS || '4', 10);
 const RETRY_COUNT = Math.min(parseInt(process.env.RETRY_COUNT || '2', 10), 3);
@@ -77,65 +61,15 @@ const DEVICE_SETTINGS = IS_MOBILE
     }
   : {};
 
-/**
- * POC 별 폴더 경로 - 소스
- * components / constants / fixture / locators / pages / steps
- */
-const POC_SORCE_PATH = (poc: POCType): string => `${BASE_PATH}/e2e-${getFolderName(poc)}/src`;
-// 컴포넌트 경로 설정
-const COMPONENT_PATH = `${POC_SORCE_PATH}/components`;
-// 컨스턴트 경로 설정
-const CONSTANTS_PATH = `${POC_SORCE_PATH}/constants`;
-// 픽스쳐 경로 설정
-const FIXTURE_PATH = `${POC_SORCE_PATH}/fixtures`;
-// 로케이터 경로 설정
-const LOCATOR_PATH = `${POC_SORCE_PATH}/locators`;
-// 페이지 경로 설정
-const PAGE_PATH = `${POC_SORCE_PATH}/pages`;
-// BDD STEP 경로 설정
-const STEP_PATH = `${POC_SORCE_PATH}/steps`;
-// 도커 설정파일 경로 설정
-const DOCKER_PATH = `${POC_SORCE_PATH}/Dockerfile`;
-
-/**
- * POC 별 폴더 경로 - 테스트 결과
- * logs / test-results / allure-results / screebshots / videos / traces
- */
-const POC_PATH = (poc: POCType): string => `${BASE_PATH}/e2e-${getFolderName(poc)}`;
-// logs 경로 설정
-const LOG_PATH = `${POC_PATH}/logs`;
-// test-results 경로 설정
-const TEST_RESULT_PATH = `${POC_PATH}/test-results`;
-// allure-results 경로 설정
-const ALLURE_RESULT_PATH = `${POC_PATH}/allure-results`;
-// screenshot 경로 설정
-const SCREENSHOT_PATH = `${POC_PATH}/screenshots`;
-// video 경로 설정
-const VIDEO_PATH = `${POC_PATH}/videos`;
-// trace 경로 설정
-const TRACE_PATH = `${POC_PATH}/traces`;
-
-/**
- * 배치 폴더 경로 - 테스트 결과
- * batch_result
- */
-// 배치 경로 설정
-const BATCH_RESULT_BASE_PATH = `${BASE_PATH}/batch/batch_result`;
-// 배치 로그 파일
-const BATCH_LOG_FILE = `${BATCH_RESULT_BASE_PATH}/batch_result_${getCurrentTimestamp()}.log`;
-
-// 개별 결과 파일 (날짜별 저장)
-const LOG_FILE_NAME = (poc: POCType): string => `${LOG_PATH}/${poc}_${getCurrentTimestamp()}.json`;
-const TEST_RESULT_FILE_NAME = (poc: POCType): string =>
-  `${TEST_RESULT_PATH}/${poc}_test-result_${getCurrentTimestamp()}.json`;
-const ALLURE_RESULT_FILE_NAME = (poc: POCType): string =>
-  `${ALLURE_RESULT_PATH}/${poc}_test-result_${getCurrentTimestamp()}.json`;
-const SCREENSHOT_FILE_NAME = (poc: POCType): string =>
-  `${SCREENSHOT_PATH}/${poc}_screenshot_${getCurrentTimestamp()}.png`;
-const VIDEO_FILE_NAME = (poc: POCType): string =>
-  `${VIDEO_PATH}/${poc}_video_${getCurrentTimestamp()}.mp4`;
-const TRACE_FILE_NAME = (poc: POCType): string =>
-  `${TRACE_PATH}/${poc}_trace_${getCurrentTimestamp()}.zip`;
+// email 전송 환경 설정
+export const emailConfig = {
+  SMTP_HOST: process.env.SMTP_HOST || '',
+  SMTP_PORT: Number(process.env.SMTP_PORT) || 587,
+  SMTP_USER: process.env.SMTP_USER || '',
+  SMTP_PASS: process.env.SMTP_PASS || '',
+  EMAIL_FROM: process.env.EMAIL_FROM || process.env.SMTP_USER || '',
+  EMAIL_TO: process.env.EMAIL_TO || '',
+};
 
 // 파일 보관 주기 (일 단위)
 export const FILE_RETENTION_DAYS = {
@@ -168,21 +102,12 @@ export {
   TIMEOUT,
   BASE_URL,
   ENV,
-  LOCATOR_PATH,
-  TEST_RESULT_PATH,
-  SCREENSHOT_PATH,
-  VIDEO_PATH,
-  TRACE_PATH,
   WORKERS,
   RETRY_COUNT,
   API_TIMEOUT,
   RESPONSE_TIMEOUT,
   BASE_PATH,
-  BATCH_RESULT_BASE_PATH,
-  BATCH_LOG_FILE,
-  LOG_PATH,
   getCurrentTimestamp,
-  POCType,
   USERNAME,
   PASSWORD,
 };

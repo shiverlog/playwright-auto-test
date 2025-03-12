@@ -4,6 +4,7 @@
  * Date : 2024-03-10
  */
 {
+  // Playwright 기본 테스트 템플릿
   "Playwright Basic Test": {
     "prefix": "pwTest",
     "body": [
@@ -14,32 +15,33 @@
       "  await expect(page).toHaveTitle('${3:Expected Title}');",
       "});",
     ],
-    "description": "Playwright 기본 테스트 템플릿",
   },
+
+  // Playwright에서 요소 클릭
   "Playwright Click Element": {
     "prefix": "pwClick",
     "body": ["await page.locator('${1:selector}').click();"],
-    "description": "Playwright에서 요소 클릭",
   },
+
+  // Playwright에서 입력 필드 채우기
   "Playwright Fill Input": {
     "prefix": "pwFill",
     "body": ["await page.locator('${1:selector}').fill('${2:input value}');"],
-    "description": "Playwright에서 입력 필드 채우기",
   },
+
+  // Playwright에서 요소가 나타날 때까지 대기
   "Playwright Wait for Element": {
     "prefix": "pwWait",
-    "body": [
-      "await page.waitForSelector('${1:selector}', { timeout: ${2:5000} });",
-    ],
-    "description": "Playwright에서 요소가 나타날 때까지 대기",
+    "body": ["await page.waitForSelector('${1:selector}', { timeout: ${2:5000} });"],
   },
+
+  // Playwright에서 스크린샷 저장
   "Playwright Screenshot": {
     "prefix": "pwScreenshot",
-    "body": [
-      "await page.screenshot({ path: '${1:screenshot.png}', fullPage: true });",
-    ],
-    "description": "Playwright에서 스크린샷 저장",
+    "body": ["await page.screenshot({ path: '${1:screenshot.png}', fullPage: true });"],
   },
+
+  // Playwright에서 API 요청 보내기
   "Playwright API Request": {
     "prefix": "pwAPI",
     "body": [
@@ -47,6 +49,79 @@
       "const data = await response.json();",
       "console.log(data);",
     ],
-    "description": "Playwright에서 API 요청 보내기",
+  },
+
+  // Playwright에서 요소가 보일 때까지 기다리고 클릭하는 스니펫
+  "Playwright Click and Wait": {
+    "prefix": "pwClickWait",
+    "body": [
+      "await page.locator('${1:selector}').waitFor();",
+      "await page.locator('${1:selector}').click();",
+    ],
+  },
+
+  // Playwright에서 키보드 입력을 수행하는 스니펫
+  "Playwright Press Key": {
+    "prefix": "pwKeyPress",
+    "body": ["await page.keyboard.press('${1:Enter}');"],
+  },
+
+  // Playwright에서 마우스를 드래그하는 스니펫
+  "Playwright Drag and Drop": {
+    "prefix": "pwDragDrop",
+    "body": ["await page.dragAndDrop('${1:sourceSelector}', '${2:targetSelector}');"],
+  },
+
+  // Playwright에서 특정 다이얼로그(Alert, Confirm, Prompt)를 처리하는 스니펫
+  "Playwright Handle Dialog": {
+    "prefix": "pwDialog",
+    "body": [
+      "page.on('dialog', async dialog => {",
+      "  console.log(`Dialog message: ${dialog.message()}`);",
+      "  await dialog.accept();",
+      "});",
+    ],
+  },
+
+  // Playwright에서 특정 네트워크 요청을 가로채고 응답을 조작하는 스니펫
+  "Playwright Intercept Request": {
+    "prefix": "pwIntercept",
+    "body": [
+      "await page.route('${1:/api/*}', async route => {",
+      "  const response = await route.request().response();",
+      "  let body = await response.text();",
+      "  body = body.replace('${2:oldValue}', '${3:newValue}');",
+      "  await route.fulfill({",
+      "    response,",
+      "    body",
+      "  });",
+      "});",
+    ],
+  },
+
+  // Playwright에서 특정 프레임(iFrame)으로 전환하는 스니펫
+  "Playwright Switch Frame": {
+    "prefix": "pwFrame",
+    "body": [
+      "const frame = await page.frameLocator('${1:iframeSelector}');",
+      "await frame.locator('${2:selector}').click();",
+    ],
+  },
+
+  // Playwright에서 다중 요소를 찾고 반복적으로 처리하는 스니펫
+  "Playwright Multiple Elements": {
+    "prefix": "pwMulti",
+    "body": [
+      "const elements = await page.locator('${1:selector}').all();",
+      "for (const element of elements) {",
+      "  await element.click();",
+      "}",
+    ],
+  },
+
+  // Playwright에서 콘솔 로그 메시지를 캡처하는 스니펫
+  "Playwright Capture Console Log": {
+    "prefix": "pwConsoleLog",
+    "body": ["page.on('console', msg => console.log(`PAGE LOG: ${msg.text()}`));"],
   },
 }

@@ -4,6 +4,7 @@
  * Date : 2024-03-10
  */
 
+// Teams 메시지 전송 폼
 export const teamsForm = (poc: string, dateTime: string) => ({
   '@type': 'MessageCard',
   '@context': 'http://schema.org/extensions',

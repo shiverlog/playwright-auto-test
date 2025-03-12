@@ -37,18 +37,14 @@ if [ -d "$LOCAL_DIR" ]; then
     cd "$LOCAL_DIR"
     git pull
     git branch
-    git checkout slack-release
-    git pull origin slack-release
+    git checkout release
+    git pull origin release
 else
     echo "[$POC] 디렉토리 없음. 새로 클론 진행..."
     git clone "$REPO_URL" "$LOCAL_DIR"
     cd "$LOCAL_DIR"
-    git checkout slack-release
+    git checkout release
 fi
-
-# Python 가상환경 관련 설정 (필요한 경우 추가)
-# echo "Installing dependencies..."
-# pip install -r "$LOCAL_DIR/requirements.txt"
 
 pip list
 

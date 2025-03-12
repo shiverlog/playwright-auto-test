@@ -1,9 +1,27 @@
+/**
+ * Description : customLogger.ts - 📌 공통 Logger 적용
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+import {
+  ALLURE_RESULT_FILE_NAME,
+  ALLURE_RESULT_PATH,
+  LOG_FILE_NAME,
+  LOG_PATH,
+  POCType,
+  SCREENSHOT_FILE_NAME,
+  SCREENSHOT_PATH,
+  TEST_RESULT_FILE_NAME,
+  TEST_RESULT_PATH,
+  TRACE_FILE_NAME,
+  TRACE_PATH,
+  VIDEO_FILE_NAME,
+  VIDEO_PATH,
+} from '@common/constants/constants';
 import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
 import 'winston-daily-rotate-file';
-
-import { POCType, getLogFile } from '../config/config';
 
 // ANSI 컬러 코드 정의
 const LOG_COLORS: { [key: string]: string } = {
@@ -19,13 +37,20 @@ const LOG_COLORS: { [key: string]: string } = {
 
 // 로그 레벨 (Winston)
 export const LOG_LEVELS: { level: string; priority: number }[] = [
-  { level: 'error', priority: 0 }, // 에러
-  { level: 'warn', priority: 1 }, // 경고
-  { level: 'info', priority: 2 }, // 정보
-  { level: 'http', priority: 3 }, // HTTP 요청
-  { level: 'verbose', priority: 4 }, // 자세한 디버깅 정보
-  { level: 'debug', priority: 5 }, // 디버깅 로그
-  { level: 'silly', priority: 6 }, // 가장 상세한 로그
+  // 에러
+  { level: 'error', priority: 0 },
+  // 경고
+  { level: 'warn', priority: 1 },
+  // 정보
+  { level: 'info', priority: 2 },
+  // HTTP 요청
+  { level: 'http', priority: 3 },
+  // 자세한 디버깅 정보
+  { level: 'verbose', priority: 4 },
+  // 디버깅 로그
+  { level: 'debug', priority: 5 },
+  // 가장 상세한 로그
+  { level: 'silly', priority: 6 },
 ];
 
 // Map으로 변환
@@ -56,41 +81,69 @@ const coloredFormatter = winston.format.printf(({ level, message, timestamp }) =
 
 // Winston 로거 싱글턴 클래스
 class Logger {
-  private static instance: winston.Logger | null = null;
+  private static instances: Map<POCType, winston.Logger> = new Map();
 
-  private constructor(poc: POCType) {
-    const logFile = getLogFile(poc);
-    ensureDirectoryExists(logFile);
+  private constructor() {}
 
-    Logger.instance = winston.createLogger({
-      level: LOG_LEVEL,
-      levels: Object.fromEntries(LOG_LEVELS.map(({ level, priority }) => [level, priority])),
-      format: winston.format.combine(
-        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-        winston.format.printf(
-          ({ level, message, timestamp }) => `${timestamp} - ${level.toUpperCase()}: ${message}`,
-        ),
-      ),
-      transports: ENABLE_LOGS
-        ? [
-            new winston.transports.Console({
-              format: winston.format.combine(winston.format.colorize(), coloredFormatter),
-            }),
-            new winston.transports.File({
-              filename: logFile,
-              format: winston.format.combine(winston.format.timestamp(), jsonFormatter),
-            }),
-          ]
-        : [],
-    });
-  }
-
-  // 싱글턴 인스턴스 반환
   public static getLogger(poc: POCType = 'default' as POCType): winston.Logger {
-    if (!Logger.instance) {
-      new Logger(poc); // 최초 생성
+    if (!Logger.instances.has(poc)) {
+      ensureDirectoryExists(LOG_PATH);
+      ensureDirectoryExists(TEST_RESULT_PATH);
+      ensureDirectoryExists(ALLURE_RESULT_PATH);
+      ensureDirectoryExists(SCREENSHOT_PATH);
+      ensureDirectoryExists(TRACE_PATH);
+      ensureDirectoryExists(VIDEO_PATH);
+
+      const logFile = path.join(LOG_PATH, LOG_FILE_NAME(poc));
+      const testResultFile = path.join(TEST_RESULT_PATH, TEST_RESULT_FILE_NAME(poc));
+      const allureResultFile = path.join(ALLURE_RESULT_PATH, ALLURE_RESULT_FILE_NAME(poc));
+      const screenshotFile = path.join(SCREENSHOT_PATH, SCREENSHOT_FILE_NAME(poc));
+      const traceFile = path.join(TRACE_PATH, TRACE_FILE_NAME(poc));
+      const videoFile = path.join(VIDEO_PATH, VIDEO_FILE_NAME(poc));
+
+      const loggerInstance = winston.createLogger({
+        level: LOG_LEVEL,
+        levels: Object.fromEntries(LOG_LEVELS.map(({ level, priority }) => [level, priority])),
+        format: winston.format.combine(
+          winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+          jsonFormatter,
+        ),
+        transports: ENABLE_LOGS
+          ? [
+              new winston.transports.Console({
+                format: winston.format.combine(winston.format.colorize(), coloredFormatter),
+              }),
+              new winston.transports.File({
+                filename: logFile,
+                format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+              }),
+              new winston.transports.File({
+                filename: testResultFile,
+                format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+              }),
+              new winston.transports.File({
+                filename: allureResultFile,
+                format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+              }),
+              new winston.transports.File({
+                filename: screenshotFile,
+                format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+              }),
+              new winston.transports.File({
+                filename: traceFile,
+                format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+              }),
+              new winston.transports.File({
+                filename: videoFile,
+                format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+              }),
+            ]
+          : [],
+      });
+
+      Logger.instances.set(poc, loggerInstance);
     }
-    return Logger.instance!;
+    return Logger.instances.get(poc)!;
   }
 }
 
