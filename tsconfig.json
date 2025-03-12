@@ -14,7 +14,7 @@
       "@e2e/aos/*": ["e2e/android/*"],
       "@e2e/api/*": ["e2e/api/*"],
       "@e2e/ios/*": ["e2e/ios/*"],
-      "@e2e/mw/*": ["e2e/mobile/*"],
+      "@e2e/mw/*": ["e2e/mobile-web/*"],
       "@e2e/pc/*": ["e2e/pc-web/*"],
       "@batch/*": ["batch/*"],
       "@pubsub/*": ["pubsub/*"],
@@ -50,11 +50,12 @@
   "include": [
     "common",
     "e2e",
-    "e2e/android",
-    "e2e/api",
-    "e2e/ios",
-    "e2e/mobile",
     "e2e/pc-web",
+    "e2e/mobile-web",
+    "e2e/android",
+    "e2e/ios",
+    "e2e/api",
+    "speedtest",
     "batch",
     "pubsub",
     "mosaic-db",
@@ -64,5 +65,5 @@
     "playwright.config.ts"
   ],
   // TypeScript 컴파일 대상에서 제외
-  "exclude": ["node_modules", "dist", "example", "speedtest", "zas-is"]
+  "exclude": ["node_modules", "dist", "example", "zas-is"]
 }

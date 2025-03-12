@@ -1,17 +1,20 @@
+/**
+ * Description : errorHandler.ts - 📌 공통 에러 처리 핸들러
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+import { POCType, getScreenshotFile, getTraceFile, getVideoFile } from '@common/config/config';
+import { logger } from '@common/logger/customLogger';
 import { Page } from 'playwright';
 
-import { POCType, getScreenshotFile, getTraceFile, getVideoFile } from '../config/config';
-import { logger } from '../logger/customLogger';
-
 /**
- * 예외 처리 핸들러
+ * 예외 처리 핸들러 - error exception case
  * @param page Playwright Page 객체
- * @param poc 실행 환경 (pc, mw, aos, ios)
+ * @param poc 실행 환경 (pc, mw, aos, ios, api)
  * @param error 발생한 에러 객체
  * @param message 추가 메시지 (기본값: "오류 발생")
  * @param logger 커스텀 로거 객체
  */
-
 export async function errorHandler(
   page: Page,
   poc: POCType,
@@ -51,7 +54,7 @@ export async function errorHandler(
       break;
   }
 
-  // 실패 시 파일 저장 (스크린샷, 비디오, 트레이스)
+  // 오류 발생 시 파일 저장 (스크린샷, 비디오, 트레이스)
   await screenshotOnError(page, poc, error, message);
   await saveTestTrace(page, poc);
   await saveTestVideo(page, poc);
@@ -73,7 +76,7 @@ async function screenshotOnError(page: Page, poc: POCType, error: any, message: 
 }
 
 /**
- * 실패 시 트레이스 저장
+ * 오류 발생 시 트레이스 저장
  */
 async function saveTestTrace(page: Page, poc: POCType) {
   try {
@@ -88,7 +91,7 @@ async function saveTestTrace(page: Page, poc: POCType) {
 }
 
 /**
- * 실패 시 비디오 저장
+ * 오류 발생 시 비디오 저장
  */
 async function saveTestVideo(page: Page, poc: POCType) {
   try {

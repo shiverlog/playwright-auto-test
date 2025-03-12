@@ -1,8 +1,7 @@
 @echo off
 SETLOCAL EnableDelayedExpansion
 
-:: POC 환경 설정 (pc, mw, aos, ios)
-set POC=%1
+:: POC 인자 전달 ( pc | mw | aos | ios | api )
 
 :: POC별 설정
 set "VENV_PATH=C:\dev\remotePC_batchfiles\pubsub\venv\Scripts\activate.bat"

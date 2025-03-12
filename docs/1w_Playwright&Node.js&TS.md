@@ -65,6 +65,9 @@ npm install --save-dev typescript ts-node @types/node
 # ESLint 및 코드 스타일링
 npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-config-prettier eslint-plugin-prettier prettier eslint-plugin-import
 
+# Husky는 Git Hooks 관리 도구
+npx husky-init && npm install
+
 # Playwright 기본 테스트 및 확장
 npm install --save-dev @playwright/test playwright-bdd playwright-expect
 
@@ -462,14 +465,14 @@ ASWebAuthenticationSession (iOS) : iOS 12 이상에서 OAuth/OpenID Connect 인�
 const contexts = await driver.getContexts();
 
 // 웹뷰 컨텍스트로 전환
-await driver.switchContext(contexts.find((ctx) => ctx.includes("WEBVIEW")));
+await driver.switchContext(contexts.find(ctx => ctx.includes('WEBVIEW')));
 
 // 웹 요소 조작
-const webElement = await driver.findElement("css selector", "#login-button");
+const webElement = await driver.findElement('css selector', '#login-button');
 await webElement.click();
 
 // 다시 네이티브 컨텍스트로 전환
-await driver.switchContext("NATIVE_APP");
+await driver.switchContext('NATIVE_APP');
 ```
 
 네이티브 뷰(Native View): 모바일 운영체제(Android/iOS)가 제공하는 네이티브 UI 컴포넌트를 의미

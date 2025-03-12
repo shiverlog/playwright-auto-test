@@ -1,21 +1,3 @@
-# from asyncio.windows_events import NULL
-# from multiprocessing.connection import wait
-import traceback
-import json
-from types import NoneType
-import random
-import time
-from typing import List
-from openpyxl import load_workbook
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.webelement import WebElement
-
-from base.webdriver import WebDriver
-import common.variable as var
-from common.debug import Debug
-
 
 class Function():
     retry_count = 3
@@ -166,7 +148,7 @@ class Function():
                 return
         except Exception:
             pass
-    
+
 
     def movepage(self,*btns,address:str=''):
         '''
@@ -680,7 +662,7 @@ class Function():
                 self.scroll(10)
 
         except:
-            pass   
+            pass
 
     def con_check_full_view(self,variable,*args): # 컨텐츠 개수 체크 모두보기 기능 : 혜택 > 온라인 가입 할인 혜택, 혜택 > 이벤트에 적용
         try:

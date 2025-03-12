@@ -2,7 +2,7 @@
 # Author : Shiwoo Min
 # Date : 2024-03-10
 
-version: "3.9"
+version: '3.9'
 
 services:
   # common 패키지
@@ -13,21 +13,6 @@ services:
       - app_network
     volumes:
       - common_data:/data
-
-  # batch 폴더
-  batch:
-    build:
-      context: ./batch
-      dockerfile: Dockerfile
-    container_name: batch_service
-    depends_on:
-      - common
-    networks:
-      - app_network
-    volumes:
-      - batch_data:/app/batch_result
-    environment:
-      - NODE_ENV=production
 
   # E2E 테스트 - PC Web
   e2e-pc:
@@ -147,7 +132,7 @@ services:
       - ./db/conf.d:/etc/mosaic-db/conf.d
       - ./db/initdb.d:/docker-entrypoint-initdb.d
     ports:
-      - "5000:5000"
+      - '5000:5000'
     environment:
       - NODE_ENV=production
       - DB_HOST=db
@@ -166,7 +151,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mosaic
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - db-data:/var/lib/postgresql/data
 

@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
+import { Login } from '../components/Login';
 
-import { Login } from '../components/login';
 
 test.describe('로그인 페이지 테스트', () => {
   test('올바른 계정으로 로그인', async ({ page }) => {

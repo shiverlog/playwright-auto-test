@@ -17,7 +17,7 @@ import { defineConfig, devices } from '@playwright/test';
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  // 테스트 폴더 경로
+  // 공통 테스트 폴더 경로
   testDir: './e2e',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -37,6 +37,8 @@ export default defineConfig({
     ['html', { outputFolder: 'playwright-report', open: 'never' }],
     // JSON 리포트 생성
     ['json', { outputFile: 'playwright-report/results.json' }],
+    // allure 리포트 생성
+    ['allure-playwright'],
   ],
   // 타임아웃 설정 (Timeouts)
   timeout: 30 * 1000,
@@ -61,48 +63,66 @@ export default defineConfig({
   /* Configure projects for major browsers */
   // 테스트 프로젝트별 설정 (Test Project Configuration)
   projects: [
-    // Chromium 브라우저에서 테스트 실행
+    // pc-web에서 테스트 실행
     {
-      name: 'chromium',
+      name: 'PC - Chrome',
+      testMatch: ['**/pc-web/**/*.spec.ts'],
       use: { ...devices['Desktop Chrome'] },
     },
-    // Firefox 브라우저에서 테스트 실행
     {
-      name: 'firefox',
+      name: 'PC - firefox',
+      testMatch: ['**/pc-web/**/*.spec.ts'],
       use: { ...devices['Desktop Firefox'] },
     },
-    // WebKit(Safari) 브라우저에서 테스트 실행
     {
-      name: 'webkit',
+      name: 'PC - webkit',
+      testMatch: ['**/pc-web/**/*.spec.ts'],
       use: { ...devices['Desktop Safari'] },
     },
-
     /* Test against mobile viewports. */
+    // mobile-web에서 테스트 실행
     {
-      name: 'Mobile Chrome',
+      name: 'MW - Chrome (PC)',
+      testMatch: ['**/mobile-web/**/*.spec.ts'],
+      use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'MW - Mobile Chrome',
+      testMatch: ['**/mobile-web/**/*.spec.ts'],
       use: { ...devices['Pixel 5'] },
     },
-
     {
-      name: 'Mobile Safari',
+      name: 'MW - Mobile Safari',
+      testMatch: ['**/mobile-web/**/*.spec.ts'],
       use: { ...devices['iPhone 12'] },
     },
-
+    // android에서 테스트 실행 (Appium + Playwright)
+    {
+      name: 'Android - lguplus APP',
+      testMatch: ['**/android/**/*.spec.ts'],
+      use: { ...devices['galaxy note 20 ultra'] },
+    },
+    // ios에서 테스트 실행 (Appium + Playwright)
+    {
+      name: 'iOS - lguplus APP',
+      testMatch: ['**/ios/**/*.spec.ts'],
+      use: { ...devices['iPhone 12'] },
+    },
     /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    {
+      name: 'Microsoft Edge',
+      use: { ...devices['Desktop Edge'], channel: 'msedge' },
+    },
+    {
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    },
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'npm run start',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: !process.env.CI,
+  },
 });

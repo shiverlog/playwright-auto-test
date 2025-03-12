@@ -1,3 +1,9 @@
+/**
+ * Description : slackForm.ts - 📌 공통 슬랙 봇을 통한 메시지 형식 파일
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
+
 export const slackForm = (poc: string) => ({
   serverTitle: [
     {
@@ -25,7 +31,7 @@ export const slackForm = (poc: string) => ({
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: '✅ 테스트자동화 상세 케이스의 실행 결과는 쓰레드를 참고 해 주세요.',
+        text: '테스트자동화 상세 케이스의 실행 결과는 쓰레드를 참고 해 주세요.',
       },
     },
   ],

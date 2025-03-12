@@ -37,7 +37,8 @@
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
-    "webdriverio": "^9.11.0"
+    "webdriverio": "^9.11.0",
+    "husky": "^8.0.0"
   },
   "name": "playwright-auto-test",
   "version": "1.0.0",
@@ -119,7 +120,10 @@
     "opencvLibDir": "C:\\tools\\opencv\\build\\x64\\vc16\\lib",
     "opencvBinDir": "C:\\tools\\opencv\\build\\x64\\vc16\\bin"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "prepare": "husky install"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

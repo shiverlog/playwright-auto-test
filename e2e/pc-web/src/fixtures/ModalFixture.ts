@@ -1,3 +1,8 @@
+/**
+ * Description : modalHandler.ts - 📌 모달 예외처리 Fixture
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
 import { Locator, Page } from '@playwright/test';
 
 /**
