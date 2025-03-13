@@ -1,17 +1,21 @@
-  # server image는 ubunutu 18.04를 사용
-  FROM ubuntu:18.04 
-  # Dockerfile 작성자
-  MAINTAINER Wimes <yms04089@kookmin.ac.kr> 
+# Playwright 공식 Docker 이미지 (Ubuntu 22.04 기반, Node.js 포함)
+FROM mcr.microsoft.com/playwright:v1.40.0-jammy
 
-  # image가 올라갔을 때 수행되는 명령어들
-  # -y 옵션을 넣어서 무조건 설치가 가능하도록 한다.
-  RUN \
-      apt-get update && \
-      apt-get install -y apache2
+# 작업 디렉토리 설정
+WORKDIR /app/e2e/android
 
-  # apache가 기본적으로 80포트를 사용하기 때문에 expose를 이용해 apache server로 접근이 가능하도록 한다.
-  EXPOSE 80 
+#strict-ssl=false 설정, 사내망 SSL 우회 옵션
+ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-  # 컨테이너가 생성 된 이후에 내부의 아파치 서버는 항상 실행중인 상태로 만들어준다.
-  # apachectl을 foreground(즉, deamon)상태로 돌아가도록 한다.
-  CMD ["apachectl", "-D", "FOREGROUND"]
+# 애플리케이션 종속성 설치
+COPY package.json package-lock.json ./
+RUN npm install --legacy-peer-deps
+
+# common 패키지 코드 추가
+COPY common/ .
+
+# common 패키지를 글로벌 패키지로 등록 (npm link 방식)
+RUN npm link
+
+# 컨테이너가 유지되도록 설정
+CMD ["tail", "-f", "/dev/null"]

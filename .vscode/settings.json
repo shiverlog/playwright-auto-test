@@ -56,6 +56,8 @@
   "typescript.preferences.importModuleSpecifier": "relative",
   // 파일 이동 시 import 경로 자동 업데이트
   "typescript.updateImportsOnFileMove.enabled": "always",
+  // 자동 타입 획득을 방지하여 불필요한 네트워크 요청을 막음
+  "typescript.suggestionActions.enabled": false,
   // 파일을 새 탭에서 열기
   "workbench.editor.enablePreview": false,
   // 열린 탭 표시

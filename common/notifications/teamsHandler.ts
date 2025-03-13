@@ -1,7 +1,6 @@
+import { logger } from '@common/logger/customLogger';
 import axios from 'axios';
 import dotenv from 'dotenv';
-
-import { logger } from '../logger/customLogger';
 
 dotenv.config();
 

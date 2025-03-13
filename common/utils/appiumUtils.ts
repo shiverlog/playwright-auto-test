@@ -1,6 +1,5 @@
+import { logger } from '@common/logger/customLogger';
 import { Locator, Page, expect } from '@playwright/test';
-
-import { logger } from '../logger/customLogger';
 
 /**
  * Appium 및 Playwright 공통 유틸리티 클래스

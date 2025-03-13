@@ -1,15 +1,14 @@
+import { logger } from '@common/logger/customLogger';
 import { exec } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import wd from 'webdriverio';
 
-import { logger } from '../logger/customLogger';
-
 /**
  * Appium 관련 설정 (기본 포트 및 서버 옵션)
  */
 const APPIUM_PORT = 4723; // 기본 Appium 포트
-const APPIUM_LOG_FILE = path.resolve(__dirname, '../logs/appium.log');
+const APPIUM_LOG_FILE = path.resolve(__dirname, '@common/logs/appium.log');
 
 /**
  * 실행 중인 포트 확인 및 종료 (Windows)

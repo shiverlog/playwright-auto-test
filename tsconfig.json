@@ -4,6 +4,16 @@
  * Date : 2024-03-10
  */
 {
+  "name": "playwright-auto-test",
+  "version": "1.0.0",
+  "description": "Playwright Project",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "Shiwoo Min",
   "compilerOptions": {
     // 프로젝트의 기본 경로 지정 (모듈 경로 설정을 위한 기준)
     "baseUrl": ".",
@@ -44,7 +54,34 @@
     // 디버깅 시 TypeScript 원본 코드 표시
     "inlineSources": true,
     // 오류 발생 시에도 컴파일된 파일을 출력
-    "noEmitOnError": false
+    "noEmitOnError": false,
+    // 사용할 라이브러리 정의
+    "lib": ["ES2022", "DOM"],
+    // JavaScript 허용
+    "allowJs": true,
+    // 모듈 해석 방법을 Node.js 스타일로 지정
+    "moduleResolution": "Node",
+    // JSON 파일을 import할 수 있도록 허용
+    "resolveJsonModule": true,
+    // 대소문자 일관성을 유지하여 파일을 가져오기 (OS 간 호환성 문제 방지)
+    "forceConsistentCasingInFileNames": true,
+    // `any` 타입을 허용하지 않음
+    "noImplicitAny": true
+  },
+  // Playwright + Appium 기반 테스트 자동화를 위한 스크립트 설정
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:debug": "npx playwright test --debug",
+    "test:mobile": "npx playwright test --project=android",
+    "test:ios": "npx playwright test --project=ios",
+    "test:report": "npx playwright show-report",
+    "lint": "eslint --ext .ts,.tsx src",
+    "format": "prettier --write 'src/**/*.{ts,tsx,js,json}'",
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "docker:build": "docker build -t playwright-tests .",
+    "docker:run": "docker run --rm -v $(pwd):/app playwright-tests"
   },
   // TypeScript 컴파일 대상
   "include": [
@@ -62,7 +99,8 @@
     "sample",
     "tests",
     "tests-examples",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "zas-is/playwright"
   ],
   // TypeScript 컴파일 대상에서 제외
   "exclude": ["node_modules", "dist", "example", "zas-is"]

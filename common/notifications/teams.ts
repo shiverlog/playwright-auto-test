@@ -1,8 +1,7 @@
+import { teamsForm } from '@common/formatters/teamsForm';
+import { logger } from '@common/logger/customLogger';
 import axios from 'axios';
 import dotenv from 'dotenv';
-
-import { teamsForm } from '../formatters/teamsForm';
-import { logger } from '../logger/customLogger';
 
 dotenv.config();
 

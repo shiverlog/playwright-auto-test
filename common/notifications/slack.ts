@@ -1,11 +1,10 @@
+import { slackForm } from '@common/formatters/slackForm';
+import { logger } from '@common/logger/customLogger';
 import { WebClient } from '@slack/web-api';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import pRetry from 'p-retry';
 import path from 'path';
-
-import { slackForm } from '../formatters/slackForm';
-import { logger } from '../logger/customLogger';
 
 dotenv.config();
 

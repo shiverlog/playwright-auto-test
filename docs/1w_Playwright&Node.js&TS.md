@@ -184,6 +184,13 @@ npm list --depth=0 --json > dependencies.json
 # TypeScript 컴파일
 npx tsc
 
+# 프록시 설정 확인
+npm config get proxy
+npm config get https-proxy
+
+# 프로젝트의 의존성을 설치할 때, peerDependencies 관련 충돌을 무시하고 설치 진행
+npm install --legacy-peer-deps
+
 # 모든 사용자(Everyone)에게 해당 폴더 및 하위 폴더에 대한 전체 제어 권한 부여
 icacls "E:\playwright-auto-test" /grant Everyone:F /T
 ```
