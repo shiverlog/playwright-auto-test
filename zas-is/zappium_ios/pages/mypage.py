@@ -3,7 +3,7 @@ from base.server import AppiumServer
 from base.appdriver import AppDriver
 from common.function import Function
 from common.debug import Debug
-import common.variable as var
+import common.pc_variable as var
 from pages.login import LoginPage
 
 class MypagePage():
@@ -12,7 +12,7 @@ class MypagePage():
         self.DBG=Debug(AppDriver)
 
     # 마이페이지 바로가기
-    def mypage(self):           
+    def mypage(self):
         self.FC.gotoHome()
         try:
             # 상단 메뉴 진입
@@ -44,17 +44,17 @@ class MypagePage():
                         assert payment == mypage_info_text, self.DBG.logger.debug("마이페이지 > 서브메인 > 드롭다운 액션 오류(청구서 드롭다운 변경 실패)")
                         break
                     else:
-                        # 드롭다운 리스트 마지막 요소에도 payment가 존재하지 않을 떄, 
+                        # 드롭다운 리스트 마지막 요소에도 payment가 존재하지 않을 떄,
                         if list == dropdown_list[-1] :
                             self.FC.loading_find_css_pre(self.FC.var['mypage']['청구서_하단_확인_버튼']).re_click()
                             is_continue=True
                             break
                         else:
                             pass
-                    
+
                 # 모바일/인터넷/결합 상품 정보가 없다면, 다음 로직은 무시
                 if is_continue is True:
-                    continue  
+                    continue
 
                 text_list_result=[]
 
@@ -76,7 +76,7 @@ class MypagePage():
                     text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['가입서비스'], text_list))
 
                     assert all(text_list_result) is True, self.DBG.logger.debug(f"마이페이지 > 서브메인 > {mypage_info_text} 컨텐츠 정상 노출 확인 실패")
-                
+
                 # TODO '인터넷' 청구서 정보를 가지고있는 계정 필요
                 #...
 
@@ -96,9 +96,9 @@ class MypagePage():
 
                     text_list=['멤버십','사용 가능한 ez포인트' ]
                     text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['멤버십_정보'], text_list))
-                
+
                     assert all(text_list_result), self.DBG.logger.debug(f"마이페이지 > 서브메인 > {mypage_info_text} 컨텐츠 정상 노출 확인 실패")
-            
+
         except  Exception :
             self.DBG.print_dbg("마이페이지 정상 노출 및 기능 동작 확인",False)
             return False
@@ -137,21 +137,21 @@ class MypagePage():
                         assert payment == mypage_info_text, self.DBG.logger.debug("마이페이지 > 요금 조회/납부 > 요금 조회/납부 홈 > 드롭다운 액션 오류(청구서 드롭다운 변경 실패)")
                         break
                     else:
-                        # 드롭다운 리스트 마지막 요소에도 payment가 존재하지 않을 떄, 
+                        # 드롭다운 리스트 마지막 요소에도 payment가 존재하지 않을 떄,
                         if list == dropdown_list[-1] :
                             self.FC.loading_find_css_pre(self.FC.var['mypage']['청구서_하단_확인_버튼']).re_click()
                             is_continue=True
                             break
                         else:
                             pass
-                    
+
                 # 모바일/인터넷/결합 상품 정보가 없다면, 다음 로직은 무시
                 if is_continue is True:
-                    continue  
+                    continue
 
-                # 콘텐츠 정상 출력 및 액션 정상 동작 확인 부분 
+                # 콘텐츠 정상 출력 및 액션 정상 동작 확인 부분
                 text_list_result=[]
-                
+
                 # 상단 섹션 정보(납부방법/예금주/결제일/청구받는방법) 출력 확인
                 text_list=['납부방법','예금주','결제일','청구 받는 방법']
                 text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['납부_정보'], text_list))
@@ -182,7 +182,7 @@ class MypagePage():
         self.FC.gotoHome()
         try:
             self.FC.movepage(var.mypage['mypage'], var.mypage['use_direct'],address=var.mypage['use_url'])      # 메인 > 마이페이지 > 사용현황 > 바로가기
-            
+
             payment_list=[['결합','이동통신'],['결합','인터넷']]
             for payment in payment_list:
                 dropdown = self.FC.loading_find_css_pre(self.FC.var['mypage']['청구서_드롭다운'])
@@ -206,22 +206,22 @@ class MypagePage():
                         assert all(key in mypage_info_text for key in payment ), self.DBG.logger.debug("마이페이지 > 사용현황 > 사용내역 조회 > 드롭다운 액션 오류(청구서 드롭다운 변경 실패)")
                         break
                     else:
-                        # 드롭다운 리스트 마지막 요소에도 payment가 존재하지 않을 떄, 
+                        # 드롭다운 리스트 마지막 요소에도 payment가 존재하지 않을 떄,
                         if list == dropdown_list[-1] :
                             is_continue=True
                             break
                         else:
                             pass
-                    
+
                 # 모바일/인터넷/결합 상품 정보가 없다면, 다음 로직은 무시
                 if is_continue is True:
-                    continue  
+                    continue
 
                 # 각 콘텐츠 출력 확인 결과 배열
                 text_list_result=[]
 
                 if '모바일' in mypage_info_text or all(key in mypage_info_text for key in ['결합','이동통신']):
-                    
+
                     ##### 실시간 요금 조회 #####
                     tab=self.FC.loading_find_css(self.FC.var['mypage']['실시간요금조회'])
                     self.FC.move_to_click(tab)
@@ -230,7 +230,7 @@ class MypagePage():
                     top_bill_total = self.FC.loading_find_xpath_pre(var.mypage['top_bill']).text     # 상단 실시간 요금
                     if top_bill_total == '0원':
                         bottom_bill_total=self.FC.loading_find_xpath_pre(self.FC.var['mypage']['실시간이용요금_정보']).text
-                    else:    
+                    else:
                         bottom_bill_total = self.FC.loading_find_xpath_pre(var.mypage['bottom_bill']).text   # 하단 합계
                     text_list_result.append(top_bill_total == bottom_bill_total)
                     text_list=['현재까지 사용한 요금','조회기간','남은기간','사용기간']
@@ -240,9 +240,9 @@ class MypagePage():
                     else:
                         text_list=['실시간 이용요금','이동통신','월정액','미납합계','합계']
                     text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['사용내역_정보_상세'],text_list))
-                    
+
                     assert all(text_list_result), self.DBG.logger.debug(f"마이페이지 > 사용현황 > 사용내역 조회 > {payment} 상품 실시간 요금조회 컨텐츠 정상 노출 확인 실패")
-                    
+
                     ##### 월별사용량 조회 #####
                     text_list_result.clear()
                     tab=self.FC.loading_find_css_pre(self.FC.var['mypage']['월별사용량조회'])
@@ -268,7 +268,7 @@ class MypagePage():
                             monthly=month-i
                         assert str(monthly) in prev_month,self.DBG.logger.debug(f"마이페이지 > 사용현황 > 사용내역 조회 > {payment} 상품 월별사용량조회 최근 4개월 사용량 조회 실패")
                         self.FC.scroll2_v2(self.FC.loading_find_css(self.FC.var['mypage']['이전_월_버튼']))
-                        self.FC.driver.execute_script("arguments[0].click();", self.FC.loading_find_css(self.FC.var['mypage']['이전_월_버튼'])) 
+                        self.FC.driver.execute_script("arguments[0].click();", self.FC.loading_find_css(self.FC.var['mypage']['이전_월_버튼']))
 
                     # 월별 사용량 상세 조회
                     self.FC.wait_loading()
@@ -279,8 +279,8 @@ class MypagePage():
                     text_list_result.append(str(monthly) in self.FC.loading_find_css(self.FC.var['mypage']['월별사용량_상세_날짜']).get_property('innerText'))
                     # TODO 가끔 확인 버튼이 클릭이 안됄 때가 있어서 스크립트로 실행
                     self.FC.scroll2_v2(self.FC.loading_find_css_pre(self.FC.var['mypage']['월별사용량_상세_확인_버튼']))
-                    self.FC.driver.execute_script("arguments[0].click();", self.FC.loading_find_css_pre(self.FC.var['mypage']['월별사용량_상세_확인_버튼']))    
-                    
+                    self.FC.driver.execute_script("arguments[0].click();", self.FC.loading_find_css_pre(self.FC.var['mypage']['월별사용량_상세_확인_버튼']))
+
                     assert all(text_list_result), self.DBG.logger.debug(f"마이페이지 > 사용현황 > 사용내역 조회 > {payment} 상품 월별사용량조회 컨텐츠 정상 노출 확인 실패")
 
                     ##### 통화 상세 내역 조회 #####
@@ -312,7 +312,7 @@ class MypagePage():
 
                     if all(text_list_result) is False:
                         self.DBG.logger.debug(f"마이페이지 > 사용현황 > 사용내역 조회 > {payment} 상품 월별사용량조회 컨텐츠 정상 노출 확인 실패")
-                        raise Exception() 
+                        raise Exception()
 
                     ##### 기가 인터넷 사용량 #####
                     tab=self.FC.loading_find_xpath(self.FC.var['mypage']['기가인터넷사용량'])
@@ -323,7 +323,7 @@ class MypagePage():
 
                     if all(text_list_result) is False:
                         self.DBG.logger.debug(f"마이페이지 > 사용현황 > 사용내역 조회 > {payment} 상품 월별사용량조회 컨텐츠 정상 노출 확인 실패")
-                        raise Exception() 
+                        raise Exception()
 
 
                     ##### IPTV컨텐츠 사용내역 #####
@@ -364,11 +364,11 @@ if __name__ == "__main__":
         mypage = MypagePage(driver,fc)
 
         fc.pre_script()
-        
+
         if fc.is_login():
             login.logout()
         login.u_plus_login()
-        
+
         mypage.mypage()
         mypage.mypage_bill()
         mypage.mypage_use()

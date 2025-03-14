@@ -8,7 +8,7 @@ import {
   LOG_PATH,
   POCType,
   TEST_RESULT_PATH,
-} from '@common/constants/constants';
+} from '@common/constants/PathConstants';
 import { logger } from '@common/logger/customLogger';
 import * as fs from 'fs';
 import path from 'path';

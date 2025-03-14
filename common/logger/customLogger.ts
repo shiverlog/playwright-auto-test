@@ -17,7 +17,7 @@ import {
   TRACE_PATH,
   VIDEO_FILE_NAME,
   VIDEO_PATH,
-} from '@common/constants/constants';
+} from '@common/constants/PathConstants';
 import fs from 'fs';
 import path from 'path';
 import winston from 'winston';

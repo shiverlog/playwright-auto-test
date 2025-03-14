@@ -1,4 +1,4 @@
-import common.variable as var               # 지정한 변수 모듈
+import common.pc_variable as var               # 지정한 변수 모듈
 import traceback        # 콘솔창에 오류 메세지 출력
 import sys  # 현재 호출하는 함수명 반환 모듈
 from common.function import Function
@@ -20,7 +20,7 @@ class ChatbotPage():
             # time.sleep(3)
             self.FC.loading_find_xpath(self.FC.var['chatbot_el']['chatbot_id']).click()                                               # 챗봇 메인 클릭
             # time.sleep(1)
-            
+
             # 쇼핑상담 챗봇
             self.FC.loading_find_xpath(self.FC.var['chatbot_el']['chatbot_shopping']).click()                                         # 빠른가입 챗봇 클릭
             # time.sleep(2)
@@ -66,10 +66,10 @@ class ChatbotPage():
             self.FC.loading_find_xpath(self.FC.var['chatbot_el']['send_rating']).click()                                              # 평가 보내기 선택
             # self.FC.driver.implicitly_wait(10)
             self.FC.driver.switch_to.window(self.FC.driver.window_handles[0])
-            
+
             # 고객센터 챗봇
             # time.sleep(1)
-            self.FC.loading_find_xpath(self.FC.var['chatbot_el']['chatbot_cs']).click()                                               # 고객센터 챗봇 선택 
+            self.FC.loading_find_xpath(self.FC.var['chatbot_el']['chatbot_cs']).click()                                               # 고객센터 챗봇 선택
             time.sleep(1)
             self.FC.driver.switch_to.window(self.FC.driver.window_handles[1])
             self.FC.loading_find_xpath(self.FC.var['chatbot_el']['select_sale']).click()                                              # 요금 납부 선택
@@ -91,13 +91,13 @@ class ChatbotPage():
             self.FC.loading_find_xpath(self.FC.var['chatbot_el']['left_close']).click()                                               # 좌측 상단 닫기 버튼 선택
             self.FC.driver.switch_to.window(self.FC.driver.window_handles[0])
             # time.sleep(1)
-            self.FC.loading_find_xpath(self.FC.var['chatbot_el']['chatbot_id']).click()                                               # 챗봇 닫기  
-            
+            self.FC.loading_find_xpath(self.FC.var['chatbot_el']['chatbot_id']).click()                                               # 챗봇 닫기
+
 
             # time.sleep(5)
-        
+
         except  Exception :
-            
+
             # self.DBG.logger.debug(sys._getframe().f_code.co_name + " 정상 이동 실패")
             # self.FC.screenshot()
             self.DBG.logger.debug(sys._getframe().f_code.co_name + " 정상 이동 실패")
@@ -107,10 +107,10 @@ class ChatbotPage():
 
             # 챗봇의 경우엔 팝업창으로 작동되므로, 에러 발생시 현재 팝업창의 갯수를 세어서 (self.FC.driver.window_handles)
             # 생성해놓은 current_popup_num 함수로 팝업창 인위적으로 닫아줌
-            self.FC.close_popup(self.FC.driver.window_handles)    
+            self.FC.close_popup(self.FC.driver.window_handles)
 
             # 챗봇의 경우 팝업창이 다 닫혀도 메인창에 여전히 챗봇 기능이 활성화 되어 있어서 X 버튼을 눌러야 완젼히 종료됨
-            self.FC.find_xpath(self.FC.var['chatbot_el']['chatbot_id']).click()  
+            self.FC.find_xpath(self.FC.var['chatbot_el']['chatbot_id']).click()
 
             pass
 

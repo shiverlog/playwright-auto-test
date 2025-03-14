@@ -2,7 +2,7 @@ import sys
 
 from base.server import AppiumServer
 from base.appdriver import AppDriver
-import common.variable as var
+import common.pc_variable as var
 from common.function import Function
 from common.debug import Debug
 
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         ujam = UjamPage(driver,fc)
 
         fc.pre_script()
-        
+
         ujam.ujam()
         driver.driver.quit()
         server.stop()

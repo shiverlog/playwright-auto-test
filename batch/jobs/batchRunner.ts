@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { BATCH_LOG_FILE_NAME, POCType } from '@common/constants/constants';
+import { BATCH_LOG_FILE_NAME, POCType } from '@common/constants/PathConstants';
 import { logger } from '@common/logger/customLogger';
 import { exec } from 'child_process';
 import { existsSync, mkdirSync, writeFileSync } from 'fs';

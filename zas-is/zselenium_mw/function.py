@@ -13,7 +13,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.common.exceptions import InvalidSelectorException
 
 from base.webdriver import WebDriver
-import common.variable as var
+import common.pc_variable as var
 
 
 

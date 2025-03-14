@@ -15,7 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait     # 시간대기 모�
 from selenium.webdriver.support import expected_conditions as EC  # 시간대기 모듈
 
 from base.appdriver import AppDriver
-import common.variable as var
+import common.pc_variable as var
 
 
 class Function():
@@ -33,11 +33,11 @@ class Function():
         '''
         variables.xlsx 파일에 저장된 요소 변수값을 가져와 dict 타입 파싱
         '''
-        # data_only=True로 해줘야 수식이 아닌 값으로 받아온다. 
+        # data_only=True로 해줘야 수식이 아닌 값으로 받아온다.
         load_wb = load_workbook(f"{self.Driver.path}\\variables.xlsx", data_only=True)
-        # 시트 이름으로 불러오기 
+        # 시트 이름으로 불러오기
         load_ws = load_wb['Sheet']
-        
+
         all_values = {}
         for row in load_ws.rows:
             # A1 셀은 공백으로 패스
@@ -51,9 +51,9 @@ class Function():
                 key = row[2].value # C1
                 value = row[3].value # D1
                 assert page_name or key or value, print("일부 데이터 None")
-                
+
                 try: # {} 초기화
-                    all_values[page_name] 
+                    all_values[page_name]
                 except:
                     all_values[page_name] = {}
 
@@ -62,9 +62,9 @@ class Function():
                 return all_values
             else:
                 print(f"{row[0].value}  {row[1].value}  {row[2].value} {row[3].value}")
-                
+
                 assert row[0] or row[1] or row[2] or row[3], print("일부 데이터 비어있음")
-        load_wb.close()                
+        load_wb.close()
         return all_values
 
     def chrome_clear(self,version:str=''):
@@ -76,7 +76,7 @@ class Function():
         elif version == 'beta':
             cmd=f"adb -s {self.Driver.udid} shell pm clear com.chrome.beta"
 
-        
+
         try:
             result = os.popen(cmd).read()
             if result == 'Success':
@@ -99,7 +99,7 @@ class Function():
             goto=self.var['common_el']['url']+'/'+url
         self.driver.get(goto)
         self.wait_loading()
-    
+
     def pre_script(self):
         '''
         자동화 테스트 시작 전, 앱 권한 허용 및 시스템 창 터치 처리
@@ -108,7 +108,7 @@ class Function():
         if self.loading_find_xpath(self.var['common_el']['다음버튼']):
             self.loading_find_xpath(self.var['common_el']['다음버튼']).click()
             self.loading_find_id(self.var['common_el']['앱_사용중에만_허용']).click()
-            self.loading_find_id(self.var['common_el']['허용_버튼']).click() 
+            self.loading_find_id(self.var['common_el']['허용_버튼']).click()
             self.loading_find_id(self.var['common_el']['허용_버튼']).click()
             self.loading_find_id(self.var['common_el']['허용_버튼']).click()
             # self.loading_find_id(self.var['common_el']['허용_버튼']).click()
@@ -120,7 +120,7 @@ class Function():
         print(3)
         if self.loading_find_xpath(self.var['common_el']['로그인없이_입장하기']):
             self.loading_find_xpath(self.var['common_el']['로그인없이_입장하기']).click()
-            
+
         print("----------------------------------------------------")
         print("APP 로그인 페이지 진입")
         print(str(self.driver.contexts))
@@ -144,17 +144,17 @@ class Function():
             # deivice demensions
             width=self.driver.execute_script("return window.innerWidth")
             height=self.driver.execute_script("return window.innerHeight")
-            print("width => "+ str(width))       
+            print("width => "+ str(width))
             print("height => "+ str(height))
             startx=x+int(width)*0.1
             starty=y
             endx=x-int(width)*0.15
             endy=y
             self.driver.swipe(startx,starty,endx,endy,0)
-        
+
         except BaseException as e:
             print(e)
-    
+
     def swipe(self,loc:str | int | WebElement,view='true'):
         '''
         JS Execute; 해당 요소 위치까지 scroll
@@ -189,7 +189,7 @@ class Function():
             el=None
             print(e)
             raise Exception('swipe error')
-        
+
     def loading_find_id(self,elem) -> (WebElement):
         '''
         id로 요소 찾기
@@ -229,7 +229,7 @@ class Function():
             return True
         except Exception:
             return False
-            
+
 
     def switch_view(self,context:str="WEBVIEW_com.lguplus.mobile.cs",time_limit:int=5):
         '''
@@ -240,13 +240,13 @@ class Function():
         # if context == "WEBVIEW_com.lguplus.mobile.cs":
         #     context= self.driver.contexts[1]
 
-        # 현재페이지가 변경하려는 뷰와 같다면 return 
+        # 현재페이지가 변경하려는 뷰와 같다면 return
         if self.driver.current_context == context:
             return
         print(f"현재 페이지 views -> {str(self.driver.contexts)}")
         print(f"switch_viwe 실행 전 뷰 : {self.driver.context}")
         print(self.driver.contexts)
-        
+
         try:
             for _ in range(time_limit):
                 if context in self.driver.contexts:
@@ -257,17 +257,17 @@ class Function():
                 print('완투')
                 if self.switch_to_view(context):
                     return
-            
+
         except Exception as e:
             print(traceback.format_exc())
             print(e)
 
-#    # 경로가 id나 class인 요소 찾기 
+#    # 경로가 id나 class인 요소 찾기
 #     def find_css(self,loc):
 #         self.find = self.driver.find_element(By.CSS_SELECTOR, loc)
 #         return self.find
 
-#    # 경로가 id나 class인 요소들 찾기 
+#    # 경로가 id나 class인 요소들 찾기
 #     def find_csss(self,loc):
 #         self.find = self.driver.find_elements(By.CSS_SELECTOR, loc)
 #         return self.find
@@ -282,7 +282,7 @@ class Function():
 #         self.find = self.driver.find_elements(By.XPATH, loc)
 #         return self.find
 
-    # 모달 광고창 제거 
+    # 모달 광고창 제거
     # def modal_ck(self):
     #     try:
     #         self.driver.implicitly_wait(5)
@@ -354,7 +354,7 @@ class Function():
                 return
         except Exception:
             pass
-    
+
     def modal_ck_ins(self):
         try:
             if self.loading_find_css_pre(self.var['common_el']['딤드']):
@@ -367,7 +367,7 @@ class Function():
     def movepage(self,*btns:str,address:str=''):
         '''
         *kwarg에 address 인자가 있을 시, 햄버거 메뉴 이동 후 현재 url에 address 값이 포함될 때까지 반복
-        
+
         :Usage:
             ::
                 FC.movepage(btn1,btn2,btn3,address="https://app.lguplus.com")
@@ -406,7 +406,7 @@ class Function():
                 if address in self.driver.current_url:
                     return
             except Exception:
-                
+
                 # 만약 햄버거 사이드바가 열린 상태일 때, 닫기 해줌
                 if var.common_el['gnb_url'] in self.driver.current_url :
                     self.driver.find_element(By.CSS_SELECTOR,self.var['common_el']['뒤로가기']).click()
@@ -415,7 +415,7 @@ class Function():
                 # num번 반복해서 요소를 찾아도 없으면 False 반환
                 if i == self.retry_count-1:
                     print(f'movepage({address}) 실패했습니다.')
-                    return False 
+                    return False
                 else:
                     continue
 
@@ -451,7 +451,7 @@ class Function():
                     print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
                     return False
 
-    # css로 요소 검색 
+    # css로 요소 검색
     def loading_find_csss(self,elem) -> (List[WebElement]):
         '''
         페이지 로드 후, css 요소 List 찾기
@@ -490,7 +490,7 @@ class Function():
         페이지 로드 후, xpath 요소 찾기
         '''
         for i in range(self.retry_count):
-            try: 
+            try:
                 self.wait.until(EC.visibility_of_element_located((By.XPATH,elem)))
                 self.find=self.driver.find_element(By.XPATH,elem)
                 if self.find != NoneType:
@@ -506,7 +506,7 @@ class Function():
         페이지 로드 후, xpath 요소 찾기
         '''
         for i in range(self.retry_count):
-            try: 
+            try:
                 self.wait.until(EC.presence_of_element_located((By.XPATH,elem)))
                 self.find=self.driver.find_element(By.XPATH,elem)
                 if self.find != NoneType:
@@ -522,7 +522,7 @@ class Function():
         페이지 로드 후, xpath 요소 List 찾기
         '''
         for i in range(self.retry_count):
-            try: 
+            try:
                 self.wait.until(EC.presence_of_all_elements_located((By.XPATH,elem)))
                 self.find=self.driver.find_elements(By.XPATH,elem)
                 if self.find != NoneType:
@@ -531,7 +531,7 @@ class Function():
                 if i == self.retry_count-1:
                     print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
                     return [False]
-    
+
     def wait_loading(self):
         '''
         해당 페이지 렌더링이 끝날 때 까지 대기
@@ -589,12 +589,12 @@ class Function():
                 if parent.startswith('//'):
                     parent_el=self.wait.until(EC.presence_of_element_located((By.XPATH,parent)))
                     self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", parent_el)
-                    parent_text=parent_el.get_property('innerText')                
+                    parent_text=parent_el.get_property('innerText')
                 else:
                     parent_el=self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,parent)))
                     self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", parent_el)
-                    parent_text=parent_el.get_property('innerText')                
-                        
+                    parent_text=parent_el.get_property('innerText')
+
                 if parent_text is not None:
                     pass
             except Exception:
@@ -603,17 +603,17 @@ class Function():
                     return False
         try:
             for t in list:
-                assert t in parent_text, Exception("'"+ t + "' 텍스트를 찾을 수 없습니다.")                 
+                assert t in parent_text, Exception("'"+ t + "' 텍스트를 찾을 수 없습니다.")
             else:
                 pass
-            return True    
+            return True
         except Exception as e:
             print(e)
             return False
-                    
+
     def scroll_x(self,el):
         '''
-        JS Execute; 요소를 가로 스크롤 center로 이동 
+        JS Execute; 요소를 가로 스크롤 center로 이동
         '''
         self.driver.execute_script('return arguments[0].scrollIntoViewIfNeeded();',el)
         print("scrolling")
@@ -621,7 +621,7 @@ class Function():
 
     def scroll_center(self,el):
         '''
-        JS Execute; el요소를 중간으로 scroll 
+        JS Execute; el요소를 중간으로 scroll
         '''
         self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
         print("scrolling")
@@ -629,11 +629,11 @@ class Function():
 
     def scroll_to_top(self):
         '''
-        JS Execute; 최상단 까지 scroll 
+        JS Execute; 최상단 까지 scroll
         '''
         self.driver.execute_script(f"window.scrollTo(0,0);")
         print("scrolling")
-    
+
     def scroll(self,count:int,switch=False):
         '''
         JS Execute; count 만큼 (0,200) scroll 반복
@@ -662,13 +662,13 @@ class Function():
     def gotoHome(self):
         self.driver.get(self.var['common_el']['url'])
         self.modal_ck()
-        
+
 
     def is_login(self):
         '''
         현재 로그인 상태 확인
         '''
-        hamburger_main = self.var['common_el']['메인_메뉴'] 
+        hamburger_main = self.var['common_el']['메인_메뉴']
         logout_text=""
         for i in range(self.retry_count):
             try:
@@ -685,7 +685,7 @@ class Function():
                 # num번 반복해서 요소를 찾아도 없으면 False 반환
                 if i == self.retry_count-1:
                     print(f'logout_text를 찾을 수 없음')
-                    raise Exception("logout_text를 찾을 수 없음") 
+                    raise Exception("logout_text를 찾을 수 없음")
 
         print(f"logout_text ->{logout_text}")
         if "로그아웃" in logout_text or "반갑습니다" in logout_text:
@@ -707,17 +707,17 @@ class Function():
             self.driver.execute_script(f"document.evaluate('{loc}',document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue.style.cssText='display: block!important; visibility: visible!important; position: relative!important; z-index: 10000000000000000!important;'")
             el=self.loading_find_xpath_pre(loc)
         else:
-            self.driver.execute_script(f"document.querySelector('{loc}').style.cssText='display: block!important; visibility: visible!important; position: relative!important; z-index: 10000000000000000!important;'") 
+            self.driver.execute_script(f"document.querySelector('{loc}').style.cssText='display: block!important; visibility: visible!important; position: relative!important; z-index: 10000000000000000!important;'")
             el=self.loading_find_css_pre(loc)
 
         if el.is_displayed() is True:
             return
         else:
-            if loc.startswith('/'):    
+            if loc.startswith('/'):
                 self.driver.execute_script(f"document.evaluate('{loc}',document,null,XPathResult.FIRST_ORDERED_NODE_TYPE,null).singleNodeValue.style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 10000000000000000!important; bottom: 300px!important;'")
                 el=self.loading_find_xpath_pre(loc)
             else:
-                self.driver.execute_script(f"document.querySelector('{loc}').style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 10000000000000000!important;bottom: 300px!important;'") 
+                self.driver.execute_script(f"document.querySelector('{loc}').style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 10000000000000000!important;bottom: 300px!important;'")
                 el=self.loading_find_css_pre(loc)
 
             if el.is_displayed() is True:
@@ -727,17 +727,17 @@ class Function():
                     raise Exception()
                 except Exception as e:
                     print("bring_el_to_front() is failed => " +e)
-    
+
     def bring_el_to_front_css(self,css):
         '''
         JS Execute; css로 요소를 찾아 앞으로 가져오기
         '''
-        self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: relative !important; z-index: 1000000000000000000000000000000000000000000000000!important;'") 
+        self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: relative !important; z-index: 1000000000000000000000000000000000000000000000000!important;'")
         el=self.loading_find_css_pre(css)
         if el.is_displayed() is True:
             return
-        else:        
-            self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 1000000000000000000000000000000000000000000000000!important;'") 
+        else:
+            self.driver.execute_script(f"document.querySelector('{css}').style.cssText='display: block!important; visibility: visible!important; position: fixed!important; z-index: 1000000000000000000000000000000000000000000000000!important;'")
             el=self.loading_find_css_pre(css)
             if el.is_displayed() is True:
                 return
@@ -777,8 +777,8 @@ class Function():
                     # print(f"datas => {len(datas)}")
                     for data in datas:
                         if data.get_property('childElementCount') >0:
-                            if [child for child in data.get_property('children') if child.get_property('tag_name') in tag_names] == []: 
-                                #자식요소가 있지만, 자식 요소 중 동일한 태그명이 존재하지 않으면 내가 확인을 원하는 데이터일 확률이 높으므로 이어서 실행 
+                            if [child for child in data.get_property('children') if child.get_property('tag_name') in tag_names] == []:
+                                #자식요소가 있지만, 자식 요소 중 동일한 태그명이 존재하지 않으면 내가 확인을 원하는 데이터일 확률이 높으므로 이어서 실행
                                 pass
                             else:
                                 if len(datas)-1 == datas.index(data): # 마지막 요소면 True 반환
@@ -795,7 +795,7 @@ class Function():
                             # print(f"{tag_name}의 datas 정상 출력 확인1")
                             datas = True
                             break
-                    count+=1              
+                    count+=1
                     if count >=self.retry_count: # max_count 이상일 경우, 해당 tag_name return
                         print(f"{tag_name} 미출력")
                         return tag_name
@@ -827,20 +827,20 @@ class Function():
             self.loading_find_id('com.android.chrome:id/negative_button').click()
             if self.loading_find_id('com.android.permissioncontroller:id/permission_allow_button'):
                 self.loading_find_id('com.android.permissioncontroller:id/permission_allow_button').click()
-        
+
         self.driver.implicitly_wait(20)
-            
+
         return
-    
-    # chrome v104 
+
+    # chrome v104
     def chorme_access(self):
         '''
         chrome view 이동 시, 시스템 팝업 허용(chrome v104)
         '''
         self.switch_view('NATIVE_APP')
         self.driver.implicitly_wait(2)
-        
-        
+
+
         # 동의하고 계속
         if self.loading_find_id('com.android.chrome:id/terms_accept'):
             self.loading_find_id('com.android.chrome:id/terms_accept').click()
@@ -859,9 +859,9 @@ class Function():
         # if self.loading_find_id('com.android.chrome:id/negative_button'):
         #     self.loading_find_id('com.android.chrome:id/negative_button').click()
         self.driver.implicitly_wait(20)
-            
+
         return
-    
+
     # chrome v102
     def chorme_access(self):
         '''
@@ -869,8 +869,8 @@ class Function():
         '''
         self.switch_view('NATIVE_APP')
         self.driver.implicitly_wait(2)
-        
-        
+
+
         # 동의하고 계속
         if self.loading_find_id('com.android.chrome:id/terms_accept'):
             self.loading_find_id('com.android.chrome:id/terms_accept').click()
@@ -889,17 +889,17 @@ class Function():
         # if self.loading_find_id('com.android.chrome:id/negative_button'):
         #     self.loading_find_id('com.android.chrome:id/negative_button').click()
         self.driver.implicitly_wait(20)
-            
+
         return
-    
-    # chrome v120 and S22_계진 
+
+    # chrome v120 and S22_계진
     def chrome_access_S22_계진(self):
         '''
         chrome view 이동 시, 시스템 팝업 허용(chrome v120)
         '''
         self.switch_view('NATIVE_APP')
         self.driver.implicitly_wait(2)
-        
+
         # 계진 계정 사용
         if self.loading_find_id('com.android.chrome:id/signin_fre_continue_button'):
             self.loading_find_id('com.android.chrome:id/signin_fre_continue_button').click()
@@ -918,9 +918,9 @@ class Function():
         # if self.loading_find_id('com.android.chrome:id/negative_button'):
         #     self.loading_find_id('com.android.chrome:id/negative_button').click()
         self.driver.implicitly_wait(20)
-            
+
         return
-    
+
     # chrome v126_beta
     def chrome_access_beta(self):
         '''
@@ -928,7 +928,7 @@ class Function():
         '''
         self.switch_view('NATIVE_APP')
         self.driver.implicitly_wait(2)
-        
+
         # 계정 계속
         if self.loading_find_id('com.chrome.beta:id/signin_fre_continue_button'):
             self.loading_find_id('com.chrome.beta:id/signin_fre_continue_button').click()
@@ -947,7 +947,7 @@ class Function():
         # if self.loading_find_id('com.android.chrome:id/negative_button'):
         #     self.loading_find_id('com.android.chrome:id/negative_button').click()
         self.driver.implicitly_wait(20)
-            
+
         return
 
     def animation_none(self,parent_loc):
@@ -1015,4 +1015,3 @@ class Function():
                 self.move_to_click(el,True)
             else:
                 self.move_to_click(el)
-    

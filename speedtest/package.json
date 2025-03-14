@@ -9,11 +9,18 @@
     "test": "node speedtest.js",
     "lint": "eslint . --fix"
   },
+  "opencv4nodejs": {
+    "disableAutoBuild": 1,
+    "opencvIncludeDir": "C:\\tools\\opencv\\build\\include",
+    "opencvLibDir": "C:\\tools\\opencv\\build\\x64\\vc16\\lib",
+    "opencvBinDir": "C:\\tools\\opencv\\build\\x64\\vc16\\bin"
+  },
   "dependencies": {
     "@your-org/common": "file:../common"
   },
   "devDependencies": {
     "typescript": "^5.0.0",
+    "opencv4nodejs": "^5.6.0",
     "eslint": "^8.0.0"
   }
 }

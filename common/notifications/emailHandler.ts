@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { emailConfig } from '@common/config/config';
+import { emailConfig } from '@common/config/CommonConfig';
 import { logger } from '@common/logger/customLogger';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';

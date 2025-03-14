@@ -4,7 +4,7 @@ import traceback
 
 from base.server import AppiumServer
 from base.appdriver import AppDriver
-import common.variable as var
+import common.pc_variable as var
 from common.function import Function
 from common.debug import Debug
 from common.slack import Slack
@@ -17,7 +17,7 @@ class LoginPage():
         self.driver=AppDriver.driver
         self.FC=FC
         self.DBG=Debug(AppDriver)
-        
+
 
     # U+ 로그인
     def u_plus_login(self):
@@ -25,7 +25,7 @@ class LoginPage():
         try:
             uplus_id = os.environ['UPLUS_ID']
             uplus_pw = os.environ['UPLUS_PW']
-            
+
         # 햄버거 메뉴로 진입
             if self.driver.current_url != self.FC.var['login_el']['url']:
                 self.FC.movepage(var.login_el['login_btn'],address=self.FC.var['login_el']['url'])
@@ -48,7 +48,7 @@ class LoginPage():
                 except:
                     raise Exception('로그인 실패 : tooltip 안사라짐')
             self.FC.wait_loading()
-            
+
             # 유플러스 로그인 후 정상적으로 메인페이지로 이동했는지 확인
             assert var.common_el['url'] in self.FC.loading_find_css(var.mainpage_el['개인화']).get_property('baseURI'), self.DBG.logger.debug("u+ID 로그인 후 메인페이지 이동 실패")
 
@@ -82,7 +82,7 @@ class LoginPage():
         # 로그아웃
     def logout(self):
         self.FC.gotoHome()
-        try:                
+        try:
             self.FC.loading_find_css('.c-btn-menu').re_click()
             self.FC.wait_loading()
             count=1
@@ -99,7 +99,7 @@ class LoginPage():
 
             assert self.FC.is_login()==False , self.DBG.logger.debug("정상 로그아웃 실패")
             self.driver.back()
-    
+
         except  Exception as e :
             self.DBG.print_dbg("로그아웃 정상 동작 확인",False)
             return False
@@ -107,7 +107,7 @@ class LoginPage():
         else :
             self.DBG.print_dbg("로그아웃 정상 동작 확인")
             return True
-        
+
     def do_login(self, login_type:str):
         '''
         U+ID, 카카오, 네이버 로그인
@@ -121,17 +121,17 @@ class LoginPage():
             self.FC.is_exists_element_click(self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_login_img']))
             self.FC.wait_loading()
             self.FC.modal_ck2() # 결함 DCBGQA-4368
-            
+
             dict = {
                 "uplus" : [os.environ['UPLUS_ID'], os.environ['UPLUS_PW']],
                 "kakao" : [],
                 "naver" : [],
-            }    
+            }
 
             self.FC.is_exists_element_click(self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_입력한문자삭제']))
             # self.FC.is_exists_element_click(self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_id_저장']))
             self.FC.wait_loading()
-            
+
             self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_id_input']).send_keys(dict[login_type][0])
 
             if login_type == "uplus":
@@ -146,10 +146,10 @@ class LoginPage():
 
                     except:
                         raise Exception('로그인 실패 : tooltip 처리 실패')
-            
+
             else:
                 self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_pw_input']).send_keys(dict[login_type][1])
-                
+
             self.FC.click_until_go_page(self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_login_btn']))
 
             # # # 유플러스 로그인 후 정상적으로 메인페이지로 이동했는지 확인
@@ -163,7 +163,7 @@ class LoginPage():
         else :
             self.DBG.print_dbg(f"{login_type} 로그인 정상 동작")
             return True
-            
+
     # # 리캡차로 수동 조작 필요
     # def naver_login(self):
 
@@ -173,7 +173,7 @@ class LoginPage():
 
 
     # def usim_login(self):
-        
+
 
     # def my_lg_login(self) -> bool:
 
@@ -189,7 +189,7 @@ if __name__ == "__main__":
         login = LoginPage(driver,FC)
 
         FC.pre_script()
-        
+
         if FC.is_login():
             login.logout()
         login.u_plus_login()

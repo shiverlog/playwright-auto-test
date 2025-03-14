@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { POCType, SCREENSHOT_PATH, TRACE_PATH, VIDEO_PATH } from '@common/constants/constants';
+import { POCType, SCREENSHOT_PATH, TRACE_PATH, VIDEO_PATH } from '@common/constants/PathConstants';
 import { logger } from '@common/logger/customLogger';
 import path from 'path';
 import { Page } from 'playwright';

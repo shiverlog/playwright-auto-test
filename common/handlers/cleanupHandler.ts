@@ -3,8 +3,8 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { FILE_RETENTION_DAYS } from '@common/config/config';
-import { POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/constants';
+import { FILE_RETENTION_DAYS } from '@common/config/CommonConfig';
+import { POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
 import { logger } from '@common/logger/customLogger';
 import fs from 'fs';
 import path from 'path';
