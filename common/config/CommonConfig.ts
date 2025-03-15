@@ -11,50 +11,50 @@ import path from 'path';
 dotenv.config();
 
 // Playwright 브라우저 설정
-const BROWSERS = ['chromium', 'firefox', 'webkit'];
-const HEADLESS = process.env.HEADLESS === 'true';
-const TIMEOUT = 20 * 1000;
+export const BROWSERS = ['chromium', 'firefox', 'webkit'];
+export const HEADLESS = process.env.HEADLESS === 'true';
+export const TIMEOUT = 20 * 1000;
 
 // Android & iOS 디바이스 설정
-const ANDROID_DEVICE = process.env.ANDROID_DEVICE || 'Pixel 5';
-const IOS_DEVICE = process.env.IOS_DEVICE || 'iPhone 13';
-const USE_PROXY = process.env.USE_PROXY == 'true';
+export const ANDROID_DEVICE = process.env.ANDROID_DEVICE || 'Pixel 5';
+export const IOS_DEVICE = process.env.IOS_DEVICE || 'iPhone 13';
+export const USE_PROXY = process.env.USE_PROXY == 'true';
 
 // 네트워크 설정
-const API_TIMEOUT = 20 * 1000; // API 요청 타임아웃 (20초)
-const RESPONSE_TIMEOUT = 10 * 1000; // 응답 타임아웃 (10초)
+export const API_TIMEOUT = 20 * 1000; // API 요청 타임아웃 (20초)
+export const RESPONSE_TIMEOUT = 10 * 1000; // 응답 타임아웃 (10초)
 
 // Appium 대기 설정
-const IMPLICIT_WAIT = 10; // 암묵적 대기 시간 (10초)
-const EXPLICIT_WAIT = 20; // 명시적 대기 시간 (20초)
+export const IMPLICIT_WAIT = 10; // 암묵적 대기 시간 (10초)
+export const EXPLICIT_WAIT = 20; // 명시적 대기 시간 (20초)
 
 // 환경별 테스트 URL 설정
-const ENV = process.env.ENV || 'staging';
-const BASE_URLS: Record<string, string> = {
+export const ENV = process.env.ENV || 'staging';
+export const BASE_URLS: Record<string, string> = {
   development: 'http://localhost:3000',
   staging: 'https://www.lguplus.com',
   production: 'https://www.lguplus.com',
 };
-const BASE_URL = BASE_URLS[ENV];
+export const BASE_URL = BASE_URLS[ENV];
 
 // 프로젝트 기본 경로 설정
-const BASE_PATH = path.resolve(__dirname, '..');
+export const BASE_PATH = path.resolve(__dirname, '..');
 
 // Playwright 실행 설정
-const WORKERS = parseInt(process.env.WORKERS || '4', 10);
-const RETRY_COUNT = Math.min(parseInt(process.env.RETRY_COUNT || '2', 10), 3);
+export const WORKERS = parseInt(process.env.WORKERS || '4', 10);
+export const RETRY_COUNT = Math.min(parseInt(process.env.RETRY_COUNT || '2', 10), 3);
 
 // Playwright Launch Options
-const LAUNCH_OPTIONS = {
+export const LAUNCH_OPTIONS = {
   slowMo: parseInt(process.env.SLOW_MO || '0', 10),
   devtools: process.env.DEVTOOLS === 'true',
 };
 
 // 현재 장치가 모바일인지 확인
-const IS_MOBILE = ['aos', 'ios'].includes(process.env.TEST_PLATFORM || '');
+export const IS_MOBILE = ['aos', 'ios'].includes(process.env.TEST_PLATFORM || '');
 
 // Playwright 장치 설정 (데스크톱 & 모바일 구분)
-const DEVICE_SETTINGS = IS_MOBILE
+export const DEVICE_SETTINGS = IS_MOBILE
   ? {
       userAgent: IS_MOBILE ? 'Mozilla/5.0 (Mobile; rv:40.0) Gecko/40.0 Firefox/40.0' : '',
       viewport: IS_MOBILE ? { width: 375, height: 667 } : { width: 1280, height: 720 },
@@ -82,32 +82,15 @@ export const FILE_RETENTION_DAYS = {
 };
 
 // 테스트 계정
-const USERNAME = process.env.UPLUS_ID;
-const PASSWORD = process.env.UPLUS_PW;
+export const USERNAME = process.env.UPLUS_ID;
+export const PASSWORD = process.env.UPLUS_PW;
 
 // 슬랙 API URL
-const SLACK_FILES_UPLOAD_URL = 'https://lgdigitalcommerce.slack.com/api/files.upload';
+export const SLACK_FILES_UPLOAD_URL = 'https://lgdigitalcommerce.slack.com/api/files.upload';
 
 // pubsub 정보
 export const PUBSUB = {
   PROJECT_ID: 'gcp-dev-uhdc-id',
   TOPIC_ID: 'qa-test',
   PUBLISHER_AUDIENCE: 'https://pubsub.googleapis.com/google.pubsub.v1.Publisher',
-};
-
-// 설정값 내보내기
-export {
-  BROWSERS,
-  HEADLESS,
-  TIMEOUT,
-  BASE_URL,
-  ENV,
-  WORKERS,
-  RETRY_COUNT,
-  API_TIMEOUT,
-  RESPONSE_TIMEOUT,
-  BASE_PATH,
-  getCurrentTimestamp,
-  USERNAME,
-  PASSWORD,
 };

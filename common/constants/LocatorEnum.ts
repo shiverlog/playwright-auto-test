@@ -1,3 +1,8 @@
+/**
+ * Description : LocatorEnum.ts - 📌 사용할 요소 locators를 Enum 형태로 정리
+ * Author : Shiwoo Min
+ * Date : 2024-03-10
+ */
 // PLatform 구분 ( POC: PC | MW | AND | IOS )
 export enum Platform {
   PC_WEB = 'PC',

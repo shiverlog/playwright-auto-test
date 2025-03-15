@@ -1,14 +1,4 @@
 common_el={
-    # slack 로그 전송할 채널
-    # 'channel':'C04F5T84SLS', # 테스트 슬랙
-    'channel':'C06599H0H08', # 테스트 soo 채널
-
-
-    'mention_channel' : 'C04F5T84SLS',
-    'mention_id' : '<@U041HBBLEMR>, <@U0550LN5MJ8>, <!subteam^S06UD11GD6H>',
-    
-    'url' : 'https://www.lguplus.com/',
-
     '팝업_컨텐츠' : 'div.modal-content',
     '팝업_헤더' : 'header.modal-header',
     '팝업_바디' : 'div.modal-body',
@@ -34,81 +24,6 @@ common_el={
 
 }
 
-login_el = {
-    'user_icon' : 'a.icon-myInfo-1',
-    'user_icon_login' : 'div.myInfo-list.is-show a.c-btn-solid-1-m',
-    'is_login' : 'div.myInfo-list div.myInfo-top',
-
-    'login_btn' : '.loginList > li:nth-of-type(1) > a',
-    'login_url' : 'https://www.lguplus.com/login',
-    'logout_btn' : '.loginList > li:nth-of-type(2) > a',
-
-    'uplus_login_img' : 'img[alt="u+ID"]',
-    'uplus_id_input':'input[type="text"]',
-    'uplus_pw_input':'input[type="password"]',
-    'uplus_login_btn':'button.nm-login-btn',
-    'uplus_입력한문자삭제' : 'button[title="입력한 문자 삭제"]',
-    'uplus_id_저장' : '.c-btn-rect-1',
-
-    'naver_login_img' : 'img[alt="네이버"]',
-    'naver_id_input' : '#id',
-    'naver_pw_input' : '#pw',
-    'naver_login_btn' : 'div.btn_login_wrap .btn_login',
-    'naver_입력한문자삭제' : '#id_clear',
-
-    'kakao_login_img' : 'img[alt="카카오"]',
-    'kakao_id_input' : '#loginId--1',
-    'kakao_pw_input' : '#password--2',
-    'kakao_login_btn' : '#mainContent > div > div > form > div.confirm_btn > button.btn_g.highlight.submit',
-    'kakao_입력한문자삭제' : '.btn_clear',   
-
-}
-
-mainpage_el = {
-    'KV' : 'div[data-id="KV"] div.visual-bg-area img',
-    'KV_area' : 'div[data-id="KV"]',
-
-    'my_data_toggle' : 'div.my-data-layer>button',
-    'my_data_phon_plan' : 'div.my-data-layer >div.my-data-wrap > div.my-data-group:nth-of-type(2)',
-    'my_data_add_services' : 'div.my-data-layer >div.my-data-wrap > div.my-data-group:nth-of-type(3)',
-    'my_data_data' : 'div.my-data-layer >div.my-data-wrap > div.my-data-group:nth-of-type(4)',
-    'my_data_combi_prod' : 'div.my-data-layer >div.my-data-wrap > div.my-data-group:nth-of-type(5)',
-    'my_data_month_pay' : 'div.my-data-layer >div.my-data-wrap > div.my-data-group:nth-of-type(6)',
-    'my_data_benefit' : 'div.my-data-layer >div.my-data-wrap > div.my-data-group:nth-of-type(7)',
-    'my_data_layer' : 'div.my-data-layer',
-
-    'RTB' : 'div[data-id="RTB"]',
-    'RTB_event' : 'div[data-id="RTB"] div.item-container > div > div.item-box > a',
-
-    'RCMD' : 'div[data-id="RCMD"]',
-    'RCMD_tab' : 'div[data-id="RCMD"] .tab-wrap a',
-    'RCMD_device' : 'div[data-id="RCMD"] div.recomm-tabcon[style="display: block;"] a',
-
-    'RSVC':'div[data-id="RSVC"]',
-    'RSVC_logo' : 'div[data-id="RSVC"] .cl-logo img',
-    'RSVC_bg' : 'div[data-id="RSVC"] .blurb-bg img',
-    'RSVC_content':'div[data-id="RSVC"] .bg-img img',
-
-    'plan' : 'div[data-id="PLAN"]',
-    'plan_content' : 'div[data-id="PLAN"] div.payment-area> div.item-box',
-    
-    'company' : 'div[data-id="CON"]',
-    'company_content' : 'div[data-id="CON"] ul.app-module>li>a',
-
-}
-
-search_el = {
-    'search_btn':'#search_button',
-    'ranking-keyword' : "//div[contains(@class, 'keyword-group') and contains(@class, 'ranking-keyword')]",
-    'keyword' : "//div[@class='keyword-group ranking-keyword']//a[@class='r-link']",
-    '검색창_input' : '.c-inpform.is-clear > input',
-    '검색결과_검색창' : '.search-term.cl-def',
-    '검색창_검색버튼' : 'button.c-ibtn-find',
-    '검색창_비우기' : 'button.c-btn-clear',
-    '검색_모달창_판단' : 'html[lang="ko"] > body',
-    '검색결과_건수' : 'span.result-num',
-    '검색결과_탭' : 'div.search-result-tab-area',
-}
 
 mypage = {
     'mypage' : '//*[@class="header-gnb-list"]/li/a[contains(.,"마이페이지")]',
@@ -152,7 +67,7 @@ mypage = {
     '청구서더보기_팝업_데이터_카운트' : 'div.modal-content p.total-num span',
 
     '요금바로 납부_버튼' : 'div.c-my-info-type1 > div.bottom-area>button:nth-of-type(1)',
-    
+
     '납부방법변경_버튼' : 'div.c-my-info-type1 > div.bottom-area>button:nth-of-type(2)',
 
     '결제일변경_버튼' : 'div.c-my-info-type1 > div.bottom-area>button:nth-of-type(3)',
@@ -170,7 +85,7 @@ mypage = {
 
     '입금전용_계좌발급_버튼' : 'div.c-my-info-type1 > div.bottom-area>button:nth-of-type(5)',
     '청구서_납부방법변경_버튼' : '//div[@class="modal-content"]//button[contains(.,"납부방법")]',
-    
+
     '청구내역_영역' : 'div.c-content-wrap>div.c-page-section:nth-of-type(2)',
     '청구내역_청구월' : 'div.c-content-wrap>div.c-page-section:nth-of-type(2) > div.payment-table tbody > tr a',
     '청구내역_영역2' : 'div.billInfoWrap',
@@ -215,12 +130,12 @@ mypage = {
 
     # '청구서_더보기_팝업_랜더링' : 'div.modal-content > .modal-body  table > tbody>tr[role="row"]>td:not([colspan="2"])',
 
-}         
+}
 
 mobile_el = {
     '테마배너' : '.bo-modules-quick-menu',
     '테마배너_링크' : '.bo-modules-quick-menu ul li a',
-    
+
     'mobile' : '//*[@class="header-gnb-list"]/li/a[contains(.,"모바일")]',
     'url' : 'https://www.lguplus.com/mobile',
 
@@ -270,7 +185,7 @@ mobile_el = {
     'mobile_plan' : 'a[data-gtm-click-text*="모바일 요금제|5G/LTE"]',
     '사용중인_요금제_정보' : 'div.user-info',
     '사용중인_요금제명' : '.key-area div:nth-child(1) dd',
-    
+
     '5G/LTE_tab':'ul[role="tablist"] a[data-gtm-click-text*="5G/LTE"]',
     '온라인단독_tab':'ul[role="tablist"] a[data-gtm-click-text*="온라인"]',
     '태블릿/스마트워치_tab':'ul[role="tablist"] a[data-gtm-click-text*="태블릿"]',
@@ -331,11 +246,11 @@ mobile_el = {
 iptv_el = {
     'iptv' : '//*[@class="header-gnb-list"]/li/a[contains(.,"인터넷/IPTV")]',
     'iptv_url' : 'https://www.lguplus.com/internet-iptv',
-    
+
     'KVRTB':'div.bo-modules-key-visual img',
-    
+
     '유플러스혜택받고_가입_이벤트영역' : '.bo-modules-internet-event-list div.middlearea > ul.event-section-ul li',
-    
+
     '결합상품_영역' : 'div.section-box-plus',
     '결합 상품_list':'div.section-box-plus div.plus-product-wrap div.plus-cont',
     '가입상담신청_버튼' : '//div[contains(@class,"plus-product-wrap")]//div[@class="swiper-wrapper"]/div//button[contains(.,"가입상담")]',
@@ -370,7 +285,7 @@ benefit_el = {
     'online' : 'https://www.lguplus.com/benefit-uplus/online-purchase-benefit',
 
     'uth_benefit' : '//*[@class="sub-menu-list"]//li/a[contains(.,"유쓰 혜택")]',
- 
+
 }
 
 support_el = {
@@ -411,7 +326,7 @@ direct_el = {
     'url' : 'https://www.lguplus.com/direct',
 
     '배너_이미지' : 'div.direct-kv img',
-    
+
     'con_01' : 'div.direct-usim',
     '다이렉트_컨텐츠1' : 'div.direct-usim div.btn-area a',
 
@@ -428,7 +343,7 @@ direct_el = {
     '다이렉트_컨텐츠3' : 'div.direct-benefit-info ul.direct-benefit-list li',
     '다이렉트_컨텐츠4' : 'ul.swiper-wrapper li',
     '다이렉트_컨텐츠5' : '.banner-list li a',
-    
+
 }
 
 ujam_el = {

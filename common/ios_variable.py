@@ -27,7 +27,7 @@ common_el={
     'ins_close_button':"//div[contains(@class, 'ins-close-button') and text()='닫기']",
 
     'app' :'com.lguplus.mobile.cs',
-        
+
 #_#_#_#_#_#_#_#_#_# 주석처리 된 것 #_#_#_#_#_#_#_#_#_#
 
     # 'back':'button.c-btn-prev',
@@ -35,110 +35,6 @@ common_el={
 
 }
 
-login_el = {
-    'url' : 'https://app.lguplus.com/apcm/login',
-    '로그인 여부':'div.loginBox',
-
-    'ID로그인_btn' : '.nm-app-login-way li:nth-of-type(1)',
-
-    'login_btn' : '.loginList > li:nth-of-type(1) > a',
-    'logout_btn' : '.loginList > li:nth-of-type(2) > a',
-
-    'uplus_login_img' : 'img[alt="u+ID"]',
-    'uplus_id_input':'input[type="text"]',
-    'uplus_pw_input':'input[type="password"]',
-    'uplus_login_btn':'button.nm-login-btn',
-    'uplus_입력한문자삭제' : 'button[title="입력한 문자 삭제"]',
-    # 'uplus_id_저장' : '.nm-login-remember',
-
-    'naver_login_img' : 'img[alt="네이버"]',
-    'naver_id_input' : '#id',
-    'naver_pw_input' : '#pw',
-    'naver_login_btn' : 'btn_check',
-    'naver_입력한문자삭제' : '#id_clear',
-
-    'kakao_login_img' : 'img[alt="카카오"]',
-    'kakao_id_input' : '#loginId--1',
-    'kakao_pw_input' : '#password--2',
-    'kakao_login_btn' : '#mainContent > div > div > form > div.confirm_btn > button.btn_g.highlight.submit',
-    'kakao_입력한문자삭제' : '.btn_clear',
-
-}
-
-mainpage_el = {
-    '개인화':'div.uage-section__info',
-
-    '부가서비스_약정_할부 버튼':'div.extra-service button',
-    '부가서비스_약정_할부 콘텐츠':'div.extra-service__content',
-    '부가서비스_약정_할부 링크':'div.extra-service__content a',
-    '부가서비스 조회/변경_url':'https://app.lguplus.com/mypage/sub-service/mobile',
-
-    '퀵메뉴':'div.shortcut-menu',
-
-    '내가 받은 혜택':'section.benefits-section a.benefits-info__unit',
-    'report_url' : 'https://app.lguplus.com/apcm/benefit/report',
-
-    '멤버십':'section.benefits-section button.benefits-info__membership',
-    '멤버십_바코드':'div.modal-content div[role] svg',
-
-    '나의 멤버십_태그명':'section.mymembership-section a[data-gtm-click-text*="멤버십"] div.tag span',
-    '나의 멤버십_링크':'section.mymembership-section a[data-gtm-click-text*="멤버십"]',
-    '나의 멤버십_url':'https://app.lguplus.com/benefit-membership/rank-info',
-    '나의 멤버십_등급':'section.section-grade',
-
-    '혜택_list':'section.benefits-section div.benefits-list',
-    '혜택_list_링크':'section.benefits-section div.benefits-list ul button',
-    '혜택_더보기':'section.benefits-section div.benefits-list a',
-    '나의 혜택 모아보기_url':'/apcm/benefit/report?tab=2',
-    '나의 혜택 모아보기':'div.app-p-mypage-new',
-
-    'KV':'section[section-group-id="AppMainKVSection"]',
-    'KV_링크':'section[section-group-id="AppMainKVSection"] div.swiper-slide a:first-child',
-    '이벤트_title':'section[section-group-id="MainEventSection"] header a',
-    '이벤트_콘텐츠':'section[section-group-id="MainEventSection"] div a',
-
-    '추천모바일':'section[section-group-id="MainMobileSectionIOS"]',
-    '추천모바일_title':'section[section-group-id="MainMobileSectionIOS"] header a',
-    '추천모바일_콘텐츠':'section[section-group-id="MainMobileSectionIOS"] div a',
-    '추천모바일_콘텐츠_title':'section[section-group-id="MainMobileSectionIOS"] div a header p:first-child',
-    '추천모바일_콘텐츠_더보기':'section[section-group-id="MainMobileSectionIOS"] div:last-child >a',
-
-    '상품상세_title':'p.device-kv-wrap__info--title',
-
-    '추천요금제':'section[section-group-id="MainPricePlanSection"]',
-    '추천요금제_title':'section[section-group-id="MainPricePlanSection"] h3 a',
-    '추천요금제_콘텐츠':'section[section-group-id="MainPricePlanSection"] div a',
-    '추천요금제_콘텐츠_title':'section[section-group-id="MainPricePlanSection"] div a p.sub-title',
-    '추천요금제_콘텐츠_더보기':'section[section-group-id="MainPricePlanSection"] div:last-child > a',
-
-    '추천홈상품':'section[section-group-id="MainHomeSection"]',
-    '추천홈상품_title':'section[section-group-id="MainHomeSection"] header a',
-    '인터넷iptv_url':'https://app.lguplus.com/internet-iptv/internet-iptv-package/plan',
-    '추천홈상품_콘텐츠':'section[section-group-id="MainHomeSection"] div a',
-    '추천홈상품_콘텐츠_title':'section[section-group-id="MainHomeSection"] div a p.brand-payment',
-    'iptv상품상세_title':'div.product-info__item strong.product-name', 
-    'iptv상품상세_url':'https://app.lguplus.com/signup/step1/package',
-    
-#_#_#_#_#_#_#_#_#_# 주석처리 된 것 #_#_#_#_#_#_#_#_#_#
-
-    # '개인화_상품 조회 변경':'div.uage-section__info button[title="다른 상품 조회 선택"]',
-    # '개인화_모달_상품':'div.modal-content div.c-radio-box-3 input',
-    # '이용중인 나의 상품 정보_url':'https://app.lguplus.com/apcm/main',
-    # '할인반환금 정보_url':'https://app.lguplus.com/mypage/cancellation-fees',
-
-}
-
-
-search_el = {
-    '검색결과_검색창' : '.c-inpform.is-clear div.c-inpitem .c-inp',
-    '입력한문자삭제_btn':'div.modal-content button[title="입력한 문자 삭제"]',
-
-    'search_btn' : '.header-utill button.c-btn-search',
-    '검색창_input' : 'div.c-inpform.is-clear div.c-inpitem input',
-    '검색어해시태그' : 'div.c-tag-wrap a',
-
-    '검색결과_url' : 'https://app.lguplus.com/search/result',
-}
 
 mypage = {
     'mypage' : '//button[contains(.,"마이페이지")]',
@@ -152,7 +48,7 @@ mypage = {
     '청구서_하단_확인_버튼' : 'footer > div > button',
     '청구서_text' : '.c-btn-dropdown>strong',
     '청구서_text2' : '.c-btn-dropdown>span',
-    
+
     '모바일_정보' : 'li.used-data > div',
     '청구_및_납부_정보' : 'li.charged > div',
     '주문정보' : '//div[contains(.,"주문정보") and contains(@class,"c-section")]',
@@ -167,7 +63,7 @@ mypage = {
     'bill_direct': '//a[contains(.,"요금/납부 조회")]',
     'bill_url':'https://app.lguplus.com/mypage/payinfo',
 
-    'use_direct' : '//a[contains(.,"사용내역 조회")]' , 
+    'use_direct' : '//a[contains(.,"사용내역 조회")]' ,
     'use_url' : 'https://app.lguplus.com/mypage/bilv',
 
     '실시간요금조회' : 'ul[role="tablist"]>li:nth-of-type(1)>a',
@@ -195,7 +91,7 @@ mypage = {
 
     '인터넷_통화상세내역_조회' : '//*[@class="swiper-wrapper"]/li[1]/a',
     '인터넷_통화상세내역' : 'div.mypage-usedinfo-callhistory',
-    
+
     '기가인터넷사용량' : '//*[@class="swiper-wrapper"]/li[2]/a',
     '기가인터넷_사용_정보' : 'div.mypage-usedinfo >div.c-section-md:not(.use-amount)',
 
@@ -215,12 +111,12 @@ mypage = {
     '멤버십 카드 발급내역':'div.tab-panel div.c-section-md:nth-of-type(2)',
     '멤버십 카드 발급내역_자세히보기':'div.tab-panel  div.c-section-md:nth-of-type(2) >div>button',
     '멤버십 카드 발급내역_자세히보기_팝업':'div.modal-content div.c-section-md',
-    
+
 #_#_#_#_#_#_#_#_#_# 주석처리 된 것 #_#_#_#_#_#_#_#_#_#
 
     # '나만의 콕 혜택 신청내역':'div.tab-panel div.c-section-md:nth-of-type(3)',
 
-}         
+}
 
 mobile_el = {
     'mobile' : '//button[contains(.,"모바일")]',
@@ -249,7 +145,7 @@ mobile_el = {
     '모바일요금제_요금제_url':'https://app.lguplus.com/mobile/plan/mplan/plan-all',
     '추천 요금졔_panel':'section[section-group-id="MoSubMainMobileRecommendPlan"] div.slide-wrap',
     '추천 요금제_링크':'section[section-group-id="MoSubMainMobileRecommendPlan"] div.slide-wrap a',
-    '요금제상품상세_title':'p.h1', 
+    '요금제상품상세_title':'p.h1',
     '요금제상품상세_price':'p.amount-pay',
 
     '휴대폰결합상품':'div[section-group-id="MoSubMainMobileCombinedSection"]',
@@ -275,7 +171,7 @@ mobile_el = {
 
     '하위메뉴_panel_콘텐츠':'div[section-group-id="MoSubMainMobileBottomMenuSection"] div.tab-panel:not([style^="display"]) div.info-txt img',
     '하위메뉴_탭_링크':'div[section-group-id="MoSubMainMobileBottomMenuSection"] div.m-tabs a',
-    
+
     '구매후기':'div[section-group-id="MoSubMainMobileReviewSection"]',
     '구매후기_tab_list':'div[section-group-id="MoSubMainMobileReviewSection"] div.m-tabs a',
     '구매후기_콘텐츠':'div[section-group-id="MoSubMainMobileReviewSection"] div.tab-panel:not([style^="display"]) a',
@@ -290,7 +186,7 @@ mobile_el = {
     '온라인단독_tab':'ul[role="tablist"] a[data-gtm-click-text*="온라인"]',
     '태블릿/스마트워치_tab':'ul[role="tablist"] a[data-gtm-click-text*="태블릿"]',
     '듀얼넘버_tab':'ul[role="tablist"] a[data-gtm-click-text*="듀얼넘버"]',
-    
+
     '5G/LTE_url':'https://app.lguplus.com/mobile/plan/mplan/plan-all',
     '온라인단독_url':'https://app.lguplus.com/mobile/plan/mplan/direct',
     '태블릿/스마트워치_url':'https://app.lguplus.com/mobile/plan/mplan/2nd-device',
@@ -324,10 +220,10 @@ mobile_el = {
     'phone_info' : 'div.device-kv-wrap__info',
     'phone_info2' : 'p.device-kv-wrap__info--prod-num',
     'phone_name' : 'p.device-kv-wrap__info--title',
-    
+
     '장바구니_가입유형' : "//div[contains(@class,'component') and not(contains(@aria-hidden,'true')) and contains(.,'가입 유형')]//input",
     '장바구니_요금제' : "//div[contains(@class,'component') and not(contains(@aria-hidden,'true')) and contains(.,'요금제')]//input[contains(@data-gtm-event-action,'요금제')]",
-    '장바구니_요금제_특별혜택' : ".card-benefit .c-card-radio",    
+    '장바구니_요금제_특별혜택' : ".card-benefit .c-card-radio",
     '장바구니_할인방법' : "//div[contains(@class,'component') and not(contains(@aria-hidden,'true')) and contains(.,'할인 방법')]//input",
     '장바구니_납부기간' : "//div[contains(@class,'component') and not(contains(@aria-hidden,'true')) and contains(.,'몇 개월 할부')]//descendant::li[not(contains(@style,'display: none;'))]//input",
     '장바구니_배송방법' : "//div[contains(@class,'component') and not(contains(@aria-hidden,'true')) and contains(.,'배송 방법')]//input",
@@ -403,7 +299,7 @@ benefit_el = {
     '이벤트_콘텐츠_링크':'div[section-group-id="MoSubMainBenefitEventSection"] ul a',
 
     'membership' : 'div.mypage-membership',
-    'membership_direct' :'//a[contains(.,"멤버십 이용")]', 
+    'membership_direct' :'//a[contains(.,"멤버십 이용")]',
     'membership_url':'https://app.lguplus.com/benefit/membership',
 
 }
@@ -442,7 +338,7 @@ direct_el = {
     'con_02_title':"div[moduleid='PlanCombineCarousel03'] p.plan-name",
     'con_02_price':"div[moduleid='PlanCombineCarousel03'] p.plan-price",
     'con_02_가입하기':"div[moduleid='PlanCombineCarousel03'] a[data-gtm-event-name='order_button_click']",
-    
+
     '전용요금제_가입하기_url':'https://app.lguplus.com/mobile/usim-detail',
     'con_03':'div.direct-benefit-info',
     'con_03_li':'div.direct-benefit-info ul li',

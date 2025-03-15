@@ -110,29 +110,36 @@ class Logger {
         ),
         transports: ENABLE_LOGS
           ? [
+              // 콘솔에 컬러 출력 (실시간 로그 확인 용도)
               new winston.transports.Console({
                 format: winston.format.combine(winston.format.colorize(), coloredFormatter),
               }),
+              // 일반 로그 파일 (모든 로그 저장)
               new winston.transports.File({
                 filename: logFile,
                 format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
               }),
+              // 테스트 결과를 저장하는 로그 파일
               new winston.transports.File({
                 filename: testResultFile,
                 format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
               }),
+              // Allure 테스트 리포트 관련 로그 파일
               new winston.transports.File({
                 filename: allureResultFile,
                 format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
               }),
+              // 스크린샷 관련 정보를 저장하는 로그 파일
               new winston.transports.File({
                 filename: screenshotFile,
                 format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
               }),
+              // Trace 파일을 저장하는 로그 파일 (테스트 실행 흐름 추적)
               new winston.transports.File({
                 filename: traceFile,
                 format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
               }),
+              // 테스트 실행 중 녹화된 비디오 파일 정보를 저장하는 로그 파일
               new winston.transports.File({
                 filename: videoFile,
                 format: winston.format.combine(winston.format.timestamp(), winston.format.json()),

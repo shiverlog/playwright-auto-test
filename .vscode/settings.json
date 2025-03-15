@@ -87,5 +87,24 @@
   // 터미널에서 선택하면 자동 복사
   "terminal.integrated.copyOnSelection": true,
   // 스펠링 검사 제외 키워드
-  "cSpell.words": ["UPLUS, uhdc, Shiwoo"]
+  "cSpell.userWords": [
+    "UPLUS",
+    "uhdc",
+    "UiAutomator2",
+    "mplan",
+    "Shiwoo",
+    "taskkill",
+    "usim",
+    "esim",
+    "iptv",
+    "bilv",
+    "payinfo",
+    "outh",
+    "mylg",
+    "myinfo",
+    "kakao",
+    "LGID",
+    "ujam",
+    "udoc"
+  ]
 }

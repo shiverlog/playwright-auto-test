@@ -1,5 +1,5 @@
 /**
- * Description : config.ts - 📌 환경설정 및 경로 관련 기본 세팅을 관리
+ * Description : TestConstants.ts - 📌 테스트 관련 상수 (기본 설정, 예제 데이터 등)
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */

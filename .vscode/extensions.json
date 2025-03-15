@@ -35,8 +35,6 @@
     "eamodio.gitlens",
     // GitHub Copilot - AI 코드 자동 완성
     "GitHub.copilot",
-    // ChatGPT - AI 기반 코드 자동 생성 및 디버깅
-    "gencay.vscode-chatgpt",
     // ChatGPT - 대체 확장 (추가 옵션)
     "chatgpt-vscode.chatgpt",
     // ChatGPT Code - 코드 자동 완성 및 최적화
