@@ -1,11 +1,4 @@
 common_el={
-    # slack 로그 전송할 채널
-    # 'channel':'C04F5T84SLS', # 테스트 슬랙
-    'channel':'C06599H0H08', # 테스트 soo 채널
-
-
-    'mention_channel' : 'C04F5T84SLS',
-    'mention_id' : '<@U041HBBLEMR>, <@U0550LN5MJ8>, <!subteam^S06UD11GD6H>',
 
     'gnb_url':'https://m.lguplus.com/gnb',
     'home_url':'https://m.lguplus.com/main',
@@ -31,7 +24,7 @@ common_el={
 }
 
 search_el = {
-   
+
 }
 
 mypage = {
