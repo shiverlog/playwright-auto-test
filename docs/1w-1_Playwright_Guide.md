@@ -141,3 +141,7 @@ npx wdio --suite ios
 ```
 
 ---
+
+### [3] 참고자료
+
+[Playwright 한글판](https://runebook.dev/ko/docs/playwright/-index-#Playwright_Test)

@@ -357,10 +357,6 @@ appium driver install --source github appium/appium-uiautomator2-driver --packag
 | **elementCssPropertyToBe**          | 특정 요소의 CSS 속성이 특정 값과 일치할 때까지            |
 | **networkIdle**                     | 네트워크 요청이 일정 시간 동안 없을 때까지                |
 
-```
-
-```
-
 ---
 
 ### [5] 참고자료
