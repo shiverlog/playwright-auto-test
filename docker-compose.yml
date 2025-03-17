@@ -11,145 +11,180 @@ networks:
 volumes:
   e2e_results:
     driver: local
-  speed_results:
+  db-data:
     driver: local
 
 services:
-  # Playwright 프로젝트
+  # Playwright 테스트 실행
   playwright:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: playwright_tests
+    restart: always
     networks:
       - app_network
     depends_on:
-      - common
+      common:
+        condition: service_started
     volumes:
-      - .:/app
+      - ./test-results:/app/test-results
     working_dir: /app
+    environment:
+      - HEADLESS=${HEADLESS:-1}
+      - DEBUG=${DEBUG:-0}
     command: ['npx', 'playwright', 'test']
-    shm_size: '2gb'
+    shm_size: '1gb'
 
   # E2E 테스트 - PC Web
   e2e-pc:
     build:
       context: .
       dockerfile: ./e2e/pc-web/Dockerfile
+    environment:
+      - NODE_ENV=test
     container_name: e2e_pc
+    restart: always
     depends_on:
-      - common
+      common:
+        condition: service_started
     networks:
       - app_network
     volumes:
-      - e2e_results:/app/results
-    environment:
-      - NODE_ENV=test
+      - ./e2e/pc/results:/app/results
 
   # E2E 테스트 - Mobile Web
   e2e-mw:
     build:
       context: .
       dockerfile: ./e2e/mobile-web/Dockerfile
+    environment:
+      - NODE_ENV=test
     container_name: e2e_mw
+    restart: always
     depends_on:
-      - common
+      common:
+        condition: service_started
     networks:
       - app_network
     volumes:
-      - e2e_results:/app/results
-    environment:
-      - NODE_ENV=test
+      - ./e2e/mobile-web/results:/app/results
 
-  # E2E 테스트 - AOS (Android)
+  # E2E 테스트 - Android (AOS)
   e2e-aos:
     build:
       context: .
       dockerfile: ./e2e/android/Dockerfile
+    environment:
+      - NODE_ENV=test
     container_name: e2e_aos
+    restart: always
     depends_on:
-      - common
+      common:
+        condition: service_started
     networks:
       - app_network
     volumes:
-      - e2e_results:/app/results
-    environment:
-      - NODE_ENV=test
+      - ./e2e/android/results:/app/results
 
   # E2E 테스트 - iOS
   e2e-ios:
     build:
       context: .
       dockerfile: ./e2e/ios/Dockerfile
+    environment:
+      - NODE_ENV=test
     container_name: e2e_ios
+    restart: always
     depends_on:
-      - common
+      common:
+        condition: service_started
     networks:
       - app_network
     volumes:
-      - e2e_results:/app/results
-    environment:
-      - NODE_ENV=test
+      - ./e2e/ios/results:/app/results
 
   # E2E 테스트 - API
   e2e-api:
     build:
       context: .
       dockerfile: ./e2e/api/Dockerfile
-    container_name: e2e_api
-    depends_on:
-      - common
-    networks:
-      - app_network
-    volumes:
-      - e2e_results:/app/results
     environment:
       - NODE_ENV=test
-
-  # 3사 속도 테스트 서비스
-  speedtest:
-    build:
-      context: .
-      dockerfile: ./speedtest/Dockerfile
-    container_name: speedtest_service
+    container_name: e2e_api
+    restart: always
+    depends_on:
+      common:
+        condition: service_started
     networks:
       - app_network
     volumes:
-      - speed_results:/app/results
-    environment:
-      - NODE_ENV=production
+      - ./e2e/api/results:/app/results
 
   # Pub/Sub 서비스
   pubsub:
     build:
       context: .
       dockerfile: ./pubsub/Dockerfile
-    container_name: pubsub_service
+    container_name: pubsub
+    restart: always
     depends_on:
-      - common
+      common:
+        condition: service_started
     networks:
       - app_network
     volumes:
-      - e2e_results:/app/data
+      - ./pubsub/data:/app/data
     environment:
       - NODE_ENV=production
       - PUBSUB_EMULATOR_HOST=0.0.0.0:8085
+    ports:
+      - '8085:8085'
 
-  # Mosaic DB 연동
+  # Mosaic DB 서비스
   mosaic-db:
-    build: ./mosaic-db
+    build:
+      context: .
+      dockerfile: ./mosaic-db/Dockerfile
     container_name: mosaic-db
     restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
     volumes:
       - ./db/conf.d:/etc/mosaic-db/conf.d
       - ./db/initdb.d:/docker-entrypoint-initdb.d
     ports:
       - '5000:5000'
     environment:
-      - NODE_ENV=${NODE_ENV}
-      - DB_HOST=${DB_HOST}
+      - NODE_ENV=production
+      - DB_HOST=db
       - DB_USER=${DB_USER}
       - DB_PASS=${DB_PASS}
       - DB_DATABASE=${DB_DATABASE}
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - TZ=${TZ}
-    depends_on:
-      - db
+# ==================== 도커 명령어 ====================
+# 1️⃣ 컨테이너 실행 (빌드 포함)
+# docker compose up --build -d
+
+# 2️⃣ 도커 컴포즈 버전 확인
+# docker compose version
+
+# 3️⃣ 도커 컴포즈 설정 확인
+# docker compose config
+
+# 4️⃣ 특정 서비스 수동 빌드
+# docker build -f common/Dockerfile -t common:latest .
+
+# 5️⃣ 환경변수 적용하여 실행
+# docker compose --env-file .env up --build -d
+
+# ==================== CRLF → LF 변환 ====================
+# Windows 환경에서 발생할 수 있는 CRLF 문제 해결
+# sed -i 's/\r$//' pubsub/Dockerfile
+# sed -i 's/\r$//' e2e/api/Dockerfile
+# sed -i 's/\r$//' e2e/ios/Dockerfile
+# sed -i 's/\r$//' e2e/mobile-web/Dockerfile
+# sed -i 's/\r$//' speedtest/Dockerfile
+# sed -i 's/\r$//' mosaic-db/Dockerfile

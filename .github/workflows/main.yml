@@ -5,6 +5,11 @@ on:
     branches: [main, develop, release]
   pull_request:
     branches: [main, develop, release]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   # ci.yml 실행
   ci:
@@ -17,7 +22,7 @@ jobs:
     uses: ./.github/workflows/playwright.yml
   # CI와 Playwright 테스트가 성공하면 실행
   cd:
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
     needs: [ci, node-test, playwright]
-    # 배포 실행
     uses: ./.github/workflows/cd.yml
+    secrets: inherit

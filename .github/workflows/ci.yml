@@ -13,12 +13,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
-        container: [none, "mcr.microsoft.com/playwright:focal"]
+        container: [none, 'mcr.microsoft.com/playwright:focal']
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container != 'none' && matrix.container || '' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install dependencies
         run: npm install
@@ -35,3 +35,74 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+
+  build:
+    name: Build & Push Docker Images
+    runs-on: ubuntu-latest
+    needs: test
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 모든 브랜치를 가져옴
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: 여기에_arn_입력
+          aws-region: 여기에_region_입력
+          role-session-name: session-name-입력
+
+      - name: Ensure git fetch
+        run: git fetch --all
+
+      - name: Action setup
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Node setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Pnpm install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build affected projects
+        run: |
+          BASE_BRANCH=$(git rev-parse HEAD^)
+          pnpm nx affected --target=build --base=$BASE_BRANCH --head=HEAD --parallel=3
+        env:
+          NX_NO_CLOUD: true
+
+      - name: Build and push Docker images
+        id: docker
+        env:
+          IMAGE_NAME: ${{ github.repository }}
+        run: |
+          BASE_BRANCH=$(git rev-parse HEAD^)
+          AFFECTED_PROJECTS=$(pnpm nx show projects --affected --type app --base=$BASE_BRANCH --head=HEAD)
+
+          echo "AFFECTED_PROJECTS=$AFFECTED_PROJECTS"
+
+          # 개행 문자 제거 및 공백 변환
+          AFFECTED_PROJECTS=$(echo "$AFFECTED_PROJECTS" | tr -s '[:space:]' ' ')
+
+          # 프로젝트 배열 변환
+          IFS=' ' read -r -a PROJECTS <<< "$AFFECTED_PROJECTS"
+
+          echo "PROJECTS=(${PROJECTS[*]})"
+
+          # Docker 이미지 빌드 및 푸시
+          for project in "${PROJECTS[@]}"; do
+            FINAL_IMAGE_NAME="${IMAGE_NAME}-${project}"
+            echo "Using image name: $FINAL_IMAGE_NAME"
+            docker build --build-arg="BUILD_ENV=${BUILD_ENV}" -t $FINAL_IMAGE_NAME -f apps/$project/Dockerfile .
+            docker push $FINAL_IMAGE_NAME
+          done

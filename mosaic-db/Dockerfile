@@ -1,17 +1,16 @@
-# 빌드 단계 (Debian을 사용하여 MosaicDB 컴파일)
-FROM ubuntu:18.04 AS builder
+# Description : Dockerfile - 📌 DB Container Image
+# Author : Shiwoo Min
+# Date : 2024-03-10
 
-# 필수 패키지 설치 (C++ 빌드 툴 및 의존성 + Python 2 기본 지원)
+# 경량 Debian 기반 이미지 사용
+FROM debian:bookworm-slim AS builder
+
+# 필수 패키지 설치 (Python2 수동 빌드에 필요한 패키지 포함)
 RUN apt-get update && apt-get install -y \
-    software-properties-common \
-    && add-apt-repository -y ppa:deadsnakes/ppa \
-    && apt-get update && apt-get install -y \
     build-essential \
     cmake \
     gcc \
     g++ \
-    python2.7 \
-    python2.7-dev \
     libssl-dev \
     libsqlite3-dev \
     zlib1g-dev \
@@ -19,41 +18,44 @@ RUN apt-get update && apt-get install -y \
     libibverbs-dev \
     libgflags-dev \
     libgoogle-glog-dev \
+    liburing-dev \
     wget \
     tar \
     make \
-    && rm -rf /var/lib/apt/lists/*
+    curl \
+    libbz2-dev \
+    libreadline-dev \
+    libffi-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 2. liburing 수동 설치 (소스 코드 빌드)
+# Python2 소스 코드 다운로드 및 빌드
 WORKDIR /usr/src
-RUN wget https://github.com/axboe/liburing/archive/refs/tags/liburing-2.1.tar.gz \
-    && tar xzf liburing-2.1.tar.gz \
-    && cd liburing-liburing-2.1 \
-    && ./configure \
-    && make -j$(nproc) \
-    && make install
+RUN wget https://www.python.org/ftp/python/2.7.18/Python-2.7.18.tgz && \
+    tar xzf Python-2.7.18.tgz && \
+    cd Python-2.7.18 && \
+    ./configure --enable-optimizations && \
+    make -j$(nproc) && \
+    make altinstall
 
-# 3. Python 2가 정상적으로 설치되었는지 확인
-RUN python2 --version
+# Python2 심볼릭 링크 추가 (python2를 python으로 사용 가능하게 설정)
+RUN ln -s /usr/local/bin/python2.7 /usr/bin/python2 && ln -s /usr/bin/python2 /usr/bin/python
 
-# 4. 작업 디렉토리 설정 및 소스 코드 복사
+# Python 버전 확인 (디버깅용)
+RUN python --version
+
+# MosaicDB 빌드
 WORKDIR /app
 COPY . /app
 
-# 5. CMakeLists.txt 확인 (디버깅용)
-RUN ls -la /app
-
-# 6. 빌드 수행 (CMake 사용)
+# CMakeLists.txt가 위치한 `mosaic-db` 폴더로 이동
 RUN mkdir -p build
 WORKDIR /app/build
-RUN cmake .. -DCMAKE_BUILD_TYPE=Release && make
+RUN cmake /app -DCMAKE_BUILD_TYPE=Release && make -j$(nproc)
 
-# ─────────────────────────────────────────────
-# 2️⃣ 런타임 단계 (경량 컨테이너에서 실행)
-# ─────────────────────────────────────────────
-FROM ubuntu:18.04 AS runtime
+# 런타임 단계 (실행 컨테이너)
+FROM debian:bookworm-slim AS runtime
 
-# 1. 필수 런타임 라이브러리 설치
+# 필수 런타임 라이브러리만 설치
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libssl-dev \
     libsqlite3-dev \
@@ -62,28 +64,31 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libibverbs-dev \
     libgflags-dev \
     libgoogle-glog-dev \
-    && rm -rf /var/lib/apt/lists/*
+    liburing-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# 2. 실행 디렉토리 설정 및 빌드된 실행 파일 복사
+# 실행 디렉토리 설정 및 실행 파일 복사
 WORKDIR /app
 COPY --from=builder /app/build/ycsb_SI_hybrid_coro /app/mosaic-db
 
-# 3. 보안 정책 우회 (사내망 SSL 문제 대응)
+# 보안 정책 우회 (SSL 문제 대응)
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-# 4. HugePages 설정 (512 페이지 할당)
+# HugePages 및 메모리 설정
 RUN echo "512" > /proc/sys/vm/nr_hugepages
-
-# 5. mlock (메모리 잠금) 설정 추가
 RUN echo "root soft memlock unlimited" >> /etc/security/limits.conf && \
     echo "root hard memlock unlimited" >> /etc/security/limits.conf
 
-# 6. 컨테이너에서 사용할 포트 지정
+# 포트 설정
 EXPOSE 5000
 
-# 7. MosaicDB 실행 (백그라운드 실행)
-ENTRYPOINT ["/app/mosaic-db", \
-    "-log_data_dir=/mnt/nvme0n1/mosaicdb-log", \
+# HealthCheck 추가
+HEALTHCHECK --interval=30s --timeout=10s --start-period=5s \
+  CMD curl --fail http://localhost:5000/health || exit 1
+
+# MosaicDB 실행
+ENTRYPOINT ["/app/mosaic-db"]
+CMD ["-log_data_dir=/mnt/nvme0n1/mosaicdb-log", \
     "-node_memory_gb=50", \
     "-ycsb_workload=C", \
     "-ycsb_read_tx_type=hybrid-coro", \
