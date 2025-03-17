@@ -1,0 +1,43 @@
+# Description : docker-compose.base.yml - 📌 Dockerizing 실행 환경 정의 파일
+# Author : Shiwoo Min
+# Date : 2024-03-10
+
+version: '3.9'
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  common_data:
+    driver: local
+  db-data:
+    driver: local
+
+services:
+  # 공통 패키지 컨테이너
+  common:
+    build:
+      context: .
+      dockerfile: ./common/Dockerfile
+    image: common:latest
+    container_name: common
+    restart: unless-stopped
+    networks:
+      - app_network
+    volumes:
+      - common_data:/app/common
+    working_dir: /app/common
+    command: ['tail', '-f', '/dev/null']
+
+  # PostgreSQL DB 컨테이너
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    ports:
+      - '5432:5432'
+    volumes:
+      - db-data:/var/lib/postgresql/data

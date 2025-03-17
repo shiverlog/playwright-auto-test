@@ -10,9 +10,9 @@
   <img src="https://playwright.dev/img/playwright-logo.svg" width="50" />
 </p>
 
-##### 1. Microsoft에서 개발한 오픈소스 웹 테스트 자동화 프레임워크로, 크로스 브라우저 테스트, 멀티탭, 모바일 시뮬레이션, 네트워크 인터셉트 등을 지원하는 강력한 기능을 제공한다.
+1. Microsoft에서 개발한 오픈소스 웹 테스트 자동화 프레임워크로, 크로스 브라우저 테스트, 멀티탭, 모바일 시뮬레이션, 네트워크 인터셉트 등을 지원하는 강력한 기능을 제공한다.
 
-##### 2. 비동기(Async) 및 병렬 실행 기능을 활용하여 빠르고 안정적인 UI 및 API 테스트 수행이 가능하다.
+2. 비동기(Async) 및 병렬 실행 기능을 활용하여 빠르고 안정적인 UI 및 API 테스트 수행이 가능하다.
 
 #### `Node.js`
 
@@ -20,11 +20,11 @@
   <img src="https://nodejs.org/static/images/logo.svg" width="50" />
 </p>
 
-##### 1. Chrome V8 JavaScript 엔진을 기반으로 동작하는 서버 사이드 런타임으로, 브라우저 외부에서도 JavaScript를 실행할 수 있도록 지원한다. 특히 비동기(Asynchronous) 이벤트 기반(Non-blocking I/O) 모델을 사용하여 빠른 실행 속도와 확장성을 제공하며, 대량의 요청을 효율적으로 처리할 수 있다.
+1. Chrome V8 JavaScript 엔진을 기반으로 동작하는 서버 사이드 런타임으로, 브라우저 외부에서도 JavaScript를 실행할 수 있도록 지원한다. 특히 비동기(Asynchronous) 이벤트 기반(Non-blocking I/O) 모델을 사용하여 빠른 실행 속도와 확장성을 제공하며, 대량의 요청을 효율적으로 처리할 수 있다.
 
-##### 2. NPM (Node Package Manager)를 통해 다양한 라이브러리를 쉽게 설치할 수 있으며, 웹 서버(Node.js) + 프론트엔드(TypeScript) + 테스트 자동화(Playwright) 환경을 완벽하게 통합할 수 있다.
+2. NPM (Node Package Manager)를 통해 다양한 라이브러리를 쉽게 설치할 수 있으며, 웹 서버(Node.js) + 프론트엔드(TypeScript) + 테스트 자동화(Playwright) 환경을 완벽하게 통합할 수 있다.
 
-##### 3. GitHub Actions, Jenkins, GitLab CI/CD 등과의 통합이 용이하여 CI/CD(Continuous Integration & Continuous Deployment) 파이프라인을 구축하기에 최적화된 환경을 제공한다.
+3. GitHub Actions, Jenkins, GitLab CI/CD 등과의 통합이 용이하여 CI/CD(Continuous Integration & Continuous Deployment) 파이프라인을 구축하기에 최적화된 환경을 제공한다.
 
 #### `TypeScript`
 
@@ -32,11 +32,11 @@
   <img src="https://www.typescriptlang.org/icons/icon-144x144.png" width="50" />
 </p>
 
-##### 1. JavaScript(JS)를 기반으로 한 정적 타입 언어로, Microsoft에서 개발한 오픈소스 프로그래밍 언어이다.
+1. JavaScript(JS)를 기반으로 한 정적 타입 언어로, Microsoft에서 개발한 오픈소스 프로그래밍 언어이다.
 
-##### 2. TypeScript는 JS의 모든 기능을 포함하면서도, 정적 타입 검사(Static Type Checking)를 추가하여 코드 안정성과 유지보수성을 향상시킨다.
+2. TypeScript는 JS의 모든 기능을 포함하면서도, 정적 타입 검사(Static Type Checking)를 추가하여 코드 안정성과 유지보수성을 향상시킨다.
 
-##### 3. Interface & Type을 지원하여 데이터 및 함수의 구조를 명확하게 정의할 수 있어, 협업 및 유지보수성이 뛰어나며, 코드 리팩토링이 용이하다.
+3. Interface & Type을 지원하여 데이터 및 함수의 구조를 명확하게 정의할 수 있어, 협업 및 유지보수성이 뛰어나며, 코드 리팩토링이 용이하다.
 
 ---
 
@@ -93,17 +93,15 @@
 
 ### [2] 🆚 테스트 자동화를 위한 API 툴 비교
 
-##### Swagger: API의 설계, 문서화 및 검증을 위한 오픈소스 프레임워크로, RESTful API의 명세(Documentation) 및 클라이언트 SDK 자동 생성을 지원하는 표준이다
+- Swagger: API의 설계, 문서화 및 검증을 위한 오픈소스 프레임워크로, RESTful API의 명세(Documentation) 및 클라이언트 SDK 자동 생성을 지원하는 표준이다
+  <p align="center">
+    <img src="https://swagger.io/docs/_astro/hero-img.CQIKAqF0_1585RE.webp"/>
+  </p>
 
-<p align="center">
-  <img src="https://swagger.io/docs/_astro/hero-img.CQIKAqF0_1585RE.webp"/>
-</p>
-
-##### Postman: API 테스트 및 자동화, 협업을 위한 강력한 도구로, 개발자가 API 요청을 쉽게 보내고 응답을 확인하며, Newman을 통해 테스트 자동화 및 CI/CD 연동을 지원한다
-
-<p align="center">
-  <img src="https://voyager.postman.com/illustration/api-client-postman-screenshot-illustration.png"/>
-</p>
+- Postman: API 테스트 및 자동화, 협업을 위한 강력한 도구로, 개발자가 API 요청을 쉽게 보내고 응답을 확인하며, Newman을 통해 테스트 자동화 및 CI/CD 연동을 지원한다
+  <p align="center">
+    <img src="https://voyager.postman.com/illustration/api-client-postman-screenshot-illustration.png"/>
+  </p>
 
 | 비교 항목                                 | Postman + Newman                                | Playwright API                          | Pytest                             | Swagger (OpenAPI)                        |
 | ----------------------------------------- | ----------------------------------------------- | --------------------------------------- | ---------------------------------- | ---------------------------------------- |
@@ -116,7 +114,7 @@
 | 테스트 리포트 지원                        | ✅ HTML, JSON, JUnit 리포트 지원                | ✅ playwright-report 지원               | ✅ pytest-html, Allure Report 지원 | ❌ 기본 제공 없음                        |
 | Playwright UI + API 테스트 통합 가능 여부 | ✅ 가능 (npx playwright test && newman run ...) | ✅ 가능 (UI & API 테스트 통합 가능)     | ❌ 불가능                          | ❌ 불가능                                |
 
-**결론:** Playwright 프로젝트에서 API 테스트를 실행하거나 통합 테스트를 수행할 경우, **Postman+Newman 또는 Playwright API** 툴이 가장 적합하여, 이 두 가지로 실습할 예정이다.
+**결론:** Playwright 프로젝트에서 API 테스트를 실행하거나 통합 테스트를 수행할 경우, Postman+Newman 또는 Playwright API 툴이 가장 적합하여, 이 두 가지로 실습할 예정이다.
 
 ---
 

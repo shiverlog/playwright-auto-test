@@ -5,6 +5,19 @@
 ```sh
 # wsl2 설치(우분투 및 도커사용을 위함)
 wsl --install
+
+# 패키지 업데이트 & 업그레이드
+sudo apt update && sudo apt upgrade -y
+
+# sudo 명령어 실행시, "command not found" 오류 발생시
+# root 계정으로 실행
+wsl -u root
+# sudo 패키지 설치
+apt update && apt install -y sudo
+
+# sudo 그룹에 사용자 추가
+usermod -aG sudo <사용자명>
+
 ```
 
 ```sh
@@ -45,14 +58,19 @@ docker inspect <container_id>
 docker-compose up -d
 
 # 실시간 로그 확인
-docker-compose logs -f
+docker compose logs -f
 
 # Compose 서비스 빌드
-docker-compose build
+docker compose build
 
 # 모든 서비스 재시작
-docker-compose restart
+docker compose restart
 
 # 모든 서비스 중지
-docker-compose stop
+docker compose stop
+
+
+docker compose up --build
+docker compose version
+docker compose config
 ```

@@ -4,18 +4,14 @@
 
 ### [1] NPM 의존성 및 모듈 관리 개념 정리
 
-##### 1. NPM(Node Package Manager)은 JavaScript 패키지를 관리하는 도구로, `package.json`을 기반으로 프로젝트의 의존성을 정의하고 관리한다.
+1. NPM(Node Package Manager)은 JavaScript 패키지를 관리하는 도구로, `package.json`을 기반으로 프로젝트의 의존성을 정의하고 관리한다.
 
-###### - **의존성(Dependencies)**: 프로젝트에서 필요한 라이브러리 및 패키지 모음. `package.json`에 정의된다.
+- **의존성(Dependencies)**: 프로젝트에서 필요한 라이브러리 및 패키지 모음. `package.json`에 정의된다.
+- **개발 의존성(DevDependencies)**: 개발 과정에서만 필요한 패키지(예: 테스트, 빌드 도구). `--save-dev` 옵션으로 추가된다.
+- 동일한 패키지를 여러 모듈에서 사용할 경우, NPM이 이를 어떻게 로드할지 결정하는 것이 `npm 호이스팅(Hoisting)` 개념이다.
+- Hoisting(호이스팅)이란 중복된 패키지를 `node_modules` 루트 경로로 끌어올려 재사용하는 메커니즘을 의미한다.
 
-###### - **개발 의존성(DevDependencies)**: 개발 과정에서만 필요한 패키지(예: 테스트, 빌드 도구). `--save-dev` 옵션으로 추가된다.
-
-###### - 동일한 패키지를 여러 모듈에서 사용할 경우, NPM이 이를 어떻게 로드할지 결정하는 것이 `npm 호이스팅(Hoisting)` 개념이다.
-
-###### - Hoisting(호이스팅)이란 중복된 패키지를 `node_modules` 루트 경로로 끌어올려 재사용하는 메커니즘을 의미한다.
-
-##### 2. NPM 패키지 의존성 정리 파일
-
+2. NPM 패키지 의존성 정리 파일
 <p align="center">
   <img src="https://miro.medium.com/v2/resize:fit:2000/1*xVArhwHrhwXoBPWlJTGM4g.png"/>
 </p>
@@ -23,23 +19,17 @@
   <img src="https://velog.velcdn.com/images/woogur29/post/08b9765b-c066-40e4-a083-3db17f3e4557/image.webp"/>
 </p>
 
-###### - dependencies.json: 프로젝트에서 사용하는 패키지들의 의존성 목록을 JSON 형식으로 정리한 파일로, 특정 환경에서 의존성을 수동으로 관리하거나, 다른 프로젝트에서 동일한 패키지 리스트를 활용할 때 사용된다.
-
-###### - package.json: 프로젝트의 메타데이터 및 의존성을 정의하는 핵심 파일로, 패키지 이름, 버전, 스크립트, 의존성 목록을 포함한다.
-
-###### - package-lock.json: `package.json`의 의존성 트리를 고정하여 일관된 패키지 버전을 유지하는 역할이며, npm install 시 해당 파일이 있으면, 정확한 버전을 설치하여 패키지 일관성을 유지한다.
+- dependencies.json: 프로젝트에서 사용하는 패키지들의 의존성 목록을 JSON 형식으로 정리한 파일로, 특정 환경에서 의존성을 수동으로 관리하거나, 다른 프로젝트에서 동일한 패키지 리스트를 활용할 때 사용된다.
+- package.json: 프로젝트의 메타데이터 및 의존성을 정의하는 핵심 파일로, 패키지 이름, 버전, 스크립트, 의존성 목록을 포함한다.
+- package-lock.json: `package.json`의 의존성 트리를 고정하여 일관된 패키지 버전을 유지하는 역할이며, npm install 시 해당 파일이 있으면, 정확한 버전을 설치하여 패키지 일관성을 유지한다.
 
 ---
 
 ### [2] NPM 모듈 설치
 
-#### Root
+#### `Root`
 
 ```PowerShell
-# 스크립트 실행 제한을 해제
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-Set-ExecutionPolicy RemoteSigned
-
 # 기본 글로벌 패키지 설치
 npm install -g npm
 npm install -g typescript
@@ -137,6 +127,42 @@ npm install -g postman-to-k6
 npm install -g postman-code-generators
 npm install -g newman
 
+# Playwright 테스트 리포트 추가
+npm install --save-dev playwright-html-reporter
+
+# Mock API 활용
+npm install --save-dev @playwright/experimental-ct-react
+
+# CSV, JSON, YAML 데이터 처리
+npm install csv-parser json2csv js-yaml --save-dev
+
+# 환경 변수 보안 및 설정 관리
+npm install cross-env dotenv-safe --save-dev
+
+# 테스트 실행 최적화 및 CI/CD 개선
+npm install --save-dev wait-on start-server-and-test
+
+# Docker 환경에서 Playwright 실행
+npm install --save-dev playwright-docker
+
+# UI 테스트 코드 자동 생성 및 다양한 assertion 지원
+npm install --save-dev playwright-test-generator testcafe chai chai-as-promised
+
+# 네트워크 분석 및 API 테스트
+npm install --save-dev mitmproxy
+
+# 데이터 시각화 및 리포팅 강화
+npm install --save-dev mochawesome
+```
+
+`NPM 명령어`
+
+```sh
+# 스크립트 실행 제한을 해제
+
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Set-ExecutionPolicy RemoteSigned
+
 # node_modules 경로 확인
 npm root
 
@@ -153,6 +179,11 @@ npx tsc
 npm config get proxy
 npm config get https-proxy
 
+# 기존 설치 파일 정리(module 꼬였을 때)
+rmdir /s /q node_modules
+del package-lock.json
+npm cache clean --force
+
 # 프로젝트의 의존성을 설치할 때, peerDependencies 관련 충돌을 무시하고 설치 진행
 npm install --legacy-peer-deps
 
@@ -160,10 +191,9 @@ npm install --legacy-peer-deps
 icacls "E:\playwright-auto-test" /grant Everyone:F /T
 ```
 
-speedtest
+`speedtest`
 
 ```sh
-
 # Open CV 변수 선언
 setx OPENCV_INCLUDE_DIR "C:\tools\opencv\build\include"
 setx OPENCV_LIB_DIR "C:\tools\opencv\build\x64\vc16\lib"
@@ -180,11 +210,6 @@ set OPENCV4NODEJS_DISABLE_AUTOBUILD=1
 
 # 외부 메모리 추적 비활성화
 set OPENCV4NODEJS_DISABLE_EXTERNAL_MEM_TRACKING=1
-
-# 기존 설치 파일 정리(module 꼬였을 때)
-rmdir /s /q node_modules
-del package-lock.json
-npm cache clean --force
 
 # OpenCV4NodeJS 설치
 npm install opencv4nodejs --build-from-source

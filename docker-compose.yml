@@ -5,30 +5,17 @@
 version: '3.9'
 
 networks:
-  app_network: # 공통 네트워크 정의
+  app_network:
     driver: bridge
 
 volumes:
-  common_data: # common 컨테이너에서 사용할 볼륨
+  e2e_results:
+    driver: local
+  speed_results:
     driver: local
 
 services:
-  # common 패키지 컨테이너
-  common:
-    build:
-      # 최상단 루트로 context 설정
-      context: .
-      dockerfile: common/Dockerfile
-    image: common-module:latest
-    container_name: common
-    restart: unless-stopped
-    networks:
-      - app_network
-    volumes:
-      - common_data:/app/common
-    working_dir: /app/common
-    command: ['tail', '-f', '/dev/null']
-
+  # Playwright 프로젝트
   playwright:
     build: .
     container_name: playwright_tests
@@ -39,154 +26,130 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    # Playwright 테스트 실행
     command: ['npx', 'playwright', 'test']
-    # 공유 메모리 크기 설정 (브라우저 안정화)
     shm_size: '2gb'
-#   # E2E 테스트 - PC Web
-#   e2e-pc:
-#     build:
-#       context: ./e2e/pc-web
-#       dockerfile: Dockerfile
-#     container_name: e2e_pc
-#     depends_on:
-#       - common
-#     networks:
-#       - app_network
-#     volumes:
-#       - e2e_pc_data:/app/results
-#     environment:
-#       - NODE_ENV=test
 
-#   # E2E 테스트 - Mobile Web
-#   e2e-mw:
-#     build:
-#       context: ./e2e/mobile-web
-#       dockerfile: Dockerfile
-#     container_name: e2e_mw
-#     depends_on:
-#       - common
-#     networks:
-#       - app_network
-#     volumes:
-#       - e2e_mw_data:/app/results
-#     environment:
-#       - NODE_ENV=test
+  # E2E 테스트 - PC Web
+  e2e-pc:
+    build:
+      context: .
+      dockerfile: ./e2e/pc-web/Dockerfile
+    container_name: e2e_pc
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_results:/app/results
+    environment:
+      - NODE_ENV=test
 
-#   # E2E 테스트 - AOS (Android)
-#   e2e-aos:
-#     build:
-#       context: ./e2e/android
-#       dockerfile: Dockerfile
-#     container_name: e2e_aos
-#     depends_on:
-#       - common
-#     networks:
-#       - app_network
-#     volumes:
-#       - e2e_aos_data:/app/results
-#     environment:
-#       - NODE_ENV=test
+  # E2E 테스트 - Mobile Web
+  e2e-mw:
+    build:
+      context: .
+      dockerfile: ./e2e/mobile-web/Dockerfile
+    container_name: e2e_mw
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_results:/app/results
+    environment:
+      - NODE_ENV=test
 
-#   # E2E 테스트 - iOS
-#   e2e-ios:
-#     build:
-#       context: ./e2e/ios
-#       dockerfile: Dockerfile
-#     container_name: e2e_ios
-#     depends_on:
-#       - common
-#     networks:
-#       - app_network
-#     volumes:
-#       - e2e_ios_data:/app/results
-#     environment:
-#       - NODE_ENV=test
+  # E2E 테스트 - AOS (Android)
+  e2e-aos:
+    build:
+      context: .
+      dockerfile: ./e2e/android/Dockerfile
+    container_name: e2e_aos
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_results:/app/results
+    environment:
+      - NODE_ENV=test
 
-#   # E2E 테스트 - API
-#   e2e-api:
-#     build:
-#       context: ./e2e/api
-#       dockerfile: Dockerfile
-#     container_name: e2e_api
-#     depends_on:
-#       - common
-#     networks:
-#       - app_network
-#     volumes:
-#       - e2e_api_data:/app/results
-#     environment:
-#       - NODE_ENV=test
+  # E2E 테스트 - iOS
+  e2e-ios:
+    build:
+      context: .
+      dockerfile: ./e2e/ios/Dockerfile
+    container_name: e2e_ios
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_results:/app/results
+    environment:
+      - NODE_ENV=test
 
-#   # 3사 속도 테스트 서비스
-#   speedtest:
-#     build:
-#       context: ./speedtest
-#       dockerfile: Dockerfile
-#     container_name: speedtest_service
-#     networks:
-#       - app_network
-#     volumes:
-#       - speedtest_data:/app/results
-#     environment:
-#       - NODE_ENV=production
+  # E2E 테스트 - API
+  e2e-api:
+    build:
+      context: .
+      dockerfile: ./e2e/api/Dockerfile
+    container_name: e2e_api
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_results:/app/results
+    environment:
+      - NODE_ENV=test
 
-#   networks:
-#     app_network:
-#       driver: bridge
+  # 3사 속도 테스트 서비스
+  speedtest:
+    build:
+      context: .
+      dockerfile: ./speedtest/Dockerfile
+    container_name: speedtest_service
+    networks:
+      - app_network
+    volumes:
+      - speed_results:/app/results
+    environment:
+      - NODE_ENV=production
 
-#   # Pub/Sub 서비스
-#   pubsub:
-#     build:
-#       context: ./pubsub
-#       dockerfile: Dockerfile
-#     container_name: pubsub_service
-#     depends_on:
-#       - common
-#     networks:
-#       - app_network
-#     volumes:
-#       - pubsub_data:/app/data
-#     environment:
-#       - NODE_ENV=production
-#         # Google Pub/Sub 에뮬레이터 호스트 (로컬 실행 시)
-#       - PUBSUB_EMULATOR_HOST=0.0.0.0:8085
+  # Pub/Sub 서비스
+  pubsub:
+    build:
+      context: .
+      dockerfile: ./pubsub/Dockerfile
+    container_name: pubsub_service
+    depends_on:
+      - common
+    networks:
+      - app_network
+    volumes:
+      - e2e_results:/app/data
+    environment:
+      - NODE_ENV=production
+      - PUBSUB_EMULATOR_HOST=0.0.0.0:8085
 
-#   # Mosaic DB 연동
-#   mosaic-db:
-#     build: ./mosaic-db
-#     container_name: mosaic-db
-#     restart: unless-stopped
-#     volumes:
-#       - ./db/conf.d:/etc/mosaic-db/conf.d
-#       - ./db/initdb.d:/docker-entrypoint-initdb.d
-#     ports:
-#       - '5000:5000'
-#     environment:
-#       - NODE_ENV=production
-#       - DB_HOST=db
-#       - DB_USER=user
-#       - DB_PASS=password
-#       - DB_DATABASE=test
-#       - DB_ROOT_PASSWORD=test1234
-#       - TZ=Asia/Seoul
-#     depends_on:
-#       - db
-
-#   db:
-#     image: postgres:15-alpine
-#     environment:
-#       POSTGRES_USER: user
-#       POSTGRES_PASSWORD: password
-#       POSTGRES_DB: mosaic
-#     ports:
-#       - '5432:5432'
-#     volumes:
-#       - db-data:/var/lib/postgresql/data
-
-# volumes:
-#   db-data:
-
-# docker-compose up --build
-# docker-compose version
-# docker-compose config
+  # Mosaic DB 연동
+  mosaic-db:
+    build: ./mosaic-db
+    container_name: mosaic-db
+    restart: unless-stopped
+    volumes:
+      - ./db/conf.d:/etc/mosaic-db/conf.d
+      - ./db/initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - DB_HOST=${DB_HOST}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      - TZ=${TZ}
+    depends_on:
+      - db
