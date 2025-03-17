@@ -69,6 +69,9 @@ git commit --amend -m "수정된 메시지"
 # 이전 커밋에 파일 추가하지만, 메시지는 변경하지 않음
 git commit --amend --no-edit
 
+# Husky 훅 실행하지 않고 강제 커밋
+git commit -m "커밋 메시지" --no-verify
+
 # 브랜치 변경, 새 브랜치 생성, 파일 체크아웃
 git checkout <branch_name>
 
