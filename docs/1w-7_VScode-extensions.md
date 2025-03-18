@@ -184,6 +184,16 @@ code --install-extension gruntfuggly.todo-tree
 | **변경 사항 Stage/Unstage** | `Ctrl + Shift + Enter`     | `Cmd + Shift + Enter` | Git 변경 사항 Staging   |
 | **Git 변경 사항 보기**      | `Alt + ← / →`              | `Option + ← / →`      | Git 변경 파일 사이 이동 |
 
+### - Visual Code Tip -
+
+Git 실수로 로컬 날렸을 때 대처(히스토리 저장)
+
+- C:\Users\사용자계정\AppData\Roaming\Code\User\History
+
+Visual Code 단축키 한눈에 보기
+
+- Ctrl + Shift + P > Open Keboard Shortcuts
+
 ---
 
 ### [3] 참고자료
