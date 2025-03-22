@@ -11,18 +11,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # ci.yml 실행
   ci:
+    name: CI - Build & Lint
     uses: ./.github/workflows/ci.yml
-  # Node.js 버전별 테스트 실행
+    secrets: inherit
+
   node-test:
+    name: Node.js Compatibility Test
     uses: ./.github/workflows/node.js.yml
-  # Playwright 테스트 실행
+    secrets: inherit
+
   playwright:
+    name: E2E Tests
     uses: ./.github/workflows/playwright.yml
-  # CI와 Playwright 테스트가 성공하면 실행
+    secrets: inherit
+
   cd:
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
+    name: Deploy to Production
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release')
     needs: [ci, node-test, playwright]
     uses: ./.github/workflows/cd.yml
     secrets: inherit

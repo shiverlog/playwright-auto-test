@@ -5,50 +5,38 @@ on:
     branches: [main, develop, release]
   pull_request:
     branches: [main, develop, release]
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [22]
-      max-parallel: 3
+        node-version: [24]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/checkout@v4
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
 
-      - name: Load environment variables
-        run: |
-          if [ -f .env ]; then
-            export $(grep -v '^#' .env | xargs)
-          fi
-
-      # 패키지 설치 (캐시 활용)
       - name: Install dependencies
         run: npm ci
 
-      # 코드 린트 실행
       - name: Run lint
         run: npm run lint
-        continue-on-error: true
+        continue-on-error: true  
 
-      # 유닛 테스트 실행
-      - name: Run tests
+      - name: Run unit tests
         run: npm test
-        continue-on-error: false
 
-      # 애플리케이션 빌드
       - name: Build project
         run: npm run build
 
-      # 빌드 결과 업로드
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:

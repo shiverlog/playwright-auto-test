@@ -1,11 +1,10 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
   testMatch: ['**/*.spec.ts'],
   use: {
-    ...devices['Galaxy Note 20 Ultra'],
-    baseURL: 'http://localhost:3000',
+    baseURL: process.env.BASE_URL || 'http://localhost:4000', // 필요에 따라 변경
     headless: true,
   },
   reporter: [['list'], ['html']],

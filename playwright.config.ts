@@ -19,7 +19,8 @@ dotenv.config({ path: path.resolve(__dirname, '.env') });
  */
 export default defineConfig({
   // 공통 테스트 폴더 경로
-  testDir: './e2e',
+  testDir: '.',
+  testMatch: ['*.spec.ts', 'tests/**/*.spec.ts', 'tests-examples/**/*.spec.ts', 'e2e/**/*.spec.ts'],
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -120,6 +121,15 @@ export default defineConfig({
   /* Configure projects for major browsers */
   // 테스트 프로젝트별 설정 (Test Project Configuration)
   projects: [
+    // 기본 설치 테스트 실행
+    {
+      name: 'Common Tests',
+      testMatch: ['*.spec.ts', 'tests/**/*.spec.ts', 'tests-examples/**/*.spec.ts'],
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: process.env.HEADLESS === 'false' ? false : true,
+      },
+    },
     // pc-web에서 테스트 실행
     {
       name: 'PC - Chrome',
@@ -159,7 +169,7 @@ export default defineConfig({
       name: 'MW - Mobile Chrome',
       testMatch: ['**/mobile-web/**/*.spec.ts'],
       use: {
-        ...devices['Pixel 5'],
+        ...devices['galaxy note 20 ultra'],
         headless: process.env.HEADLESS === 'false' ? false : true,
       },
     },
@@ -211,7 +221,7 @@ export default defineConfig({
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run start',
-    url: 'http://127.0.0.1:3000',
+    url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
   },
 });

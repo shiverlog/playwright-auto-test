@@ -4,48 +4,115 @@
 
 version: 2
 updates:
-  # GitHub Actions 워크플로우의 의존성 자동 업데이트
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  # GitHub Actions 워크플로우 자동 업데이트
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "friday"
-      time: "09:00"
-      timezone: "Asia/Seoul"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
     open-pull-requests-limit: 10
+    labels:
+      - dependencies
+      - github-actions
+    commit-message:
+      prefix: 'Update'
+      include: 'scope'
 
-  # npm 패키지의 의존성 자동 업데이트
-  - package-ecosystem: "npm"
-    directory: "/"
+  # npm 의존성 업데이트
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: "weekly"
-      day: "friday"
-      time: "09:00"
-      timezone: "Asia/Seoul"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
     open-pull-requests-limit: 5
+    labels:
+      - dependencies
+      - npm
+    ignore:
+      - dependency-name: 'playwright'
+    commit-message:
+      prefix: 'NPM'
+      include: 'scope'
 
-  # Docker 이미지 자동 업데이트
-  - package-ecosystem: "docker"
-    directory: "/e2e/pc"
+  # Docker 의존성 업데이트 (각 POC별 Dockerfile)
+  - package-ecosystem: 'docker'
+    directory: '/e2e/pc-web'
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/e2e/pc"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: 'Docker'
+
+  - package-ecosystem: 'docker'
+    directory: '/e2e/mobile-web'
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/e2e/pc"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: 'Docker'
+
+  - package-ecosystem: 'docker'
+    directory: '/e2e/android'
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/e2e/pc"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: 'Docker'
+
+  - package-ecosystem: 'docker'
+    directory: '/e2e/ios'
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/e2e/pc"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: 'Docker'
+
+  - package-ecosystem: 'docker'
+    directory: '/e2e/api'
     schedule:
-      interval: "weekly"
-  - package-ecosystem: "docker"
-    directory: "/e2e/pc"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: 'Docker'
+
+  - package-ecosystem: 'docker'
+    directory: '/speedtest'
     schedule:
-      interval: "weekly"
+      interval: 'weekly'
+      day: 'friday'
+      time: '09:00'
+      timezone: 'Asia/Seoul'
+    labels:
+      - dependencies
+      - docker
+    commit-message:
+      prefix: 'Docker'

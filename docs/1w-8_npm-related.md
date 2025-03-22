@@ -127,6 +127,9 @@ npm install -g postman-to-k6
 npm install -g postman-code-generators
 npm install -g newman
 
+# Vite
+npm install -D vite
+
 # Playwright 테스트 리포트 추가
 npm install --save-dev playwright-html-reporter
 

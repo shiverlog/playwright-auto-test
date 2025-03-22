@@ -3,33 +3,82 @@
 # Date : 2024-03-10
 
 name: Playwright Tests
+
 on:
-  # 브랜치 push / pull
   push:
     branches: [main, develop, release]
   pull_request:
     branches: [main, develop, release]
+
 jobs:
   test:
+    name: Run POC Playwright Tests
     timeout-minutes: 30
-    # 실행 환경 지정 (Linux - Ubuntu 최신 버전)
     runs-on: ubuntu-latest
-    # GitHub 저장소 코드 가져오기
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [pc-web, mobile-web, android, ios, api, speedtest]
+        browser: [chromium, firefox, webkit]
+
+    env:
+      BASE_URL: http://localhost:3000
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install dependencies
         run: npm ci
-      - name: Install Playwright Browsers
+
+      - name: Install Playwright browsers
         run: npx playwright install --with-deps
+
       - name: Run Playwright tests
-        run: npx playwright test
-      - uses: actions/upload-artifact@v4
-        # 이전단계 워크플로우가 취소되지 않았을 경우(cancelled()가 false일 경우) 실행
-        if: ${{ !cancelled() }}
+        run: |
+          npx playwright test e2e/${{ matrix.project }} --project=${{ matrix.browser }}
+
+      - name: Upload Playwright HTML Report
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-${{ matrix.project }}-${{ matrix.browser }}
           path: playwright-report/
           retention-days: 30
+
+      - name: Add summary link
+        if: ${{ always() }}
+        run: |
+          echo "[Playwright Report for ${{ matrix.project }} - ${{ matrix.browser }}](./playwright-report/index.html)" >> $GITHUB_STEP_SUMMARY
+
+  # notify:
+  #   if: ${{ always() }}
+  #   needs: test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Notify Slack on Failure or Success
+  #       uses: rtCamp/action-slack-notify@v2
+  #       env:
+  #         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #         SLACK_TITLE: "📣 Playwright Test Results"
+  #         SLACK_COLOR: ${{ job.status == 'success' && 'good' || 'danger' }}
+  #         SLACK_MESSAGE: |
+  #           Matrix Test Finished:
+  #           - Status: *${{ job.status }}*
+  #           - Branch: ${{ github.ref }}
+  #           - Trigger: ${{ github.event_name }}
+  #           - Workflow: ${{ github.workflow }}
