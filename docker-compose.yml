@@ -34,7 +34,7 @@ services:
       - HEADLESS=${HEADLESS:-1}
       - DEBUG=${DEBUG:-0}
     command: ['npx', 'playwright', 'test']
-    shm_size: '1gb'
+    shm_size: '2gb'
 
   # E2E 테스트 - PC Web
   e2e-pc:
@@ -43,7 +43,7 @@ services:
       dockerfile: ./e2e/pc-web/Dockerfile
     environment:
       - NODE_ENV=test
-    container_name: e2e_pc
+    container_name: e2e-pc
     restart: always
     depends_on:
       common:
@@ -60,7 +60,7 @@ services:
       dockerfile: ./e2e/mobile-web/Dockerfile
     environment:
       - NODE_ENV=test
-    container_name: e2e_mw
+    container_name: e2e-mw
     restart: always
     depends_on:
       common:
@@ -77,7 +77,7 @@ services:
       dockerfile: ./e2e/android/Dockerfile
     environment:
       - NODE_ENV=test
-    container_name: e2e_aos
+    container_name: e2e-aos
     restart: always
     depends_on:
       common:
@@ -94,7 +94,7 @@ services:
       dockerfile: ./e2e/ios/Dockerfile
     environment:
       - NODE_ENV=test
-    container_name: e2e_ios
+    container_name: e2e-ios
     restart: always
     depends_on:
       common:
@@ -111,7 +111,7 @@ services:
       dockerfile: ./e2e/api/Dockerfile
     environment:
       - NODE_ENV=test
-    container_name: e2e_api
+    container_name: e2e-api
     restart: always
     depends_on:
       common:
@@ -164,27 +164,3 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - TZ=${TZ}
-# ==================== 도커 명령어 ====================
-# 1️⃣ 컨테이너 실행 (빌드 포함)
-# docker compose up --build -d
-
-# 2️⃣ 도커 컴포즈 버전 확인
-# docker compose version
-
-# 3️⃣ 도커 컴포즈 설정 확인
-# docker compose config
-
-# 4️⃣ 특정 서비스 수동 빌드
-# docker build -f common/Dockerfile -t common:latest .
-
-# 5️⃣ 환경변수 적용하여 실행
-# docker compose --env-file .env up --build -d
-
-# ==================== CRLF → LF 변환 ====================
-# Windows 환경에서 발생할 수 있는 CRLF 문제 해결
-# sed -i 's/\r$//' pubsub/Dockerfile
-# sed -i 's/\r$//' e2e/api/Dockerfile
-# sed -i 's/\r$//' e2e/ios/Dockerfile
-# sed -i 's/\r$//' e2e/mobile-web/Dockerfile
-# sed -i 's/\r$//' speedtest/Dockerfile
-# sed -i 's/\r$//' mosaic-db/Dockerfile
