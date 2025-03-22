@@ -1,4 +1,4 @@
-import { UI } from '@common/constants/LocatorEnum';
+import { UI } from '@common/constants/ContextConstants';
 
 export const mainLocator = {
   KV: 'div[data-id="KV"] div.visual-bg-area img',

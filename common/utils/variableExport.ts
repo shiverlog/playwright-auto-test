@@ -1,9 +1,8 @@
+import { LOCATOR_PATH, POCType } from '@common/config/config';
+import { Logger } from '@common/logger/customLogger';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as XLSX from 'xlsx';
-
-import { LOCATOR_PATH, POCType } from '../config/CommonConfig';
-import { logger } from '../logger/customLogger';
 
 class Variable {
   private poc: POCType;

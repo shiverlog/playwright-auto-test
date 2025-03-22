@@ -11,21 +11,35 @@
       "label": "Compile TypeScript",
       "type": "shell",
       "command": "tsc",
-      "problemMatcher": []
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": ["$tsc"]
     },
     {
       // Playwright Test 실행
       "label": "Run Playwright Tests",
       "type": "shell",
       "command": "npx playwright test",
-      "problemMatcher": []
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
     },
     {
-      // Appium Test 실행
+      // Appium 서버 실행
       "label": "Run Appium Server",
       "type": "shell",
       "command": "appium",
-      "problemMatcher": []
+      "isBackground": true,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
     }
   ]
 }

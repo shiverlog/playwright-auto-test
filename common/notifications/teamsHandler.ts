@@ -1,46 +1,53 @@
-import { logger } from '@common/logger/customLogger';
+import { teamsConfig } from '@common/config/config';
+import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { teamsForm } from '@common/formatters/teamsForm';
+import { Logger } from '@common/logger/customLogger';
 import axios from 'axios';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-// Teams Webhook URL (환경 변수에서 가져옴)
-const TEAMS_WEBHOOK_URL = process.env.TEAMS_WEBHOOK_URL || '';
 
 /**
- * Microsoft Teams에 메시지를 전송하는 함수
- * @param message - 전송할 메시지
+ * Microsoft Teams에 메시지를 전송하는 함수 (단일 POC용)
+ * @param poc - POC 타입 (예: 'pc-web', 'mobile-web', 'ios' 등)
+ * @param message - 전송할 메시지 내용
  * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
  */
-export const sendTeamsMessage = async (message: string, isSuccess: boolean = true) => {
-  if (!TEAMS_WEBHOOK_URL) {
-    logger.warn('Microsoft Teams Webhook URL이 설정되지 않았습니다.');
+export const sendTeamsMessage = async (
+  poc: POCType,
+  message: string,
+  isSuccess: boolean = true,
+) => {
+  const logger = Logger.getLogger(poc);
+
+  if (!teamsConfig.TEAMS_WEBHOOK_URL) {
+    logger.warn('⚠ Microsoft Teams Webhook URL이 설정되지 않았습니다.');
     return;
   }
 
   try {
-    const formattedMessage = isSuccess ? `✅ *성공:* ${message}` : `❌ *실패:* ${message}`;
+    const now = new Date().toISOString();
+    const payload = teamsForm(poc, now, isSuccess);
 
-    const payload = {
-      '@type': 'MessageCard',
-      '@context': 'http://schema.org/extensions',
-      themeColor: isSuccess ? '0078D7' : 'FF0000',
-      summary: '자동화 테스트 알림',
-      sections: [
-        {
-          activityTitle: 'Playwright 테스트 결과',
-          activitySubtitle: new Date().toISOString(),
-          text: formattedMessage,
-        },
-      ],
-    };
+    // 사용자 정의 메시지를 추가 텍스트 섹션으로 포함
+    payload.sections?.push({
+      text: isSuccess ? `✅ 성공: ${message}` : `❌ 실패: ${message}`,
+    });
 
-    await axios.post(TEAMS_WEBHOOK_URL, payload, {
+    await axios.post(teamsConfig.TEAMS_WEBHOOK_URL, payload, {
       headers: { 'Content-Type': 'application/json' },
     });
 
     logger.info(`Teams 메시지 전송 완료: ${message}`);
   } catch (error) {
     logger.error('Teams 메시지 전송 실패:', error);
+  }
+};
+
+/**
+ * Microsoft Teams에 전체 POC 대상 메시지 전송
+ * @param message - 전송할 공통 메시지
+ * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
+ */
+export const sendTeamsMessageForAllPOCs = async (message: string, isSuccess: boolean = true) => {
+  for (const poc of ALL_POCS) {
+    await sendTeamsMessage(poc, message, isSuccess);
   }
 };

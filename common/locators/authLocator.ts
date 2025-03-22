@@ -1,22 +1,38 @@
-import { UI } from '@common/constants/LocatorEnum';
+import { UIType } from '@common/constants/ContextConstants';
 
+// Type 미지정시, 공통부분으로 로직 처리
+export const getLocatorByUIType = (
+  locatorGroup: Record<string, string | Record<UIType, string>>,
+  uiType: UIType,
+): Record<string, string> => {
+  return Object.entries(locatorGroup).reduce<Record<string, string>>((acc, [key, value]) => {
+    if (typeof value === 'string') {
+      acc[key] = value; // 공통
+    } else if (value[uiType]) {
+      acc[key] = value[uiType];
+    }
+    return acc;
+  }, {});
+};
+
+// 로그인 관련 로케이터
 export const authLocator = {
   //
   myinfo_icon: {
-    [UI.PC]: 'a.icon-myInfo-1',
+    [UIType.PC]: 'a.icon-myInfo-1',
   },
   myinfo_top: {
-    [UI.PC]: 'div.myInfo-list div.myInfo-top',
+    [UIType.PC]: 'div.myInfo-list div.myInfo-top',
   },
   login_box: {
-    [UI.APP]: 'div.loginBox',
+    [UIType.APP]: 'div.loginBox',
   },
   main_login_btn: {
-    [UI.PC]: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
+    [UIType.PC]: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
   },
   login_btn: {
-    [UI.PC]: '.loginList > li:nth-of-type(1) > a',
-    [UI.APP]: '.nm-app-login-way li:nth-of-type(1)',
+    [UIType.PC]: '.loginList > li:nth-of-type(1) > a',
+    [UIType.APP]: '.nm-app-login-way li:nth-of-type(1)',
   },
   logout_btn: '.loginList > li:nth-of-type(2) > a',
 

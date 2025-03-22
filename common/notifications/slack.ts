@@ -1,91 +1,61 @@
+import { slackConfig } from '@common/config/config';
+import { ALL_POCS, POCType } from '@common/constants/PathConstants';
 import { slackForm } from '@common/formatters/slackForm';
-import { logger } from '@common/logger/customLogger';
+import { Logger } from '@common/logger/customLogger';
 import { WebClient } from '@slack/web-api';
-import dotenv from 'dotenv';
 import fs from 'fs';
-import pRetry from 'p-retry';
 import path from 'path';
 
-dotenv.config();
+// Slack WebClient 인스턴스 생성
+const slackClient = new WebClient(slackConfig.SLACK_TOKEN);
 
-// Slack 설정
-const SLACK_TOKEN = process.env.SLACK_BOT_TOKEN || '';
-const SLACK_CHANNEL = process.env.SLACK_CHANNEL_ID || '';
-const SLACK_MENTION_ID = process.env.SLACK_MENTION_ID || ''; // Mentions (@user)
-const SLACK_MENTION_CHANNEL = process.env.SLACK_MENTION_CHANNEL || '';
-
-// Slack WebClient 생성
-const slackClient = new WebClient(SLACK_TOKEN);
-
-// Slack 클래스 정의
 export class Slack {
-  private static channel: string = SLACK_CHANNEL;
-  private static serverThreadTs: string | null = null;
-  private static filePath: string | null = null;
-  private static poc: string = 'PC';
-
-  // Slack 메시지 포맷
-  private static textFormat = {
-    pass: `[${Slack.poc} - PASS]`,
-    fail: `[${Slack.poc} - FAIL]`,
-    log: `[${Slack.poc} - LOG]`,
-  };
+  private static serverThreadTsMap: Map<POCType, string> = new Map();
+  private static filePathMap: Map<POCType, string> = new Map();
 
   /**
    * 서버 Thread TS 설정
    */
-  public static setServerThreadTS(serverThreadTs: string) {
-    if (!serverThreadTs) throw new Error('serverThreadTs is null');
-    Slack.serverThreadTs = serverThreadTs;
+  public static setServerThreadTS(poc: POCType, ts: string) {
+    if (!ts) throw new Error('serverThreadTs is null');
+    Slack.serverThreadTsMap.set(poc, ts);
   }
 
   /**
    * 서버 Thread TS 가져오기
    */
-  public static getServerThreadTS(): string {
-    if (!Slack.serverThreadTs) throw new Error('serverThreadTs is null');
-    return Slack.serverThreadTs;
+  public static getServerThreadTS(poc: POCType): string {
+    const ts = Slack.serverThreadTsMap.get(poc);
+    if (!ts) throw new Error('serverThreadTs is null');
+    return ts;
   }
 
   /**
    * 파일 경로 설정
    */
-  public static setFilePath(filePath: string) {
+  public static setFilePath(poc: POCType, filePath: string) {
     if (!filePath) throw new Error('filePath is null');
-    Slack.filePath = filePath;
+    Slack.filePathMap.set(poc, filePath);
   }
 
   /**
    * 파일 경로 가져오기
    */
-  public static getFilePath(): string {
-    if (!Slack.filePath) throw new Error('filePath is null');
-    return Slack.filePath;
+  public static getFilePath(poc: POCType): string {
+    const filePath = Slack.filePathMap.get(poc);
+    if (!filePath) throw new Error('filePath is null');
+    return filePath;
   }
 
   /**
-   * Slack 메시지 전송
+   * 테스트 시작 메시지 전송
    */
-  public static async sendSlackMessage(message: string, isSuccess: boolean = true) {
-    try {
-      const formattedMessage = isSuccess ? `${message} 성공` : `${message} 실패`;
-
-      await slackClient.chat.postMessage({
-        channel: Slack.channel,
-        text: formattedMessage,
-      });
-    } catch (error) {
-      logger.error('Slack 메시지 전송 실패:', error);
-    }
-  }
-
-  /**
-   * Slack 실행 로그 메시지 전송
-   */
-  public static async sendSlackServerTitle() {
+  public static async sendSlackServerTitle(poc: POCType) {
+    const logger = Logger.getLogger(poc);
     const now = new Date();
-    const formattedBlocks = Slack.formatBlocks(
-      slackForm(Slack.poc).serverTitle,
+
+    const blocks = Slack.formatBlocks(
+      slackForm(poc).serverTitle,
       now.getMonth() + 1,
       now.getDate(),
       now.getHours(),
@@ -94,50 +64,52 @@ export class Slack {
 
     try {
       const response = await slackClient.chat.postMessage({
-        channel: Slack.channel,
-        blocks: formattedBlocks,
+        channel: slackConfig.SLACK_CHANNEL,
+        blocks,
         text: '테스트 시작',
       });
 
-      Slack.setServerThreadTS(response.ts || '');
+      Slack.setServerThreadTS(poc, response.ts || '');
     } catch (error) {
       logger.error('Slack 실행 로그 메시지 전송 실패:', error);
     }
   }
 
   /**
-   * Slack 테스트 결과 전송
+   * 테스트 결과 전송
    */
-  public static async sendSlackServerResult(testResult: boolean) {
+  public static async sendSlackServerResult(poc: POCType, testResult: boolean) {
+    const logger = Logger.getLogger(poc);
     const result = testResult ? 'PASS' : 'FAIL';
-    const formattedBlocks = Slack.formatBlocks(slackForm(Slack.poc).serverResult, result);
+    const blocks = Slack.formatBlocks(slackForm(poc).serverResult, result);
 
     try {
       await slackClient.chat.postMessage({
-        channel: Slack.channel,
-        blocks: formattedBlocks,
+        channel: slackConfig.SLACK_CHANNEL,
+        blocks,
         text: '테스트 결과',
       });
 
-      if (Slack.channel === SLACK_MENTION_CHANNEL && result === 'FAIL') {
-        Slack.sendSlackMention();
+      if (slackConfig.SLACK_CHANNEL === slackConfig.SLACK_MENTION_CHANNEL && result === 'FAIL') {
+        await Slack.sendSlackMention(poc);
       }
     } catch (error) {
-      logger.error('Slack 테스트 결과 전송 실패:', error);
+      logger.error(`Slack 테스트 결과 전송 실패: ${error}`);
     }
   }
 
   /**
-   * Slack 메시지 전송 (로그)
+   * 텍스트 로그 메시지 전송 (Thread)
    */
-  public static async sendSlackText(log: string, testResult: boolean = true) {
-    const result = testResult ? Slack.textFormat.pass : Slack.textFormat.fail;
+  public static async sendSlackText(poc: POCType, log: string, isSuccess = true) {
+    const logger = Logger.getLogger(poc);
+    const prefix = isSuccess ? `[${poc} - PASS]` : `[${poc} - FAIL]`;
 
     try {
       await slackClient.chat.postMessage({
-        channel: Slack.channel,
-        thread_ts: Slack.getServerThreadTS(),
-        text: `${result} - ${log}`,
+        channel: slackConfig.SLACK_CHANNEL,
+        thread_ts: Slack.getServerThreadTS(poc),
+        text: `${prefix} - ${log}`,
       });
     } catch (error) {
       logger.error('Slack 로그 메시지 전송 실패:', error);
@@ -145,18 +117,19 @@ export class Slack {
   }
 
   /**
-   * Slack 스크린샷 업로드
+   * 이미지 업로드
    */
-  public static async sendSlackImage(imgComment: string = '이슈') {
-    if (!Slack.getFilePath()) throw new Error('파일 경로가 올바르지 않습니다.');
+  public static async sendSlackImage(poc: POCType, comment = '이슈') {
+    const logger = Logger.getLogger(poc);
+    const filePath = Slack.getFilePath(poc);
 
     try {
       await slackClient.files.upload({
-        channels: Slack.channel,
-        thread_ts: Slack.getServerThreadTS(),
-        file: fs.createReadStream(Slack.getFilePath()),
+        channels: slackConfig.SLACK_CHANNEL,
+        thread_ts: Slack.getServerThreadTS(poc),
+        file: fs.createReadStream(filePath),
         title: '이슈 이미지',
-        initial_comment: imgComment,
+        initial_comment: comment,
       });
     } catch (error) {
       logger.error('Slack 스크린샷 업로드 실패:', error);
@@ -164,14 +137,16 @@ export class Slack {
   }
 
   /**
-   * Slack 멘션 전송 (테스트 실패 시)
+   * 멘션 전송
    */
-  public static async sendSlackMention() {
+  public static async sendSlackMention(poc: POCType) {
+    const logger = Logger.getLogger(poc);
+
     try {
       await slackClient.chat.postMessage({
-        channel: Slack.channel,
-        thread_ts: Slack.getServerThreadTS(),
-        text: SLACK_MENTION_ID,
+        channel: slackConfig.SLACK_CHANNEL,
+        thread_ts: Slack.getServerThreadTS(poc),
+        text: slackConfig.SLACK_MENTION_ID,
       });
     } catch (error) {
       logger.error('Slack 멘션 전송 실패:', error);
@@ -179,9 +154,10 @@ export class Slack {
   }
 
   /**
-   * Slack 로그 파일 업로드
+   * 로그 파일 업로드
    */
-  public static async sendSlackLogFile() {
+  public static async sendSlackLogFile(poc: POCType) {
+    const logger = Logger.getLogger(poc);
     const logFilePath = path.join(
       'result/debug/',
       `${new Date().toISOString().slice(0, 10)}_info.log`,
@@ -189,9 +165,9 @@ export class Slack {
 
     try {
       await slackClient.files.upload({
-        channels: Slack.channel,
+        channels: slackConfig.SLACK_CHANNEL,
         file: fs.createReadStream(logFilePath),
-        title: `${Slack.poc}_log_file`,
+        title: `${poc}_log_file`,
       });
     } catch (error) {
       logger.error('Slack 로그 파일 업로드 실패:', error);
@@ -199,9 +175,36 @@ export class Slack {
   }
 
   /**
-   * 블록 템플릿에 데이터 적용하는 함수
+   * 블록 템플릿에서 {} 자리에 값 채워넣기
    */
   private static formatBlocks(template: any, ...args: any[]): any {
     return JSON.parse(JSON.stringify(template).replace(/{}/g, () => args.shift()));
+  }
+
+  /**
+   * 전체 POC에 대해 테스트 시작 메시지 전송
+   */
+  public static async batchSendSlackServerTitle() {
+    for (const poc of ALL_POCS) {
+      await Slack.sendSlackServerTitle(poc);
+    }
+  }
+
+  /**
+   * 전체 POC에 대해 테스트 결과 메시지 전송
+   */
+  public static async batchSendSlackServerResult(testResult: boolean) {
+    for (const poc of ALL_POCS) {
+      await Slack.sendSlackServerResult(poc, testResult);
+    }
+  }
+
+  /**
+   * 전체 POC에 대해 로그 메시지 전송
+   */
+  public static async batchSendSlackText(message: string, isSuccess: boolean = true) {
+    for (const poc of ALL_POCS) {
+      await Slack.sendSlackText(poc, message, isSuccess);
+    }
   }
 }

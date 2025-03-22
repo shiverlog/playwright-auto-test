@@ -2,16 +2,29 @@
 # Author : Shiwoo Min
 # Date : 2024-03-10
 
-# Playwright 공식 Docker 이미지 (Ubuntu 22.04 기반, Node.js 포함)
-FROM mcr.microsoft.com/playwright:v1.40.0-jammy
+# Ubuntu 24.04 이미지 사용 (가벼운 리눅스 환경)
+FROM ubuntu:24.04
 
 # 작업 디렉토리 설정
 WORKDIR /app/common
 
-#strict-ssl=false 설정, 사내망 SSL 우회 옵션
+# 기본 패키지 설치
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    ca-certificates \
+    lsb-release \
+    && rm -rf /var/lib/apt/lists/*
+
+# Node.js 설치 (필요한 버전 지정)
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - && \
+    apt-get install -y nodejs && \
+    apt-get clean
+
+# strict-ssl=false 설정, 사내망 SSL 우회 옵션
 ENV NODE_TLS_REJECT_UNAUTHORIZED=0
 
-# 프록시 설정 (필요하면 설정, 불필요하면 제거)
+# 프록시 설정 (필요한 경우 설정, 불필요하면 제거)
 ENV HTTP_PROXY=http://proxy.company.com:8080
 ENV HTTPS_PROXY=http://proxy.company.com:8080
 ENV NO_PROXY=localhost,127.0.0.1

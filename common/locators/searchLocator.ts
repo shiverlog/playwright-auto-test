@@ -1,4 +1,4 @@
-import { UI } from '@common/constants/LocatorEnum';
+import { UI } from '@common/constants/ContextConstants';
 
 export const searchLocator = {
   search_btn: {

@@ -1,6 +1,5 @@
+import { Logger } from '@common/logger/customLogger';
 import { Page } from '@playwright/test';
-
-import { logger } from '../logger/customLogger';
 
 export class TestPerformance {
   /**

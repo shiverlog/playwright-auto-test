@@ -1,7 +1,6 @@
+import { Logger } from '@common/logger/customLogger';
 import { Page } from '@playwright/test';
 import { Browser } from 'webdriverio';
-
-import { logger } from '../logger/customLogger';
 
 export class WaitUtils {
   private page?: Page;

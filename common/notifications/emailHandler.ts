@@ -3,62 +3,63 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { emailConfig } from '@common/config/CommonConfig';
-import { logger } from '@common/logger/customLogger';
-import dotenv from 'dotenv';
+import { emailConfig } from '@common/config/config';
+import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { Logger } from '@common/logger/customLogger';
 import nodemailer from 'nodemailer';
 
-dotenv.config();
-
-// 환경 변수에서 이메일 설정 가져오기
-const SMTP_HOST = process.env.SMTP_HOST || '';
-const SMTP_PORT = Number(process.env.SMTP_PORT) || 587;
-const SMTP_USER = process.env.SMTP_USER || '';
-const SMTP_PASS = process.env.SMTP_PASS || '';
-const EMAIL_FROM = process.env.EMAIL_FROM || SMTP_USER;
-const EMAIL_TO = process.env.EMAIL_TO || ''; // 기본 수신자 설정
-
-// Nodemailer Transporter 설정
+/**
+ * Nodemailer Transporter 설정
+ */
 const transporter = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT,
-  secure: SMTP_PORT === 465, // 465 사용 시 SSL 적용
+  host: emailConfig.SMTP_HOST,
+  port: emailConfig.SMTP_PORT,
+  secure: emailConfig.SMTP_PORT === 465, // 465 포트 사용 시 SSL 적용
   auth: {
-    user: SMTP_USER,
-    pass: SMTP_PASS,
+    user: emailConfig.SMTP_USER,
+    pass: emailConfig.SMTP_PASS,
   },
 });
 
 /**
- * 이메일을 전송하는 함수
+ * 특정 POC 또는 전체 POC에 대해 이메일을 전송하는 함수
+ * @param poc - POC 타입 (''일 경우 전체 POC 대상)
  * @param subject - 이메일 제목
  * @param text - 이메일 본문 (텍스트)
  * @param html - 이메일 본문 (HTML, 선택 사항)
- * @param to - 수신자 이메일 (기본값: EMAIL_TO)
+ * @param to - 수신자 이메일 (기본값: emailConfig.EMAIL_TO)
  */
-export const sendEmail = async (
+export const sendEmailForPOC = async (
+  poc: POCType,
   subject: string,
   text: string,
   html?: string,
-  to: string = EMAIL_TO,
-) => {
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !to) {
-    logger.warn('이메일 환경 변수가 설정되지 않았습니다.');
-    return;
-  }
+  to: string = emailConfig.EMAIL_TO,
+): Promise<void> => {
+  const pocList = poc === '' ? ALL_POCS : [poc];
 
-  try {
-    const mailOptions = {
-      from: EMAIL_FROM,
-      to,
-      subject,
-      text,
-      html: html || text, // HTML이 없으면 텍스트 본문 사용
-    };
+  for (const singlePOC of pocList) {
+    const logger = Logger.getLogger(singlePOC);
 
-    const info = await transporter.sendMail(mailOptions);
-    logger.info(`이메일 전송 완료: ${info.messageId} (To: ${to})`);
-  } catch (error) {
-    logger.error('이메일 전송 실패:', error);
+    // 이메일 설정 필수 값 확인
+    if (!emailConfig.SMTP_HOST || !emailConfig.SMTP_USER || !emailConfig.SMTP_PASS || !to) {
+      logger.warn('이메일 환경 변수가 설정되지 않았습니다.');
+      continue;
+    }
+
+    try {
+      const mailOptions = {
+        from: emailConfig.EMAIL_FROM,
+        to,
+        subject,
+        text,
+        html: html || text,
+      };
+
+      const info = await transporter.sendMail(mailOptions);
+      logger.info(`이메일 전송 완료: ${info.messageId} (To: ${to})`);
+    } catch (error) {
+      logger.error(`이메일 전송 실패 (POC: ${singlePOC}): ${error}`);
+    }
   }
 };

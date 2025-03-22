@@ -1,4 +1,4 @@
-import { Platform } from '@common/constants/LocatorEnum';
+import { Platform } from '@common/constants/ContextConstants';
 
 export const gnbLocator = {
   benefit: {

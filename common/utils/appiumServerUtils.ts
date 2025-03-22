@@ -1,8 +1,11 @@
-import { logger } from '@common/logger/customLogger';
+import { Logger } from '@common/logger/customLogger';
 import { exec } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
 import wd from 'webdriverio';
+
+// logger 인스턴스 선언
+const logger = Logger.getLogger('');
 
 /**
  * Appium 관련 설정 (기본 포트 및 서버 옵션)

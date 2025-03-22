@@ -1,4 +1,4 @@
-import { logger } from '@common/logger/customLogger';
+import { Logger } from '@common/logger/customLogger';
 import { Locator, Page, expect } from '@playwright/test';
 
 /**
