@@ -64,53 +64,37 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     // 첫 번째 재시도에서 trace 파일 저장
     trace: 'on-first-retry',
-
-    /* 브라우저 실행 시 추가 옵션 설정 */
-    launchOptions: {
-      /**
-       * 브라우저 실행 시 추가 옵션 (arguments)
-       * - `--start-maximized`         : 브라우저를 최대화하여 실행
-       * - `--disable-extensions`      : 브라우저 확장 프로그램(Extensions) 비활성화
-       * - `--disable-plugins`         : 브라우저 플러그인 비활성화
-       * - `--disable-dev-shm-usage`   : 공유 메모리(/dev/shm) 사용 비활성화 (Docker 등에서 필요)
-       * - `--no-sandbox`              : 샌드박스 비활성화 (일부 CI/CD 환경에서 필수)
-       * - `--disable-gpu`             : GPU 가속 비활성화 (CI 환경에서 렌더링 최적화)
-       * - `--disable-blink-features=AutomationControlled` : Selenium 등 자동화 탐지를 피하기 위한 설정
-       */
-      args: [
-        '--start-maximized',
-        '--disable-extensions',
-        '--disable-plugins',
-        '--disable-dev-shm-usage',
-        '--no-sandbox',
-        '--disable-gpu',
-        '--disable-blink-features=AutomationControlled',
-      ],
-
-      // 브라우저 실행 타임아웃 설정 (기본값: 60초)
-      // timeout: Number.parseInt(process.env.BROWSER_LAUNCH_TIMEOUT, 10) || 60000,
-
-      // 브라우저의 동작을 느리게 실행 (디버깅 시 유용)
-      // slowMo: Number.parseInt(process.env.SLOW_MO, 10) || 100,
-
-      // 파일 다운로드 경로 지정
-      // downloadsPath: './test-results/downloads',
-
-      // 개발자 도구(DevTools) 활성화 여부 (디버깅 시 유용)
-      devtools: process.env.DEVTOOLS === 'true' ? true : false,
-
-      // Chromium 기반 브라우저에서 콘솔 로그 캡처
-      // logger: {
-      //   isEnabled: (name, severity) => severity === 'error' || severity === 'warning',
-      //   log: (name, severity, message) => console.log(`[${severity}] ${name}: ${message}`),
-      // },
-    },
-
     // HTTPS 인증서 오류 무시 (보안 경고 무시)
     ignoreHTTPSErrors: true,
-
     // 파일 다운로드 허용 여부
     acceptDownloads: true,
+    /* 브라우저 실행 시 추가 옵션 설정 */
+
+    /**
+     * 브라우저 실행 시 추가 옵션 (arguments)
+     * - `--start-maximized`         : 브라우저를 최대화하여 실행
+     * - `--disable-extensions`      : 브라우저 확장 프로그램(Extensions) 비활성화
+     * - `--disable-plugins`         : 브라우저 플러그인 비활성화
+     * - `--disable-dev-shm-usage`   : 공유 메모리(/dev/shm) 사용 비활성화 (Docker 등에서 필요)
+     * - `--no-sandbox`              : 샌드박스 비활성화 (일부 CI/CD 환경에서 필수)
+     * - `--disable-gpu`             : GPU 가속 비활성화 (CI 환경에서 렌더링 최적화)
+     * - `--disable-blink-features=AutomationControlled` : Selenium 등 자동화 탐지를 피하기 위한 설정
+     */
+
+    // 브라우저 실행 타임아웃 설정 (기본값: 60초)
+    // timeout: Number.parseInt(process.env.BROWSER_LAUNCH_TIMEOUT, 10) || 60000,
+
+    // 브라우저의 동작을 느리게 실행 (디버깅 시 유용)
+    // slowMo: Number.parseInt(process.env.SLOW_MO, 10) || 100,
+
+    // 파일 다운로드 경로 지정
+    // downloadsPath: './test-results/downloads',
+
+    // Chromium 기반 브라우저에서 콘솔 로그 캡처
+    // logger: {
+    //   isEnabled: (name, severity) => severity === 'error' || severity === 'warning',
+    //   log: (name, severity, message) => console.log(`[${severity}] ${name}: ${message}`),
+    // },
 
     // 단일 액션 (예: 클릭, 입력)의 최대 수행 시간 (기본값: 30초)
     //actionTimeout: Number.parseInt(process.env.ACTION_TIMEOUT, 10) * 1000 || 30000,
@@ -137,6 +121,17 @@ export default defineConfig({
       use: {
         ...devices['Desktop Firefox'],
         headless: process.env.HEADLESS === 'false' ? false : true,
+        launchOptions: {
+          args: [
+            '--start-maximized',
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-dev-shm-usage',
+            '--no-sandbox',
+            '--disable-gpu',
+            '--disable-blink-features=AutomationControlled',
+          ],
+        },
       },
     },
     {
@@ -145,6 +140,15 @@ export default defineConfig({
       use: {
         ...devices['Desktop firefox'],
         headless: process.env.HEADLESS === 'false' ? false : true,
+        launchOptions: {
+          args: [
+            '--disable-extensions',
+            '--disable-plugins',
+            '--disable-dev-shm-usage',
+            '--no-sandbox',
+            '--disable-gpu',
+          ],
+        },
       },
     },
     {
