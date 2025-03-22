@@ -146,14 +146,20 @@ docker compose config
 # docker-compose.override.yml 적용하여 실행
 docker compose -f docker-compose.yml -f docker-compose.override.yml up -d
 
-# 개별 POC 서비스 빌드 (No Cache)
-docker build --no-cache -t pubsub .
+# 공통 서비스
+docker build --no-cache -t common -f common/Dockerfile .
+
+# PubSub
+docker build --no-cache -t pubsub -f pubsub/Dockerfile .
+
+# Mosaic DB
+docker build --no-cache -t mosaic-db -f mosaic-db/Dockerfile .
+
+# E2E 테스트 - 각 POC
 docker build --no-cache -t e2e-pc -f e2e/pc-web/Dockerfile .
 docker build --no-cache -t e2e-mw -f e2e/mobile-web/Dockerfile .
 docker build --no-cache -t e2e-aos -f e2e/android/Dockerfile .
 docker build --no-cache -t e2e-ios -f e2e/ios/Dockerfile .
 docker build --no-cache -t e2e-api -f e2e/api/Dockerfile .
-docker build --no-cache -t pubsub -f pubsub/Dockerfile .
-docker build --no-cache -t mosaic-db -f mosaic-db/Dockerfile .
 docker build --no-cache -t speedtest -f speedtest/Dockerfile .
 ```

@@ -51,7 +51,7 @@ services:
     networks:
       - app_network
     volumes:
-      - ./e2e/pc/results:/app/results
+      - ./e2e/pc-web/results:/app/results
 
   # E2E 테스트 - Mobile Web
   e2e-mw:
@@ -120,6 +120,23 @@ services:
       - app_network
     volumes:
       - ./e2e/api/results:/app/results
+
+  # E2E 테스트 - Speedtest
+  speedtest:
+    build:
+      context: .
+      dockerfile: ./speedtest/Dockerfile
+    environment:
+      - NODE_ENV=test
+    container_name: speedtest
+    restart: always
+    depends_on:
+      common:
+        condition: service_started
+    networks:
+      - app_network
+    volumes:
+      - ./speedtest/results:/app/results
 
   # Pub/Sub 서비스
   pubsub:
