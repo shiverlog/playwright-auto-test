@@ -19,20 +19,23 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        project: [pc-web, mobile-web, android, ios, api, speedtest]
-        browser:
-          [
-            'PC - Chrome',
-            'PC - firefox',
-            'PC - webkit',
-            'MW - Chrome (PC)',
-            'MW - Mobile Chrome',
-            'MW - Mobile Safari',
-            'Android - lguplus APP',
-            'iOS - lguplus APP',
-            'Google Chrome',
-            'Microsoft Edge',
-          ]
+        include:
+          - project: pc-web
+            browser: 'PC - Chrome'
+          - project: pc-web
+            browser: 'PC - firefox'
+          - project: pc-web
+            browser: 'PC - webkit'
+          - project: mobile-web
+            browser: 'MW - Chrome (PC)'
+          - project: mobile-web
+            browser: 'MW - Mobile Chrome'
+          - project: mobile-web
+            browser: 'MW - Mobile Safari'
+          - project: android
+            browser: 'Android - lguplus APP'
+          - project: ios
+            browser: 'iOS - lguplus APP'
     env:
       BASE_URL: http://localhost:3000
 
