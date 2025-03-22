@@ -20,8 +20,19 @@ jobs:
       fail-fast: false
       matrix:
         project: [pc-web, mobile-web, android, ios, api, speedtest]
-        browser: [chromium, firefox, webkit]
-
+        browser:
+          [
+            'PC - Chrome',
+            'PC - firefox',
+            'PC - webkit',
+            'MW - Chrome (PC)',
+            'MW - Mobile Chrome',
+            'MW - Mobile Safari',
+            'Android - lguplus APP',
+            'iOS - lguplus APP',
+            'Google Chrome',
+            'Microsoft Edge',
+          ]
     env:
       BASE_URL: http://localhost:3000
 
