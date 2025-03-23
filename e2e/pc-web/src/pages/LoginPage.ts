@@ -1,32 +1,75 @@
-import { expect, test } from '@playwright/test';
-import { Login } from '../components/Login';
+import { ElementActions } from '@common/actions/ElementActions';
+import { UIType } from '@common/constants/ContextConstants';
+import { authLocator } from '@common/locators/authLocator';
+import { urlLocator } from '@common/locators/urlLocator';
+import { Page, expect } from '@playwright/test';
 
+export class LoginPage {
+  private page: Page;
 
-test.describe('로그인 페이지 테스트', () => {
-  test('올바른 계정으로 로그인', async ({ page }) => {
-    const login = new Login(page);
-    await login.gotoLoginPage();
+  constructor(page: Page) {
+    this.page = page;
+  }
 
-    const success = await login.doLogin('test@example.com', 'password123');
-    expect(success).toBe(true);
-  });
+  async gotoLoginPage() {
+    await this.page.goto(urlLocator.login_.pc);
+    await this.page.waitForLoadState('networkidle');
+  }
 
-  test('잘못된 계정으로 로그인 실패', async ({ page }) => {
-    const login = new Login(page);
-    await login.gotoLoginPage();
+  async gotoHomePage() {
+    await this.page.goto(urlLocator.main.PC);
+    await this.page.waitForLoadState('networkidle');
+  }
 
-    const success = await login.doLogin('wrong@example.com', 'wrongpassword');
-    expect(success).toBe(false);
-  });
+  async doLogin(id: string, pw: string): Promise<boolean> {
+    try {
+      await this.gotoLoginPage();
+      await new ElementActions({ page: this.page }).setSelector(authLocator.login_btn.PC).click();
 
-  test('로그아웃 테스트', async ({ page }) => {
-    const login = new Login(page);
-    await login.gotoLoginPage();
+      await new ElementActions({ page: this.page })
+        .setSelector(authLocator.uplus_clear_btn)
+        .click();
 
-    const success = await login.doLogin('test@example.com', 'password123');
-    expect(success).toBe(true);
+      await new ElementActions({ page: this.page })
+        .setSelector(authLocator.uplus_id_input)
+        .fill(id);
 
-    await login.logout();
-    expect(await page.url()).toBe('http://localhost:3000/login');
-  });
-});
+      await new ElementActions({ page: this.page })
+        .setSelector(authLocator.uplus_pw_input)
+        .fill(pw);
+
+      await new ElementActions({ page: this.page })
+        .setSelector(authLocator.uplus_login_btn)
+        .click();
+
+      await this.page.waitForLoadState('networkidle');
+      await expect(this.page.locator('div#KV')).toBeVisible();
+      return true;
+    } catch (err) {
+      console.error('[Login Failed]', err);
+      return false;
+    }
+  }
+
+  async retryLogin(id: string, pw: string, maxRetry = 3): Promise<boolean> {
+    for (let i = 0; i < maxRetry; i++) {
+      if (await this.doLogin(id, pw)) return true;
+      console.warn(`Retry Login ${i + 1} / ${maxRetry}`);
+    }
+    return false;
+  }
+
+  async logout(): Promise<boolean> {
+    try {
+      await this.gotoHomePage();
+      await new ElementActions({ page: this.page }).setSelector(authLocator.logout_btn).click();
+
+      await this.page.waitForLoadState('networkidle');
+      await expect(this.page.locator(authLocator.login_btn.PC)).toHaveText(/로그인/);
+      return true;
+    } catch (err) {
+      console.error('[Logout Failed]', err);
+      return false;
+    }
+  }
+}

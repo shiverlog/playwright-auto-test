@@ -1,86 +1,134 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { Logger } from '@common/logger/customLogger';
+import path from 'path';
+import {
+  NumericLiteral,
+  ObjectLiteralExpression,
+  Project,
+  PropertyAssignment,
+  StringLiteral,
+  SyntaxKind,
+} from 'ts-morph';
 
-import { logger } from '../logger/customLogger';
-
-/**
- * LocatorUtils: JSON 기반 로케이터 로드 유틸리티
- */
 export class LocatorUtils {
-  private static LOCATOR_DIR = path.resolve(__dirname, '../locators'); // locators 폴더 경로
+  private static BASE_LOCATOR_DIR = path.resolve(__dirname, '../locators');
+  private static project = new Project({ tsConfigFilePath: 'tsconfig.json' });
 
   /**
-   * 특정 JSON 파일에서 로케이터 로드
-   * @param section JSON 파일 이름 (확장자 제외)
-   * @returns 로케이터 객체
+   * 로케이터 파일 로드 (POC + section 단위, TypeScript 기반)
    */
-  static loadLocators(section: string): Record<string, any> {
-    const locatorPath = path.join(this.LOCATOR_DIR, `${section}.json`);
+  static loadLocators(poc: Exclude<POCType, ''>, section: string): Record<string, any> {
+    const logger = Logger.getLogger(poc);
+    const filePath = path.join(this.BASE_LOCATOR_DIR, poc, `${section}.ts`);
 
     try {
-      if (!fs.existsSync(locatorPath)) {
-        throw new Error(`Locator file not found: ${locatorPath}`);
+      const sourceFile = this.project.addSourceFileAtPathIfExists(filePath);
+      if (!sourceFile) {
+        throw new Error(`Locator file not found: ${filePath}`);
       }
 
-      const rawData = fs.readFileSync(locatorPath, 'utf-8');
-      const locators = JSON.parse(rawData);
+      const exportConst = sourceFile.getVariableDeclarations()[0];
+      const initializer = exportConst?.getInitializerIfKindOrThrow(
+        SyntaxKind.ObjectLiteralExpression,
+      );
+      const locators: Record<string, any> = {};
 
-      logger.info(`로케이터 파일 로드 완료: ${section}.json`);
+      initializer?.getProperties().forEach(prop => {
+        if (PropertyAssignment.isPropertyAssignment(prop)) {
+          const key = prop.getName().replace(/['"]/g, '');
+          const valueNode = prop.getInitializer();
+
+          if (!valueNode) return;
+
+          switch (valueNode.getKind()) {
+            case SyntaxKind.StringLiteral:
+              locators[key] = (valueNode as StringLiteral).getLiteralValue();
+              break;
+            case SyntaxKind.NumericLiteral:
+              locators[key] = Number((valueNode as NumericLiteral).getLiteralValue());
+              break;
+            case SyntaxKind.TrueKeyword:
+              locators[key] = true;
+              break;
+            case SyntaxKind.FalseKeyword:
+              locators[key] = false;
+              break;
+            case SyntaxKind.ObjectLiteralExpression:
+              locators[key] = LocatorUtils.convertObjectLiteral(
+                valueNode as ObjectLiteralExpression,
+              );
+              break;
+            default:
+              locators[key] = valueNode.getText();
+          }
+        }
+      });
+
+      logger.info(`[Locator] ${poc}/${section}.ts 로드 완료`);
       return locators;
-    } catch (error) {
-      logger.error(`로케이터 파일 로드 실패: ${error}`);
+    } catch (error: any) {
+      logger.error(`[Locator] ${poc}/${section}.ts 로드 실패 - ${error.message || error}`);
       return {};
     }
   }
 
   /**
-   * 특정 로케이터 값 반환
-   * @param section JSON 파일 이름 (확장자 제외)
-   * @param key 로케이터 키값
-   * @returns 로케이터 값 (없으면 null)
+   * ObjectLiteralExpression → JS 객체로 변환
    */
-  static getLocator(section: string, key: string): string | null {
-    const locators = this.loadLocators(section);
+  private static convertObjectLiteral(obj: ObjectLiteralExpression): Record<string, any> {
+    const result: Record<string, any> = {};
+
+    obj.getProperties().forEach(p => {
+      if (PropertyAssignment.isPropertyAssignment(p)) {
+        const key = p.getName().replace(/['"]/g, '');
+        const val = p.getInitializer();
+
+        if (!val) return;
+
+        switch (val.getKind()) {
+          case SyntaxKind.StringLiteral:
+            result[key] = (val as StringLiteral).getLiteralValue();
+            break;
+          case SyntaxKind.NumericLiteral:
+            result[key] = Number((val as NumericLiteral).getLiteralValue());
+            break;
+          case SyntaxKind.TrueKeyword:
+            result[key] = true;
+            break;
+          case SyntaxKind.FalseKeyword:
+            result[key] = false;
+            break;
+          case SyntaxKind.ObjectLiteralExpression:
+            result[key] = this.convertObjectLiteral(val as ObjectLiteralExpression);
+            break;
+          default:
+            result[key] = val.getText();
+        }
+      }
+    });
+
+    return result;
+  }
+
+  static getLocator(poc: Exclude<POCType, ''>, section: string, key: string): string | null {
+    const locators = this.loadLocators(poc, section);
+    const logger = Logger.getLogger(poc);
+
     if (locators && key in locators) {
       return locators[key];
     } else {
-      logger.warn(`로케이터 '${key}'를 찾을 수 없음 (파일: ${section}.json)`);
+      logger.warn(`[Locator] ${poc}/${section}.ts 에 '${key}' 없음`);
       return null;
     }
   }
-}
 
-/**
- * locatorType을 Playwright 및 WebdriverIO에서 사용 가능한 selector로 변환
- */
-export function getSelector(locatorType: string, value: string): string {
-  const locatorTypeLower = locatorType.toLowerCase();
+  static preloadAllPOCLocators(section: string): Record<Exclude<POCType, ''>, Record<string, any>> {
+    const result: Record<Exclude<POCType, ''>, Record<string, any>> = {} as any;
 
-  // XPath 자동 감지: XPath 패턴이면 `xpath=` 붙이기
-  if (
-    locatorTypeLower === 'xpath' ||
-    value.startsWith('//') ||
-    value.startsWith('./') ||
-    value.startsWith('(')
-  ) {
-    return `xpath=${value}`;
+    for (const poc of ALL_POCS) {
+      result[poc] = this.loadLocators(poc, section);
+    }
+
+    return result;
   }
-
-  const locatorMapping: Record<string, string> = {
-    id: `#${value}`,
-    name: `[name="${value}"]`,
-    xpath: `${value}`,
-    css: `${value}`,
-    class: `.${value}`,
-    link: `text="${value}"`,
-    partial_link: `text*="${value}"`,
-    tag: value,
-  };
-
-  if (!(locatorTypeLower in locatorMapping)) {
-    logger.error(`❌ Unsupported locator type: ${locatorType}`);
-    return '';
-  }
-
-  return locatorMapping[locatorTypeLower];
 }

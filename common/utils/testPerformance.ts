@@ -1,57 +1,85 @@
+import { ALL_POCS, POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import { Page } from '@playwright/test';
 
 export class TestPerformance {
+  private logger;
+
+  constructor(private poc: Exclude<POCType, ''>) {
+    this.logger = Logger.getLogger(poc);
+  }
+
+  /**
+   * 공통 진입점: 단일 또는 전체 POC 실행
+   */
+  public static async runAll(
+    poc: POCType,
+    pageFactory: (poc: Exclude<POCType, ''>) => Promise<Page>,
+  ) {
+    const pocList = poc === '' ? ALL_POCS : [poc];
+
+    await Promise.all(
+      pocList.map(async pocItem => {
+        const page = await pageFactory(pocItem);
+        const perf = new TestPerformance(pocItem);
+        await perf.runAllMeasurements(page);
+      }),
+    );
+  }
+
+  /**
+   * 개별 POC 성능 측정 실행
+   */
+  public async runAllMeasurements(page: Page): Promise<void> {
+    await this.detectConsoleErrors(page);
+    await this.measureNetworkRequests(page);
+    await this.measurePageLoadTime(page);
+    await this.measureFullLoadTime(page);
+    await this.getPerformanceMetrics(page);
+    await this.measureLCP(page);
+  }
+
   /**
    * 페이지 로드 시간 측정
-   * @param page - Playwright Page 객체
-   * @returns 로드 완료까지 걸린 시간 (ms)
    */
-  public static async measurePageLoadTime(page: Page): Promise<number> {
+  public async measurePageLoadTime(page: Page): Promise<number> {
     const startTime = Date.now();
     await page.waitForLoadState('load');
     const endTime = Date.now();
     const loadTime = endTime - startTime;
-    logger.info(`페이지 로드 시간: ${loadTime} ms`);
+    this.logger.info(`페이지 로드 시간: ${loadTime} ms`);
     return loadTime;
   }
 
   /**
-   * 특정 요소가 로드될 때까지 걸린 시간 (LCP 측정 가능)
-   * @param page - Playwright Page 객체
-   * @param selector - LCP (Largest Contentful Paint) 요소 선택자
-   * @returns LCP 로딩 완료 시간 (ms)
+   * 특정 요소 로드 시간 측정
    */
-  public static async measureElementLoadTime(page: Page, selector: string): Promise<number> {
+  public async measureElementLoadTime(page: Page, selector: string): Promise<number> {
     const startTime = Date.now();
     await page.waitForSelector(selector, { state: 'visible' });
     const endTime = Date.now();
     const loadTime = endTime - startTime;
-    logger.info(`요소 (${selector}) 로드 시간: ${loadTime} ms`);
+    this.logger.info(`요소 (${selector}) 로드 시간: ${loadTime} ms`);
     return loadTime;
   }
 
   /**
-   * 네트워크 요청 및 응답 시간 측정
-   * @param page - Playwright Page 객체
+   * 네트워크 요청/응답 로그 출력
    */
-  public static async measureNetworkRequests(page: Page) {
+  public async measureNetworkRequests(page: Page) {
     page.on('request', request => {
-      logger.info(`요청: ${request.url()} - ${request.method()}`);
+      this.logger.info(`요청: ${request.method()} - ${request.url()}`);
     });
 
     page.on('response', async response => {
-      const status = response.status();
-      const url = response.url();
-      logger.info(`응답 (${status}): ${url}`);
+      this.logger.info(`응답 (${response.status()}): ${response.url()}`);
     });
   }
 
   /**
-   * CPU & 메모리 사용량 측정 (Chrome DevTools Protocol 사용)
-   * @param page - Playwright Page 객체
+   * CPU / 메모리 사용량 측정
    */
-  public static async getPerformanceMetrics(page: Page) {
+  public async getPerformanceMetrics(page: Page) {
     const client = await page.context().newCDPSession(page);
     const metrics = await client.send('Performance.getMetrics');
 
@@ -59,32 +87,29 @@ export class TestPerformance {
     const jsHeapUsed = metrics.metrics.find(m => m.name === 'JSHeapUsedSize')?.value || 0;
     const jsHeapTotal = metrics.metrics.find(m => m.name === 'JSHeapTotalSize')?.value || 0;
 
-    logger.info(`CPU 사용량: ${cpuUsage.toFixed(2)} ms`);
-    logger.info(
+    this.logger.info(`CPU 사용량: ${cpuUsage.toFixed(2)} ms`);
+    this.logger.info(
       `메모리 사용량: ${(jsHeapUsed / 1024 / 1024).toFixed(2)} MB / ${(jsHeapTotal / 1024 / 1024).toFixed(2)} MB`,
     );
   }
 
   /**
-   * 콘솔 에러 및 경고 감지
-   * @param page - Playwright Page 객체
+   * 콘솔 에러/경고 감지
    */
-  public static async detectConsoleErrors(page: Page) {
+  public async detectConsoleErrors(page: Page) {
     page.on('console', message => {
       if (message.type() === 'error') {
-        logger.error(`콘솔 에러: ${message.text()}`);
+        this.logger.error(`콘솔 에러: ${message.text()}`);
       } else if (message.type() === 'warning') {
-        logger.warn(`콘솔 경고: ${message.text()}`);
+        this.logger.warn(`콘솔 경고: ${message.text()}`);
       }
     });
   }
 
   /**
-   * LCP (Largest Contentful Paint) 직접 측정
-   * @param page - Playwright Page 객체
-   * @returns LCP 시간 (ms)
+   * LCP(Largest Contentful Paint) 측정
    */
-  public static async measureLCP(page: Page): Promise<number> {
+  public async measureLCP(page: Page): Promise<number> {
     await page.waitForLoadState('load');
 
     const script = `
@@ -98,16 +123,15 @@ export class TestPerformance {
         observer.observe({ type: "largest-contentful-paint", buffered: true });
       });
     `;
-
     const lcpTime = (await page.evaluate(script)) as number;
-    logger.info(`LCP 시간: ${lcpTime} ms`);
+    this.logger.info(`LCP 시간: ${lcpTime} ms`);
     return lcpTime;
   }
 
   /**
-   * 전체 페이지 로드 시간 측정 (Performance API 활용)
+   * 전체 페이지 로딩 시간 (Navigation Timing API)
    */
-  public static async measureFullLoadTime(page: Page): Promise<number> {
+  public async measureFullLoadTime(page: Page): Promise<number> {
     await page.waitForLoadState('load');
 
     const fullLoadTime = await page.evaluate(() => {
@@ -115,14 +139,14 @@ export class TestPerformance {
       return navEntry ? navEntry.loadEventEnd - navEntry.startTime : 0;
     });
 
-    logger.info(`전체 페이지 로드 시간: ${fullLoadTime / 1000} 초`);
+    this.logger.info(`전체 페이지 로드 시간: ${fullLoadTime / 1000} 초`);
     return fullLoadTime;
   }
 
   /**
-   * 특정 이벤트 발생까지 대기
+   * 커스텀 성능 이벤트 평가
    */
-  public static async waitForPerformanceEvent(page: Page, script: string): Promise<number> {
+  public async waitForPerformanceEvent(page: Page, script: string): Promise<number> {
     const result = (await page.evaluate(script)) as number;
     return result;
   }

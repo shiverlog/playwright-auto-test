@@ -1,99 +1,66 @@
-{
+import { UIType } from '@common/constants/ContextConstants';
 
+// Type 미지정시, 공통부분으로 로직 처리
+export const getLocatorByUIType = (
+  locatorGroup: Record<string, string | Record<UIType, string>>,
+  uiType: UIType,
+): Record<string, string> => {
+  return Object.entries(locatorGroup).reduce<Record<string, string>>((acc, [key, value]) => {
+    if (typeof value === 'string') {
+      acc[key] = value; // 공통
+    } else if (value[uiType]) {
+      acc[key] = value[uiType];
+    }
+    return acc;
+  }, {});
+};
 
-  "멤버십_이용내역": "ul.sub-menu-item a[data-gtm-click-text*=\"멤버십 이용내역\"]",
-  "멤버십혜택_영역": "div.par-tabcont-area",
-  "멤버십혜택_탭메뉴": "div.par-tabcont-area ul[role=\"tablist\"]",
-  "제휴사전체보기_버튼": "div.par-tabcont-area div.all-more a",
-  "제휴사전체보기_전체영역": "div.membership-gift-data",
-  "membership_url": "https://www.lguplus.com/benefit/membership",
+// 로그인 관련 로케이터
+export const authLocator = {
+  //
+  myinfo_icon: {
+    [UIType.PC]: 'a.icon-myInfo-1',
+  },
+  myinfo_top: {
+    [UIType.PC]: 'div.myInfo-list div.myInfo-top',
+  },
+  login_box: {
+    [UIType.APP]: 'div.loginBox',
+  },
+  main_login_btn: {
+    [UIType.PC]: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
+  },
+  login_btn: {
+    [UIType.PC]: '.loginList > li:nth-of-type(1) > a',
+    [UIType.APP]: '.nm-app-login-way li:nth-of-type(1)',
+  },
+  logout_btn: '.loginList > li:nth-of-type(2) > a',
 
-  "온라인_가입할인_혜택": ".bo-modules-internet-event-list .event-section-ul",
-  "온라인_가입할인_혜택_컨텐츠": ".bo-modules-internet-event-list .event-section-ul li",
-  "혜택모두보기_버튼": ".bo-modules-benefit-online-product .middlearea > a",
-  "혜택모두보기_상세": "div.uplus-_combined-phone-discount",
-  "online": "https://www.lguplus.com/benefit-uplus/online-purchase-benefit",
+  // 로그인 방법 - 이미지
+  social_kakao_img: "img[alt*='카카오']",
+  social_naver_img: "img[alt*='네이버']",
+  social_toss_img: "img[alt*='토스']",
+  uplus_img: "img[alt*='u+ID']",
+  mylg_img: "img[alt*='myLGID']",
+  social_apple_img: "img[alt*='애플']",
 
-  "uth_benefit": "//*[@class=\"sub-menu-list\"]//li/a[contains(.,\"유쓰 혜택\")]"
-}
-{
-  "benefit": "//button[contains(.,\"혜택/멤버십\")]",
-  "direct": ".menu >ul > li > div > a",
-  "membership_url": "https://m.lguplus.com/benefit/membership",
+  // uplus 로그인
+  uplus_id_input: "input[type='text']",
+  uplus_pw_input: "input[type='password']",
+  uplus_login_btn: 'button.nm-login-btn',
+  uplus_clear_btn: "button[title='입력한 문자 삭제']",
+  uplus_save_btn: '.c-btn-rect-1',
 
-  "KV_링크": "div[section-group-id=\"MoSubMainBenefitKVSection\"] a",
+  // kakao 로그인
+  kakao_id_input: '#loginId--1',
+  kakao_pw_input: '#password--2',
+  kakao_login_btn:
+    '#mainContent > div > div > form > div.confirm_btn > button.btn_g.highlight.submit',
+  kakao_clear_btn: '.btn_clear',
 
-  "테마배너": "div[section-group-id=\"MoSubMainBenefitThemeSection\"]",
-  "테마배너_링크": "div[section-group-id=\"MoSubMainBenefitThemeSection\"] li a",
-
-  "제휴사 혜택_title": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.section-title a",
-  "멤버십 혜택_url": "https://m.lguplus.com/benefit-membership",
-  "제휴사 혜택_탭_링크": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.m-tabs a",
-  "제휴사 혜택_panel_링크": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.tab-panel a",
-  "제휴사 혜택_전체보기": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.c-btn-group a",
-
-  "온라인 가입 혜택_title": "div[section-group-id=\"MoSubMainBenefitOnlineOnlySection\"] div.section-title a",
-  "온라인 가입 혜택_콘텐츠_링크": "div[section-group-id=\"MoSubMainBenefitOnlineOnlySection\"] div.m-swiper a",
-  "온라인 가입 혜택_url": "https://m.lguplus.com/benefit-uplus/online-purchase-benefit/ORN0030748",
-
-  "이벤트_title": "div[section-group-id=\"MoSubMainBenefitEventSection\"] div.section-title a",
-  "진행 중인 이벤트_url": "https://m.lguplus.com/benefit-event/ongoing",
-  "이벤트_콘텐츠_링크": "div[section-group-id=\"MoSubMainBenefitEventSection\"] ul a",
-
-  "membership_direct": "//a[contains(.,\"멤버십 이용\")]",
-
-  "benefit_uth": "//a[contains(.,\"유쓰 혜택\")]"
-}
-{
-  "benefit": "//button[contains(.,'혜택/멤버십')]",
-  "direct": ".menu >ul > li > div > a",
-
-  "KV_링크": "div[section-group-id='MoSubMainBenefitKVSection'] a",
-
-  "테마배너": "div[section-group-id='MoSubMainBenefitThemeSection']",
-  "테마배너_링크": "div[section-group-id='MoSubMainBenefitThemeSection'] li a",
-
-  "제휴사_혜택_title": "div[section-group-id='MoSubMainBenefitAffiliateSection'] div.section-title a",
-  "멤버십_혜택_url": "https://app.lguplus.com/benefit-membership",
-  "제휴사_혜택_탭_링크": "div[section-group-id='MoSubMainBenefitAffiliateSection'] div.m-tabs a",
-  "제휴사_혜택_panel_링크": "div[section-group-id='MoSubMainBenefitAffiliateSection'] div.tab-panel a",
-  "제휴사_혜택_전체보기": "div[section-group-id='MoSubMainBenefitAffiliateSection'] div.c-btn-group a",
-
-  "온라인_가입_혜택_title": "div[section-group-id='MoSubMainBenefitOnlineOnlySection'] div.section-title a",
-  "온라인_가입_혜택_url": "https://app.lguplus.com/benefit-uplus/online-purchase-benefit/ORN0030748",
-  "온라인_가입_혜택_콘텐츠_링크": "div[section-group-id='MoSubMainBenefitOnlineOnlySection'] div.m-swiper a",
-
-  "이벤트_title": "div[section-group-id='MoSubMainBenefitEventSection'] div.section-title a",
-  "진행_중인_이벤트_url": "https://app.lguplus.com/benefit-event/ongoing",
-  "이벤트_콘텐츠_링크": "div[section-group-id='MoSubMainBenefitEventSection'] ul a",
-
-  "membership_direct": "//a[contains(.,'멤버십 이용')]",
-  "membership_url": "https://app.lguplus.com/benefit/membership"
-}
-{
-  "benefit": "//button[contains(.,\"혜택/멤버십\")]",
-  "direct": ".menu >ul > li > div > a",
-
-  "KV_링크": "div[section-group-id=\"MoSubMainBenefitKVSection\"] a",
-
-  "테마배너": "div[section-group-id=\"MoSubMainBenefitThemeSection\"]",
-  "테마배너_링크": "div[section-group-id=\"MoSubMainBenefitThemeSection\"] li a",
-
-  "제휴사 혜택_title": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.section-title a",
-  "멤버십 혜택_url": "https://app.lguplus.com/benefit-membership",
-  "제휴사 혜택_탭_링크": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.m-tabs a",
-  "제휴사 혜택_panel_링크": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.tab-panel a",
-  "제휴사 혜택_전체보기": "div[section-group-id=\"MoSubMainBenefitAffiliateSection\"] div.c-btn-group a",
-
-  "온라인 가입 혜택_title": "div[section-group-id=\"MoSubMainBenefitOnlineOnlySection\"] div.section-title a",
-  "온라인 가입 혜택_콘텐츠_링크": "div[section-group-id=\"MoSubMainBenefitOnlineOnlySection\"] div.m-swiper a",
-  "온라인 가입 혜택_url": "https://app.lguplus.com/benefit-uplus/online-purchase-benefit/ORN0030748",
-
-  "이벤트_title": "div[section-group-id=\"MoSubMainBenefitEventSection\"] div.section-title a",
-  "진행 중인 이벤트_url": "https://app.lguplus.com/benefit-event/ongoing",
-  "이벤트_콘텐츠_링크": "div[section-group-id=\"MoSubMainBenefitEventSection\"] ul a",
-
-  "membership": "div.mypage-membership",
-  "membership_direct": "//a[contains(.,\"멤버십 이용\")]",
-  "membership_url": "https://app.lguplus.com/benefit/membership"
-}
+  // naver 로그인
+  naver_id_input: '#id',
+  naver_pw_input: '#pw',
+  naver_login_btn: 'div.btn_login_wrap .btn_login',
+  naver_clear_btn: '#id_clear',
+};

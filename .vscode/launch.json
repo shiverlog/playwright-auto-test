@@ -13,6 +13,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/**", "--reporter=html"],
+      "env": {
+        "POC": ""
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -24,6 +27,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/**", "--headed", "--debug", "--reporter=html"],
+      "env": {
+        "POC": ""
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -35,6 +41,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/pc-web", "--reporter=html"],
+      "env": {
+        "POC": "pc"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -46,6 +55,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/mobile-web", "--reporter=html"],
+      "env": {
+        "POC": "mw"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -57,6 +69,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/android", "--reporter=html"],
+      "env": {
+        "POC": "aos"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -68,6 +83,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/ios", "--reporter=html"],
+      "env": {
+        "POC": "ios"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -79,6 +97,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/api", "--reporter=html"],
+      "env": {
+        "POC": "api"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -90,6 +111,9 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "speedtest", "--reporter=html"],
+      "env": {
+        "POC": ""
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
@@ -101,6 +125,26 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "--ui"],
+      "env": {
+        "POC": ""
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Run Playwright E2E-PC LoginStep Only",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
+      "args": [
+        "test",
+        "e2e/pc-web/src/steps/LoginStep.ts",
+        "--project=POC - PC - Chrome",
+        "--reporter=html"
+      ],
+      "env": {
+        "POC": "pc"
+      },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     }

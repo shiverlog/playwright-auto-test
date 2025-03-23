@@ -1,48 +1,66 @@
-import { UI } from '@common/constants/ContextConstants';
+import { UIType } from '@common/constants/ContextConstants';
 
-export const searchLocator = {
-  search_btn: {
-    [UI.PC]: '#search_button',
-    [UI.MOBILE]: '.header-utill button.c-btn-search',
-  },
-  ranking-keyword: {
-    [UI.PC]: "//div[contains(@class, 'keyword-group') and contains(@class, 'ranking-keyword')]",
-    [UI.MOBILE]: "//div[contains(@class, 'c-keyword-wrap') and .//p[@class='h4' and text()='인기 검색어']]",
-  },
-  keyword: {
-    [UI.PC]: "//div[@class='keyword-group ranking-keyword']//a[@class='r-link']",
-    [UI.MOBILE]: "//div[contains(@class, 'c-keyword-wrap') and .//p[@class='h4' and text()='인기 검색어']]//a",
-  },
-  search_input: {
-    [UI.PC]: '.c-inpform.is-clear > input',
-    [UI.MOBILE]: 'div.c-inpform.is-clear div.c-inpitem input',
-  },
-  search_result: {
-    [UI.PC]: '.search-term.cl-def',
-    [UI.MOBILE]: '.c-inpform.is-clear div.c-inpitem .c-inp',
-  },
-  keword_hashtag: {
-    [UI.MOBILE]: 'div.c-tag-wrap a',
-  }
+// Type 미지정시, 공통부분으로 로직 처리
+export const getLocatorByUIType = (
+  locatorGroup: Record<string, string | Record<UIType, string>>,
+  uiType: UIType,
+): Record<string, string> => {
+  return Object.entries(locatorGroup).reduce<Record<string, string>>((acc, [key, value]) => {
+    if (typeof value === 'string') {
+      acc[key] = value; // 공통
+    } else if (value[uiType]) {
+      acc[key] = value[uiType];
+    }
+    return acc;
+  }, {});
 };
 
-'검색결과_검색창' : '.c-inpform.is-clear div.c-inpitem .c-inp',
-    '입력한문자삭제_btn':'div.modal-content button[title="입력한 문자 삭제"]',
+// 로그인 관련 로케이터
+export const authLocator = {
+  //
+  myinfo_icon: {
+    [UIType.PC]: 'a.icon-myInfo-1',
+  },
+  myinfo_top: {
+    [UIType.PC]: 'div.myInfo-list div.myInfo-top',
+  },
+  login_box: {
+    [UIType.APP]: 'div.loginBox',
+  },
+  main_login_btn: {
+    [UIType.PC]: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
+  },
+  login_btn: {
+    [UIType.PC]: '.loginList > li:nth-of-type(1) > a',
+    [UIType.APP]: '.nm-app-login-way li:nth-of-type(1)',
+  },
+  logout_btn: '.loginList > li:nth-of-type(2) > a',
 
-    'search_btn' : '.header-utill button.c-btn-search',
-    '검색창_input' : 'div.c-inpform.is-clear div.c-inpitem input',
-    '검색어해시태그' : 'div.c-tag-wrap a',
+  // 로그인 방법 - 이미지
+  social_kakao_img: "img[alt*='카카오']",
+  social_naver_img: "img[alt*='네이버']",
+  social_toss_img: "img[alt*='토스']",
+  uplus_img: "img[alt*='u+ID']",
+  mylg_img: "img[alt*='myLGID']",
+  social_apple_img: "img[alt*='애플']",
 
+  // uplus 로그인
+  uplus_id_input: "input[type='text']",
+  uplus_pw_input: "input[type='password']",
+  uplus_login_btn: 'button.nm-login-btn',
+  uplus_clear_btn: "button[title='입력한 문자 삭제']",
+  uplus_save_btn: '.c-btn-rect-1',
 
-  검색창_검색버튼: 'button.c-ibtn-find',
-  검색창_비우기: 'button.c-btn-clear',
-  검색_모달창_판단: 'html[lang="ko"] > body',
-  검색결과_건수: 'span.result-num',
-  검색결과_탭: 'div.search-result-tab-area',
+  // kakao 로그인
+  kakao_id_input: '#loginId--1',
+  kakao_pw_input: '#password--2',
+  kakao_login_btn:
+    '#mainContent > div > div > form > div.confirm_btn > button.btn_g.highlight.submit',
+  kakao_clear_btn: '.btn_clear',
 
-
-  검색결과_섹션: "//div[@class='section-channel']",
-  검색결과_탭:
-    "//div[@class='section-channel']//span[contains(text(), '개인') or contains(text(), '기업')]",
-  입력한문자삭제_btn: 'div.modal-content button[title="입력한 문자 삭제"]',
-
+  // naver 로그인
+  naver_id_input: '#id',
+  naver_pw_input: '#pw',
+  naver_login_btn: 'div.btn_login_wrap .btn_login',
+  naver_clear_btn: '#id_clear',
+};

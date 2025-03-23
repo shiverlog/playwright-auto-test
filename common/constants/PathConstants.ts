@@ -36,6 +36,8 @@ export const POC_PATH = (poc: POCType): string | string[] => {
 
 // test-results 경로 설정
 export const PLAYWRIGHT_REPORT_PATH = `${POC_PATH}/playwright-report`;
+// coverage 경로 설정
+export const COVERAGE_PATH = `${POC_PATH}/coverage`;
 // logs 경로 설정
 export const LOG_PATH = `${POC_PATH}/test-results/logs`;
 // allure-results 경로 설정
@@ -49,6 +51,7 @@ export const TRACE_PATH = `${POC_PATH}/test-results/traces`;
 
 export const POC_RESULT_PATHS = (base: string) => ({
   playwrightReport: `${base}/playwright-report`,
+  coverage: `${base}/coverage`,
   log: `${base}/test-results/logs`,
   allureResult: `${base}/test-results/allure-results`,
   screenshots: `${base}/test-results/screenshots`,
@@ -68,6 +71,8 @@ export const FIXTURE_PATH = `${POC_PATH}/src/fixtures`;
 export const PAGE_PATH = `${POC_PATH}/src/pages`;
 // BDD STEP 경로 설정
 export const STEP_PATH = `${POC_PATH}/src/steps`;
+// 테스트 코드 경로
+export const TESTS_PATH = `${POC_PATH}/tests`;
 // 도커 설정파일 경로 설정
 export const DOCKER_PATH = `${POC_PATH}/src/Dockerfile`;
 
@@ -76,6 +81,7 @@ export const FOLDER_PATHS = (base: string) => ({
   components: `${base}/src/components`,
   constants: `${base}/src/constants`,
   fixtures: `${base}/src/fixtures`,
+  test: `${POC_PATH}/tests`,
   pages: `${base}/src/pages`,
   steps: `${base}/src/steps`,
   docker: `${base}/src/Dockerfile`,
@@ -119,5 +125,6 @@ export const TEST_RESULT_FILE_NAME = (
     screenshots: `${paths.screenshots}/${poc}_screenshot_${timestamp}.png`,
     videos: `${paths.videos}/${poc}_video_${timestamp}.mp4`,
     traces: `${paths.traces}/${poc}_trace_${timestamp}.zip`,
+    coverage: `${paths.coverage}/${poc}_coverage_${timestamp}.json`,
   };
 };
