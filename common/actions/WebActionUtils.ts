@@ -123,4 +123,57 @@ export class WebActionUtils extends BaseActionUtils {
   public async takeFullPageScreenshot(filePath: string): Promise<void> {
     await this.page?.screenshot({ path: filePath, fullPage: true });
   }
+
+  /**
+   * Playwright: 요소를 오프셋 기준으로 드래그
+   */
+  public async dragElementByOffset(
+    selector: string,
+    offsetX: number,
+    offsetY: number,
+  ): Promise<void> {
+    const element = this.page?.locator(selector);
+    const box = await element?.boundingBox();
+    if (!box || !this.page) return;
+
+    await this.page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await this.page.mouse.down();
+    await this.page.mouse.move(box.x + box.width / 2 + offsetX, box.y + box.height / 2 + offsetY, {
+      steps: 10,
+    });
+    await this.page.mouse.up();
+  }
+
+  /**
+   * Playwright: 요소를 다른 요소로 드래그 (drag & drop)
+   */
+  public async dragAndDrop(sourceSelector: string, targetSelector: string): Promise<void> {
+    const source = this.page?.locator(sourceSelector);
+    const target = this.page?.locator(targetSelector);
+    await source?.dragTo(target!);
+  }
+
+  /**
+   * 마우스를 특정 위치로 이동
+   */
+  public async moveMouse(x: number, y: number): Promise<void> {
+    await this.page?.mouse.move(x, y);
+  }
+
+  /**
+   * 요소 중앙으로 마우스 이동
+   */
+  public async moveMouseToElement(selector: string): Promise<void> {
+    if (!this.page) return;
+
+    const element = this.page.locator(selector);
+    const box = await element.boundingBox();
+
+    if (!box) return;
+
+    const centerX = box.x + box.width / 2;
+    const centerY = box.y + box.height / 2;
+
+    await this.page.mouse.move(centerX, centerY);
+  }
 }

@@ -1,4 +1,5 @@
-import { Page, test } from '@playwright/test';
+import { test } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 export class BasePage {
   readonly page: Page;
