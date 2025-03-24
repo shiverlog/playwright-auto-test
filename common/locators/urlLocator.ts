@@ -1,81 +1,65 @@
-/**
- * Description : urlLocator.ts - 📌 공통 로케이터 - url
- * Author : Shiwoo Min
- * Date : 2024-03-10
- */
-import { Platform } from '@common/constants/ContextConstants';
+import { Platform as PLATFORM } from '@common/constants/ContextConstants';
 
-// 테스트 BASE URL - LG UPLUS 공식 페이지
-const baseUrls = {
-  [Platform.PC_WEB]: 'https://www.lguplus.com',
-  [Platform.MOBILE_WEB]: 'https://m.lguplus.com',
-  [Platform.NATIVE_APP]: 'https://app.lguplus.com/apcm/main',
-};
+// 타입만 따로 추출
+export type Platform = typeof PLATFORM[keyof typeof PLATFORM];
 
-// URL 매핑 함수
-const mappingUrls = (path: string, includeAppPlatforms = true) => {
-  const urls = Object.fromEntries(
-    Object.entries(baseUrls).map(([key, url]) => [key, `${url}${path}`]),
-  );
+// 필수 플랫폼만 정의
+export const baseUrls = {
+  [PLATFORM.PC_WEB]: 'https://www.lguplus.com',
+  [PLATFORM.MOBILE_WEB]: 'https://m.lguplus.com',
+  [PLATFORM.NATIVE_APP]: 'https://app.lguplus.com/apcm/main',
+} as const;
+
+// URL 매핑 함수: ANDROID/IOS는 내부에서 처리
+const mappingUrls = (
+  path: string,
+  includeAppPlatforms = true
+): Record<Platform, string> => {
+  const urls: Partial<Record<Platform, string>> = {
+    [PLATFORM.PC_WEB]: `${baseUrls[PLATFORM.PC_WEB]}${path}`,
+    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}${path}`,
+    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}${path}`,
+  };
 
   if (includeAppPlatforms) {
-    return {
-      ...urls,
-      [Platform.ANDROID_APP]: urls[Platform.NATIVE_APP],
-      [Platform.IOS_APP]: urls[Platform.NATIVE_APP],
-    };
+    urls[PLATFORM.ANDROID_APP] = urls[PLATFORM.NATIVE_APP]!;
+    urls[PLATFORM.IOS_APP] = urls[PLATFORM.NATIVE_APP]!;
   }
 
-  return urls;
+  return urls as Record<Platform, string>;
 };
 
+// 최종 URL 매핑 객체
 export const urlLocator = {
-  // 메인페이지
   main: baseUrls,
 
-  // login 1.0
+  // 로그인
   login_: mappingUrls('/login'),
-
-  // login 2.0 (OAuth)
   login_outh: mappingUrls('/login'),
-
-  // login fallback
   login_fallback: mappingUrls('/login/fallback'),
 
-  /**
-   * GNB - 모바일
-   */
+  // GNB - 모바일
   mobile: mappingUrls('/mobile'),
 
-  // 휴대폰
+  // 디바이스 관련
   phone: mappingUrls('/mobile/device/phone'),
-
-  // 요금제
   plan: mappingUrls('/mobile/plan/mplan/plan-all'),
   direct: mappingUrls('/mobile/plan/mplan/direct'),
   device_2nd: mappingUrls('/mobile/plan/mplan/2nd-device'),
   dual: mappingUrls('/mobile/plan/mplan/dual'),
-
-  // 모바일 > 유심
-  usim: {
-    [Platform.PC_WEB]: `${baseUrls[Platform.PC_WEB]}/mobile/usim`,
-    [Platform.MOBILE_WEB]: `${baseUrls[Platform.MOBILE_WEB]}/mobile/sim-card/usim`,
-    [Platform.NATIVE_APP]: `${baseUrls[Platform.NATIVE_APP]}/mobile/sim-card/usim`,
-    [Platform.ANDROID_APP]: `${baseUrls[Platform.NATIVE_APP]}/mobile/sim-card/usim`,
-    [Platform.IOS_APP]: `${baseUrls[Platform.NATIVE_APP]}/mobile/sim-card/usim`,
-  },
-
   smart_device: mappingUrls('/mobile/device/smart-device'),
   esim: mappingUrls('/mobile/esim'),
 
-  /**
-   * GNB - 인터넷/IPTV
-   */
+  usim: {
+    [PLATFORM.PC_WEB]: `${baseUrls[PLATFORM.PC_WEB]}/mobile/usim`,
+    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}/mobile/sim-card/usim`,
+    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}/mobile/sim-card/usim`,
+  } as Record<Platform, string>,
+
+  // GNB - 인터넷/IPTV
   iptv: mappingUrls('/internet-iptv'),
 
-  /**
-   * GNB - 마이페이지
-   */
+  // 마이페이지
   mypage: mappingUrls('/mypage'),
   info: mappingUrls('/mypage/info'),
   price_plan: mappingUrls('/mypage/price-plan/mobile'),
@@ -88,9 +72,7 @@ export const urlLocator = {
   cancel: mappingUrls('/mypage/info/cancel/detail'),
   member: mappingUrls('/mypage/info/member'),
 
-  /**
-   * GNB - 혜택/멤버십
-   */
+  // 혜택/멤버십
   benefit: mappingUrls('/benefit'),
   membership: mappingUrls('/benefit-membership'),
   benefit_membership: mappingUrls('/benefit-membership'),
@@ -101,35 +83,24 @@ export const urlLocator = {
   price_discount: mappingUrls('/benefit-uplus/price-discount'),
   online_benefit: mappingUrls('/benefit-uplus/online-purchase-benefit'),
 
-  /**
-   * GNB - 고객지원
-   */
+  // 고객지원
   support: mappingUrls('/support'),
   faq: mappingUrls('/support/online/faq'),
 
-  /**
-   * GNB - 다이렉트
-   */
+  // 다이렉트
   payinfo: mappingUrls('/direct'),
 
-  /**
-   * GNB - 장바구니
-   */
+  // 장바구니
   cart: mappingUrls('/cart'),
 
-  /**
-   * GNB - 서치
-   */
+  // 검색
   search: {
-    [Platform.MOBILE_WEB]: `${baseUrls[Platform.MOBILE_WEB]}/search`,
-    [Platform.NATIVE_APP]: `${baseUrls[Platform.NATIVE_APP]}/search`,
-    [Platform.ANDROID_APP]: `${baseUrls[Platform.NATIVE_APP]}/search`,
-    [Platform.IOS_APP]: `${baseUrls[Platform.NATIVE_APP]}/search`,
-  },
+    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}/search`,
+    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}/search`,
+  } as Record<Platform, string>,
+
   search_result: {
-    [Platform.MOBILE_WEB]: `${baseUrls[Platform.MOBILE_WEB]}/search/result`,
-    [Platform.NATIVE_APP]: `${baseUrls[Platform.NATIVE_APP]}/search/result`,
-    [Platform.ANDROID_APP]: `${baseUrls[Platform.NATIVE_APP]}/search/result`,
-    [Platform.IOS_APP]: `${baseUrls[Platform.NATIVE_APP]}/search/result`,
-  },
+    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}/search/result`,
+    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}/search/result`,
+  } as Record<Platform, string>,
 };

@@ -1,4 +1,4 @@
-import { Locator, Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 /**
  * ✅ ModalHandler: 모달 처리 유틸리티 클래스

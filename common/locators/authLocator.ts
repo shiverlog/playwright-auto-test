@@ -1,23 +1,11 @@
 import { UIType } from '@common/constants/ContextConstants';
 
-// Type 미지정시, 공통부분으로 로직 처리
-export const getLocatorByUIType = (
-  locatorGroup: Record<string, string | Record<UIType, string>>,
-  uiType: UIType,
-): Record<string, string> => {
-  return Object.entries(locatorGroup).reduce<Record<string, string>>((acc, [key, value]) => {
-    if (typeof value === 'string') {
-      acc[key] = value; // 공통
-    } else if (value[uiType]) {
-      acc[key] = value[uiType];
-    }
-    return acc;
-  }, {});
-};
-
-// 로그인 관련 로케이터
+/**
+ * 로그인 관련 로케이터
+ */
 export const authLocator = {
-  //
+
+  // 디바이스 타입별 셀렉터
   myinfo_icon: {
     [UIType.PC]: 'a.icon-myInfo-1',
   },
@@ -34,16 +22,16 @@ export const authLocator = {
     [UIType.PC]: '.loginList > li:nth-of-type(1) > a',
     [UIType.APP]: '.nm-app-login-way li:nth-of-type(1)',
   },
-  logout_btn: '.loginList > li:nth-of-type(2) > a',
 
-  // 로그인 방법 - 이미지
+  // 공통 단일 셀렉터
+  logout_btn: '.loginList > li:nth-of-type(2) > a',
   social_kakao_img: "img[alt*='카카오']",
   social_naver_img: "img[alt*='네이버']",
   social_toss_img: "img[alt*='토스']",
   uplus_img: "img[alt*='u+ID']",
   mylg_img: "img[alt*='myLGID']",
   social_apple_img: "img[alt*='애플']",
-
+  
   // uplus 로그인
   uplus_id_input: "input[type='text']",
   uplus_pw_input: "input[type='password']",
@@ -63,4 +51,15 @@ export const authLocator = {
   naver_pw_input: '#pw',
   naver_login_btn: 'div.btn_login_wrap .btn_login',
   naver_clear_btn: '#id_clear',
+} as const;
+
+// 타입 정의 (자동 추론)
+export type AuthLocator = typeof authLocator;
+
+// UIType 기반의 필드를 추출하고 싶은 경우 유틸리티 타입도 사용 가능
+export type AuthLocatorByUIType = {
+  [K in keyof AuthLocator as AuthLocator[K] extends Record<UIType, string> ? K : never]: Record<
+    UIType,
+    string
+  >;
 };

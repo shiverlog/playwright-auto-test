@@ -3,35 +3,45 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { POCType } from '@common/constants/PathConstants';
+// Platform
+export const Platform = {
+  PC_WEB: 'PC',
+  MOBILE_WEB: 'MW',
+  ANDROID_APP: 'AND',
+  IOS_APP: 'IOS',
+  NATIVE_APP: 'APP',
+} as const;
+export type Platform = typeof Platform[keyof typeof Platform];
 
-// 실제 테스트 환경 기준 플랫폼 구분
-export enum Platform {
-  PC_WEB = 'PC',
-  MOBILE_WEB = 'MW',
-  ANDROID_APP = 'AND',
-  IOS_APP = 'IOS',
-  NATIVE_APP = 'APP', // 공통 앱 정의 (Android / iOS 구분 없음)
-}
+// UIType
+export const UIType = {
+  PC: 'PC',
+  MOBILE: 'MW',
+  APP: 'APP',
+} as const;
+export type UIType = typeof UIType[keyof typeof UIType];
 
-// UI 화면 디바이스 형태
-export enum UIType {
-  PC = 'PC',
-  MOBILE = 'MW',
-  APP = 'APP',
-}
+// POCType
+export const POC = {
+  PC: 'pc',
+  MW: 'mw',
+  AOS: 'aos',
+  IOS: 'ios',
+  API: 'api',
+  EMPTY: '',
+} as const;
+export type POCType = typeof POC[keyof typeof POC];
 
-// POC → 플랫폼 매핑
+// Mapping
 export const POC_TO_PLATFORM_MAP: Record<POCType, Platform> = {
-  pc: Platform.PC_WEB,
-  mw: Platform.MOBILE_WEB,
-  aos: Platform.ANDROID_APP,
-  ios: Platform.IOS_APP,
-  api: Platform.PC_WEB,
-  '': Platform.PC_WEB,
+  [POC.PC]: Platform.PC_WEB,
+  [POC.MW]: Platform.MOBILE_WEB,
+  [POC.AOS]: Platform.ANDROID_APP,
+  [POC.IOS]: Platform.IOS_APP,
+  [POC.API]: Platform.PC_WEB,
+  [POC.EMPTY]: Platform.PC_WEB,
 };
 
-// 플랫폼 → UI 형태 매핑
 export const PLATFORM_TO_UI_MAP: Record<Platform, UIType> = {
   [Platform.PC_WEB]: UIType.PC,
   [Platform.MOBILE_WEB]: UIType.MOBILE,

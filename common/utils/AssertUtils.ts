@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { Locator, Page } from 'playwright';
+import type { Locator, Page } from '@playwright/test';
 
 /**
  * Playwright: Assertion 유틸리티 클래스 (인스턴스 기반)

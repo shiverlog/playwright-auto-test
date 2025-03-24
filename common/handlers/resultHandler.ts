@@ -6,7 +6,8 @@
 import { ALL_POCS, POCType, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import * as fs from 'fs/promises';
-import { BrowserContext, Page, chromium } from 'playwright';
+import type { BrowserContext, Page } from 'playwright'; 
+import { chromium } from 'playwright';
 
 /**
  * 예외 처리 핸들러 - error exception case (POC 별로 브라우저 컨텍스트 분리)

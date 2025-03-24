@@ -1,5 +1,5 @@
 import { BaseActionUtils } from '@common/actions/BaseActionUtils';
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 import { Browser, Element } from 'webdriverio';
 
 /**

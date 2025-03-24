@@ -1,8 +1,8 @@
 import { ElementActions } from '@common/actions/ElementActions';
-import { UIType } from '@common/constants/ContextConstants';
 import { authLocator } from '@common/locators/authLocator';
 import { urlLocator } from '@common/locators/urlLocator';
-import { Page, expect } from '@playwright/test';
+import type { Page } from '@playwright/test'; 
+import { expect } from '@playwright/test';   
 
 export class LoginPage {
   private page: Page;
@@ -12,7 +12,7 @@ export class LoginPage {
   }
 
   async gotoLoginPage() {
-    await this.page.goto(urlLocator.login_.pc);
+    await this.page.goto(urlLocator.login_.PC);
     await this.page.waitForLoadState('networkidle');
   }
 

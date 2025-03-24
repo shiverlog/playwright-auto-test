@@ -1,6 +1,6 @@
 import { ALL_POCS, POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 export class TestPerformance {
   private logger;

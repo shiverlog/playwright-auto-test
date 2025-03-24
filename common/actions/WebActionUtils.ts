@@ -1,5 +1,5 @@
 import { BaseActionUtils } from '@common/actions/BaseActionUtils';
-import { Locator, Page } from '@playwright/test';
+import type { Locator, Page } from '@playwright/test';
 
 /**
  * Playwright: 웹 전용 액션 유틸리티 클래스

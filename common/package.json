@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/index.ts",
   "types": "dist/index.d.ts",
+  "type": "module",
   "description": "Common Utilities For The Auto Test Project",
   "private": true,
   "scripts": {
@@ -10,10 +11,14 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
+    "dist",             
+    "actions",
     "config",
     "constants",
+    "controllers",
     "formatters",
     "handlers",
+    "locators",
     "logger",
     "notifications",
     "utils",
