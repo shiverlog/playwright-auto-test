@@ -1,8 +1,7 @@
 import type { Locator, Page } from '@playwright/test';
 
-import { BasePage } from '../pages/BasePage';
 
-export class Header extends BasePage {
+export class Header {
   readonly roomsLink: Locator;
   readonly reportLink: Locator;
   readonly brandingLink: Locator;
@@ -12,7 +11,6 @@ export class Header extends BasePage {
   readonly logoutLink: Locator;
 
   constructor(page: Page) {
-    super(page);
     this.roomsLink = page.getByRole('link', { name: 'Rooms' });
     this.reportLink = page.getByRole('link', { name: 'Report' });
     this.brandingLink = page.getByRole('link', { name: 'Branding' });

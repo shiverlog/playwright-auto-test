@@ -1,22 +1,5 @@
 
 class LoginPage():
-    def u_plus_login_retry(self, max_retries, login_type):
-        for retry_count in range(max_retries):
-            # 로그인 시도
-            res = self.do_login(login_type)
-            if res:
-                # 로그인 성공 시 바로 True 반환
-                return True
-            else:
-                if retry_count < max_retries - 1:
-                    # 로그인 실패 후 재시도
-                    self.DBG.print_dbg(f"{login_type} 로그인 실패하여 {max_retries - retry_count - 1}회 재시도 중")
-                    continue
-
-        # 모든 시도 후 실패하면 False 반환
-        self.DBG.print_dbg(f"{login_type} 로그인 {max_retries}회 모두 실패", False)
-        return False
-
     def logout(self):
         '''
         로그아웃

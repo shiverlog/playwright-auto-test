@@ -265,4 +265,16 @@ export class AssertUtils {
       }
     });
   }
+
+  /**
+   * 다크모드 등 UI 설정 차이에 따른 텍스트 검증
+   * @param locator 요소 Locator
+   * @param expectedTextList 기대 텍스트 목록
+   */
+  public async assertTextAmong(locator: Locator, expectedTextList: string[]): Promise<void> {
+    const text = await locator.innerText();
+    if (!expectedTextList.some(expected => text.includes(expected))) {
+      throw new Error(`텍스트 '${text}'가 기대값 ${expectedTextList.join(', ')} 중 어떤 것도 포함하지 않음`);
+    }
+  }
 }

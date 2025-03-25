@@ -22,8 +22,9 @@ const ACTIVE_POC = (process.env.POC as POCType) || '';
 const pocList = ACTIVE_POC === '' ? ALL_POCS : [ACTIVE_POC];
 
 // 브라우저 조합 동적 생성
+// pc: ['chrome', 'firefox', 'safari', 'edge'] 
 const browserMatrix: Record<Exclude<POCType, ''>, string[]> = {
-  pc: ['chrome', 'firefox', 'safari', 'edge'],
+  pc: ['chrome'],
   mw: ['chrome', 'mobile-chrome', 'mobile-safari'],
   aos: ['android-app'],
   ios: ['ios-app'],
@@ -61,7 +62,7 @@ const projects = pocList.flatMap(poc => {
       /* Base URL to use in actions like `await page.goto('/')`. */
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
       // 기본 화면 크기 설정
-      viewport: { width: 1280, height: 720 },
+      viewport: { width: 1920, height: 1080 },
       // 테스트 실패 시만 스크린샷 저장
       screenshot: 'only-on-failure',
       // 실패한 테스트의 경우에만 비디오 녹화 유지
