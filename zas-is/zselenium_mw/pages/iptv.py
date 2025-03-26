@@ -1,8 +1,4 @@
 class InternetIptvPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
-
     def iptv(self):
         self.FC.gotoHome()
         try :

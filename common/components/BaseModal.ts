@@ -1,12 +1,12 @@
 import type { Locator, Page } from '@playwright/test';
 
 /**
- * ✅ ModalHandler: 모달 처리 유틸리티 클래스
+ * BaseModal: 모달 처리 유틸리티 클래스
  * - handleModal: 모달 유형에 따라 적절한 처리 수행
  * - determineModalType: 모달 유형 결정
  * - 모달별 개별 처리 함수 포함
  */
-export class ModalHandler {
+export class BaseModal {
   private page: Page;
 
   constructor(page: Page) {

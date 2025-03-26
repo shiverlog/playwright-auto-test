@@ -1,21 +1,4 @@
-import os
-import sys
-import time
-
-from base.appdriver import AppDriver
-from base.server import AppiumServer
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage        # 콘솔창에 오류 메세지 출력
-
-sys.path.append('C:\dev\lg_regression\\appium_aos')
-
-
 class SupportPage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
-
 
     # 고객지원 부분, 휴대폰분실파손 부분 오류
     def support(self):
@@ -30,7 +13,7 @@ class SupportPage():
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['support_el']['고객지원_검색_영역']))
             result.append(self.FC.loading_find_css_pre(self.FC.var['support_el']['고객지원_검색창']))
             result.append(6 == len(self.FC.loading_find_csss(self.FC.var['support_el']['고객지원_자주찾는_검색어_list'])))
-            assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 상단 자주찾는 검색어 정상 노출 실패") 
+            assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 상단 자주찾는 검색어 정상 노출 실패")
 
             # 수동 검색어 검색
             test_keyword='테스트'   #검색할 키워드
@@ -47,7 +30,7 @@ class SupportPage():
             self.FC.wait_loading()
 
             self.FC.loading_find_css(self.FC.var['support_el']['키워드로_찾기_tab']).click()  #키워드로 찾기 탭 이동
-            assert self.FC.loading_find_css(self.FC.var['support_el']['포함_검색어']).get_property('innerText')==test_keyword, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 테스트 키워드:'{test_keyword}' 정상 노출 확인 실패") 
+            assert self.FC.loading_find_css(self.FC.var['support_el']['포함_검색어']).get_property('innerText')==test_keyword, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 테스트 키워드:'{test_keyword}' 정상 노출 확인 실패")
             # TODO 기존 이슈로인해 일시 주석처리
             # assert self.FC.loading_find_css('input#addr-1-1').get_property('value')==test_keyword, self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 테스트 키워드:'{test_keyword}' 정상 노출 확인 실패")                  #현재 이슈로인해 Fail 반환 - DCBGQA-336
 
@@ -63,9 +46,9 @@ class SupportPage():
                 time.sleep(1)  # 슬라이드 애니메이션 대기
                 res=test_keyword in el.get_property('innerText') or self.FC.loading_find_csss(self.FC.var['support_el']['답변_내용'])[search_result_list_el.index(el)]
                 search_result.append(res)
-            assert all(search_result), self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 검색 결과 콘텐츠 정상 출력 실패") 
+            assert all(search_result), self.DBG.logger.debug(f"고객지원 > 자주하는 질문 > 키워드로 찾기 탭 > 검색 결과 콘텐츠 정상 출력 실패")
             self.FC.goto_url(self.FC.var['support_el']['url'])
-            
+
             result.clear()
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['support_el']['도움이_될_내용']))
             text_list=['도움']
@@ -109,7 +92,7 @@ class SupportPage():
             #         self.FC.swipe('div.submain-section > div.c-section-md')
             #         # self.FC.swipe(1)
 
-            
+
             # info_list_el=self.FC.loading_find_csss('div.submain-section > div.c-section-md > ul>li a')
             # self.FC.action.move_to_element(info_list_el[-1]).click().perform()
             # self.FC.action.reset_actions()
@@ -117,9 +100,9 @@ class SupportPage():
             # print(self.FC.loading_find_css_pre('div.cont_01').get_property('innerText'))
             # result.append("고객의 소리" in self.FC.loading_find_css_pre('div.cont_01').get_property('innerText'))
             # self.FC.close_popup(self.FC.driver.window_handles)
-            
+
             assert self.DBG.print_res(result), self.DBG.logger.debug("고객지원 > 서브메인 > 정보 버튼(마지막 섹션) 정상 노출 확인 실패")
-            
+
 
 
         except  Exception :
@@ -132,34 +115,3 @@ class SupportPage():
         else :
             self.DBG.print_dbg("고객지원 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-
-
-
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")    
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        support = SupportPage(driver,fc)
-        login = LoginPage(driver,fc)
-
-        fc.pre_script()
-        fc.chrome_clear()
-
-        if fc.is_login():
-            login.logout()
-        
-        login.u_plus_login()
-
-        support.support()
-
-        driver.driver.quit()
-        server.stop()
-
-    except:
-        os.system(r'taskkill /f /t /im node.exe')

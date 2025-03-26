@@ -1,20 +1,7 @@
-import os
-import sys
-import random
-
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-sys.path.append('C:\dev\lg_regression\\appium_aos')
-
-
 class MainPage():
     def __init__(self,AppDriver:AppDriver,FC:Function):
         self.FC=FC
-        self.DBG=Debug(AppDriver)            
+        self.DBG=Debug(AppDriver)
 
 
     def mainpage_new(self):
@@ -37,9 +24,9 @@ class MainPage():
             result.append(len(contents) >= 1)
 
             assert self.DBG.print_res(result), self.DBG.logger.debug("메인(로그인 후) > 이벤트 타이틀 및 콘텐츠 정상 노출 실패")
-            
+
             # 추천 지금 인기모바일
-            # 타이틀 
+            # 타이틀
             self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천모바일']))
             self.FC.wait_loading()
             self.FC.loading_find_css(self.FC.var['mainpage_el']['추천모바일_title']).click()
@@ -65,9 +52,9 @@ class MainPage():
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mainpage_el']['추천모바일_콘텐츠_더보기']))
             assert self.FC.var['mobile_el']['모바일기기_휴대폰_url'] in self.FC.driver.current_url,  self.DBG.logger.debug("메인(로그인 후) > 추천 모바일 더보기 링크 정상 이동 실패")
             self.FC.goto_url(self.FC.var['common_el']['url'])
-            
+
             # 추천 요금제
-            # 타이틀 
+            # 타이틀
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천요금제']))
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mainpage_el']['추천요금제_title']))
             result.append(self.FC.var['mobile_el']['모바일요금제_요금제_url'] in self.FC.driver.current_url)
@@ -79,13 +66,13 @@ class MainPage():
             random_num=random.randrange(0,len(items)-1)
             title=items_titles[random_num].get_property('innerText')
             self.FC.move_to_click(items[random_num])
-            
+
             assert title in self.FC.loading_find_css_pre(self.FC.var['mobile_el']['요금제상품상세_title']).get_property('innerText'), self.DBG.logger.debug("메인(로그인 후) > 추천 요금제 임의 상품 링크 정상 이동 실패")
             self.FC.goto_url(self.FC.var['common_el']['url'])
             self.FC.scroll_center(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천요금제_title']))
             # 더보기
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mainpage_el']['추천요금제_콘텐츠_더보기']))
-            
+
             assert self.FC.var['mobile_el']['모바일요금제_요금제_url'] in self.FC.driver.current_url,  self.DBG.logger.debug("메인(로그인 후) > 추천 요금제 더보기 링크 정상 이동 실패")
             self.FC.goto_url(self.FC.var['common_el']['url'])
 
@@ -100,7 +87,7 @@ class MainPage():
             random_num=random.randrange(0,len(items))
             title=items_titles[random_num].get_property('innerText')
             self.FC.move_to_click(items[random_num])
-            
+
             titles=title.split(' + ')
 
             text_el=self.FC.loading_find_csss(self.FC.var['mainpage_el']['iptv상품상세_title'])
@@ -115,7 +102,7 @@ class MainPage():
         else :
             self.DBG.print_dbg("메인 페이지(로그인 후) 정상 노출 확인")
             return True
-        
+
 
     def mainpage_myinfo_new(self):
         self.FC.gotoHome()
@@ -123,10 +110,10 @@ class MainPage():
             # 상단 개인 정보 영역
             self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['개인화'])
             result=[]
-            
+
             text_list=['데이터','잔여량','청구요금','부가서비스 / 약정 / 할부 보기']
             result.append(self.FC.text_list_in_element(self.FC.var['mainpage_el']['개인화'],text_list))
-            
+
             # FIXME 다른 상품이 없음으로 조회 불가(차후 주석 해제 필요)
             # self.FC.loading_find_css(self.FC.var['mainpage_el']['개인화_상품 조회 변경']).click()
             # result.append(len(self.FC.loading_find_csss(self.FC.var['mainpage_el']['개인화_모달_상품'])) > 0)
@@ -148,7 +135,7 @@ class MainPage():
                 index=links.index(link)
                 extra_content=self.FC.loading_find_csss(self.FC.var['mainpage_el']['부가서비스_약정_할부 링크'])
                 self.FC.move_to_click(extra_content[index])
-                result.append(link in self.FC.driver.current_url)   
+                result.append(link in self.FC.driver.current_url)
                 self.FC.goto_url(self.FC.var['common_el']['url'])
                 self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mainpage_el']['부가서비스_약정_할부 버튼']))
 
@@ -175,7 +162,7 @@ class MainPage():
             result.append('/benefit/membership' in self.FC.driver.current_url)
             assert self.DBG.print_res(result),self.DBG.logger.debug("메인(로그인 후) > 멤버십 바코드 정상 기능 실패")
             self.FC.goto_url(self.FC.var['common_el']['url'])
-            
+
 
             # 나의 멤버십
             tag_el=self.FC.loading_find_csss(self.FC.var['mainpage_el']['나의 멤버십_태그명'])
@@ -188,7 +175,7 @@ class MainPage():
             assert self.FC.var['mainpage_el']['나의 멤버십_url'] in self.FC.driver.current_url, self.DBG.logger.debug("메인(로그인 후) > 나의 멤버십 정상 이동 실패")
             assert all(tag in self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['나의 멤버십_등급']).get_property('innerText') for tag in tags) , self.DBG.logger.debug("메인(로그인 후) > 나의 멤버십 > 나의 멤버십 등급 정상 노출 실패")
             self.FC.goto_url(self.FC.var['common_el']['url'])
- 
+
             # 혜택 리스트
             result.clear()
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['더 받을 수 있는 혜택']))
@@ -207,32 +194,3 @@ class MainPage():
         else :
             self.DBG.print_dbg("메인 페이지(로그인 후) > 개인화 영역 정상 노출 확인")
             return True
-
-
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")    
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        main = MainPage(driver,fc)
-        login = LoginPage(driver,fc)
-
-        fc.pre_script()
-        fc.chrome_clear()
-
-        if fc.is_login():
-            login.logout()
-        
-        login.u_plus_login()
-        main.mainpage_new()
-                    
-
-        driver.driver.quit()
-        server.stop()
-
-    except:
-        os.system(r'taskkill /f /t /im node.exe')

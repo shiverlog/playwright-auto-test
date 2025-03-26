@@ -1,16 +1,3 @@
-import os
-import random
-import sys
-
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-sys.path.append('C:\dev\lg_regression\\appium_aos')
-
-
 class InternetIptvPage():
     def __init__(self,AppDriver:AppDriver,FC:Function):
         self.FC=FC
@@ -21,14 +8,14 @@ class InternetIptvPage():
         try :
             self.FC.movepage(self.FC.var['iptv_el']['iptv'], self.FC.var['iptv_el']['direct'],address=self.FC.var['iptv_el']['iptv_url'])
             self.FC.modal_ck()
-            
+
             # KV
             kv_list=self.FC.loading_find_csss(self.FC.var['iptv_el']['KV_링크'])
             assert len(kv_list) >0, self.DBG.logger.debug("인터넷/IPTV > KV 정상 노출 실패")
 
             # 서브메인 테마배너
             check_text_list=['맞춤상품찾기','인터넷','IPTV','스마트홈','가입 사은품']
-            assert self.FC.text_list_in_element(self.FC.var['iptv_el']['테마배너'],check_text_list),self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 테마베너 정상 출력 실패") 
+            assert self.FC.text_list_in_element(self.FC.var['iptv_el']['테마배너'],check_text_list),self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 테마베너 정상 출력 실패")
             theme_list_link=self.FC.loading_find_csss(self.FC.var['iptv_el']['테마배너_링크'])
             random_num= random.randrange(0,len(theme_list_link))
             if random_num == 0: # 1분 가입은 이동 시, 딜레이 생김
@@ -48,11 +35,11 @@ class InternetIptvPage():
             # 무작위로 추천 결합 상품 링크 이동 확인
             carousel=self.FC.loading_find_css_pre(self.FC.var['iptv_el']['추천 결합상품_carousel'])
             self.FC.move_to_element(carousel)
-            
+
             # 무작위로 임의 결합 상품 선택
             random_num=random.randrange(0,3)
-            for n in range(0,random_num):                                           
-                self.FC.action.click_and_hold(carousel).move_by_offset(-150,0).release().perform()      
+            for n in range(0,random_num):
+                self.FC.action.click_and_hold(carousel).move_by_offset(-150,0).release().perform()
 
             ###### 가입상담 신청 버튼 UI 사라짐 ######
             # # 임의 선택된 결합 상품 데이터 저장
@@ -63,7 +50,7 @@ class InternetIptvPage():
             # btn=self.FC.loading_find_css(self.FC.var['iptv_el']['추천 결합상품_가입상담 신청'])
             # self.FC.scroll_center(btn)
             # self.FC.move_to_click(btn)
-            
+
             # # 가입신청 상담 팝업 정상 노출 확인
             # assert "가입상담 신청" in self.FC.loading_find_css(self.FC.var['iptv_el']['가입상담_신청_팝업_헤더']).get_property('innerText'), self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 가입신청 상담 페이지 정상 노출 실패")
             # consult_text = self.FC.loading_find_css(self.FC.var['iptv_el']['apply_consult']).get_property('innerText')
@@ -77,7 +64,7 @@ class InternetIptvPage():
             #     assert key in check_iptv_item, self.DBG.logger.debug(f"인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 가입신청 상담 페이지 데이터('{key}' 없음) 정상 노출 실패")
             #     assert value == check_iptv_item[key],self.DBG.logger.debug(f"인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 가입신청 상담 페이지 데이터('{value}') 정상 노출 실패")
             # self.FC.loading_find_css_pre(self.FC.var['iptv_el']['가입상담_신청_팝업_닫기']).click()
-            
+
             # 온라인 가입 데이터 정상 출력 확인
             # product_value_list=self.FC.loading_find_csss(self.FC.var['iptv_el']['추천 결합상품_온라인가입_data'])
 
@@ -91,7 +78,7 @@ class InternetIptvPage():
             self.FC.move_to_element(self.FC.loading_find_css('div[section-group-id="MoSubMainInternetIptvBenefit1Section"]'))
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['iptv_el']['추천 결합상품_온라인가입']))
             assert self.FC.var['iptv_el']['온라인가입_url'] in self.FC.driver.current_url, self.DBG.logger.debug("인터넷/IPTV > 서브메인 > 인터넷+IPTV 추천 결합 상품 임의 선택 > 온라인가입 페이지 정상노출 실패")
-            
+
             self.FC.goto_url(self.FC.var['iptv_el']['iptv_url'])
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['iptv_el']['혜택_콘텐츠']))
             assert len(self.FC.loading_find_csss(self.FC.var['iptv_el']['혜택_콘텐츠_링크'])) > 0,self.DBG.logger.debug(f"인터넷/IPTV > 서브메인 > 혜택 콘텐츠 정상 노출 실패")
@@ -109,7 +96,7 @@ if __name__ == "__main__":
         server = AppiumServer(4723)
         port = server.appium_service()
         if not server.waiting():
-            raise Exception("서버 실행 불가")    
+            raise Exception("서버 실행 불가")
         driver = AppDriver(port=port)
         fc = Function(driver)
         iptv = InternetIptvPage(driver,fc)
@@ -120,7 +107,7 @@ if __name__ == "__main__":
 
         if fc.is_login():
             login.logout()
-        
+
         login.u_plus_login()
 
         iptv.iptv()

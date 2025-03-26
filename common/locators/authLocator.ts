@@ -4,7 +4,6 @@ import { UIType } from '@common/constants/ContextConstants';
  * 로그인 관련 로케이터
  */
 export const authLocator = {
-
   // 디바이스 타입별 셀렉터
   myinfo_icon: {
     [UIType.PC]: 'a.icon-myInfo-1',
@@ -31,11 +30,13 @@ export const authLocator = {
   uplus_img: "img[alt*='u+ID']",
   mylg_img: "img[alt*='myLGID']",
   social_apple_img: "img[alt*='애플']",
-  
-  // uplus 로그인
+
+  // 로그인 버튼
+  uplus_login_btn: 'button:has(img[alt="u+ID"])',
+
   uplus_id_input: "input[type='text']",
   uplus_pw_input: "input[type='password']",
-  uplus_login_btn: 'button.nm-login-btn',
+  uplus_login_submit_btn: 'button.nm-login-btn',
   uplus_clear_btn: "button[title='입력한 문자 삭제']",
   uplus_save_btn: '.c-btn-rect-1',
 

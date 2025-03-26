@@ -13,37 +13,6 @@ class Function():
         except Exception :
             pass
 
-    # def modal_close(self):
-    #     try:
-    #         self.driver.find_element(By.CSS_SELECTOR, var.common_el['modal_close_con'])
-    #         self.driver.find_element(By.CSS_SELECTOR, var.common_el['modal_close_close']).click()
-    #         return
-
-    #     except Exception as e :
-    #         pass
-
-    # def modal_ck2(self):
-    #     try:
-    #         self.driver.find_element(By.CSS_SELECTOR, var.common_el['팝업_바디'])
-    #         self.driver.find_element(By.CSS_SELECTOR, var.common_el['modal_ck2_box'])
-    #         self.driver.find_element(By.CSS_SELECTOR, var.common_el['modal_ck2_input']).click()
-    #         self.driver.find_element(By.CSS_SELECTOR, var.common_el['modal_ck2_btn']).send_keys(Keys.ENTER)
-    #         return
-
-    #     except Exception as e :
-    #         pass
-
-    # def modal_ck3(self) :
-    #     try:
-    #         main = self.driver.window_handles
-    #         for i in main :
-    #             if i != main[0] :
-    #                 self.driver.switch_to.window(i)
-    #                 self.driver.close()
-    #         self.driver.switch_to.window(main[0])
-    #     except Exception :
-    #         pass
-
     def modal_ck4(self):
         try:
             self.wait_loading()
@@ -150,102 +119,6 @@ class Function():
 
         self.driver.switch_to.window(num[0])
 
-    def loading_find_css(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, css 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,elem)))
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                if self.find != NoneType:
-                    return self.find
-
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    def loading_find_csss(self,elem) -> (List[WebElement]):
-        '''
-        페이지 로드 후, css 요소 List 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,elem)))
-                self.find=self.driver.find_elements(By.CSS_SELECTOR,elem)
-                if self.find != NoneType:
-                    return self.find
-
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return [False]
-
-    def loading_find_css_pre(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, 페이지의 DOM에서 css 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,elem)))
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                if self.find != NoneType:
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    # xpath로 요소 검색
-    def loading_find_xpath(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, xpath 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.visibility_of_element_located((By.XPATH,elem)))
-                self.find=self.driver.find_element(By.XPATH,elem)
-                if self.find != NoneType:
-                    return self.find
-
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    def loading_find_xpath_pre(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, 페이지의 DOM에서 xpath 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_element_located((By.XPATH,elem)))
-                self.find=self.driver.find_element(By.XPATH,elem)
-                if self.find != NoneType:
-                    return self.find
-
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    def loading_find_xpaths(self,elem) -> (List[WebElement]):
-        '''
-        페이지 로드 후, xpath 요소 List 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_all_elements_located((By.XPATH,elem)))
-                self.find=self.driver.find_elements(By.XPATH,elem)
-                if self.find != NoneType:
-                    return self.find
-
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return [False]
-
     def text_list_in_element(self,parent,list: list):
         '''
         JS; 요소에 text가 존재하는 확인
@@ -347,44 +220,6 @@ class Function():
     def goto_url(self,url:str):
         self.driver.get(url)
         self.modal_ck4()
-
-    def wait_loading(self):
-        '''
-        JS; 해당 페이지 렌더링이 끝날 때 까지 대기
-        '''
-        loading_elem_css='div.c-loading-1'
-        loading_elem_css1='*.b-skeleton'
-
-        self.loading(loading_elem_css)
-        self.loading(loading_elem_css1)
-        max_count=10
-        count=0
-        while True:
-            page_loading = self.driver.execute_script('return document.readyState;')
-            if page_loading == 'complete':
-                break
-            count +=1
-            time.sleep(0.5)
-            if count >= max_count:
-                raise Exception("무한로딩")
-
-    def loading(self,css):
-        max_count=10
-        count=0
-        self.driver.implicitly_wait(1)
-        while True:
-            try:
-                time.sleep(0.5)
-                loading_elem=self.driver.find_element(By.CSS_SELECTOR,css)
-                count+=1
-                if count>max_count:
-                    raise UserWarning("무한 로딩")
-            except UserWarning :
-                print(f"{max_count} 무한 로딩 ")
-                self.driver.implicitly_wait(10)
-                break
-            except Exception:
-                break
 
     def is_login(self):
         '''

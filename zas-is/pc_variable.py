@@ -24,7 +24,6 @@ common_el={
 
 }
 
-
 mypage = {
     'mypage' : '//*[@class="header-gnb-list"]/li/a[contains(.,"마이페이지")]',
     'payinfo' : '//*[@class="sub-menu-list"]/li/a[contains(.,"요금/납부")]',
@@ -125,10 +124,6 @@ mypage = {
     '멤버십_기간별이용내역조회' : 'div.c-tabmenu-wrap div.c-tabcontent-box div.c-page-section:nth-of-type(2)',
     '멤버십_기간별이용내역조회_검색버튼' : 'div.c-tabmenu-wrap div.c-tabcontent-box div.c-page-section:nth-of-type(2) button',
     '멤버십_기간별이용내역조회_검색버튼영역' : 'div.c-tabmenu-wrap div.c-tabcontent-box div.c-page-section:nth-of-type(2) >div:last-child',
-
-#-#-#-#-#-#-#-#-#-#-#-# 주석 처리 된 것 #-#-#-#-#-#-#-#-#-#-#-#
-
-    # '청구서_더보기_팝업_랜더링' : 'div.modal-content > .modal-body  table > tbody>tr[role="row"]>td:not([colspan="2"])',
 
 }
 

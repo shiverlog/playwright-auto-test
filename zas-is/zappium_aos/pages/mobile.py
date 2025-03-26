@@ -1,36 +1,23 @@
-import os
-import json
-import random
-
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.select import Select
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-
 class MobilePage():
     def __init__(self,AppDriver:AppDriver,FC:Function):
         self.driver=AppDriver.driver
         self.FC=FC
         self.DBG=Debug(AppDriver)
-        
+
     def mobile(self):
         self.FC.gotoHome()
         try:
-            self.FC.movepage(self.FC.var['mobile_el']['mobile'], self.FC.var['mobile_el']['direct'],address=self.FC.var['mobile_el']['url']) 
+            self.FC.movepage(self.FC.var['mobile_el']['mobile'], self.FC.var['mobile_el']['direct'],address=self.FC.var['mobile_el']['url'])
             self.FC.wait_loading()
 
             # KV 콘텐츠 정상 출력 확인
             kv_list = self.FC.loading_find_csss(self.FC.var['mobile_el']['KV_링크'])
-            assert len(kv_list) >=1, self.DBG.logger.debug("모바일 > 서브메인 > KV 정상 출력 실패") 
+            assert len(kv_list) >=1, self.DBG.logger.debug("모바일 > 서브메인 > KV 정상 출력 실패")
 
             # 서브메인 테마배너
             check_text_list=['휴대폰', '요금제', '유심', '모델별 지원금', '해외로밍']
-            assert self.FC.text_list_in_element(self.FC.var['mobile_el']['테마배너'], check_text_list),self.DBG.logger.debug("모바일 > 서브메인 > 테마베너 정상 출력 실패") 
-            
+            assert self.FC.text_list_in_element(self.FC.var['mobile_el']['테마배너'], check_text_list),self.DBG.logger.debug("모바일 > 서브메인 > 테마베너 정상 출력 실패")
+
             # 랜덤으로 테마배너 링크 찾기
             theme_list_link = self.FC.loading_find_csss(self.FC.var['mobile_el']['테마배너_링크'])
             random_num = random.randrange(0, len(theme_list_link))
@@ -56,8 +43,8 @@ class MobilePage():
             path_check = any(part in tab_url for part in path_parts)
             # 예외처리: /5g-all → /plan-all 리다이렉트 허용
             if not path_check and path_link.endswith("/5g-all") and "/plan-all" in tab_url:
-                path_check = True     
-            
+                path_check = True
+
             # check_link와 tab_url 비교 (OR 조건 적용)
             assert check_link in tab_url or path_check, self.DBG.logger.debug(f"모바일 > 서브메인 > 테마베너 > {tab_name}탭 정상 동작 실패: check_link='{check_link}', tab_url='{tab_url}'")
             self.FC.goto_url(self.FC.var['mobile_el']['url'])
@@ -93,15 +80,15 @@ class MobilePage():
                 self.FC.wait_datas(self.FC.var['mobile_el']['휴대폰_panel'],'p.big-title')
                 list=self.FC.loading_find_csss(self.FC.var['mobile_el']['휴대폰_panel_주문하기'])
                 assert len(list) > 0,self.DBG.logger.debug(f"모바일 > 서브메인 > 휴대폰 > {tab_list[num]}탭 콘텐츠 정상 노출 실패")
-                
+
             # 임의 상품 이동
             tab_list_el[0].click()
             self.FC.wait_loading()
             carousel=self.FC.loading_find_css_pre(self.FC.var['mobile_el']['휴대폰_panel'])
             list=self.FC.loading_find_csss(self.FC.var['mobile_el']['휴대폰_panel_주문하기'])
             random_num=random.randrange(0,len(list))
-            for n in range(-1,random_num):                                           
-                self.FC.action.click_and_hold(carousel).move_by_offset(-100,0).release().perform()                                                      
+            for n in range(-1,random_num):
+                self.FC.action.click_and_hold(carousel).move_by_offset(-100,0).release().perform()
             titles=self.FC.loading_find_csss(self.FC.var['mobile_el']['휴대폰_panel_상품명'])
             title=titles[random_num].get_property('innerText')
             if 'Z Flip5' in title:
@@ -119,7 +106,7 @@ class MobilePage():
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mobile_el']['추천 요금제_title']))
             assert self.FC.var['mobile_el']['모바일요금제_요금제_url'] in self.FC.driver.current_url,self.DBG.logger.debug(f"모바일 > 서브메인 > 요금제 > 타이틀 정상 이동 실패")
             self.FC.goto_url(self.FC.var['mobile_el']['url'])
-            
+
             # 추천요금제 임의 상품 링크 이동
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['mobile_el']['추천 요금제']))
             list=self.FC.loading_find_csss(self.FC.var['mobile_el']['추천 요금제_링크'])
@@ -138,7 +125,7 @@ class MobilePage():
             self.FC.goto_url(self.FC.var['mobile_el']['url'])
 
             # 휴대폰 결합 할인 영역 없어짐 25.01.02
-            
+
             # # 휴대폰 결합 할인 계산 영역 콘텐츠 노출 확인
             # # Select.select_by_index()가 ElementNotInteractableException: Message: element not interactable: Element is not currently visible and may not be manipulated 오류로 Keys.Down으로 대체
             # # 가입 상담 신청 버튼 노출 확인
@@ -164,7 +151,7 @@ class MobilePage():
             # price_value=self.FC.loading_find_csss(self.FC.var['mobile_el']['휴대폰결합상품_value'])
             # check_value=[]
             # for n in range(0,len(price_value)):
-            #     check_value.append(price_value[n].get_property('innerText').replace('원',''))            
+            #     check_value.append(price_value[n].get_property('innerText').replace('원',''))
 
             # count=0
             # while True:
@@ -174,10 +161,10 @@ class MobilePage():
             #     if 'NATIVE_APP' in  self.driver.contexts: # Chrome App cache clear로 인해 매번 Access 허용 해줘야 함
             #         break
             #     assert count <= 3, print('while 무한 반복 오류')
-            
-            
-            # # 가입상담 신청 팝업창으로 들어옴 (팝업창 핸들러 실행) 
-            # time.sleep(3)         
+
+
+            # # 가입상담 신청 팝업창으로 들어옴 (팝업창 핸들러 실행)
+            # time.sleep(3)
             # self.FC.chrome_access_beta() # Chrome App cache clear로 인해 매번 Access 허용 해줘야 함
             # time.sleep(5)
             # for i in range(5):
@@ -199,7 +186,7 @@ class MobilePage():
             # price_list=self.FC.loading_find_csss(self.FC.var['mobile_el']['가입상담신청_팝업_data'])
             # for num in range(0,len(check_value)):
             #     assert check_value[num] in price_list[num].get_property('innerText'),self.DBG.logger.debug("모바일 > 서브메인 > 휴대폰 결합 할인 계산 영역의 가입상담 신청 팝업 > select data 정상 노출 실패 ")
-            
+
             # self.FC.driver.activate_app('com.lguplus.mobile.cs')
             # time.sleep(5) # context 대기
             # self.FC.switch_view()
@@ -227,8 +214,8 @@ class MobilePage():
             carousel=self.FC.loading_find_css_pre(self.FC.var['mobile_el']['태블릿_panel'])
             list=self.FC.loading_find_csss(self.FC.var['mobile_el']['태블릿_panel_주문하기'])
             random_num=random.randrange(0,len(list))
-            for n in range(-1,random_num):                                           
-                self.FC.action.click_and_hold(carousel).move_by_offset(-100,0).release().perform()                                                      
+            for n in range(-1,random_num):
+                self.FC.action.click_and_hold(carousel).move_by_offset(-100,0).release().perform()
             titles=self.FC.loading_find_csss(self.FC.var['mobile_el']['태블릿_panel_상품명'])
             title=titles[random_num].get_property('innerText')
             list=self.FC.loading_find_csss(self.FC.var['mobile_el']['태블릿_panel_상품명'])
@@ -262,14 +249,14 @@ class MobilePage():
                 assert len(views) >= 1, self.DBG.logger.debug(f"모바일 > 서브메인 > 구매 후기({check_text[num]}) 정상 출력 실패 ")
                 for item in views:
                     assert len(item.get_property('children')) >=2 and item.get_property('children')[1].get_property('innerText') != "", self.DBG.logger.debug(f"모바일 > 서브메인 > 구매 후기({check_text[num]}) > 정상 출력 실패  ")
-                    
+
         except  Exception :
             self.DBG.print_dbg("모바일 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인",False)
             self.FC.driver.activate_app('com.lguplus.mobile.cs')
             self.driver.switch_to.context('WEBVIEW_com.lguplus.mobile.cs')
             return False
         else :
-            self.DBG.print_dbg("모바일 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인") 
+            self.DBG.print_dbg("모바일 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인")
             return True
 
     # 모바일 > 모바일 요금제
@@ -278,7 +265,7 @@ class MobilePage():
         try:
             self.FC.movepage(self.FC.var['mobile_el']['mobile'],self.FC.var['mobile_el']['모바일요금제_5G/LTE'],address=self.FC.var['mobile_el']['5G/LTE_url'])
 
-            # 상단 사용중인 요금제 정보 정상 확인 
+            # 상단 사용중인 요금제 정보 정상 확인
             result=[]
             self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['mobile_el']['사용중인_요금제_정보_btn']))
             text_list=['월정액','데이터']
@@ -294,17 +281,17 @@ class MobilePage():
                 print(f"Testing tab: {key}")
                 self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mobile_el'][f'{key}_tab']))
                 self.FC.wait_loading()
-                
+
                 # 인터스티셜 창 닫기 추가
                 self.FC.is_exists_element_click(self.FC.loading_find_xpath_pre(self.FC.var['common_el']['ins_close_button']))
-                
+
                 current_url = self.FC.driver.current_url
                 expected_url = self.FC.var['mobile_el'][f'{key}_url']
                 print(f"Current URL: {current_url}, Expected URL: {expected_url}")
                 result.append(expected_url in current_url)
-                
+
             assert self.DBG.print_res(result),self.DBG.logger.debug(f"모바일 > 모바일 요금제 > 5G/LTE > {key}탭 정상 이동 및 콘텐츠 확인 실패")
-            
+
             # 5G/LTE탭으로 이동하여 임의 요금제 비교하기
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['mobile_el']['5G/LTE_tab']))
             self.FC.wait_loading()
@@ -325,14 +312,14 @@ class MobilePage():
                 random_num -= 1
             elif my_plan_name in compare_plan_name and random_num < len(btns):
                 random_num += 1
-                
+
             for key in datas.keys():
                 datas[key] = self.FC.loading_find_csss(self.FC.var['mobile_el'][f'요금제_list_{key}'])[random_num].get_property('innerText').strip().replace(' 원','').split('월')[-1].lstrip()
             self.FC.move_to_click(btns[random_num])
             self.FC.wait_loading()
 
             for key in datas.keys():
-                
+
                 print(self.FC.loading_find_css_pre(self.FC.var['mobile_el']['요금제비교함_신청하기_버튼']).get_attribute('disabled'))
                 if self.FC.loading_find_css_pre(self.FC.var['mobile_el']['요금제비교함_신청하기_버튼']).get_attribute('disabled') == 'disabled':
                     self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['common_el']['이전화면']))
@@ -344,7 +331,7 @@ class MobilePage():
 
             result.append(self.FC.wait_datas(self.FC.var['mobile_el']['요금제비교함'],'p:not(.small)','strong'))
             assert self.DBG.print_res(result),self.DBG.logger.debug(f"모바일 > 모바일 요금제 > 5G/LTE > 요금제 비교하기 > 비교함 {datas['요금제명']} 정상 노출 확인 실패")
-            
+
             # 요금제 비교 운영결함으로 주석처리
             # # 요금제 비교함 > 비교 요금제 드롭다운 변경
             # self.FC.loading_find_css(self.FC.var['mobile_el']['요금제비교함_드롭다운']).click()
@@ -356,7 +343,7 @@ class MobilePage():
             # self.FC.move_to_click(add_btn)
             # assert check_title in self.FC.loading_find_css_pre(self.FC.var['mobile_el']['요금제비교함_요금제명']).get_property('innerText'),self.DBG.logger.debug(f"모바일 > 모바일 요금제 > 5G/LTE > 요금제 비교하기 > 비교함 {check_title} 드롭다운 변경 기능 정상 동작 실패")
             # /요금제 비교 운영결함으로 주석처리
-            
+
             self.FC.goto_url(self.FC.var['mobile_el']['5G/LTE_url'])
 
             # 모바일 > 모바일 요금제 > 요금제 변경
@@ -401,14 +388,14 @@ class MobilePage():
             result.append(self.FC.var['mobile_el']['요금제조회변경_url'] in self.FC.driver.current_url)
 
             assert self.DBG.print_res(result) ,self.DBG.logger.debug(f"모바일 > 모바일 요금제 > 5G/LTE > 요금제 변경하기 > 요금제 조회/변경 페이지 정상 이동 실패")
-            
+
         except Exception:
             self.DBG.print_dbg("모바일 > 모바일 요금제 > 5G/LTE > 페이지 정상 노출 및 기능 확인", False)
             # self.FC.close_popup(self.FC.driver.window_handles)
             return False
 
         else:
-            self.DBG.print_dbg("모바일 > 모바일 요금제 > 5G/LTE 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인") 
+            self.DBG.print_dbg("모바일 > 모바일 요금제 > 5G/LTE 페이지 정상 노출 및 이벤트 링크 이동 및 상품 페이지 정상 이동 동작 확인")
             return True
 
 
@@ -446,7 +433,7 @@ class MobilePage():
 
             if self.FC.loading_find_csss(self.FC.var['mobile_el']['장바구니_멤버십혜택']) is True:
                 self.FC.is_exists_move_to_click(self.FC.loading_find_csss(self.FC.var['mobile_el']['장바구니_멤버십혜택'])[1]) # VIP 멤버십 혜택
-                
+
             if self.FC.loading_find_xpaths(self.FC.var['mobile_el']['장바구니_사은품']):
                 btns = self.FC.loading_find_xpaths(self.FC.var['mobile_el']['장바구니_사은품'])
                 for btn in btns:
@@ -470,7 +457,7 @@ class MobilePage():
             self.FC.loading_find_css(self.FC.var['mobile_el']['장바구니로_이동_btn']).click()
             self.FC.wait_loading()
             assert self.FC.driver.current_url in self.FC.var['mobile_el']['장바구니_url'], self.DBG.logger.debug("모바일 > 모바일 기기 > 휴대폰 > 장바구니 이동 실패")
-            
+
             cart_list = self.FC.loading_find_csss(self.FC.var['mobile_el']['장바구니_상품_영역'])
             is_text_in_cart=[]
             for cart in cart_list:
@@ -496,30 +483,3 @@ class MobilePage():
             self.DBG.print_dbg("모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능")
             return True
 
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")    
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        mobile = MobilePage(driver,fc)
-        login = LoginPage(driver,fc)
-
-        fc.pre_script()
-        fc.chrome_clear()
-
-        if fc.is_login():
-            login.logout()
-        
-        login.u_plus_login()
-
-        mobile.mobile()
-
-        driver.driver.quit()
-        server.stop()
-
-    except:
-        os.system(r'taskkill /f /t /im node.exe')

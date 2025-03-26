@@ -1,8 +1,4 @@
 class DirectPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
-
     def direct(self):
         self.FC.gotoHome()
 

@@ -1,8 +1,5 @@
 
 class SupportPage():
-    def __init__(self,WebDriver:WebDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(WebDriver)
 
     # 고객지원 부분, 휴대폰분실파손 부분 오류
     def support(self):

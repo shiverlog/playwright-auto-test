@@ -1,22 +1,4 @@
-
-import os
-import random
-import time
-import sys
-
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-sys.path.append('C:\dev\lg_regression\\appium_aos')
-
-
 class DirectPage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
 
     def direct(self):
         self.FC.gotoHome()
@@ -34,18 +16,18 @@ class DirectPage():
             text_list=['유심 가입 방법 확인']
             result.append(self.FC.text_list_in_element(self.FC.var['direct_el']['con_01'],text_list))
             assert self.DBG.print_res(result), self.DBG.logger.debug("다이렉트 > 유심 가입 컨텐츠 출력 실패")
-           
+
             ## 유플닷컴 전용 요금제
             result.clear()
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['direct_el']['con_02']))
             direct_plan_btn = self.FC.loading_find_csss(self.FC.var['direct_el']['con_02_가입하기'])
-            random_num= random.randrange(0,len(direct_plan_btn))              
+            random_num= random.randrange(0,len(direct_plan_btn))
             self.FC.scroll_center(direct_plan_btn[random_num])
             direct_plan_btn[random_num].click()
             self.FC.wait_loading()
             assert self.FC.var['direct_el']['전용요금제_가입하기_url'] in self.FC.driver.current_url, self.DBG.logger.debug("다이렉트 > 다이렉트 요금제 가입하기 페이지 이동 실패")
             self.FC.goto_url(self.FC.var['direct_el']['url'])
-            
+
             self.FC.move_to_element(self.FC.loading_find_css(self.FC.var['direct_el']['con_03']))
             plan_list=self.FC.loading_find_csss(self.FC.var['direct_el']['con_03_li'])
             self.FC.move_to_element(plan_list[0])
@@ -60,7 +42,7 @@ class DirectPage():
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['direct_el']['con_05']))
             li = self.FC.loading_find_csss(self.FC.var['direct_el']['con_05_li'])
             assert len(li) == 3 , self.DBG.logger.debug("다이렉트 > 다이렉트를 가장 쉽게 만나는 방법 콘텐츠 노출 실패")
-            
+
             # 이번달 꿀혜택 영역
             self.FC.move_to_element(self.FC.loading_find_css(self.FC.var['direct_el']['con_06']))
             li = self.FC.loading_find_csss(self.FC.var['direct_el']['con_06_li'])
@@ -73,23 +55,12 @@ class DirectPage():
             self.FC.goto_url(self.FC.var['direct_el']['url'])
 
 
-            
-        except  Exception :
-            self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인",False)
-            return False
-
-        else :
-            self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인")
-            return True
-
-
-
     def direct2(self):
 
         try:
             # 상단 햄버거 버튼 클릭 동작
-            self.FC.movepage(self.FC.var['direct_el']['direct'],address=self.FC.var['direct_el']['url'])   
-    
+            self.FC.movepage(self.FC.var['direct_el']['direct'],address=self.FC.var['direct_el']['url'])
+
             # # 유독 페이지 URL로 정상 이동이 이루어졌는지 확인
             assert self.FC.var['direct_el']['url'] in self.FC.loading_find_css('div.direct_wrap').get_property('baseURI'),self.DBG.logger.debug("다이렉트 페이지 정상 이동 실패")
 
@@ -106,7 +77,7 @@ class DirectPage():
 
 
             result=[]
-            
+
             ## sec1(cont-01) 콘텐츠 확인
             self.FC.action.move_to_element(self.FC.loading_find_css_pre('div.cont-01')).perform()
             self.FC.action.reset_actions()
@@ -127,7 +98,7 @@ class DirectPage():
             result.append(len(plan_list) == 7)
             assert self.DBG.print_res(result), self.DBG.logger.debug("다이렉트 > sec2 콘텐츠 및 액션 정상 동작 실패")
             result.clear()
-            
+
             # # 무작위 임의 요금제 이동 <<오류
             # random_num=random.randrange(0,len(plan_list))
             # product_json=plan_list[random_num].get_attribute('data-ec-product');   # 임의 상품 json 가져오기
@@ -143,10 +114,10 @@ class DirectPage():
 
             # assert product['ecom_prd_name'] in self.FC.loading_find_xpath_pre('//div[contains(.,"요금제") and @class="component"]//ul/li[1]//a').get_property('innerText'),self.DBG.logger.debug("다이렉트 > sec2 콘텐츠 및 액션 정상 동작 실패")
             # assert product['ecom_prd_price'] in self.FC.loading_find_xpath_pre('//div[contains(.,"요금제") and @class="component"]//ul/li[1]//p[3]').get_property('innerText'),self.DBG.logger.debug("다이렉트 > sec2 콘텐츠 및 액션 정상 동작 실패")
-           
+
             # if 'https://www.lguplus.com/direct' not in self.FC.driver.current_url:
             #     self.FC.driver.back()
-            
+
 
             ## sec3(cont-03) 콘텐츠 확인
             self.FC.swipe('div.cont-03')
@@ -183,11 +154,11 @@ class DirectPage():
 
 
 
-            
+
             # sec3~4 콘텐츠는 텍스트성 콘텐츠
 
 
-            ## sec5(cont-05) 콘텐츠 확인            
+            ## sec5(cont-05) 콘텐츠 확인
             self.FC.swipe('div.cont-05 div.slick_wrap')
             product_list=self.FC.loading_find_csss('div.cont-05 div.slick_wrap div a')
             assert len(product_list) >= 3,self.DBG.logger.debug("다이렉트 > sec5 콘텐츠 및 액션 정상 동작 실패")
@@ -195,16 +166,16 @@ class DirectPage():
             # random_num=random.randrange(1,(len(product_list)-1)/2)
             random_num=2
             product_name_text=product_list[random_num].get_attribute('data-gtm-click-text')
-            index=product_name_text.find('상세보기') 
-            product_name=product_name_text[:index-1] 
-            product_name=product_name[0:(product_name.find(' '))] 
+            index=product_name_text.find('상세보기')
+            product_name=product_name_text[:index-1]
+            product_name=product_name[0:(product_name.find(' '))]
             product_list[random_num].click()
             # self.FC.action.scroll_to_element(product_list[random_num]).double_click().perform()
             # self.FC.action.reset_actions()
             self.FC.wait_loading()
             if self.FC.loading_find_css_pre('html[lang="ko"]>body').get_property('className') == "modal-open":
                 self.FC.loading_find_css('div.modal-content button.c-btn-close').click()
-            
+
             assert product_name in self.FC.loading_find_css_pre('p.device-kv-wrap__info--title').get_property('innerText'),self.DBG.logger.debug("다이렉트 > sec5 콘텐츠 및 액션 정상 동작 실패")
             while True:
                 if self.FC.var['direct_el']['url'] != self.FC.driver.current_url:
@@ -215,7 +186,7 @@ class DirectPage():
                     break
 
 
-            ## 이벤트 콘텐츠 확인  
+            ## 이벤트 콘텐츠 확인
             self.FC.action.move_to_element(self.FC.loading_find_xpath("//div[contains(.,'이벤트')and contains(@class,'cont_inner')]//div[contains(@class,'event_banner')]")).perform()
             self.FC.action.reset_actions()
 
@@ -224,40 +195,10 @@ class DirectPage():
 
 
 
-            
+
         except  Exception :
             self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인",False)
             pass
 
         else :
             self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인")
-
-
-
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")    
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        direct = DirectPage(driver,fc)
-        login = LoginPage(driver,fc)
-
-        fc.pre_script()
-        fc.chrome_clear()
-
-        if fc.is_login():
-            login.logout()
-        
-        login.u_plus_login()
-        
-
-        direct.direct()
-
-        driver.driver.quit()
-        server.stop()
-    except:
-        os.system(r'taskkill /f /t /im node.exe')

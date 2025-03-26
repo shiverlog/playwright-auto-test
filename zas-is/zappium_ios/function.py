@@ -1,75 +1,3 @@
-from __future__ import annotations
-import traceback
-import time
-import os
-from typing import List
-from openpyxl import load_workbook
-
-from appium.webdriver.webelement import WebElement
-from appium.webdriver.common.appiumby import AppiumBy
-
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.common.exceptions import InvalidSelectorException
-
-from base.appdriver import AppDriver
-import common.pc_variable as var
-
-
-NULL=type(None)
-# NoneType=type(None)
-NoneType=None
-class Function():
-    # wait 반복 횟수
-    retry_count= 3
-    def __init__(self,Driver:AppDriver):
-        self.Driver=Driver
-        self.driver = Driver.driver
-        self.wait = Driver.wait
-        self.timeout=Driver.timeout
-        self.action = Driver.action
-        self.app_action=Driver.app_action
-        self.default_webview=self.webview_init()
-        self.var=self.set_variables()
-
-    def set_variables(self):
-        '''
-        variables.xlsx 파일에 저장된 요소 변수값을 가져와 dict 타입 파싱
-        '''
-
-        # data_only=True로 해줘야 수식이 아닌 값으로 받아온다.
-        load_wb = load_workbook(f"{self.Driver.path}/variables.xlsx", data_only=True)
-        # 시트 이름으로 불러오기
-        load_ws = load_wb['Sheet']
-        all_values = {}
-        for row in load_ws.rows:
-            # A1 셀은 공백으로 패스
-            if row[0] == load_ws['A1']:
-                print(f"{row[0]} == {load_ws['A1']}")
-                continue
-            # print(f"{row[0].value} == {row[1].value} == {row[2].value} == {row[3].value}")
-            # 데이터 유무(count number)
-            if row[0].value:
-                page_name =  row[1].value # B1
-                key = row[2].value # C1
-                value = row[3].value # D1
-                assert page_name or key or value, print("일부 데이터 None")
-                # {} 초기화
-                try:
-                    all_values[page_name]
-                except:
-                    all_values[page_name] = {}
-                all_values[page_name][key] = value
-            elif row[0].value == row[1].value == row[2].value == row[3].value is None:
-                return all_values
-            else:
-                print(f"{row[0].value}  {row[1].value}  {row[2].value} {row[3].value}")
-                assert row[0] or row[1] or row[2] or row[3], print("일부 데이터 비어있음")
-        load_wb.close()
-        return all_values
 
     def WEclass_chainge(self):
         '''
@@ -158,17 +86,6 @@ class Function():
         if len(self.driver.contexts)==2:
             print(f"default webview context : {self.driver.contexts[1]}")
             return self.driver.contexts[1]
-
-    def goto_url(self,url:str):
-        if url.startswith('https'):
-            goto=url
-        elif url.startswith('/'):
-            goto=self.var['common_el']['url']+url
-        else:
-            goto=self.var['common_el']['url']+'/'+url
-        self.driver.get(goto)
-        print(f"goto > {goto}")
-        self.wait_loading()
 
     def safari_clear(self):
         '''
@@ -388,10 +305,6 @@ class Function():
         raise Exception("요소를 재할당 할 수 없음. redefinition 함수 보완 필요")
 
     def redefinition(self,el:WebElement) -> WebElement:
-        '''
-        요소 재정의 함수
-        iOS Hybrid App element 상호작용 오류(StaleElementReferenceException)로 인한 해결방안으로 사용
-        '''
         try:
             if el is None:
                 raise Exception("요소 is None")
@@ -473,49 +386,7 @@ class Function():
             print(e)
             print(traceback.format_exc())
 
-    # def redefinition_v2(self,el:WebElement) -> WebElement:
-    #     '''
-    #     요소 재정의 함수 version 2
-    #     iOS Hybrid App element 상호작용 오류(StaleElementReferenceException)로 인한 해결방안으로 사용
-    #     '''
 
-    #     pre =el.get_property('outerHTML')
-    #     try:
-    #         if el == None:
-    #             raise Exception("요소 is None")
-
-    #         if self.driver.execute_script("return arguments[0].previousElementSibling;", el):
-    #             other_el=self.driver.execute_script("return arguments[0].previousElementSibling;", el)
-    #             redf_el=self.driver.execute_script("return arguments[0].nextElementSibling;", other_el)
-
-    #         elif self.driver.execute_script("return arguments[0].nextElementSibling;", el):
-    #             other_el=self.driver.execute_script("return arguments[0].nextElementSibling;", el)
-    #             redf_el=self.driver.execute_script("return arguments[0].previousElementSibling;", other_el)
-
-    #         elif self.driver.execute_script("return arguments[0].parentElement;", el):
-    #             other_el=self.driver.execute_script("return arguments[0].parentElement;", el)
-    #             redf_el=self.driver.execute_script("return arguments[0].firstElementChild;", other_el)
-
-    #         else:
-    #             redf_el=None
-    #             raise Exception('redefinition_v2 error')
-    #         post = redf_el.get_property('outerHTML')
-    #         if pre != post:
-    #             print(f"redefind 전 -> {pre}")
-    #             print(f"redefind 후 -> {post}")
-    #             return self.driver.execute_script("return arguments[0];", el)
-
-
-    #         return redf_el
-
-    #     except InvalidSelectorException as e:
-    #         print(e)
-    #         return self.driver.execute_script("return arguments[0];", el)
-    #     except BaseException as e:
-    #         print(e)
-    #         print(traceback.format_exc())
-
-    # TODO 스와이프 식, 스크롤 함수 구현 필요(js로 인한 기계적 실행은 실제 물리적 동작과 결과가 상이할 수 있음)
     def scroll_x(self, el:WebElement):
         '''
         JS Execute; element를 x축 기준 가운데로 스크롤
@@ -548,7 +419,6 @@ class Function():
             print(e)
             raise Exception("all_swipe() 실패")
 
-    # TODO 주석제거 X
     def swipe_test_tq(self,fromX,fromY,toX,toY,startPress=0.1,endPress=0.1,speed=445):
         '''
         JS Execute; 스와이프 execute_script 요정
@@ -564,119 +434,7 @@ class Function():
         data = {'fromX':fromX,'fromY':fromY,'toX':toX,'toY':toY,'pressDuration':startPress,'holdDuration':endPress,'velocity':speed}
         self.driver.execute_script('mobile: dragFromToWithVelocity',data)
 
-    # # TODO 주석제거 X
-    # def scroll2_v2(self, el:WebElement|str):
-    #     '''
-    #     실시간 요소 위치 스크롤
-    #     el: WebElement 또는 location
-    #     '''
-    #     try:
-    #         loc=None
-    #         if type(el) is str:
-    #             loc=el
-    #             if el.startswith('/'):
-    #                 self.wait.until(EC.presence_of_element_located((AppiumBy.XPATH, loc)))
-    #                 el=self.driver.find_element(AppiumBy.XPATH, loc)
-    #             else:
-    #                 self.wait.until(EC.presence_of_element_located((AppiumBy.CSS_SELECTOR, loc)))
-    #                 el=self.driver.find_element(AppiumBy.CSS_SELECTOR, loc)
 
-    #         screen=self.driver.get_screen_size()
-    #         current_scroll=self.driver.get_current_scrollTop().get('scrollTop')
-    #         system_bar=50
-
-    #         start_x=int(screen.get('width')/2)
-    #         start_y=int(screen.get('height')/2)
-    #         center_y=int(round(current_scroll + (screen.get('height')/2)))
-
-    #         # stop_x2=int(start_x + 50) # 스크롤 애니메이션 멈춤
-    #         stop_x2=int(start_x + 1) # 스크롤 애니메이션 멈춤
-    #         stop_y=int(start_y- 1)
-
-    #         # 방향 설정을 위한 스위치(요소의 위치에서 반대 방향으로 스와이프 해야하기 때문에 -1를 곱해줌)
-    #         p=-1
-
-    #         while True:
-    #             # 현재 스크롤 위치, 현재 요소 위치 재초기화하여 total_scroll 재 계산
-    #             current_scroll=self.driver.get_current_scrollTop().get('scrollTop')
-    #             center_y=int(round(current_scroll + (screen.get('height')/2)))
-    #             el_height=int(el.get_property('offsetHeight'))
-    #             # 요소 세로 크기가  50 이하면, 임의로 크기 중심값(50) 지정
-    #             if el_height < 50:
-    #                 el_height = 50
-    #             else: el_height = int(el_height/2)
-
-    #             el_y= self.driver.execute_script('let offsetTop=0; el=arguments[0]; while(el){offsetTop+=el.offsetTop; el=el.offsetParent;} return offsetTop;',el)
-    #             # print(f"el_y 1 => {el_y}")
-    #             el_y += el_height
-    #             # print(f"el_y 2 => {el_y}")
-
-    #             total_scroll=int(el_y - center_y - system_bar)
-    #             print(f"total_scroll({total_scroll}) ======== int({el_y}-{center_y}-{system_bar})")
-
-    #             if abs(total_scroll) > start_y: # 스와이프 해야하는 범위가 스크린 밖일 떄
-    #                 if total_scroll > 0 : end_y=0+system_bar #위로 스와이프
-    #                 else: end_y=start_y*2-system_bar # 아래로 스와이프
-    #                 print(f"tq1 end_y = {end_y}")
-    #                 # self.app_action.long_press(None,start_x,start_y,100).move_to(None,start_x,end_y).wait(1000).release().perform()
-    #                 # self.driver.execute_script('mobile: pinch',{'scale':0.5,'velocity':-1})
-    #                 self.swipe_test_tq(start_x,start_y,start_x,end_y)
-
-
-    #                 # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
-    #                 # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
-
-    #             elif abs(total_scroll) < 30: # 총 스크롤이 30보다 작으면 그냥 리턴
-    #                 print('tq4')
-    #                 end_y="미사용"
-    #                 break
-
-    #             elif abs(total_scroll) < 100: # 나머지 스크롤이 100보다 작으면 애니메이션 멈춤 액션 미실행
-    #                 print('tq2')
-    #                 # print('total_scroll < 100')
-    #                 end_y=start_y+(total_scroll*p)
-    #                 # self.app_action.long_press(None,start_x,start_y,400).move_to(None,start_x,end_y).wait(400).release().perform()
-    #                 # self.driver.execute_script('mobile: pinch',{'scale':0.5,'velocity':-0.5})
-    #                 # #befo self.swipe_test_tq(start_x,start_y,start_x,end_y,sp=200)
-    #                 self.swipe_test_tq(start_x,start_y,start_x,end_y,speed=300)
-
-
-    #                 # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
-
-    #                 break
-    #             else:
-    #                 print('tq3')
-    #                 # print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-라스트팡*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
-    #                 end_y=start_y+(total_scroll*p)
-    #                 # self.app_action.long_press(None,start_x,start_y,400).move_to(None,start_x,end_y).wait(400).release().perform()
-    #                 # self.driver.execute_script('mobile: pinch',{'scale':0.5,'velocity':-0.5})
-    #                 # #befo self.swipe_test_tq(start_x,start_y,start_x,end_y,sp=250)
-    #                 self.swipe_test_tq(start_x,start_y,start_x,end_y,speed=350)
-
-    #                 # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
-    #                 break
-
-    #         # print(f"start_x => {start_x}")
-    #         # print(f"start_y => {start_y}")
-    #         # print(f"end_y2 => {end_y}")
-    #         # print(f"center_y => {center_y}")
-    #         # print(f"current_scroll => {current_scroll}")
-    #         # print(f"total_scroll => {total_scroll}")
-    #         self.wait_loading()
-    #         if loc:
-    #             if loc.startswith('/'):
-    #                 self.wait.until(EC.presence_of_element_located((AppiumBy.XPATH, loc)))
-    #                 el=self.driver.find_element(AppiumBy.XPATH, loc)
-    #             else:
-    #                 self.wait.until(EC.presence_of_element_located((AppiumBy.CSS_SELECTOR, loc)))
-    #                 el=self.driver.find_element(AppiumBy.CSS_SELECTOR, loc)
-    #         return self.redefinition_v2(el)
-
-    #     except BaseException as e:
-    #         print(traceback.format_exc())
-    #         print(e)
-    #         raise Exception("scroll2_v2() 실패")
-    # TODO 주석제거 X
     def scroll2_v2(self, el:WebElement|str):
         '''
         실시간 요소 위치 스크롤
@@ -702,7 +460,7 @@ class Function():
             print(e)
             raise Exception("scroll2_수정버전() 실패")
 
-    # TODO 주석제거 X
+
     def scroll2(self, el:WebElement|str):
         try:
             loc=None
@@ -788,13 +546,9 @@ class Function():
 
                     # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
                 else:
-                    print('tq3')
-                    # print("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-라스트팡 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
                     self.app_action.long_press(None,start_x,start_y,300).move_to(None,start_x,end_y).wait(300).release().perform()
                     self.driver.execute_script('mobile: pinch',{'scale':0.5,'velocity':-0.5})
 
-                    # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
-                    # self.app_action.long_press(None,start_x,start_y,450).move_to(None,start_x,end_y).long_press(None,start_x,end_y,150).release().perform()
             else:
                 if abs(total_scroll) < 30: # 총 스크롤이 10보다 작으면 그냥 리턴
                     print("# 총 스크롤이 10보다 작으면 그냥 리턴")
@@ -803,19 +557,6 @@ class Function():
                 end_y=start_y+(total_scroll*p)
                 self.app_action.long_press(None,start_x,start_y,300).move_to(None,start_x,end_y).wait(400).release().perform()
                 self.driver.execute_script('mobile: pinch',{'scale':0.5,'velocity':-0.5})
-
-                # self.app_action.long_press(None,start_x,start_y,300).move_to(None,start_x,stop_y).release().perform()
-                # self.app_action.long_press(None,start_x,start_y,300).move_to(None,stop_x2,stop_y).release().perform()
-                # self.app_action.long_press(None,start_x,start_y,450).move_to(None,start_x,end_y).long_press(None,start_x,end_y,150).release().perform()
-                # self.driver.swipe(start_x,start_y,start_x,end_y)
-
-
-            # print(f"start_x => {start_x}")
-            # print(f"start_y => {start_y}")
-            # print(f"end_y2 => {end_y}")
-            # print(f"center_y => {center_y}")
-            # print(f"current_scroll => {current_scroll}")
-            # print(f"total_scroll => {total_scroll}")
 
             if loc:
                 if loc.startswith('/'):
@@ -1009,21 +750,6 @@ class Function():
         except Exception as e:
             print(e)
 
-    # def find_css(self,loc):
-    #     self.find = self.driver.find_element(By.CSS_SELECTOR, loc)
-    #     return self.find
-
-    # def find_csss(self,loc):
-    #     self.find = self.driver.find_elements(By.CSS_SELECTOR, loc)
-    #     return self.find
-
-    # def find_xpath(self,loc):
-    #     self.find = self.driver.find_element(By.XPATH, loc)
-    #     return self.find
-
-    # def find_xpaths(self,loc):
-    #     self.find = self.driver.find_elements(By.XPATH, loc)
-    #     return self.find
 
     def modal_ck(self):
         try:
@@ -1140,221 +866,6 @@ class Function():
 
         self.driver.switch_to.window(num[0])
 
-    def checkVisibility(self,el:WebElement):
-        pass
-        # cnt=0
-        # while True:
-        #     cnt+=1
-        #     try:
-        #         if el == False:
-        #             break
-        #         visibility=self.driver.execute_script('return arguments[0].checkVisibility({opacityProperty: true,visibilityProperty: true,contentVisibilityAuto: true});',el)
-        #         # print(visibility)
-        #         print(f"{cnt} -> {visibility}")
-        #         if visibility or cnt > 30:
-        #             break
-        #     except Exception as e:
-        #         print(e)
-        #         pass
-
-    # FIXME 간헐적으로 selenium.common.exceptions.TimeoutException: Message: 에러나서 일단 3번 정도 반복
-    def loading_find_css(self,elem:str) -> (WebElement):
-        '''
-        페이지 로드 후, css 요소 찾기
-        간헐적으로 selenium.common.exceptions.TimeoutException 에러나서 일단 반복
-        '''
-        for i in range(self.retry_count):
-            try:
-                el =self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                self.checkVisibility(self.find)
-                if self.find != NoneType:
-                    return self.find
-
-                print(f'== loading_find_css try count: {i+1}')
-            except Exception:
-                if(i == self.retry_count-1):
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    def loading_find_csss(self,elem) -> (List[WebElement]):
-        '''
-        페이지 로드 후, css 요소 List 찾기
-        간헐적으로 selenium.common.exceptions.TimeoutException 에러나서 일단 반복
-        '''
-        for i in range(self.retry_count):
-            try:
-                el =self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_elements(By.CSS_SELECTOR,elem)
-                self.checkVisibility(self.find[0])
-                if self.find != NoneType:
-                    # print(self.find)
-                    return self.find
-
-            except Exception:
-                if(i == self.retry_count-1):
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return [False]
-
-    def loading_find_css_pre(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, DOM에서 css 요소 찾기
-        간헐적으로 selenium.common.exceptions.TimeoutException 에러나서 일단 반복
-        '''
-        num=0
-        while num<=self.retry_count:
-            try:
-
-                # 시간 20초로 변경
-                # self.wait = WebDriverWait(self.driver, timeout=20)
-                # CSS가 elem인 tag를 위에 설정한 시간 내에 검색, 그렇지 않으면 TimeoutError 발생
-                el =self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                self.checkVisibility(self.find)
-                if self.find != NoneType and self.find.is_enabled():
-                    return self.find
-                else:
-                    raise Exception()
-            except StaleElementReferenceException:
-                pass
-            except Exception:
-                print(f"해당 페이지에서 요소를 찾을 수 없습니다. => try count: {num+1}")
-                num+=1
-                if num == self.retry_count-1:
-                    return False
-
-    def loading_find_css_cl(self,elem) -> (WebElement):
-        '''
-        '''
-        num=0
-        while(num<=self.retry_count):
-            try:
-
-                # 시간 20초로 변경
-                # self.wait = WebDriverWait(self.driver, timeout=20)
-                # CSS가 elem인 tag를 위에 설정한 시간 내에 검색, 그렇지 않으면 TimeoutError 발생
-                el =self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                self.checkVisibility(self.find)
-                if self.find != NoneType and self.find.is_enabled():
-                    return self.find
-                else:
-                    raise Exception()
-            except StaleElementReferenceException:
-                pass
-            except Exception:
-                print(f"해당 페이지에서 요소를 찾을 수 없습니다. => try count: {num+1}")
-                num+=1
-                if num == self.retry_count-1:
-                    return False
-
-    def loading_find_xpath(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, xpath 요소 찾기
-        간헐적으로 selenium.common.exceptions.TimeoutException 에러나서 일단 반복
-        '''
-        for i in range(self.retry_count):
-            try:
-                el =self.wait.until(EC.visibility_of_element_located((By.XPATH,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_element(By.XPATH,elem)
-                self.checkVisibility(self.find)
-                if self.find != NoneType:
-                    return self.find
-            except Exception:
-                print(f"해당 페이지에서 요소를 찾을 수 없습니다. ")
-                if i == self.retry_count-1:
-                    return False
-
-    def loading_find_xpath_pre(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, DOM에서 xpath 요소 찾기
-        간헐적으로 selenium.common.exceptions.TimeoutException 에러나서 일단 반복
-        '''
-        for i in range(self.retry_count):
-            try:
-                el =self.wait.until(EC.presence_of_element_located((By.XPATH,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_element(By.XPATH,elem)
-                self.checkVisibility(self.find)
-                if self.find != NoneType and self.find.is_enabled():
-                    return self.find
-
-            except Exception:
-                print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                if i == self.retry_count-1:
-                    return False
-
-    def loading_find_xpaths(self,elem) -> (List[WebElement]):
-        '''
-        페이지 로드 후, xpath 요소 List 찾기
-        간헐적으로 selenium.common.exceptions.TimeoutException 에러나서 일단 반복
-        '''
-        for i in range(self.retry_count):
-            try:
-                el =self.wait.until(EC.presence_of_all_elements_located((By.XPATH,elem)))
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_elements(By.XPATH,elem)
-                self.checkVisibility(self.find[0])
-                if self.find != NoneType:
-                    return self.find
-            except Exception:
-                print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                if i == self.retry_count-1:
-                    return [False]
-
-    def wait_loading(self):
-        '''
-        페이지 렌더링이 끝날 때 까지 대기
-        '''
-        print("wait_loading 시작")
-        loading_elem_css='div.c-loading-1'
-        loading_elem_css1='*.b-skeleton'
-        # loading_elem_css2='p>img.isLoaded'
-        # loading_elem_css3='html[lang="ko"]>body.modal-open'
-        self.loading(loading_elem_css)
-        self.loading(loading_elem_css1)
-        # self.loading(loading_elem_css2)
-        max_count=10
-        count=0
-        wait_time = 0.2
-        while True:
-            page_loading = self.driver.execute_script('return document.readyState;')
-            print(page_loading)
-            if page_loading == 'complete':
-                break
-            time.sleep(wait_time)
-            count +=1
-            print(f"wait_loading count -> {count}")
-
-            if count >= max_count:
-                raise Exception("무한로딩")
-        print("wait_loading 끝")
-
-
-    def loading(self,css):
-        max_count=10
-        count=0
-        # self.driver.implicitly_wait(1)
-        while True:
-            try:
-                time.sleep(1)
-                loading_elem=self.driver.find_element(By.CSS_SELECTOR,css)
-                count+=1
-                print(f"loading count -> {count}")
-                if count>max_count:
-                    raise UserWarning("무한 로딩")
-            except UserWarning :
-                print(f"{max_count} 무한 로딩 ")
-
-                break
-            except Exception:
-                break
-
     def text_list_in_element(self,parent:str,list: list):
         '''
         요소에 text가 존재하는 확인
@@ -1422,17 +933,6 @@ class Function():
         print("swipe")
         self.action.drag_and_drop_by_offset(elem,-200,0).perform()
         self.action.reset_actions()
-
-    def gotoHome(self):
-        # current_url = self.driver.current_url
-        self.driver.get(var.common_el['url'])
-        # home_url = self.driver.current_url
-        # if current_url == home_url:
-        #     print(f"refresh: {current_url}")
-        # else:
-        #     self.wait_loading()
-        #     print(f"move: {current_url} -> {home_url}")
-        self.modal_ck()
 
     #  현재 로그인 상태인지 확인
     def is_login(self):
@@ -1583,28 +1083,12 @@ class Function():
             if self.loading_find_id('com.android.permissioncontroller:id/permission_allow_button'):
                 self.loading_find_id('com.android.permissioncontroller:id/permission_allow_button').click()
 
-        # self.driver.implicitly_wait(20)
-
         self.switch_view()
         return
 
     def animation_none(self,parent_loc):
         '''애니메이션 제거(현재 기능 구현 부족으로 미사용중이지만 업데이트 가능성 있음)'''
         self.driver.execute_script("li =document.querySelectorAll('"+parent_loc+" *'); function test(){ for(let i =0; i<  li.length; i++){li[i].style.cssText='animation: none !important; transition: none !important; trasnform: none !important; transition-delay: 0s; opacity: 1;'}; }; test();")
-
-    def is_exists_element_click(self,el:WebElement):
-        '''
-        현재 페이지에 el이 존재하면 클릭
-        '''
-        if el:
-            el.re_click()
-
-    def is_exists_move_to_click(self,el:WebElement):
-        '''
-        현재 페이지에 el이 존재하면 이동 후 클릭
-        '''
-        if el:
-            self.move_to_click(el)
 
     def move_to_click(self,el:WebElement|str):
         '''
@@ -1698,6 +1182,3 @@ class Function():
                 print(e)
                 el = self.redefinition_v2(el)
                 pass
-
-
-

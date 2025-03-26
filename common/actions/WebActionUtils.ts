@@ -5,8 +5,11 @@ import type { Locator, Page } from '@playwright/test';
  * Playwright: 웹 전용 액션 유틸리티 클래스
  */
 export class WebActionUtils extends BaseActionUtils {
+  protected page: Page;
+
   constructor(page: Page) {
     super(page);
+    this.page = page;
   }
 
   /**
@@ -154,14 +157,14 @@ export class WebActionUtils extends BaseActionUtils {
   }
 
   /**
-   * 마우스를 특정 위치로 이동
+   * Playwright: 마우스를 특정 위치로 이동
    */
   public async moveMouse(x: number, y: number): Promise<void> {
     await this.page?.mouse.move(x, y);
   }
 
   /**
-   * 요소 중앙으로 마우스 이동
+   * Playwright: 요소 중앙으로 마우스 이동
    */
   public async moveMouseToElement(selector: string): Promise<void> {
     if (!this.page) return;

@@ -5,10 +5,13 @@ import type { Browser, Element } from 'webdriverio';
  * BaseActionUtils: Playwright + Appium 공통 액션 유틸리티 클래스
  */
 export class BaseActionUtils {
-  constructor(
-    protected page?: Page,
-    protected driver?: Browser,
-  ) {}
+  protected page?: Page;
+  protected driver?: Browser;
+
+  constructor(page?: Page, driver?: Browser) {
+    this.page = page;
+    this.driver = driver;
+  }
 
   // ========== Common ==========
 
@@ -230,12 +233,13 @@ export class BaseActionUtils {
    */
   public async acceptAlert(): Promise<string | undefined> {
     if (!this.page) return;
-    let message = '';
-    this.page.once('dialog', async dialog => {
-      message = dialog.message();
-      await dialog.accept();
+    return new Promise(resolve => {
+      this.page!.once('dialog', async dialog => {
+        const message = dialog.message();
+        await dialog.accept();
+        resolve(message);
+      });
     });
-    return message;
   }
 
   /**
@@ -336,7 +340,9 @@ export class BaseActionUtils {
    */
   public async scrollToAppium(selector: string): Promise<void> {
     const element = await this.findAppiumElement(selector);
-    await element?.scrollIntoView();
+    if (element) {
+      await this.driver?.execute('mobile: scroll', { element: element.elementId, toVisible: true });
+    }
   }
 
   /**
@@ -376,5 +382,52 @@ export class BaseActionUtils {
    */
   public async pressKeyAppium(key: string): Promise<void> {
     await this.driver?.keys(key);
+  }
+
+  // ========== 자바스크립트 강제 액션 ==========
+
+  /**
+   * JavaScript로 요소 클릭
+   */
+  public async forceClickJS(selector: string): Promise<void> {
+    await this.page?.evaluate(sel => {
+      const el = document.querySelector(sel);
+      if (el) (el as HTMLElement).click();
+    }, selector);
+  }
+
+  // ==========  자바스크립트 강제 적용 ==========
+
+  /**
+   * JavaScript로 텍스트 입력
+   */
+  public async forceTypeJS(selector: string, value: string): Promise<void> {
+    await this.page?.evaluate(
+      ([sel, val]) => {
+        const el = document.querySelector(sel) as HTMLInputElement | null;
+        if (el) el.value = val;
+      },
+      [selector, value],
+    );
+  }
+
+  /**
+   * JavaScript로 input 값 초기화
+   */
+  public async clearInputJS(selector: string): Promise<void> {
+    await this.page?.evaluate(sel => {
+      const el = document.querySelector(sel) as HTMLInputElement | null;
+      if (el) el.value = '';
+    }, selector);
+  }
+
+  /**
+   * JavaScript로 요소에 focus() 주기
+   */
+  public async focusJS(selector: string): Promise<void> {
+    await this.page?.evaluate(sel => {
+      const el = document.querySelector(sel) as HTMLElement | null;
+      if (el) el.focus();
+    }, selector);
   }
 }

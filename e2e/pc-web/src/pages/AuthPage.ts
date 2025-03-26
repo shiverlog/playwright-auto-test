@@ -1,47 +1,53 @@
-import { ElementActions } from '@common/actions/ElementActions';
+import { WebActionUtils } from '@common/actions/WebActionUtils';
 import { authLocator } from '@common/locators/authLocator';
 import { urlLocator } from '@common/locators/urlLocator';
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
-export class LoginPage {
-  private page: Page;
-
+export class AuthPage extends WebActionUtils {
   constructor(page: Page) {
-    this.page = page;
+    super(page);
   }
-  // 홈페이지로 이동
+
+  // 홈페이지 이동
   async gotoHomePage() {
     await this.page.goto(urlLocator.main.PC);
     await this.page.waitForLoadState('networkidle');
   }
 
-  // 로그인 페이지 클릭
+  // 로그인 페이지로 이동
   async gotoLoginPage() {
-    await this.page.goto(urlLocator.login_.PC);
+    // GNB 유저 아이콘 클릭
+    await this.click(authLocator.myinfo_icon.PC);
+    // 메인 로그인 버튼 클릭
+    await this.click(authLocator.main_login_btn.PC);
     await this.page.waitForLoadState('networkidle');
   }
 
-  async doLogin(id: string, pw: string): Promise<boolean> {
+  // 로그인 시나리오 실행
+  async doUplusLogin(id: string, pw: string): Promise<boolean> {
     try {
+      // 홈페이지 이동
+      await this.gotoHomePage();
+      // 로그인 페이지로 이동
       await this.gotoLoginPage();
-
-      const action = new ElementActions({ page: this.page });
-
-      await action.setSelector(authLocator.login_btn.PC).click();
-      await action.setSelector(authLocator.uplus_clear_btn).click();
-      await action.setSelector(authLocator.uplus_id_input).fill(id);
-
-      // tooltip 이 떠 있는 경우 닫기 시도
+      // U+ 로그인 버튼 클릭
+      await this.click(authLocator.uplus_login_btn);
+      await this.page.waitForLoadState('networkidle');
+      // U+ ID 입력 전 초기화 버튼 클릭
+      await this.click(authLocator.uplus_clear_btn);
+      // U+ ID 입력
+      await this.typeText(authLocator.uplus_id_input, id);
+      // 툴팁 닫기
       for (let i = 0; i < 3; i++) {
         const tooltip = this.page.locator('.c-tooltip');
         if ((await tooltip.count()) === 0) break;
-        await action.setSelector('.c-ttp-inner .item:nth-of-type(1) .nm-tooltip-button').click();
+        await this.click('.c-ttp-inner .item:nth-of-type(1) .nm-tooltip-button');
       }
-
-      await action.setSelector(authLocator.uplus_pw_input).fill(pw);
-      await action.setSelector(authLocator.uplus_login_btn).click();
-
+      // U+ PW 입력
+      await this.typeText(authLocator.uplus_pw_input, pw);
+      // 로그인 전송 버튼 클릭
+      await this.click(authLocator.uplus_login_btn);
       await this.page.waitForLoadState('networkidle');
       await expect(this.page.locator('div#KV')).toBeVisible();
 
@@ -52,25 +58,13 @@ export class LoginPage {
     }
   }
 
-  async retryLogin(id: string, pw: string, maxRetry = 3): Promise<boolean> {
-    for (let i = 0; i < maxRetry; i++) {
-      const success = await this.doLogin(id, pw);
-      if (success) return true;
-      console.warn(`Retry Login ${i + 1} / ${maxRetry}`);
-    }
-    return false;
-  }
-
+  // 로그아웃 시나리오 실행
   async logout(): Promise<boolean> {
     try {
-      await this.gotoHomePage();
-
-      const action = new ElementActions({ page: this.page });
-      await action.setSelector(authLocator.logout_btn).click();
-
+      await this.page.goto(urlLocator.main.PC);
+      await this.click(authLocator.logout_btn);
       await this.page.waitForLoadState('networkidle');
       await expect(this.page.locator(authLocator.login_btn.PC)).toHaveText(/로그인/);
-
       return true;
     } catch (err) {
       console.error('[Logout Failed]', err);

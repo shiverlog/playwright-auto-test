@@ -1,16 +1,3 @@
-import os
-import sys
-import random
-
-from base.server import AppiumServer
-from base.appdriver import AppDriver        # 콘솔창에 오류 메세지 출력
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-sys.path.append('C:\dev\lg_regression\\appium_aos')
-
-
-
 class BenefitPage():
     def __init__(self,AppDriver:AppDriver,FC:Function):
         self.FC=FC
@@ -21,16 +8,16 @@ class BenefitPage():
         self.FC.gotoHome()
         try:
             # 메인 > 혜택 > 바로가기
-            self.FC.movepage(self.FC.var['benefit_el']['benefit'], self.FC.var['benefit_el']['direct'],address=self.FC.var['benefit_el']['url'])       
-        
+            self.FC.movepage(self.FC.var['benefit_el']['benefit'], self.FC.var['benefit_el']['direct'],address=self.FC.var['benefit_el']['url'])
+
             # KV 콘텐츠 노출 확인
             kv_list=self.FC.loading_find_csss(self.FC.var['benefit_el']['KV_링크'])
-            assert len(kv_list), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > KV 정상 출력 실패") 
-            
+            assert len(kv_list), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > KV 정상 출력 실패")
+
             # 서브메인 테마배너
             check_text_list=['멤버십', '이벤트', '장기고객 혜택', '결합할인 혜택', '선택약정 할인']
-            assert self.FC.text_list_in_element(self.FC.var['benefit_el']['테마배너'],check_text_list),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 테마베너 정상 출력 실패") 
-            
+            assert self.FC.text_list_in_element(self.FC.var['benefit_el']['테마배너'],check_text_list),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 테마베너 정상 출력 실패")
+
             # 랜덤으로 테마배너 링크 찾기
             theme_list_link = self.FC.loading_find_csss(self.FC.var['benefit_el']['테마배너_링크'])
             random_num = random.randrange(0, len(theme_list_link))
@@ -53,7 +40,7 @@ class BenefitPage():
             self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['benefit_el']['제휴사 혜택_title']))
             if self.FC.driver.current_url == self.FC.var['benefit_el']['url']:
                 self.FC.move_to_click(self.FC.loading_find_css_pre(self.FC.var['benefit_el']['제휴사 혜택_title']))
-                
+
             assert self.FC.var['benefit_el']['멤버십 혜택_url'] in self.FC.driver.current_url,self.DBG.logger.debug(f"혜택/멤버십 > 서브메인 > 제휴사 혜택 타이틀 링크 정상 이동 실패")
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
             result=[]
@@ -70,7 +57,7 @@ class BenefitPage():
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['benefit_el']['제휴사 혜택_전체보기']))
             result.append(self.FC.var['benefit_el']['멤버십 혜택_url'] in self.FC.driver.current_url)
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
-            assert self.DBG.print_res(result), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 제휴사 혜택 정상 노출 확인 실패") 
+            assert self.DBG.print_res(result), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 제휴사 혜택 정상 노출 확인 실패")
 
             # 온라인 가입하고 할인 헤택 영역 콘텐츠 노출 확인
             result.clear()
@@ -94,8 +81,8 @@ class BenefitPage():
         else :
             self.DBG.print_dbg("혜택/멤버십 페이지 정상 노출 및 기능 동작 확인")
             return True
-        
-    
+
+
     # 혜택/멤버십 > 멤버십 > 멤버십 이용내역
     def membership(self):
         self.FC.gotoHome()
@@ -105,7 +92,7 @@ class BenefitPage():
 
             # TODO 휴대폰 번호 선택 기능 확인은 해당 정보가 있는 계정 필요
             # ...
-            
+
             # ##### 멤버십 이용내역 탭 #####
             # 멤버십 정보 섹션 확인
             text_list_result=[]
@@ -113,7 +100,7 @@ class BenefitPage():
             text_list=['멤버십 카드 신청 및 재발급','이번 달 나의 등급' ,'올해 누적 할인']
             text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['멤버십_정보'],text_list))
             assert all(text_list_result),self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 이용내역 > 상단 유저 콘텐츠 정상 노출 확인 실패")
-            
+
             text_list_result.clear()
             ## 월별 할인 혜택 이용정보
             self.FC.move_to_element(self.FC.loading_find_css(self.FC.var['mypage']['월별_할인_혜택_이용정보']))
@@ -132,7 +119,7 @@ class BenefitPage():
             text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['기간별_이용내역_정보'],text_list))
 
             assert all(text_list_result) is True, self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 이용내역 > 기간별 이용내역 조회 기능 및 컨텐츠 정상 노출 확인 실패")
-            
+
 
             # TODO 인터넷 데이터 부족으로 스크립트 작성 불가
             # ...
@@ -181,7 +168,7 @@ if __name__ == "__main__":
         server = AppiumServer(4723)
         port = server.appium_service()
         if not server.waiting():
-            raise Exception("서버 실행 불가")    
+            raise Exception("서버 실행 불가")
         driver = AppDriver(port=port)
         fc = Function(driver)
         benefit = BenefitPage(driver,fc)
@@ -192,7 +179,7 @@ if __name__ == "__main__":
 
         if fc.is_login():
             login.logout()
-        
+
         login.u_plus_login()
 
         benefit.benefit()

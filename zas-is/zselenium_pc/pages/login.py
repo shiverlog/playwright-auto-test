@@ -1,10 +1,6 @@
 # 로그인
 def do_login(self, login_type:str):
 
-    user_icon=self.FC.loading_find_css(self.FC.var['login_el']['user_icon'])
-    self.FC.move_to_element(user_icon)
-    user_icon_login=self.FC.loading_find_css_pre(self.FC.var['login_el']['user_icon_login'])
-    self.FC.move_to_click(user_icon_login)
 
     if self.FC.driver.current_url in self.FC.var['common_el']['url']:
 
