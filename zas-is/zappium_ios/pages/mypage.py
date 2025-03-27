@@ -1,15 +1,3 @@
-import time
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-import common.pc_variable as var
-from pages.login import LoginPage
-
-class MypagePage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
 
     # 마이페이지 바로가기
     def mypage(self):
@@ -350,35 +338,3 @@ class MypagePage():
         else :
             self.DBG.print_dbg("마이페이지 > 사용현황 > 사용내역 조회 대한 내역 확인 및 페이지 정상 노출 확인")
             return True
-
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        login = LoginPage(driver,fc)
-        mypage = MypagePage(driver,fc)
-
-        fc.pre_script()
-
-        if fc.is_login():
-            login.logout()
-        login.u_plus_login()
-
-        mypage.mypage()
-        mypage.mypage_bill()
-        mypage.mypage_use()
-        mypage.mypage_membership()
-        driver.driver.quit()
-        server.stop()
-    except Exception as e:
-        print(e)
-        # os.system("lsof -P -i :4723 |awk NR==2'{print $2}'|xargs kill -9")
-        # os.system(f"ios-deploy --kill --bundle_id com.lguplus.mobile.cs")
-
-
-

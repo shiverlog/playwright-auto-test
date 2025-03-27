@@ -2,13 +2,13 @@ import type { Locator, Page } from '@playwright/test';
 import type { Browser, Element } from 'webdriverio';
 
 /**
- * BaseActionUtils: Playwright + Appium 공통 액션 유틸리티 클래스
+ * BaseActionUtils: 공통 액션 유틸리티 클래스
  */
 export class BaseActionUtils {
-  protected page?: Page;
+  protected page: Page;
   protected driver?: Browser;
 
-  constructor(page?: Page, driver?: Browser) {
+  constructor(page: Page, driver?: Browser) {
     this.page = page;
     this.driver = driver;
   }
@@ -242,6 +242,26 @@ export class BaseActionUtils {
     });
   }
 
+  // // Playwright: 요소 모두를 찾기
+  // async findElements(selector: string): Promise<Locator[]> {
+  //   return (await this.page?.locator(selector).all() ?? ;
+  // }
+
+  // /**
+  //  * 특정 순서의 요소 찾기
+  //  */
+  // public async findElementByIndex(selector: string, index: number): Promise<Locator | null> {
+  //   const count = await this.page?.locator(selector).count();
+  //   return (await index < count ? this.page?.locator(selector).nth(index)) ?? null;
+  // }
+
+  /**
+   * Playwright: 요소 갯수 카운트
+   */
+  public async getElementCount(selector: string): Promise<number> {
+    return (await this.page?.locator(selector).count()) ?? 0;
+  }
+
   /**
    *  Playwright: 요소 존재 여부
    */
@@ -384,7 +404,7 @@ export class BaseActionUtils {
     await this.driver?.keys(key);
   }
 
-  // ========== 자바스크립트 강제 액션 ==========
+  // ========== 자바스크립트 강제 액션(headless 등의 문제해결을 위함) ==========
 
   /**
    * JavaScript로 요소 클릭
@@ -395,8 +415,6 @@ export class BaseActionUtils {
       if (el) (el as HTMLElement).click();
     }, selector);
   }
-
-  // ==========  자바스크립트 강제 적용 ==========
 
   /**
    * JavaScript로 텍스트 입력

@@ -1,7 +1,4 @@
-class Search():
-    def __init__(self, WebDriver:WebDriver, FC:Function):
-        self.FC = FC
-        self.DBG = Debug(WebDriver)
+
         # 특수문자 고정값 대신 랜덤값 사용 고정값:~!@#$%^&*_-+=`|\\(){}[]:;\"\'<>,.?/
         self.special_characters = ''.join(random.choice(string.punctuation) for _ in range(15))
 

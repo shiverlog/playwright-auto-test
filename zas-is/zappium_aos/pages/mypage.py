@@ -1,8 +1,4 @@
 class MypagePage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
-
 
     # 마이페이지 바로가기
     def mypage(self):

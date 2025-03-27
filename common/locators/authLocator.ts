@@ -52,6 +52,7 @@ export const authLocator = {
   naver_pw_input: '#pw',
   naver_login_btn: 'div.btn_login_wrap .btn_login',
   naver_clear_btn: '#id_clear',
+  main_logout_btn: '.btn-logout c-btn-outline-2-s',
 } as const;
 
 // 타입 정의 (자동 추론)

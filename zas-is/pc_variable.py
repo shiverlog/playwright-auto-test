@@ -343,14 +343,10 @@ direct_el = {
 
 ujam_el = {
     'ujam' : 'a[data-gtm-click-text="혜택/멤버십|서비스+|유잼"]',
-    'url' : 'https://www.lguplus.com/ujam',
-
     'ujam_con_all' : '.u-zam__detail'
 
 }
 
 udoc_el = {
     'udoc' : '//*[@class="header-gnb-list"]/li/a[contains(.,"유독")]',
-    'url' : 'https://www.lguplus.com/pogg/main',
-
 }

@@ -56,13 +56,3 @@ class InternetIptvPage():
             iptv_daily_list=self.FC.loading_find_csss(self.FC.var['iptv_el']['더나은일상_소식영역'])
             self.FC.move_to_click(iptv_daily_list[0])
             assert len(iptv_daily_list) >= 4,self.DBG.logger.debug("인터넷/IPTV > 더 나은 일상을 위한 다양한 소식을 전해드려요 이벤트영역 출력 실패")
-
-        except  Exception :
-            self.DBG.print_dbg("인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인",False)
-            self.FC.gotoHome()
-            self.FC.modal_ck4()
-            return False
-
-        else :
-            self.DBG.print_dbg("인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인")
-            return True

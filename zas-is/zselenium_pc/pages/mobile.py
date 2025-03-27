@@ -390,13 +390,3 @@ class MobilePage():
             del_confirm = self.FC.loading_find_css_pre(self.FC.var['mobile_el']['삭제_확인_버튼'])
             self.FC.move_to_click(del_confirm)
             self.FC.modal_ck4()
-
-        except  Exception :
-            self.DBG.print_dbg("모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능 정상 동작",False)
-            self.FC.close_popup(self.FC.driver.window_handles)
-            self.FC.modal_ck4()
-            return False
-
-        else :
-            self.DBG.print_dbg("모바일 > 모바일 기기 > 휴대폰 > 장바구니 기능 정상 동작")
-            return True

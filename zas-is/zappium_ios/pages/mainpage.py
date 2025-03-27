@@ -1,17 +1,3 @@
-import random
-
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-from pages.login import LoginPage
-
-
-class MainPage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
-
 
     def mainpage_myinfo_new(self):
         self.FC.gotoHome()
@@ -22,7 +8,7 @@ class MainPage():
             text_list=['데이터','잔여량','청구요금','부가서비스 / 약정 / 할부 보기']
             self.FC.wait_datas(self.FC.var['mainpage_el']['개인화'],'span')
             result.append(self.FC.text_list_in_element(self.FC.var['mainpage_el']['개인화'],text_list))
-            
+
             # self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['개인화_상품 조회 변경']).re_click()
             # self.FC.wait_loading()
             # if self.FC.loading_find_csss(self.FC.var['mainpage_el']['개인화_모달_상품']) == None:
@@ -124,10 +110,10 @@ class MainPage():
             contents=self.FC.loading_find_csss(self.FC.var['mainpage_el']['이벤트_콘텐츠'])
             result.append(len(contents) >= 1)
             assert self.DBG.print_res(result), self.DBG.logger.debug("메인(로그인 후) > 이벤트 타이틀 및 콘텐츠 정상 노출 실패")
-            
-            
+
+
             # 추천 지금 인기모바일
-            # 타이틀 
+            # 타이틀
             self.FC.scroll2_v2(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천모바일']))
             self.FC.wait_loading()
             self.FC.click_until_go_page(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천모바일_title']))
@@ -151,12 +137,12 @@ class MainPage():
             self.FC.gotoHome()
 
             # 추천 요금제
-            # 타이틀 
+            # 타이틀
             self.FC.scroll2_v2(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천요금제_title'])).re_click()
             self.FC.wait_loading()
             result.append(self.FC.var['mobile_el']['모바일요금제_요금제_url'] in self.FC.driver.current_url)
             self.FC.gotoHome()
-            
+
             self.FC.scroll2_v2(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['추천요금제']))
             self.FC.wait_datas(self.FC.var['mainpage_el']['추천요금제'],'p')
             items=self.FC.loading_find_csss(self.FC.var['mainpage_el']['추천요금제_콘텐츠'])
@@ -202,29 +188,3 @@ class MainPage():
         else :
             self.DBG.print_dbg("메인 페이지(로그인 후) 정상 노출 확인")
             return True
-
-
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        main = MainPage(driver,fc)
-        login = LoginPage(driver,fc)
-
-        fc.pre_script()
-        
-        if fc.is_login():
-            login.logout()
-        login.u_plus_login()
-        main.mainpage_new()
-        driver.driver.quit()
-        server.stop()
-    except Exception as e:
-        print(e)
-        # os.system("lsof -P -i :4723 |awk NR==2'{print $2}'|xargs kill -9")
-        # os.system(f"ios-deploy --kill --bundle_id com.lguplus.mobile.cs")

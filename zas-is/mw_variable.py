@@ -1,8 +1,5 @@
 common_el={
 
-    'gnb_url':'https://m.lguplus.com/gnb',
-    'home_url':'https://m.lguplus.com/main',
-
     'popup_close':'div.modal-content button.c-btn-close',
     'popup_title':'*[class="modal-title"]',
 
@@ -20,7 +17,6 @@ common_el={
     '뒤로가기_버튼' : 'button.history_back',
     '이전화면' : '.c-btn-prev',
     '로그인_box' : 'div.loginBox',
-
 }
 
 search_el = {

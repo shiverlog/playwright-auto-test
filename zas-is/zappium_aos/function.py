@@ -32,11 +32,10 @@ class Function():
         self.driver.get(goto)
         self.wait_loading()
 
-    def pre_script(self):
+    def grantAllPermissions:
         '''
         자동화 테스트 시작 전, 앱 권한 허용 및 시스템 창 터치 처리
         '''
-        print(1)
         if self.loading_find_xpath(self.var['common_el']['다음버튼']):
             self.loading_find_xpath(self.var['common_el']['다음버튼']).click()
             self.loading_find_id(self.var['common_el']['앱_사용중에만_허용']).click()
@@ -46,21 +45,13 @@ class Function():
             # self.loading_find_id(self.var['common_el']['허용_버튼']).click()
             self.loading_find_id(self.var['common_el']['모두허용_버튼']).click()
             self.loading_find_id(self.var['common_el']['동의_버튼']).click()
-        print(2)
+
         if self.loading_find_xpath(self.var['common_el']['로그인하지_않고_입장할게요']):
             self.loading_find_xpath(self.var['common_el']['로그인하지_않고_입장할게요']).click()
-        print(3)
+
         if self.loading_find_xpath(self.var['common_el']['로그인없이_입장하기']):
             self.loading_find_xpath(self.var['common_el']['로그인없이_입장하기']).click()
-
-        print("----------------------------------------------------")
-        print("APP 로그인 페이지 진입")
-        print(str(self.driver.contexts))
         self.driver.switch_to.context('WEBVIEW_com.lguplus.mobile.cs')
-        print("current => "+ str(self.driver.context))
-        print("driver => "+ str(self.driver))
-        print("----------------------------------------------------")
-
         if self.loading_find_css(self.var['common_el']['withoutLogin']):
             self.loading_find_css(self.var['common_el']['withoutLogin']).click()
 
@@ -122,30 +113,6 @@ class Function():
             print(e)
             raise Exception('swipe error')
 
-    def loading_find_id(self,elem) -> (WebElement):
-        '''
-        id로 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-
-                # 시간 20초로 변경
-                # self.wait = WebDriverWait(self.driver, timeout=20)
-                # CSS가 elem인 tag를 위에 설정한 시간 내에 검색, 그렇지 않으면 TimeoutError 발생
-                self.wait.until(EC.visibility_of_element_located((AppiumBy.ID,elem)))
-
-                # 위에 동작으로 찾고자 하는 요소 존재가 확인됐으면 클릭 함수 발생
-                self.find=self.driver.find_element(AppiumBy.ID,elem)
-                if self.find != NoneType:
-                    # print(self.find)
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-        # while True:
-        #     self.find=self.driver.find_element(AppiumBy.ID,elem)
 
     def switch_to_view(self,context):
         try:
@@ -317,145 +284,6 @@ class Function():
 
         self.driver.switch_to.window(num[0])
 
-    # css로 요소 검색
-    def loading_find_css(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, css 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR,elem)))
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                if self.find != NoneType:
-                    # print(self.find)
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    # css로 요소 검색
-    def loading_find_csss(self,elem) -> (List[WebElement]):
-        '''
-        페이지 로드 후, css 요소 List 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR,elem)))
-                self.find=self.driver.find_elements(By.CSS_SELECTOR,elem)
-                if self.find != NoneType:
-                    # print(self.find)
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return [False]
-
-    # css로 요소 검색
-    def loading_find_css_pre(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, 페이지의 DOM에서 css 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR,elem)))
-                self.find=self.driver.find_element(By.CSS_SELECTOR,elem)
-                if self.find != NoneType  :
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    # xpath로 요소 검색
-    def loading_find_xpath(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, xpath 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.visibility_of_element_located((By.XPATH,elem)))
-                self.find=self.driver.find_element(By.XPATH,elem)
-                if self.find != NoneType:
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    # xpath로 요소 검색
-    def loading_find_xpath_pre(self,elem) -> (WebElement):
-        '''
-        페이지 로드 후, xpath 요소 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_element_located((By.XPATH,elem)))
-                self.find=self.driver.find_element(By.XPATH,elem)
-                if self.find != NoneType:
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return False
-
-    # xpath로 요소들 검색
-    def loading_find_xpaths(self,elem) -> (List[WebElement]):
-        '''
-        페이지 로드 후, xpath 요소 List 찾기
-        '''
-        for i in range(self.retry_count):
-            try:
-                self.wait.until(EC.presence_of_all_elements_located((By.XPATH,elem)))
-                self.find=self.driver.find_elements(By.XPATH,elem)
-                if self.find != NoneType:
-                    return self.find
-            except Exception:
-                if i == self.retry_count-1:
-                    print(f"해당 페이지에서 요소를 찾을 수 없습니다.")
-                    return [False]
-
-    def wait_loading(self):
-        '''
-        해당 페이지 렌더링이 끝날 때 까지 대기
-        '''
-        loading_elem_css='div.c-loading-1'
-        loading_elem_css1='*.b-skeleton'
-        # loading_elem_css2='p>img.isLoaded'
-        # loading_elem_css3='html[lang="ko"]>body.modal-open'
-
-        self.loading(loading_elem_css)
-        self.loading(loading_elem_css1)
-        # self.loading(loading_elem_css2)
-        # print("로딩 완료")
-        max_count=10
-        count=0
-        while True:
-            page_loading = self.driver.execute_script('return document.readyState;')
-            # print(page_loading)
-            if page_loading == 'complete':
-                break
-            count +=1
-            if count >= max_count:
-                raise Exception("무한로딩")
-
-    def loading(self,css):
-        max_count=10
-        count=0
-        self.driver.implicitly_wait(1)
-        while True:
-            try:
-                time.sleep(0.5)
-                loading_elem=self.driver.find_element(By.CSS_SELECTOR,css)
-                count+=1
-                if count>max_count:
-                    raise UserWarning("무한 로딩")
-            except UserWarning :
-                print(f"{max_count} 무한 로딩 ")
-                self.driver.implicitly_wait(10)
-                break
-            except Exception:
-                break
 
     def text_list_in_element(self,parent:str,list: list):
         '''
@@ -530,22 +358,11 @@ class Function():
         for _ in range(count):
             self.driver.execute_script(f'window.scrollBy(0, {n});')
 
-    def back(self):
-        '''
-        뒤로가기
-        '''
-        self.driver.back()
-        self.wait_loading()
 
     def drag_and_drop_x(self,elem):
         print("swipe")
         self.action.drag_and_drop_by_offset(elem,-200,0).perform()
         self.action.reset_actions()
-
-    def gotoHome(self):
-        self.driver.get(self.var['common_el']['url'])
-        self.modal_ck()
-
 
     def is_login(self):
         '''

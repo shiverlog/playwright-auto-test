@@ -1,30 +1,18 @@
-import random
-
-from base.appdriver import AppDriver        # 콘솔창에 오류 메세지 출력
-from common.function import Function
-from common.debug import Debug
-
-
-class BenefitPage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
-
 
     # 혜택테스트 부분
     def benefit(self):
         self.FC.gotoHome()
         try:
             # 메인 > 혜택 > 바로가기
-            self.FC.movepage(self.FC.var['benefit_el']['benefit'], self.FC.var['benefit_el']['direct'],address=self.FC.var['benefit_el']['url'])       
-        
+            self.FC.movepage(self.FC.var['benefit_el']['benefit'], self.FC.var['benefit_el']['direct'],address=self.FC.var['benefit_el']['url'])
+
             # KV 콘텐츠 노출 확인
             kv_list=self.FC.loading_find_csss(self.FC.var['benefit_el']['KV_링크'])
-            assert len(kv_list), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > KV 정상 출력 실패") 
+            assert len(kv_list), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > KV 정상 출력 실패")
 
             # 서브메인 테마배너
             check_text_list=['멤버십','이벤트','장기고객 혜택','결합할인 혜택','선택약정 할인']
-            assert self.FC.text_list_in_element(self.FC.var['benefit_el']['테마배너'],check_text_list),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 테마베너 정상 출력 실패") 
+            assert self.FC.text_list_in_element(self.FC.var['benefit_el']['테마배너'],check_text_list),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 테마베너 정상 출력 실패")
             theme_list_link=self.FC.loading_find_csss(self.FC.var['benefit_el']['테마배너_링크'])
             random_num= random.randrange(0,len(theme_list_link))
             check_link=theme_list_link[random_num].get_attribute('href')
@@ -45,7 +33,7 @@ class BenefitPage():
             for current in tab_list:
                 tab_list_el=self.FC.loading_find_csss(self.FC.var['benefit_el']['제휴사 혜택_탭_링크'])
                 num=tab_list.index(current)
-                self.FC.scroll_x(tab_list_el[num]).re_click() 
+                self.FC.scroll_x(tab_list_el[num]).re_click()
                 text = tab_list_el[num].get_property('innerText')
                 result.append(current in text)
                 result.append(len(self.FC.loading_find_csss(self.FC.var['benefit_el']['제휴사 혜택_panel_링크']))>0)
@@ -54,23 +42,23 @@ class BenefitPage():
             self.FC.click_until_go_page(self.FC.var['benefit_el']['제휴사 혜택_전체보기'])
             result.append(self.FC.var['benefit_el']['멤버십 혜택_url'] in self.FC.driver.current_url)
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
-            assert self.DBG.print_res(result), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 제휴사 혜택 정상 노출 확인 실패") 
-            
+            assert self.DBG.print_res(result), self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 제휴사 혜택 정상 노출 확인 실패")
+
             # 온라인 가입하고 할인 헤택 영역 콘텐츠 노출 확인
             result.clear()
             self.FC.click_until_go_page(self.FC.loading_find_css(self.FC.var['benefit_el']['온라인 가입 혜택_title']))
             print (f"{self.FC.var['benefit_el']['온라인 가입 혜택_url']} in {self.FC.driver.current_url}")
             assert self.FC.var['benefit_el']['온라인 가입 혜택_url'] in self.FC.driver.current_url,self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 온라인 가입 혜택 타이틀 링크 정상 이동 실패")
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
-            self.FC.scroll2_v2(self.FC.loading_find_css_pre(self.FC.var['benefit_el']['온라인 가입 혜택_title'])) 
-             
+            self.FC.scroll2_v2(self.FC.loading_find_css_pre(self.FC.var['benefit_el']['온라인 가입 혜택_title']))
+
             assert len(self.FC.loading_find_csss(self.FC.var['benefit_el']['온라인 가입 혜택_콘텐츠_링크'])) > 0,self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 온라인 가입 혜택 콘텐츠 정상 출력 실패")
             self.FC.move_to_click(self.FC.loading_find_css(self.FC.var['benefit_el']['이벤트_title']))
 
             assert self.FC.var['benefit_el']['진행 중인 이벤트_url'] in self.FC.driver.current_url,self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 이벤트 타이틀 링크 정상 이동 실패")
             self.FC.goto_url(self.FC.var['benefit_el']['url'])
-            self.FC.scroll2_v2(self.FC.loading_find_css(self.FC.var['benefit_el']['이벤트_title'])) 
-             
+            self.FC.scroll2_v2(self.FC.loading_find_css(self.FC.var['benefit_el']['이벤트_title']))
+
             assert len(self.FC.loading_find_csss(self.FC.var['benefit_el']['이벤트_콘텐츠_링크'])),self.DBG.logger.debug("혜택/멤버십 > 서브메인 > 이벤트 콘텐츠 정상 노출 실패")
 
         except  Exception :
@@ -92,7 +80,7 @@ class BenefitPage():
 
             # TODO 휴대폰 번호 선택 기능 확인은 해당 정보가 있는 계정 필요
             # ...
-            
+
             text_list_result=[]
 
             # ##### 멤버십 이용내역 탭 #####
@@ -101,9 +89,9 @@ class BenefitPage():
             text_list=['멤버십 카드 신청 및 재발급','이번 달 나의 등급','올해 누적 할인']
             text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['멤버십_정보'], text_list))
             assert all(text_list_result),self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 이용내역 > 멤버십 정보 컨텐츠 정상 노출 확인 실패")
-            
-           
-           
+
+
+
             # 멤버십 이용내역 콘텐츠 정상 출력 확인
             ##  혜택/멤버십 > 멤버십 > 월별 할인 혜택 이용정보
             text_list_result.clear()
@@ -125,7 +113,7 @@ class BenefitPage():
             text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['기간별_이용내역_정보'], text_list))
 
             assert all(text_list_result), self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 이용내역 > 기간별 이용내역 조회 기능 및 컨텐츠 정상 노출 확인 실패")
-            
+
             # TODO 인터넷 데이터 부족으로 스크립트 작성 불가
             # ...
 
@@ -161,7 +149,7 @@ class BenefitPage():
                     break
                 else:
                     self.FC.loading_find_css(self.FC.var['mypage']['멤버십 카드 발급내역_자세히보기']).re_click()
-                    
+
             text_list=['신청일','멤버십 카드번호','휴대폰 번호','발급일','사용 중지일','상태']
             text_list_result.append(self.FC.text_list_in_element(self.FC.var['mypage']['멤버십 카드 발급내역_자세히보기_팝업'],text_list))
             assert all(text_list_result), self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 변경내역 > 멤버십카드 발급내역 기능 및 컨텐츠 정상 노출 확인 실패")
@@ -170,7 +158,7 @@ class BenefitPage():
 
 
             # 01.02 기준 업데이트로 인한 비활성화
-            ## 혜택/멤버십 > 멤버십 > 멤버십 변경내역 > 나만의 콕 혜택 신청내역 
+            ## 혜택/멤버십 > 멤버십 > 멤버십 변경내역 > 나만의 콕 혜택 신청내역
             # TODO 나만의 콕 사용중인 계정 필요
             # ...
             # text_list_result.clear()
@@ -181,7 +169,7 @@ class BenefitPage():
             # text_list_result.append(self.FC.text_list_in_element(var.mypage['나만의 콕 혜택 신청내역'],text_list))
             # print(str(text_list_result))
             # assert all(text_list_result), self.DBG.logger.debug(f"혜택/멤버십 > 멤버십 > 멤버십 변경내역 > 나만의 콕 혜택 신청내역 컨텐츠 정상 노출 확인 실패")
-            
+
         except  Exception :
             self.DBG.print_dbg("혜택/멤버십 > 멤버십 > 로그인 된 유저의 멤버십 정보 및 이용 내역 정상 동작 확인",False)
             return False

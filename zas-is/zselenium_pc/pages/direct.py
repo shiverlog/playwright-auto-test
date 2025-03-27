@@ -59,12 +59,3 @@ class DirectPage():
             self.FC.move_to_click(direct_con5[random_num])
             assert self.FC.var['ujam_el']['url'] in self.FC.loading_find_css(self.FC.var['ujam_el']['ujam_con_all']).get_property('baseURI'), self.DBG.logger.debug("다이렉트 > 다이렉트를 가장 쉽게 만나는 방법 > 페이지 이동 실패")
 
-
-        except  Exception :
-            self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인",False)
-            return False
-
-        else :
-            self.DBG.print_dbg("다이렉트페이지 정상 노출 및 기능 동작 확인")
-            self.FC.modal_ck4()
-            return True

@@ -1,23 +1,3 @@
-   return True
-
-
-    def u_plus_login_retry(self,count,login_type):
-        while 0 < count:
-            # res = self.u_plus_login()
-            res = self.do_login(login_type)
-            if res:
-                # self.DBG.print_dbg("u+ ID 로그인 정상 동작 확인")
-                return True
-            else:
-                count-=1
-                if count <= 0:
-                    self.DBG.print_dbg(f"{login_type} 로그인 정상 동작 확인", False)
-                    return False
-                else:
-                    Slack.send_slack_text(log=f"{login_type} 로그인 {count}회 재실행중...", test_result = None)
-                    self.driver.refresh()
-                    pass
-
 
     # 로그아웃
     def logout(self):
@@ -61,7 +41,7 @@
             }
 
             self.fc.is_exists_element_click(self.fc.loading_find_css(self.fc.var['login_el'][f'{login_type}_입력한문자삭제']))
-            # self.fc.is_exists_element_click(self.fc.loading_find_css(self.fc.var['login_el'][f'{login_type}_id_저장']))
+
             self.fc.wait_loading()
 
             self.fc.loading_find_css(self.fc.var['login_el'][f'{login_type}_id_input']).send_keys(dict[login_type][0])
@@ -86,13 +66,3 @@
 
             # # # 유플러스 로그인 후 정상적으로 메인페이지로 이동했는지 확인
             assert self.fc.loading_find_css(self.fc.var['mainpage_el']['KV']).get_property('baseURI') == self.fc.var['common_el']['url'], self.DBG.logger.debug("u+ ID 로그인 후 메인페이지 이동 실패")
-
-
-        except Exception as e:
-            self.DBG.print_dbg(f"{login_type} 로그인 정상 동작",False)
-            return False
-
-        else :
-            self.DBG.print_dbg(f"{login_type} 로그인 정상 동작")
-            return True
-

@@ -1,9 +1,4 @@
-class InternetIptvPage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
-
-    def iptv(self):
+def iptv(self):
         self.FC.gotoHome()
         try :
             self.FC.movepage(self.FC.var['iptv_el']['iptv'], self.FC.var['iptv_el']['direct'],address=self.FC.var['iptv_el']['iptv_url'])
@@ -90,29 +85,3 @@ class InternetIptvPage():
         else :
             self.DBG.print_dbg("인터넷/IPTV 페이지 정상 노출 및 기능 동작 확인")
             return True
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        iptv = InternetIptvPage(driver,fc)
-        login = LoginPage(driver,fc)
-
-        fc.pre_script()
-        fc.chrome_clear()
-
-        if fc.is_login():
-            login.logout()
-
-        login.u_plus_login()
-
-        iptv.iptv()
-
-        driver.driver.quit()
-        server.stop()
-    except:
-        os.system(r'taskkill /f /t /im node.exe')

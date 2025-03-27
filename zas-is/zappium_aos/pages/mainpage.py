@@ -1,8 +1,4 @@
 class MainPage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
-
 
     def mainpage_new(self):
         self.FC.gotoHome()

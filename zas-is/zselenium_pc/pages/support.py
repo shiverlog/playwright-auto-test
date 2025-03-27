@@ -109,11 +109,3 @@ class SupportPage():
             self.FC.move_to_element(self.FC.loading_find_css_pre(self.FC.var['support_el']['안내영역']))
             text_list=['1:1 문의','고객센터/ARS 안내','홈페이지 개선제안']
             assert self.FC.text_list_in_element(self.FC.var['support_el']['안내영역'],text_list)
-
-        except  Exception :
-            self.DBG.print_dbg("고객지원 페이지 정상 노출 및 기능 동작 확인",False)
-            return False
-
-        else :
-            self.DBG.print_dbg("고객지원 페이지 정상 노출 및 기능 동작 확인")
-            return True

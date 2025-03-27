@@ -1,8 +1,3 @@
-class MobilePage():
-    def __init__(self,AppDriver:AppDriver,FC:Function):
-        self.driver=AppDriver.driver
-        self.FC=FC
-        self.DBG=Debug(AppDriver)
 
     def mobile(self):
         self.FC.gotoHome()

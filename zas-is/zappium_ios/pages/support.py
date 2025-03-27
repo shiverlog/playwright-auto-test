@@ -1,16 +1,3 @@
-import sys
-import time
-
-from base.server import AppiumServer
-from base.appdriver import AppDriver
-from common.function import Function
-from common.debug import Debug
-import common.pc_variable as var      # 지정한 변수 모듈
-from pages.login import LoginPage
-
-sys.path.append('/Users/nam/dev/remotePC_batchfiles/pubsub/appium_ios')
-
-
 class SupportPage():
     def __init__(self,AppDriver:AppDriver,FC:Function):
         self.FC=FC
@@ -135,28 +122,3 @@ class SupportPage():
             self.DBG.print_dbg("고객지원 페이지 정상 노출 및 기능 동작 확인")
             return True
 
-
-if __name__ == "__main__":
-    try:
-        server = AppiumServer(4723)
-        port = server.appium_service()
-        if not server.waiting():
-            raise Exception("서버 실행 불가")
-        driver = AppDriver(port=port)
-        fc = Function(driver)
-        login = LoginPage(driver,fc)
-        support = SupportPage(driver,fc)
-
-        fc.pre_script()
-
-        if fc.is_login():
-            login.logout()
-        login.u_plus_login()
-
-        support.support()
-        driver.driver.quit()
-        server.stop()
-    except Exception as e:
-        print(e)
-        # os.system("lsof -P -i :4723 |awk NR==2'{print $2}'|xargs kill -9")
-        # os.system(f"ios-deploy --kill --bundle_id com.lguplus.mobile.cs")

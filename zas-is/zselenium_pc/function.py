@@ -59,48 +59,33 @@ class Function():
 
 
     def movepage(self,*btns,address:str=''):
-        '''
-        GNB 메뉴 이동
-        *kwarg에 address 인자가 있을 시, 햄버거 메뉴 이동 후 현재 url에 address 값이 포함될 때까지 반복
+      for i in range(self.retry_count):
+          try:
+              for btn in btns:
+                  if btn.startswith('/'):
+                      self.wait.until(EC.presence_of_element_located((By.XPATH,btn)))
+                      el=self.driver.find_element(By.XPATH, btn)
+                  else:
+                      self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, btn)))
+                      el=self.driver.find_element(By.CSS_SELECTOR, btn)
+                  self.action.move_to_element(el).perform()
+                  self.action.reset_actions()
+                  # 마지막 매개 변수 일 때, 클릭
+                  if len(btns)-1 == btns.index(btn):
+                      self.action.move_to_element(el).click().perform()
+                      self.action.reset_actions()
+                      self.action.move_by_offset(0,500).perform()
+                      self.action.reset_actions()
 
-        :Usage:
-            ::
-                FC.movepage(btn1,btn2,btn3,address="https://www.lguplus.com")
-        '''
-        for i in range(self.retry_count):
-            try:
-                for btn in btns:
-                    if btn.startswith('/'):
-                        self.wait.until(EC.presence_of_element_located((By.XPATH,btn)))
-                        el=self.driver.find_element(By.XPATH, btn)
-                    else:
-                        self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, btn)))
-                        el=self.driver.find_element(By.CSS_SELECTOR, btn)
-                    self.action.move_to_element(el).perform()
-                    self.action.reset_actions()
-                    # 마지막 매개 변수 일 때, 클릭
-                    if len(btns)-1 == btns.index(btn):
-                        self.action.move_to_element(el).click().perform()
-                        self.action.reset_actions()
-                        self.action.move_by_offset(0,500).perform()
-                        self.action.reset_actions()
+              self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, var.common_el['GNB_list'])))
+              self.wait_loading()
 
-                self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, var.common_el['GNB_list'])))
-                self.wait_loading()
+              # 현재 url이 address 인자값과 같으면 return(멈춤)
+              print(f"{address} in {self.driver.current_url}")
+              if address in self.driver.current_url:
+                  return True
 
-                # 현재 url이 address 인자값과 같으면 return(멈춤)
-                print(f"{address} in {self.driver.current_url}")
-                if address in self.driver.current_url:
-                    return True
-
-                print(f'movepage(address) count : {i+1}')
-            except BaseException as e:
-                print(e)
-                if i == self.retry_count-1:
-                    print(f"movepage({address}) 실패했습니다.")
-                    return False
-                else:
-                    continue
+              print(f'movepage(address) count : {i+1}')
 
     def close_popup(self,num):
         '''
@@ -201,24 +186,12 @@ class Function():
         except BaseException:
             el=None
 
-    def back(self):
-        '''
-        뒤로가기
-        '''
-        self.driver.back()
-        self.wait_loading()
-        self.modal_ck4()
-
     def drag_and_drop_x(self,elem):
         self.action.drag_and_drop_by_offset(elem,-200,0).perform()
         self.action.reset_actions()
 
     def gotoHome(self):
         self.driver.get(var.common_el['url'])
-        self.modal_ck4()
-
-    def goto_url(self,url:str):
-        self.driver.get(url)
         self.modal_ck4()
 
     def is_login(self):
@@ -382,11 +355,9 @@ class Function():
             print(str(product))
             print(product['ecom_prd_name'])
 
-        except:
-            pass
 
     def tab_menu_check(self,variable,*args): # 탭 메뉴클릭 확인 기능 : 모바일 > 휴대폰, 태블릿 영역 적용
-        try:
+
             tab_list_el=self.loading_find_csss(variable[args[0]])
             for tab in tab_list_el:
                 self.action.move_to_element(tab).click().perform()
@@ -400,11 +371,9 @@ class Function():
                 #     assert item.get_property('children')[2].get_property('innerText') != '' and item.get_property('children')[3].get_property('innerText') != '', self.DBG.logger.debug(f"모바일기기 > 서브메인 > 휴대폰 > 탭({tab_name}) 콘텐츠 정상 출력 실패")
                 #     assert 'img' in item.get_property('children')[1].get_property('innerHTML'), self.DBG.logger.debug(f"모바일기기 > 서브메인 > 휴대폰 > 탭({tab_name}) 콘텐츠 정상 출력 실패")
             tab_list_el[0].click() # 추천탭 클릭
-        except:
-            pass
+
 
     def con_check (self,variable,*args): # 컨텐츠 정상출력 확인기능 : 모바일 > 이벤트 영역, iptv > 혜택 영역
-        try:
 
             print(f"event_list_el =>> {event_list}")
             if variable == var.direct_el :
@@ -418,11 +387,9 @@ class Function():
                 event_list = self.loading_find_csss(variable[args[0]])
                 assert len(event_list) == 4, self.DBG.logger.debug(f"{args[1]} > 서브메인 > 이벤트 콘텐츠 4개 노출 실패 ")
 
-        except:
-            pass
+
 
     def full_view(self,variable,*args): # 전체 보기 기능 :  모바일 > 이벤트 전체보기 , 휴대폰 전체보기, 태블릿/스마트워치/노트북 전체보기 적용
-        try:
 
             self.scroll_el(variable[args[0]])
             self.action.move_to_element(self.loading_find_css(variable[args[0]])).click().perform()
@@ -434,82 +401,3 @@ class Function():
             if variable[args[3]] != self.driver.current_url:
                 self.driver.back()
                 self.scroll(10)
-
-        except:
-            pass
-
-    def con_check_full_view(self,variable,*args): # 컨텐츠 개수 체크 모두보기 기능 : 혜택 > 온라인 가입 할인 혜택, 혜택 > 이벤트에 적용
-        try:
-
-            result=[]
-            result.clear()
-            self.action.move_to_element(self.loading_find_css_pre(variable[args[0]])).perform()
-            result.append(3 == len(self.loading_find_csss(variable[args[1]])))
-            self.action.move_to_element(self.loading_find_css(variable[args[2]])).click().perform()
-            self.action.reset_actions()
-            result.append(variable[args[3]] in self.loading_find_css(variable[args[4]]).get_property('baseURI'))
-
-        except:
-            pass
-
-    def move_to_element(self,el):
-        '''
-        action chain으로 el까지 이동
-        '''
-        self.action.move_to_element(el).perform()
-        self.action.reset_actions()
-
-    def move_to_click(self,el,JS_switch=False):
-        '''
-        action chain으로 el까지 이동 후 클릭
-        '''
-        if JS_switch is False:
-            self.action.move_to_element(el).click().perform()
-            self.action.reset_actions()
-            self.wait_loading()
-        else:
-            self.scroll_center(el)
-            # self.action.move_to_element(el).click().perform()
-            # self.action.reset_actions()
-            self.driver.execute_script("arguments[0].click();", el)
-            self.wait_loading()
-
-    def again_click(self,click_el:WebElement,display_el_selector:str=''):
-        '''
-        해당 요소 정상 클릭까지 반복
-        click_el: 클릭을 반복할 요소
-        display_el_selecto: 클릭 정상여부 확인
-        '''
-        current_url = self.driver.current_url
-        for _ in range(self.retry_count):
-            self.move_to_click(click_el)
-            # click_el.click()
-            self.wait_loading()
-            if display_el_selector == '':
-                if current_url != self.driver.current_url:
-                    return
-            elif display_el_selector.startswith('//'):
-                if self.loading_find_xpath_pre(display_el_selector):
-                    return
-            else:
-                if self.loading_find_css_pre(display_el_selector):
-                    return
-        return False
-
-    def is_exists_element_click(self,el:WebElement):
-        '''
-        현재 페이지에 el이 존재하면 클릭
-        '''
-        if el:
-            el.click()
-            self.wait_loading()
-
-    def is_exists_move_to_click(self,el:WebElement,JS_switch=False):
-        '''
-        현재 페이지에 el이 존재하면 이동 후 클릭
-        '''
-        if el:
-            if JS_switch:
-                self.move_to_click(el,True)
-            else:
-                self.move_to_click(el)
