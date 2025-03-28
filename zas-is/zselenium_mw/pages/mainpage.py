@@ -10,7 +10,7 @@ class MainPage():
             result=[]
             self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['개인화/다운로드 콘텐츠'])
             # KV
-            assert len(self.FC.loading_find_xpaths(self.FC.var['mainpage_el']['kv_링크'])) >= 1,self.DBG.logger.debug("메인(로그인 후) > KV 콘텐츠 정상 노출 실패")
+            assert len(self.FC.loading_find_xpaths(self.FC.var['mainpage_el']['kv_링크'])) >= 1, self.DBG.logger.debug("메인(로그인 후) > KV 콘텐츠 정상 노출 실패")
 
             # 앱 다운로드
             self.FC.click_until_go_page(self.FC.loading_find_css_pre(self.FC.var['mainpage_el']['앱 다운로드']))

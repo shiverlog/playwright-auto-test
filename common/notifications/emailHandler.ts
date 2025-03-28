@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { emailConfig } from '@common/config/config';
+import { emailConfig } from '@common/config/onfig';
 import { ALL_POCS, POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import nodemailer from 'nodemailer';

@@ -257,9 +257,7 @@ iptv_el = {
     'online_url' : 'https://www.lguplus.com/signup/package',
     '온라인1분가입_상세' : 'div.p-internet',
     '가입상품명' : 'div.join-product-area>ul>li p.tit',
-
     '더나은일상_소식영역' : '.bo-modules-internet-benefit-list .event-section-ul li',
-
 }
 
 benefit_el = {
@@ -272,48 +270,39 @@ benefit_el = {
     '제휴사전체보기_버튼' : 'div.par-tabcont-area div.all-more a',
     '제휴사전체보기_전체영역' : 'div.membership-gift-data',
     'membership_url' : 'https://www.lguplus.com/benefit/membership',
-
     '온라인_가입할인_혜택' : '.bo-modules-internet-event-list .event-section-ul',
     '온라인_가입할인_혜택_컨텐츠' : '.bo-modules-internet-event-list .event-section-ul li',
     '혜택모두보기_버튼' : '.bo-modules-benefit-online-product .middlearea > a',
     '혜택모두보기_상세' : 'div.uplus-_combined-phone-discount',
     'online' : 'https://www.lguplus.com/benefit-uplus/online-purchase-benefit',
-
     'uth_benefit' : '//*[@class="sub-menu-list"]//li/a[contains(.,"유쓰 혜택")]',
-
 }
 
 support_el = {
     'support' : '//*[@class="header-gnb-list"]/li/a[contains(.,"고객지원")]',
     'url' : 'https://www.lguplus.com/support',
-
     '고객지원_검색영역' : 'div.top-search-wrap',
     '고객지원_검색_플래이스홀더' : 'div.top-search-wrap input[placeholder="자주 찾는 검색어"]',
     '자주찾는검색어' : 'div.top-search-wrap div.search-keyword>div a',
     '고객지원_검색인풋창' : 'div.top-search-wrap input',
-
     '자주하는질문_메뉴탭' : 'div.c-tabmenu-wrap ul[role="tablist"]',
     '검색어_텍스트' : 'p.faq-title>span',
     '검색결과_리스트' : 'div.accordion div[role="button"]',
     '검색결과' : 'div.collapse.show',
     '검색결과_전체영역' : 'div.store-address',
     '자주하는질문키워드' : 'div.search-keyword >div.keyword-link a',
-
     '도움이될내용' : 'div.cs-intro-1-wrap:not([style="display: none;"])',
     '도움이될내용_버튼' : 'div.cs-intro-1-wrap:not([style="display: none;"]) button',
     '스스로해결가이드' : 'div.cs-intro-2-wrap>div',
     '스스로해결가이드_더보기' : 'div.cs-intro-2-wrap div.middlearea>a',
     '스스로해결가이드_상세_전체영역' : 'div.self-troubleshoot-guide',
     'self_guide_url' : 'https://www.lguplus.com/support/self-troubleshoot/guide',
-
     '이용가이드영역' : 'div.cs-intro-3-wrap',
     '서비스가입안내' : 'div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(1)',
     '서비스조회' : 'div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(2)',
     '서비스변경_일시정지_해지' : 'div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(3)',
     '매뉴얼다운로드' : 'div.cs-intro-3-wrap div.cs-intro-guide >div.cs-intro-guide-box:nth-of-type(4)',
-
     '안내영역' : 'div.cs-intro-5-wrap',
-
 }
 
 direct_el = {

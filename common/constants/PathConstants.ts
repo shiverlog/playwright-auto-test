@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { BASE_PATH } from '@common/config/config';
+import { BASE_PATH } from '@common/config/onfig';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
 
 // POC 키 값 (각 환경별 식별자) '' 는 모든 POC 실행을 의미

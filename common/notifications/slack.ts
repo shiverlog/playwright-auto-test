@@ -1,4 +1,4 @@
-import { slackConfig } from '@common/config/config';
+import { slackConfig } from '@common/config/onfig';
 import { ALL_POCS, POCType } from '@common/constants/PathConstants';
 import { slackForm } from '@common/formatters/slackForm';
 import { Logger } from '@common/logger/customLogger';

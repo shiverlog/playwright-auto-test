@@ -64,7 +64,7 @@ mypage = {
     '청구_납부내역_tab' : 'div.m-tabs a[role="tab"]',
     '내역_list' : 'div.tab-panel li.line-item',
 
-    'bill_direct': '//a[contains(.,"요금/납부 조회")]',,
+    'bill_direct': '//a[contains(.,"요금/납부 조회")]',
     'use_direct' : '//a[contains(.,"사용내역 조회")]' ,
 
     '실시간요금조회' : 'ul[role="tablist"]>li:nth-of-type(1)>a',
@@ -217,7 +217,6 @@ mobile_el = {
 
     '장바구니_삭제_버튼' : '.c-card-cart .cart-box button.c-btn-del',
     '삭제_확인_버튼' : '.c-btn-outline-1-m',
-
 }
 
 iptv_el = {
@@ -270,7 +269,6 @@ benefit_el = {
     '이벤트_콘텐츠_링크':'div[section-group-id="MoSubMainBenefitEventSection"] ul a',
 
     'membership_direct' :'//a[contains(.,"멤버십 이용")]',
-
 }
 
 support_el = {
@@ -320,12 +318,10 @@ direct_el = {
     'con_06_li':'div[moduleid="BannerImageList01"] ul li',
 
     'USIM_신규가입' : 'a[data-gtm-click-text*="USIM 신규가입"]',
-
 }
 
 ujam_el = {
     'ujam' : 'a[data-gtm-click-text="혜택/멤버십|서비스+|유잼"]',
-
 }
 
 udoc_el = {

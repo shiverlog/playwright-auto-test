@@ -242,18 +242,25 @@ export class BaseActionUtils {
     });
   }
 
-  // // Playwright: 요소 모두를 찾기
-  // async findElements(selector: string): Promise<Locator[]> {
-  //   return (await this.page?.locator(selector).all() ?? ;
-  // }
+  /**
+   * Playwright: 모든 요소 찾기 (Selenium의 find_elements 대체)
+   * @param selector - CSS/XPath 선택자
+   * @returns 요소 배열 (Locator[])
+   */
+  public async findElements(selector: string): Promise<Locator[]> {
+    return await this.page.locator(selector).all();
+  }
 
-  // /**
-  //  * 특정 순서의 요소 찾기
-  //  */
-  // public async findElementByIndex(selector: string, index: number): Promise<Locator | null> {
-  //   const count = await this.page?.locator(selector).count();
-  //   return (await index < count ? this.page?.locator(selector).nth(index)) ?? null;
-  // }
+  /**
+   * 특정 순서의 요소 찾기 (Selenium의 find_elements()[index] 대체)
+   * @param selector - CSS/XPath 선택자
+   * @param index - 요소의 순서 (0부터 시작)
+   * @returns 특정 요소 (Locator | null)
+   */
+  public async findElementByIndex(selector: string, index: number): Promise<Locator | null> {
+    const elements = await this.findElements(selector);
+    return elements.length > index ? elements[index] : null;
+  }
 
   /**
    * Playwright: 요소 갯수 카운트
@@ -446,6 +453,41 @@ export class BaseActionUtils {
     await this.page?.evaluate(sel => {
       const el = document.querySelector(sel) as HTMLElement | null;
       if (el) el.focus();
+    }, selector);
+  }
+
+  /**
+   * 특정 요소를 강제로 최상단(z-index)으로 가져오는 함수
+   * @param selector - CSS/XPath 선택자
+   */
+  public async bringElementToFront(selector: string): Promise<void> {
+    await this.page.evaluate(sel => {
+      const el = document.querySelector(sel) as HTMLElement;
+      if (el) {
+        el.style.cssText = `
+          display: block !important;
+          visibility: visible !important;
+          position: relative !important;
+          z-index: 999999999 !important;
+        `;
+      }
+    }, selector);
+  }
+
+  /**
+   * 여러 요소를 강제로 최상단(z-index)으로 가져오는 함수
+   * @param selector - CSS/XPath 선택자
+   */
+  public async bringElementsToFront(selector: string): Promise<void> {
+    await this.page.evaluate(sel => {
+      document.querySelectorAll(sel).forEach(el => {
+        (el as HTMLElement).style.cssText = `
+          display: block !important;
+          visibility: visible !important;
+          position: relative !important;
+          z-index: 999999999 !important;
+        `;
+      });
     }, selector);
   }
 }

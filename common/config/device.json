@@ -1,0 +1,134 @@
+{
+  "common": {
+    "bundleId": "com.lguplus.mobile.cs",
+    "xcodeOrgId": "MJEMMU945Y",
+    "xcodeSigningId": "iPhone Developer",
+    "autoAcceptAlerts": true,
+    "includeSafariInWebviews": true,
+    "noReset": true,
+    "app": "mobileCS_release_v7.0.1(349)_20250115_0712.apk",
+    "chromedriverExecutable": ".wdm\\drivers\\chromedriver\\win32\\130.0.6723.58\\chromedriver-win64\\chromedriver.exe"
+  },
+  "iOS": {
+    "iPhone_12_pro_max": {
+      "platformName": "iOS",
+      "deviceName": "iPhone 12 Pro Max",
+      "browserName": "Safari",
+      "appium:options": {
+        "nativeWebTap": true,
+        "automationName": "XCUITest",
+        "udid": "00008101-00052DEE22C1001E",
+        "platformVersion": "18.1.1",
+        "bundleId": "com.lguplus.mobile.cs",
+        "xcodeOrgId": "MJEMMU945Y",
+        "xcodeSigningId": "iPhone Developer",
+        "autoWebview": true,
+        "shouldTerminateApp": true,
+        "forceAppLaunch": true,
+        "waitForIdleTimeout": 5000,
+        "maxTypingFrequency": 20,
+        "printPageSourceOnFindFailure": true,
+        "autoDismissAlerts": true,
+        "newCommandTimeout": 300,
+        "noReset": true
+      }
+    },
+    "iPhone_13_mini": {
+      "platformName": "iOS",
+      "deviceName": "iPhone 13 Mini",
+      "browserName": "Safari",
+      "appium:options": {
+        "automationName": "XCUITest",
+        "udid": "00008110-001018AE21C2401E",
+        "platformVersion": "16.3.1",
+        "bundleId": "com.apple.mobilesafari",
+        "safariInitialUrl": "https://m.lguplus.com/",
+        "waitForIdleTimeout": 0,
+        "setWebContentsDebuggingEnabled": true,
+        "nativeWebTap": true,
+        "simulatorTracePointer": true,
+        "snapshotMaxDepth": 500,
+        "forceSimulatorSoftwareKeyboardPresence": true
+      }
+    }
+  },
+  "Android": {
+    "A30": {
+      "platformName": "Android",
+      "deviceName": "Galaxy A30",
+      "appium:options": {
+        "automationName": "UiAutomator2",
+        "udid": "R39M20A6WQ",
+        "platformVersion": "11",
+        "appActivity": "com.lguplus.mobile.cs.activity.splash.SplashActivity",
+        "appPackage": "com.lguplus.mobile.cs",
+        "chromedriverExecutable": "{get_chrome_driver()}",
+        "setWebContentsDebuggingEnabled": true,
+        "enablePerformanceLogging": true,
+        "adbExecTimeout": 500000,
+        "newCommandTimeout": 3000
+      }
+    },
+    "A12": {
+      "platformName": "Android",
+      "deviceName": "Galaxy A12",
+      "appium:options": {
+        "automationName": "UiAutomator2",
+        "udid": "R39NC008CR",
+        "platformVersion": "10",
+        "appActivity": "com.lguplus.mobile.cs.activity.main.MainActivity",
+        "appPackage": "com.lguplus.mobile.cs",
+        "chromedriverExecutable": "{get_chrome_driver()}",
+        "setWebContentsDebuggingEnabled": true,
+        "enablePerformanceLogging": true,
+        "adbExecTimeout": 500000,
+        "newCommandTimeout": 3000
+      }
+    },
+    "S23": {
+      "platformName": "Android",
+      "deviceName": "Galaxy S23",
+      "appium:options": {
+        "automationName": "UiAutomator2",
+        "udid": "R3CW20MW9QH",
+        "platformVersion": "13",
+        "appActivity": "com.lguplus.mobile.cs.activity.main.MainActivity",
+        "appPackage": "com.lguplus.mobile.cs",
+        "chromedriverExecutable": "{get_chrome_driver()}",
+        "setWebContentsDebuggingEnabled": true,
+        "enablePerformanceLogging": true,
+        "adbExecTimeout": 500000,
+        "newCommandTimeout": 3000
+      }
+    },
+    "Z_FLIP3": {
+      "platformName": "Android",
+      "deviceName": "Galaxy Z Flip 3",
+      "appium:options": {
+        "automationName": "UiAutomator2",
+        "udid": "R3CR30SD5R",
+        "platformVersion": "13",
+        "appActivity": "com.lguplus.mobile.cs.activity.main.MainActivity",
+        "appPackage": "com.lguplus.mobile.cs",
+        "chromedriverExecutable": "{get_chrome_driver()}",
+        "setWebContentsDebuggingEnabled": true,
+        "noReset": true
+      }
+    },
+    "Z_FLIP4": {
+      "platformName": "Android",
+      "deviceName": "Galaxy Z Flip 4",
+      "appium:options": {
+        "automationName": "UiAutomator2",
+        "udid": "R3CTA081TAW",
+        "platformVersion": "14",
+        "appActivity": "com.lguplus.mobile.cs.activity.main.MainActivity",
+        "appPackage": "com.lguplus.mobile.cs",
+        "setWebContentsDebuggingEnabled": true,
+        "noReset": true,
+        "disableWindowAnimation": true,
+        "adbExecTimeout": 120000
+      }
+    }
+  }
+}

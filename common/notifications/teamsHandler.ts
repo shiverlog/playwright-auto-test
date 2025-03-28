@@ -1,4 +1,4 @@
-import { teamsConfig } from '@common/config/config';
+import { teamsConfig } from '@common/config/onfig';
 import { ALL_POCS, POCType } from '@common/constants/PathConstants';
 import { teamsForm } from '@common/formatters/teamsForm';
 import { Logger } from '@common/logger/customLogger';
