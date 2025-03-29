@@ -1,3 +1,4 @@
+import { JsForceActions } from '@common/actions/JsForceActions';
 import type { Locator, Page } from '@playwright/test';
 import type { Browser, Element } from 'webdriverio';
 
@@ -7,10 +8,12 @@ import type { Browser, Element } from 'webdriverio';
 export class BaseActionUtils {
   protected page: Page;
   protected driver?: Browser;
+  public jsForce: JsForceActions;
 
   constructor(page: Page, driver?: Browser) {
     this.page = page;
     this.driver = driver;
+    this.jsForce = new JsForceActions(page);
   }
 
   // ========== Common ==========
@@ -18,15 +21,14 @@ export class BaseActionUtils {
   /**
    *  Common: 현재 페이지 URL 반환
    */
-  public getCurrentUrl(): string | undefined {
-    return this.page?.url();
+  public getCurrentUrl(): string {
+    return this.page.url();
   }
 
   /**
    *  Common: 새 탭 열기
    */
-  public async openNewTab(url?: string): Promise<Page | undefined> {
-    if (!this.page) return;
+  public async openNewTab(url?: string): Promise<Page> {
     const newPage = await this.page.context().newPage();
     if (url) await newPage.goto(url);
     return newPage;
@@ -36,28 +38,28 @@ export class BaseActionUtils {
    *  Common: 키보드 키 입력
    */
   public async pressKey(key: string): Promise<void> {
-    await this.page?.keyboard.press(key);
+    await this.page.keyboard.press(key);
   }
 
   /**
    *  Common: 페이지 뒤로가기
    */
   public async goBack(): Promise<void> {
-    await this.page?.goBack();
+    await this.page.goBack();
   }
 
   /**
    *  Common: 페이지 앞으로가기
    */
   public async goForward(): Promise<void> {
-    await this.page?.goForward();
+    await this.page.goForward();
   }
 
   /**
    *  Common: 페이지 새로고침
    */
   public async refresh(): Promise<void> {
-    await this.page?.reload();
+    await this.page.reload();
   }
 
   /**
@@ -66,89 +68,103 @@ export class BaseActionUtils {
   public async waitForLoadState(
     state: 'load' | 'domcontentloaded' | 'networkidle' = 'load',
   ): Promise<void> {
-    await this.page?.waitForLoadState(state);
+    await this.page.waitForLoadState(state);
   }
 
   /**
-   *  Common: 네비게이션 대기
+   *  Common: 클릭 후, 네비게이션 대기
    */
-  public async waitForNavigation(): Promise<void> {
-    await this.page?.waitForNavigation();
+  public async clickAndWaitForNavigation(
+    selector: string,
+    waitUntil: 'load' | 'domcontentloaded' | 'networkidle' = 'load',
+  ): Promise<void> {
+    await Promise.all([this.page.waitForLoadState(waitUntil), this.getLocator(selector).click()]);
   }
 
   /**
    *  Common: 스크린샷 저장
    */
   public async takeScreenshot(filename: string): Promise<void> {
-    await this.page?.screenshot({ path: filename, fullPage: true });
+    await this.page.screenshot({ path: filename, fullPage: true });
   }
 
   // ========== Playwright 전용 ==========
 
   /**
+   * Playwright에서 요소를 찾는 안전한 헬퍼 함수
+   */
+  protected getLocator(selector: string): Locator {
+    if (!this.page) {
+      throw new Error(`[Playwright] page 객체가 정의되지 않았습니다. selector: ${selector}`);
+    }
+    return this.page.locator(selector);
+  }
+
+  /**
    *  Playwright: 요소 찾기
    */
   public findElement(selector: string): Locator | undefined {
-    return this.page?.locator(selector);
+    return this.page.locator(selector);
   }
 
+  // TODO: waitForSelector()에서 getLocator().waitFor()로 수정
   /**
    *  Playwright: 요소가 보일 때까지 대기
    */
   public async waitForVisible(selector: string, timeout = 5000): Promise<void> {
-    await this.page?.waitForSelector(selector, { state: 'visible', timeout });
+    await this.getLocator(selector).waitFor({ state: 'visible', timeout });
   }
 
   /**
    *  Playwright: 요소가 사라질 때까지 대기
    */
   public async waitForHidden(selector: string, timeout = 5000): Promise<void> {
-    await this.page?.waitForSelector(selector, { state: 'hidden', timeout });
+    await this.getLocator(selector).waitFor({ state: 'hidden', timeout });
   }
 
+  // TODO: findElement에서 getLocator로 수정
   /**
    *  Playwright: 요소 클릭
    */
   public async click(selector: string): Promise<void> {
-    await this.findElement(selector)?.click();
+    await this.getLocator(selector).click();
   }
 
   /**
    *  Playwright: 요소 더블 클릭
    */
   public async doubleClick(selector: string): Promise<void> {
-    await this.findElement(selector)?.dblclick();
+    await this.getLocator(selector).dblclick();
   }
 
   /**
    *  Playwright: 텍스트 입력
    */
   public async typeText(selector: string, text: string): Promise<void> {
-    const element = this.findElement(selector);
-    await element?.fill(text);
+    await this.getLocator(selector).fill(text);
   }
 
   /**
    *  Playwright: 기존 텍스트 지우고 새 텍스트 입력
    */
   public async clearAndType(selector: string, text: string): Promise<void> {
-    const element = this.findElement(selector);
-    await element?.fill('');
-    await element?.type(text);
+    const locator = this.getLocator(selector);
+    await locator.fill('');
+    await locator.type(text);
   }
 
   /**
    *  Playwright: 텍스트 가져오기
    */
   public async getText(selector: string): Promise<string | undefined> {
-    return await this.findElement(selector)?.innerText();
+    return await this.getLocator(selector).innerText();
   }
 
   /**
    *  Playwright: 입력 필드 값 가져오기
    */
   public async getInputValue(selector: string): Promise<string | undefined> {
-    return await this.findElement(selector)?.inputValue();
+    return await this.getLocator(selector).inputValue();
   }
 
   /**
@@ -163,67 +179,65 @@ export class BaseActionUtils {
    *  Playwright: 텍스트 포함된 요소 찾기
    */
   public async findElementWithText(selector: string, text: string): Promise<Locator | undefined> {
-    return this.page?.locator(selector, { hasText: text });
+    return this.page.locator(selector, { hasText: text });
   }
 
   /**
    *  Playwright: 요소로 스크롤 이동
    */
   public async scrollTo(selector: string): Promise<void> {
-    await this.findElement(selector)?.scrollIntoViewIfNeeded();
+    await this.getLocator(selector).scrollIntoViewIfNeeded();
   }
 
   /**
    *  Playwright: 요소에 마우스 오버
    */
   public async hover(selector: string): Promise<void> {
-    await this.findElement(selector)?.hover();
+    await this.getLocator(selector).hover();
   }
 
   /**
-   *  Playwright: 체크박스 체크 여부
+   *  Playwright: 체크백스 체크 여부
    */
   public async isChecked(selector: string): Promise<boolean> {
-    return (await this.findElement(selector)?.isChecked()) ?? false;
+    return await this.getLocator(selector).isChecked();
   }
 
   /**
    *  Playwright: 요소 활성화 여부
    */
   public async isEnabled(selector: string): Promise<boolean> {
-    return (await this.findElement(selector)?.isEnabled()) ?? false;
+    return await this.getLocator(selector).isEnabled();
   }
 
   /**
    *  Playwright: 요소 편집 가능 여부
    */
   public async isEditable(selector: string): Promise<boolean> {
-    return (await this.findElement(selector)?.isEditable()) ?? false;
+    return await this.getLocator(selector).isEditable();
   }
 
   /**
-   *  Playwright: 드롭다운 옵션 선택
+   *  Playwright: 드롬다운 옵션 선택
    */
   public async selectOption(selector: string, value: string): Promise<void> {
-    await this.findElement(selector)?.selectOption(value);
+    await this.getLocator(selector).selectOption(value);
   }
 
   /**
    *  Playwright: JavaScript 로 클릭
    */
   public async jsClick(selector: string): Promise<void> {
-    const element = this.findElement(selector);
-    await element?.evaluate((el: HTMLElement) => el.click());
+    await this.getLocator(selector).evaluate((el: HTMLElement) => el.click());
   }
 
   /**
    *  Playwright: 파일 다운로드 후 파일명 반환
    */
   public async downloadFile(selector: string): Promise<string | undefined> {
-    if (!this.page) return;
     const [download] = await Promise.all([
       this.page.waitForEvent('download'),
-      this.page.locator(selector).click(),
+      this.getLocator(selector).click(),
     ]);
     return download.suggestedFilename();
   }
@@ -232,9 +246,8 @@ export class BaseActionUtils {
    *  Playwright: alert 수락 (메시지 반환)
    */
   public async acceptAlert(): Promise<string | undefined> {
-    if (!this.page) return;
     return new Promise(resolve => {
-      this.page!.once('dialog', async dialog => {
+      this.page.once('dialog', async dialog => {
         const message = dialog.message();
         await dialog.accept();
         resolve(message);
@@ -244,18 +257,13 @@ export class BaseActionUtils {
 
   /**
    * Playwright: 모든 요소 찾기 (Selenium의 find_elements 대체)
-   * @param selector - CSS/XPath 선택자
-   * @returns 요소 배열 (Locator[])
    */
   public async findElements(selector: string): Promise<Locator[]> {
-    return await this.page.locator(selector).all();
+    return await this.getLocator(selector).all();
   }
 
   /**
    * 특정 순서의 요소 찾기 (Selenium의 find_elements()[index] 대체)
-   * @param selector - CSS/XPath 선택자
-   * @param index - 요소의 순서 (0부터 시작)
-   * @returns 특정 요소 (Locator | null)
    */
   public async findElementByIndex(selector: string, index: number): Promise<Locator | null> {
     const elements = await this.findElements(selector);
@@ -266,228 +274,20 @@ export class BaseActionUtils {
    * Playwright: 요소 갯수 카운트
    */
   public async getElementCount(selector: string): Promise<number> {
-    return (await this.page?.locator(selector).count()) ?? 0;
+    return await this.getLocator(selector).count();
   }
 
   /**
    *  Playwright: 요소 존재 여부
    */
   public async isElementVisible(selector: string): Promise<boolean> {
-    return (await this.page?.locator(selector).isVisible()) ?? false;
+    return await this.getLocator(selector).isVisible();
   }
 
   /**
    *  Playwright: 요소 존재 여부 (비동기 true/false)
    */
   public async exists(selector: string): Promise<boolean> {
-    const count = await this.page?.locator(selector).count();
-    return (count ?? 0) > 0;
-  }
-
-  // ========== Appium 전용 ==========
-
-  /**
-   *  Appium: 요소 찾기
-   */
-  public async findAppiumElement(selector: string): Promise<Element | undefined> {
-    if (!this.driver) return;
-    const el = await this.driver.$(selector);
-    return el as unknown as Element;
-  }
-
-  /**
-   *  Appium: 요소 클릭
-   */
-  public async clickAppium(selector: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.click();
-  }
-
-  /**
-   *  Appium: 요소 더블 클릭 (딜레이 후 두 번 클릭)
-   */
-  public async doubleClickAppium(selector: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.click();
-    await this.driver?.pause(100);
-    await element?.click();
-  }
-
-  /**
-   *  Appium: 텍스트 입력
-   */
-  public async typeAppium(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.setValue(text);
-  }
-
-  /**
-   *  Appium: 기존 텍스트 지우고 새 텍스트 입력
-   */
-  public async clearAndTypeAppium(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.clearValue();
-    await element?.setValue(text);
-  }
-
-  /**
-   *  Appium: 텍스트 가져오기
-   */
-  public async getTextAppium(selector: string): Promise<string | undefined> {
-    const element = await this.findAppiumElement(selector);
-    return await element?.getText();
-  }
-
-  /**
-   *  Appium: 입력값 가져오기
-   */
-  public async getValueAppium(selector: string): Promise<string | undefined> {
-    const element = await this.findAppiumElement(selector);
-    return await element?.getValue();
-  }
-
-  /**
-   *  Appium: 요소 활성화 여부
-   */
-  public async isEnabledAppium(selector: string): Promise<boolean> {
-    const element = await this.findAppiumElement(selector);
-    return (await element?.isEnabled()) ?? false;
-  }
-
-  /**
-   *  Appium: 요소 표시 여부
-   */
-  public async isDisplayedAppium(selector: string): Promise<boolean> {
-    const element = await this.findAppiumElement(selector);
-    return (await element?.isDisplayed()) ?? false;
-  }
-
-  /**
-   *  Appium: 요소로 스크롤 이동
-   */
-  public async scrollToAppium(selector: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    if (element) {
-      await this.driver?.execute('mobile: scroll', { element: element.elementId, toVisible: true });
-    }
-  }
-
-  /**
-   *  Appium: 드롭다운 옵션 선택
-   */
-  public async selectAppiumOption(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.selectByVisibleText(text);
-  }
-
-  /**
-   *  Appium: swipe up 액션
-   */
-  public async swipeUp(): Promise<void> {
-    await this.driver?.touchAction([
-      { action: 'press', x: 300, y: 800 },
-      { action: 'wait', ms: 200 },
-      { action: 'moveTo', x: 300, y: 300 },
-      'release',
-    ]);
-  }
-
-  /**
-   *  Appium: swipe down 액션
-   */
-  public async swipeDown(): Promise<void> {
-    await this.driver?.touchAction([
-      { action: 'press', x: 300, y: 300 },
-      { action: 'wait', ms: 200 },
-      { action: 'moveTo', x: 300, y: 800 },
-      'release',
-    ]);
-  }
-
-  /**
-   *  Appium: 키 입력
-   */
-  public async pressKeyAppium(key: string): Promise<void> {
-    await this.driver?.keys(key);
-  }
-
-  // ========== 자바스크립트 강제 액션(headless 등의 문제해결을 위함) ==========
-
-  /**
-   * JavaScript로 요소 클릭
-   */
-  public async forceClickJS(selector: string): Promise<void> {
-    await this.page?.evaluate(sel => {
-      const el = document.querySelector(sel);
-      if (el) (el as HTMLElement).click();
-    }, selector);
-  }
-
-  /**
-   * JavaScript로 텍스트 입력
-   */
-  public async forceTypeJS(selector: string, value: string): Promise<void> {
-    await this.page?.evaluate(
-      ([sel, val]) => {
-        const el = document.querySelector(sel) as HTMLInputElement | null;
-        if (el) el.value = val;
-      },
-      [selector, value],
-    );
-  }
-
-  /**
-   * JavaScript로 input 값 초기화
-   */
-  public async clearInputJS(selector: string): Promise<void> {
-    await this.page?.evaluate(sel => {
-      const el = document.querySelector(sel) as HTMLInputElement | null;
-      if (el) el.value = '';
-    }, selector);
-  }
-
-  /**
-   * JavaScript로 요소에 focus() 주기
-   */
-  public async focusJS(selector: string): Promise<void> {
-    await this.page?.evaluate(sel => {
-      const el = document.querySelector(sel) as HTMLElement | null;
-      if (el) el.focus();
-    }, selector);
-  }
-
-  /**
-   * 특정 요소를 강제로 최상단(z-index)으로 가져오는 함수
-   * @param selector - CSS/XPath 선택자
-   */
-  public async bringElementToFront(selector: string): Promise<void> {
-    await this.page.evaluate(sel => {
-      const el = document.querySelector(sel) as HTMLElement;
-      if (el) {
-        el.style.cssText = `
-          display: block !important;
-          visibility: visible !important;
-          position: relative !important;
-          z-index: 999999999 !important;
-        `;
-      }
-    }, selector);
-  }
-
-  /**
-   * 여러 요소를 강제로 최상단(z-index)으로 가져오는 함수
-   * @param selector - CSS/XPath 선택자
-   */
-  public async bringElementsToFront(selector: string): Promise<void> {
-    await this.page.evaluate(sel => {
-      document.querySelectorAll(sel).forEach(el => {
-        (el as HTMLElement).style.cssText = `
-          display: block !important;
-          visibility: visible !important;
-          position: relative !important;
-          z-index: 999999999 !important;
-        `;
-      });
-    }, selector);
+    return (await this.getElementCount(selector)) > 0;
   }
 }

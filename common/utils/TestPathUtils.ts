@@ -14,7 +14,14 @@ export class TestPathUtils {
     workerIndex: number,
     extension: string,
   ): string {
-    const safeName = testName.replace(/\s+/g, '_').replace(/[^\w\-]/g, '');
+    const safeName = testName
+      // 특수 문자 제거 (공백, #, @ 등 모두 제거)
+      .replace(/[^\w\-]/g, '')
+      // 공백을 _로 변경
+      .replace(/\s+/g, '_')
+      // 소문자로 변환
+      .toLowerCase();
+
     const timestamp = getCurrentTimestamp();
     return path.join(
       basePath,
@@ -32,25 +39,37 @@ export class TestPathUtils {
     testName: string,
     testId: string,
     workerIndex: number,
-  ): Record<keyof ReturnType<typeof TEST_RESULT_FILE_NAME>, string> {
+  ): Record<string, string> {
+    // 반환 타입을 좀 더 일반화
     const resultPaths = TEST_RESULT_FILE_NAME(base, poc);
-
-    const extensionMap: Record<keyof ReturnType<typeof TEST_RESULT_FILE_NAME>, string> = {
+    const extensionMap: Record<string, string> = {
       playwrightReport: 'html',
       log: 'json',
       allureResult: 'json',
       screenshots: 'png',
       videos: 'mp4',
       traces: 'zip',
+      coverage: 'json',
     };
 
-    const customPaths: Partial<Record<keyof typeof resultPaths, string>> = {};
-    for (const key of Object.keys(resultPaths) as Array<keyof typeof resultPaths>) {
-      const ext = extensionMap[key];
-      const dir = path.dirname(resultPaths[key]);
-      customPaths[key] = this.generateUniqueFileName(dir, poc, testName, testId, workerIndex, ext);
-    }
+    const customPaths: Record<string, string> = {};
 
-    return customPaths as Record<keyof ReturnType<typeof TEST_RESULT_FILE_NAME>, string>;
+    // resultPaths 객체의 키들에 대해 반복
+    for (const key in resultPaths) {
+      if (resultPaths.hasOwnProperty(key)) {
+        // key를 keyof typeof resultPaths로 명확하게 지정
+        const ext = extensionMap[key as keyof typeof resultPaths]; // 확장자 가져오기
+        const dir = path.dirname(resultPaths[key as keyof typeof resultPaths]); // 디렉토리 부분 추출
+        customPaths[key] = this.generateUniqueFileName(
+          dir,
+          poc,
+          testName,
+          testId,
+          workerIndex,
+          ext,
+        );
+      }
+    }
+    return customPaths;
   }
 }

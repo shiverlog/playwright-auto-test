@@ -1,3 +1,4 @@
+import { Logger } from '@common/logger/customLogger';
 import { BrowserContext, Page, Request, Route } from '@playwright/test';
 
 export class NetworkUtils {

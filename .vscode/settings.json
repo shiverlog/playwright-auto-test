@@ -122,6 +122,10 @@
     "ujam",
     "udoc",
     "POCS",
-    "lguplus"
+    "lguplus",
+    "commitlint",
+    "Chromedriver",
+    "udid",
+    "XCUI"
   ]
 }

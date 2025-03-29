@@ -1,117 +1,101 @@
+import {
+  ALL_POCS,
+  FOLDER_PATHS,
+  POCType,
+  POC_PATH,
+  TEST_RESULT_FILE_NAME,
+} from '@common/constants/PathConstants';
+import { Logger } from '@common/logger/customLogger';
 import { Message, PubSub } from '@google-cloud/pubsub';
 import { exec } from 'child_process';
-import * as os from 'os';
+import dotenv from 'dotenv';
 import * as path from 'path';
 
+dotenv.config();
+
 // Google Cloud Pub/Sub 설정
-const PROJECT_ID = 'gc-automation-test'; // GCP 프로젝트 ID
-const SUBSCRIPTION_ID = 'qa-test-os-windows'; // Pub/Sub 구독 ID
+const PROJECT_ID = process.env.PROJECT_ID || 'gc-automation-test';
+const SUBSCRIPTION_ID = process.env.SUBSCRIPTION_ID || 'default-subscription-id';
+const NUM_MESSAGES = parseInt(process.env.NUM_MESSAGES || '3', 10);
 const pubsub = new PubSub({ projectId: PROJECT_ID });
 const subscription = pubsub.subscription(SUBSCRIPTION_ID);
 
 /**
- * 실행할 테스트 파일 경로 (Playwright & Appium 테스트 실행)
+ * 특정 스크립트 실행 함수 (비동기 처리)
  */
-const testScripts: Record<string, { path: string; isPlaywright: boolean }> = {
-  'web-test': { path: path.resolve(__dirname, '../tests/test_web.ts'), isPlaywright: true },
-  'webview-test': { path: path.resolve(__dirname, '../tests/test_webview.ts'), isPlaywright: true },
-  'android-app-test': {
-    path: path.resolve(__dirname, '../tests/test_app_android.ts'),
-    isPlaywright: false,
-  },
-  'ios-app-test': {
-    path: path.resolve(__dirname, '../tests/test_app_ios.ts'),
-    isPlaywright: false,
-  },
-};
+async function runTestScript(poc: POCType | ''): Promise<void> {
+  const logger = Logger.getLogger(poc);
 
-/**
- * 실행할 배치 파일 경로 매핑
- */
-const batchFilePaths: Record<string, string> = {
-  'windows-selenium-mw': 'C:/dev/remotePC_batchfiles/selenium_mw_batchfiles/main.bat',
-  'windows-selenium-pc': 'C:/dev/remotePC_batchfiles/selenium_pc_batchfiles/main.bat',
-  'windows-appium-aos': 'C:/dev/remotePC_batchfiles/appium_aos_batchfiles/main.bat',
-  'windows-selenium-stg-mw': 'C:/dev/remotePC_batchfiles/selenium_stg_mw_batchfiles/main.bat',
-  'windows-selenium-stg-pc': 'C:/dev/remotePC_batchfiles/selenium_stg_pc_batchfiles/main.bat',
-  'windows-appium-stg-aos': 'C:/dev/remotePC_batchfiles/appium_stg_aos_batchfiles/main.bat',
-};
-
-/**
- * 특정 테스트 실행 함수
- */
-function runTestScript(scriptPath: string, isPlaywright: boolean) {
-  const command = isPlaywright ? `npx playwright test ${scriptPath}` : `node ${scriptPath}`;
-  console.log(`🚀 실행 중: ${command}`);
-
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`❌ 오류 발생: ${error.message}`);
-      return;
-    }
-    if (stderr) {
-      console.error(`⚠️ 경고: ${stderr}`);
-    }
-    console.log(`✅ 실행 완료:\n${stdout}`);
-  });
-}
-
-/**
- * 특정 배치 파일 실행
- */
-function executeBatchFile(batchFilePath: string) {
-  console.log(`실행 중: ${batchFilePath}`);
-  const result = exec(batchFilePath);
-
-  result.stdout?.on('data', data => console.log(`📄 ${data.toString()}`));
-  result.stderr?.on('data', error => console.error(`❌ ${error.toString()}`));
-
-  result.on('close', code => console.log(`✅ 프로세스 종료 (코드: ${code})`));
-}
-
-/**
- * 특정 포트를 확인하여 실행 중인지 체크하고 종료
- */
-function checkAndKillPort(startPort: number) {
-  const endPort = startPort + 10;
-  console.log(`🔍 ${startPort}~${endPort} 포트 검사 중...`);
-
-  for (let port = startPort; port <= endPort; port++) {
-    exec(`netstat -ano | findstr ${port}`, (error, stdout) => {
-      if (stdout.includes(port.toString())) {
-        console.log(`🚨 실행 중인 포트 발견: ${port}, 종료 중...`);
-        exec(
-          `for /f "tokens=5" %t in ('netstat -ano ^| findstr ${port}') do (taskkill /f /pid %t)`,
-        );
-      }
-    });
+  // POC가 유효하지 않으면 반환
+  if (poc !== '' && !ALL_POCS.includes(poc)) {
+    logger.error(`유효하지 않은 POC: ${poc}`);
+    return;
   }
+
+  const basePath = POC_PATH(poc);
+  const basePathString = Array.isArray(basePath) ? basePath[0] : basePath;
+  const resultPaths = FOLDER_PATHS(basePathString);
+  const logFilePath = resultPaths.locators;
+
+  // TEST_RESULT_FILE_NAME에서 반환되는 경로 객체 중 하나를 선택하여 사용
+  const resultFiles = TEST_RESULT_FILE_NAME(basePathString, poc);
+  const scriptPath = path.resolve(basePathString, resultFiles.playwrightReport);
+  const command = `node ${scriptPath}`;
+
+  logger.info(`실행 중: ${command} (${poc})`);
+
+  return new Promise((resolve, reject) => {
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        logger.error(`오류 발생: ${error.message} (${poc})`);
+        reject(error);
+        return;
+      }
+      if (stderr) {
+        logger.warn(`경고: ${stderr} (${poc})`);
+      }
+      logger.info(`실행 완료:\n${stdout} (${poc})`);
+      resolve();
+    });
+  });
 }
 
 /**
  * Pub/Sub 메시지 처리 함수
  */
-const messageHandler = (message: Message): void => {
+const messageHandler = async (message: Message): Promise<void> => {
   const msg = message.data.toString().trim();
   const osType = message.attributes?.os || 'unknown';
 
-  console.log(`📩 수신된 메시지: ${msg} (OS: ${osType})`);
+  const logger = Logger.getLogger('');
+  logger.info(`수신된 메시지: ${msg} (OS: ${osType})`);
   message.ack();
 
-  if (batchFilePaths[msg]) {
-    executeBatchFile(batchFilePaths[msg]);
-  } else if (testScripts[msg]) {
-    const { path, isPlaywright } = testScripts[msg];
-    runTestScript(path, isPlaywright);
-  } else if (msg.includes('kill-port')) {
-    const port = parseInt(msg.split('-').pop() || '4723');
-    checkAndKillPort(port);
-  } else {
-    console.log(`⚠️ 실행할 작업 없음: ${msg}`);
+  try {
+    // msg가 빈 문자열이라면 모든 POC 병렬 실행
+    if (msg === '') {
+      // 모든 POC를 병렬로 실행
+      await Promise.all(
+        ALL_POCS.map(async (poc: POCType) => {
+          await runTestScript(poc);
+        }),
+      );
+      logger.info(`모든 POC 실행 완료`);
+    } else if (ALL_POCS.includes(msg as Exclude<POCType, ''>)) {
+      // msg가 POCType에 포함되는 값이라면 해당 POC만 실행
+      const poc = msg as Exclude<POCType, ''>; // 빈 문자열 제외하고 POCType으로 캐스팅
+      await runTestScript(poc);
+      logger.info(`${poc} 실행 완료`);
+    } else {
+      // msg가 POCType에 포함되지 않으면 경고
+      logger.warn(`유효하지 않은 POC: ${msg}`);
+    }
+  } catch (error) {
+    logger.error(`오류 발생: ${error}`);
   }
 };
 
 // Pub/Sub 구독 시작
-console.log(`🚀 Pub/Sub Listening on '${SUBSCRIPTION_ID}'...\n`);
+Logger.getLogger().info(`Pub/Sub Listening on '${SUBSCRIPTION_ID}'...\n`);
 subscription.on('message', messageHandler);
-subscription.on('error', error => console.error(`❌ Subscription error: ${error}`));
+subscription.on('error', error => Logger.getLogger().error(`Subscription error: ${error}`));

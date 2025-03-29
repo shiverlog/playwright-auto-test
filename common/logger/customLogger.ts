@@ -46,8 +46,13 @@ const jsonFormatter = winston.format.printf(({ level, message, timestamp }) => {
 // 지정한 파일 경로의 디렉토리가 없으면 생성
 const ensureDirectoryExists = (filePath: string) => {
   const dir = path.dirname(filePath);
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  try {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  } catch (error) {
+    console.error(`디렉토리 생성 실패: ${dir}`, error);
+    throw new Error(`디렉토리 생성 실패: ${dir}`);
   }
 };
 
@@ -68,6 +73,7 @@ class Logger {
       const basePath = path.resolve(process.cwd());
       const resultPaths = POC_RESULT_PATHS(basePath);
       const resultFiles = TEST_RESULT_FILE_NAME(basePath, poc);
+
       // 로그 디렉토리 존재 확인 및 생성
       Object.values(resultPaths).forEach(ensureDirectoryExists);
 

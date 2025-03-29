@@ -1,4 +1,4 @@
-import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { ALL_POCS, FOLDER_PATHS, POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import path from 'path';
 import {
@@ -11,15 +11,15 @@ import {
 } from 'ts-morph';
 
 export class LocatorUtils {
-  private static BASE_LOCATOR_DIR = path.resolve(__dirname, '../locators');
+  private static BASE_LOCATOR_DIR = FOLDER_PATHS('common').locators;
   private static project = new Project({ tsConfigFilePath: 'tsconfig.json' });
 
   /**
-   * 로케이터 파일 로드 (POC + section 단위, TypeScript 기반)
+   * 로케이터 파일 로드 (common/locators + section 단위, TypeScript 기반)
    */
   static loadLocators(poc: Exclude<POCType, ''>, section: string): Record<string, any> {
     const logger = Logger.getLogger(poc);
-    const filePath = path.join(this.BASE_LOCATOR_DIR, poc, `${section}.ts`);
+    const filePath = path.join(this.BASE_LOCATOR_DIR, poc, `${section}.ts`); // locators 경로만 사용
 
     try {
       const sourceFile = this.project.addSourceFileAtPathIfExists(filePath);
@@ -64,10 +64,10 @@ export class LocatorUtils {
         }
       });
 
-      logger.info(`[Locator] ${poc}/${section}.ts 로드 완료`);
+      logger.info(`[Locator] ${filePath} 로드 완료`);
       return locators;
     } catch (error: any) {
-      logger.error(`[Locator] ${poc}/${section}.ts 로드 실패 - ${error.message || error}`);
+      logger.error(`[Locator] ${filePath} 로드 실패 - ${error.message || error}`);
       return {};
     }
   }
@@ -117,7 +117,7 @@ export class LocatorUtils {
     if (locators && key in locators) {
       return locators[key];
     } else {
-      logger.warn(`[Locator] ${poc}/${section}.ts 에 '${key}' 없음`);
+      logger.warn(`[Locator] ${section}.ts 에 '${key}' 없음`);
       return null;
     }
   }

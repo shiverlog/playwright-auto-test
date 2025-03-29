@@ -11,18 +11,19 @@
     "prepublishOnly": "npm run build"
   },
   "files": [
-    "dist",             
+    "dist",
     "actions",
+    "components",
     "config",
     "constants",
     "controllers",
+    "fixtures",
     "formatters",
     "handlers",
     "locators",
     "logger",
     "notifications",
-    "utils",
-    "index.ts"
+    "utils"
   ],
   "keywords": [
     "typescript",
