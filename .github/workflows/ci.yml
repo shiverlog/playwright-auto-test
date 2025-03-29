@@ -1,71 +1,70 @@
 # Description : ci.yml - 📌 CI/CD 워크플로우
 # Author : Shiwoo Min
 # Date : 2024-03-10
-name: CI / CD - Integrated Workflow
+
+name: CI - Workflow
 
 on:
-  push:
-    branches: [main, develop, release]
-  pull_request:
-    branches: [main, develop, release]
+  workflow_call:
 
+# 중복된 워크플로우 실행 방지 (같은 브랜치에서 병렬 실행 중이면 취소)
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# 공통 환경 변수 정의
+env:
+  NODE_VERSION: 20
+  NX_NO_CLOUD: true
+
 jobs:
-  # 1. 테스트 - Lint / Unit / Playwright
+  # 1. 테스트 단계: Lint / Unit Test / Playwright E2E
   test:
     name: Lint, Unit & Playwright Test
     runs-on: ubuntu-latest
+
     steps:
+      # 저장소 코드 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Node.js 설정 (버전: 20)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
 
-      - name: Install dependencies
+      # 의존성 설치 (npm 기준)
+      - name: Install dependencies (npm)
         run: npm ci
 
+      # Lint 실행 (오류가 나도 계속 진행)
       - name: Run Lint
         run: npm run lint
         continue-on-error: true
 
+      # 유닛 테스트 실행
       - name: Run Unit Tests
         run: npm test
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run Playwright Tests
-        run: npx playwright test
-
-      - name: Upload Playwright Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-
-  # 2. Docker Build (Nx 기반 프로젝트용)
+  # 2. 빌드 단계: Docker 이미지 빌드 및 푸시
   build:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
-    needs: test
+    needs: test # 테스트 job이 성공해야 실행됨
     permissions:
       id-token: write
       contents: read
 
     steps:
+      # 저장소 코드 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # 전체 Git 히스토리 가져오기 (Nx 빌드 분석에 필요)
 
+      # AWS 자격 증명 설정 (필요 시 주석 해제)
       # - name: Configure AWS credentials
       #   uses: aws-actions/configure-aws-credentials@v2
       #   with:
@@ -73,27 +72,30 @@ jobs:
       #     aws-region: ${{ secrets.AWS_REGION }}
       #     role-session-name: ci-session
 
+      # pnpm 설정
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
 
+      # Node.js 설정 (pnpm 용)
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: ${{ env.NODE_VERSION }}
           cache: 'pnpm'
 
-      - name: Install dependencies
+      # 의존성 설치 (pnpm 기준)
+      - name: Install dependencies (pnpm)
         run: pnpm install --frozen-lockfile
 
-      - name: Build affected projects
+      # 영향 받은 프로젝트 빌드 (Nx 기반)
+      - name: Build affected projects (Nx)
         run: |
           BASE_BRANCH=$(git rev-parse HEAD^)
           pnpm nx affected --target=build --base=$BASE_BRANCH --head=HEAD --parallel=3
-        env:
-          NX_NO_CLOUD: true
 
+      # 영향 받은 앱 기준으로 Docker 이미지 빌드 및 푸시
       - name: Build and push Docker images
         env:
           IMAGE_NAME: ${{ github.repository }}
@@ -101,6 +103,7 @@ jobs:
           BASE_BRANCH=$(git rev-parse HEAD^)
           AFFECTED_PROJECTS=$(pnpm nx show projects --affected --type app --base=$BASE_BRANCH --head=HEAD)
 
+          # 공백 정리 및 배열화
           AFFECTED_PROJECTS=$(echo "$AFFECTED_PROJECTS" | tr -s '[:space:]' ' ')
           IFS=' ' read -r -a PROJECTS <<< "$AFFECTED_PROJECTS"
 
@@ -110,25 +113,3 @@ jobs:
             docker build --build-arg="BUILD_ENV=${BUILD_ENV}" -t $FINAL_IMAGE_NAME -f apps/$project/Dockerfile .
             docker push $FINAL_IMAGE_NAME
           done
-
-  # 3. 배포 (Docker Hub + 원격 서버)
-  deploy:
-    name: Deploy Application
-    runs-on: ubuntu-latest
-    needs: [build]
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-
-      - name: Deploy to Remote Server
-        env:
-          IMAGE_NAME: my-app
-        run: echo "Docker push 완료"

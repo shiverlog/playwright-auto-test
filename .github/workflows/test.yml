@@ -1,0 +1,54 @@
+# Description : test.yml - 📌 기본 테스트 워크플로우 (Lint, Unit, Playwright 포함)
+# Author : Shiwoo Min
+# Date : 2024-03-10
+
+name: Test - Lint, Unit & Playwright
+
+on:
+  workflow_call:
+
+jobs:
+  test:
+    name: Run Lint, Unit & Playwright
+    runs-on: ubuntu-latest
+
+    steps:
+      # 저장소 코드 체크아웃
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Node.js 환경 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 의존성 설치 (npm 기준)
+      - name: Install dependencies
+        run: npm ci
+
+      # 코드 스타일 검사 (ESLint 등)
+      - name: Run Lint
+        run: npm run lint
+        continue-on-error: true # Lint 실패해도 테스트 계속 진행
+
+      # 유닛 테스트 실행
+      - name: Run Unit Tests
+        run: npm test
+
+      # Playwright 브라우저 설치 (E2E 테스트에 필요)
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      # 전체 Playwright 테스트 실행
+      - name: Run Playwright Tests
+        run: npx playwright test
+
+      # Playwright 테스트 결과 리포트 업로드
+      - name: Upload Playwright Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/

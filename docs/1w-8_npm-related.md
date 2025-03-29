@@ -43,6 +43,9 @@ npm init playwright@latest
 # TypeScript 개발 환경 패키지
 npm install --save-dev typescript ts-node @types/node
 
+# Node.js 기반의 패키지 매니저 설치
+npm install -g pnpm
+
 # Dotenv 환경변수 라이브러리
 npm install dotenv
 
@@ -156,6 +159,9 @@ npm install --save-dev mitmproxy
 
 # 데이터 시각화 및 리포팅 강화
 npm install --save-dev mochawesome
+
+# commitizen 설치
+pnpm install -D commitizen cz-customizable
 ```
 
 `NPM 명령어`

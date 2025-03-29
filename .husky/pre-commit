@@ -1,4 +1,10 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-npm test
+echo "[Husky] Running pre-commit checks..."
+
+# 코드 스타일 검사
+pnpm lint
+
+# 유닛 테스트 실행
+pnpm test
