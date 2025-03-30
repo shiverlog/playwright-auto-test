@@ -26,4 +26,13 @@ export interface IElementActions {
   // 대기
   waitForVisible(timeout?: number): Promise<this>;
   waitForHidden(timeout?: number): Promise<this>;
+
+  // 액션
+  exists(): Promise<boolean>;
+  hover(): Promise<this>;
+  focus(): Promise<this>;
+  isChecked(): Promise<boolean>;
+  selectOption(value: string): Promise<this>;
+  takeScreenshot(path: string): Promise<void>;
+  tap(): Promise<this>;
 }

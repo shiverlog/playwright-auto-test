@@ -48,6 +48,27 @@ export class ElementActions {
   }
 
   /**
+   * Playwright 전용: 체크박스 등 체크 여부
+   */
+  public async isChecked(): Promise<boolean> {
+    this.ensureElement();
+    if (this.isPlaywright) {
+      return await this.locator!.isChecked();
+    }
+    throw new Error('isChecked() is only supported in Playwright context.');
+  }
+
+  /**
+   * Playwright 전용: 요소 스크린샷 저장
+   */
+  public async takeScreenshot(path: string): Promise<void> {
+    this.ensureElement();
+    if (this.isPlaywright) {
+      await this.locator!.screenshot({ path });
+    }
+  }
+
+  /**
    * Appium: Selector로 element 설정
    */
   public async setAppiumSelector(selector: string): Promise<this> {
@@ -101,7 +122,7 @@ export class ElementActions {
   }
 
   /**
-   * Common: 텍스트 입력 (기존 값 제거 후 입력)
+   * Common: 기존 텍스트 제거 후 새 텍스트 입력
    * - Playwright: fill('') + type()
    * - Appium: clearValue() + setValue()
    */
@@ -208,6 +229,74 @@ export class ElementActions {
       await this.locator!.waitFor({ state: 'hidden', timeout });
     } else {
       await this.element!.waitForDisplayed({ reverse: true, timeout });
+    }
+    return this;
+  }
+
+  /**
+   * Common: 요소 존재 여부 확인
+   */
+  public async exists(): Promise<boolean> {
+    if (this.isPlaywright) {
+      if (!this.locator) throw new Error('Playwright locator is not set.');
+      return (await this.locator.count()) > 0;
+    } else {
+      if (!this.element) throw new Error('Appium element is not set.');
+      try {
+        return await this.element.isExisting();
+      } catch {
+        return false;
+      }
+    }
+  }
+
+  /**
+   * Common: 요소에 hover
+   */
+  public async hover(): Promise<this> {
+    this.ensureElement();
+    if (this.isPlaywright) {
+      await this.locator!.hover();
+    }
+    return this;
+  }
+
+  /**
+   * Common: 요소에 focus
+   */
+  public async focus(): Promise<this> {
+    this.ensureElement();
+    if (this.isPlaywright) {
+      await this.locator!.focus();
+    }
+    return this;
+  }
+
+  /**
+   * Common: select 요소에서 옵션 선택
+   */
+  public async selectOption(value: string): Promise<this> {
+    this.ensureElement();
+    if (this.isPlaywright) {
+      await this.locator!.selectOption(value);
+    } else {
+      await this.element!.selectByVisibleText(value);
+    }
+    return this;
+  }
+
+  /**
+   * Common: 모바일 터치 또는 tap 처리
+   */
+  public async tap(): Promise<this> {
+    this.ensureElement();
+    if (this.isPlaywright) {
+      await this.locator!.tap();
+    } else {
+      const rect = await (this.element as any).getRect();
+      const x = rect.x + rect.width / 2;
+      const y = rect.y + rect.height / 2;
+      await this.driver!.touchAction({ action: 'tap', x, y });
     }
     return this;
   }

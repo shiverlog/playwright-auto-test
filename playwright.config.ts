@@ -4,7 +4,7 @@
  * Date : 2024-03-10
  */
 import { ALL_POCS, POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
-import { defineConfig, devices } from '@playwright/test';
+import { type Project, defineConfig, devices } from '@playwright/test';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -32,7 +32,7 @@ const browserMatrix: Record<Exclude<POCType, ''>, string[]> = {
 };
 
 // POC별 프로젝트 동적 생성
-const projects = pocList.flatMap(poc => {
+const pocProjects = pocList.flatMap(poc => {
   const basePath = POC_PATH(poc) as string;
   const resultPaths = POC_RESULT_PATHS(basePath);
 
@@ -143,29 +143,88 @@ const projects = pocList.flatMap(poc => {
   });
 });
 
-// MW 환경 설정 추가 (PC, 모바일, WebView)
-const mwProjects = ['chrome', 'mobile-chrome', 'mobile-safari'].map(browser => {
-  let device = browser.includes('mobile-chrome')
-    ? devices['Pixel 5']
-    : browser.includes('mobile-safari')
-      ? devices['iPhone 12']
-      : devices['Desktop Chrome'];
+type E2EProjectConfig = {
+  name: string;
+  path: string;
+  device: keyof typeof devices;
+  viewport?: { width: number; height: number };
+  userAgent?: string;
+  platform?: NodeJS.Platform[];
+  outputKey: string;
+};
 
-  return {
-    name: `MW - ${browser.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}`,
+const E2E_CONFIGS: E2EProjectConfig[] = [
+  {
+    name: 'PC Web - Chrome',
+    path: 'e2e/pc-web',
+    device: 'Desktop Chrome',
+    viewport: { width: 1920, height: 1080 },
+    outputKey: 'pc-web',
+  },
+  {
+    name: 'Mobile Web - PC Chrome (Responsive)',
+    path: 'e2e/mobile-web',
+    device: 'Desktop Chrome',
+    viewport: { width: 390, height: 844 },
+    userAgent:
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
+    outputKey: 'mobile-web-pc',
+  },
+  {
+    name: 'Mobile Web - Android (Chrome)',
+    path: 'e2e/mobile-web',
+    device: 'Pixel 5',
+    viewport: { width: 412, height: 915 },
+    outputKey: 'mobile-web-android',
+  },
+  {
+    name: 'Mobile Web - iOS (Safari)',
+    path: 'e2e/mobile-web',
+    device: 'iPhone 12',
+    viewport: { width: 390, height: 844 },
+    outputKey: 'mobile-web-ios',
+  },
+  {
+    name: 'Android App',
+    path: 'e2e/android',
+    device: 'Pixel 5',
+    outputKey: 'android',
+  },
+  {
+    name: 'iOS App',
+    path: 'e2e/ios',
+    device: 'iPhone 12',
+    platform: ['darwin'],
+    outputKey: 'ios',
+  },
+];
+
+function generateE2EProjects(): Project[] {
+  return E2E_CONFIGS.filter(config => {
+    return !config.platform || config.platform.includes(process.platform);
+  }).map(config => ({
+    name: `E2E - ${config.name}`,
+    testMatch: [`**/${config.path}/**/*.spec.ts`],
     use: {
-      ...device,
+      ...devices[config.device],
       headless: process.env.HEADLESS !== 'false',
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
-      viewport: { width: 1280, height: 800 },
+      viewport: config.viewport,
+      userAgent: config.userAgent,
       screenshot: 'only-on-failure',
       video: 'retain-on-failure',
       trace: 'on-first-retry',
     },
-    testMatch: ['**/mw/**/*.spec.ts'],
-  };
-});
+    reporter: [
+      ['list'],
+      ['html', { outputFolder: `playwright-report/${config.outputKey}`, open: 'never' }],
+      ['json', { outputFile: `logs/${config.outputKey}.json` }],
+      ['allure-playwright', { outputFolder: `allure-results/${config.outputKey}` }],
+    ],
+  }));
+}
 
+const e2eProjects = generateE2EProjects();
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -203,7 +262,8 @@ export default defineConfig({
         headless: process.env.HEADLESS !== 'false',
       },
     },
-    ...(projects.length ? projects : []),
+    ...e2eProjects,
+    ...(pocProjects.length ? pocProjects : []),
   ],
   /* Run your local dev server before starting the tests */
   webServer: {
@@ -214,5 +274,5 @@ export default defineConfig({
 });
 console.log(
   'Generated Projects:',
-  projects.map(p => p.name),
+  [...e2eProjects, ...pocProjects].map(p => p.name),
 );

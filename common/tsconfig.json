@@ -1,10 +1,10 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "outDir": "../dist/common",   
-        "rootDir": ".",               
-        "composite": true,            
-        "declaration": true
-    },
-    "include": ["./**/*.ts"]
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../dist/common",
+    "rootDir": ".",
+    "composite": true,
+    "declaration": true
+  },
+  "include": ["./**/*.ts", "../zas-is/AlertActions.ts"]
 }

@@ -112,7 +112,8 @@
     "playwright.config.ts",
     "zas-is/playwright",
     "zas-is/scripts",
-    "common/utils/scriptRunner.ts"
+    "common/utils/scriptRunner.ts",
+    "zas-is/AlertActions.ts"
   ],
   // TypeScript 컴파일 대상에서 제외
   "exclude": ["node_modules", "dist", "example", "zas-is"]

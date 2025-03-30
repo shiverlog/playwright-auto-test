@@ -1,19 +1,55 @@
-import type { Locator, Page } from '@playwright/test';
+import { BaseActionUtils } from '@common/actions/BaseActionUtils';
+import { MobileActionUtils } from '@common/actions/MobileActionUtils';
+import { WebActionUtils } from '@common/actions/WebActionUtils';
+import type { BrowserContext, Page } from '@playwright/test';
+import type { Browser } from 'webdriverio';
 
 export class BaseModal {
-  private page: Page;
+  protected page: Page;
+  protected driver: Browser;
 
-  constructor(page: Page) {
+  protected baseActions: BaseActionUtils;
+  protected webActions?: WebActionUtils;
+  protected mobileActions?: MobileActionUtils;
+
+  private selectors = {
+    modalCheckbox: '#modal-checkbox',
+    modalCloseButton: '.modal-close',
+    modalActionButton: '.modal-action',
+    modalInsButton: '.modal-ins',
+    dimmedLayer: '.dimmed',
+  };
+
+  constructor(page: Page, driver: Browser) {
     this.page = page;
+    this.driver = driver;
+
+    this.baseActions = new BaseActionUtils(page, driver);
+
+    // 플랫폼별 액션 유틸 주입
+    try {
+      this.mobileActions = new MobileActionUtils(page, driver!);
+    } catch {
+      this.webActions = new WebActionUtils(page, driver);
+    }
+  }
+
+  isMobile(): boolean {
+    return !!this.mobileActions;
+  }
+
+  isWeb(): boolean {
+    return !!this.webActions;
   }
 
   /**
-   * 모달창의 타입을 결정하고 적절한 핸들러 호출
+   * 모달 타입 결정 및 처리
    */
   async determineModalType(): Promise<void> {
     try {
       await this.page.waitForSelector('.modal-content', { timeout: 5000 });
-      const modalContent: Locator = this.page.locator('.modal-content');
+
+      const modalContent = this.page.locator('.modal-content');
 
       if (await modalContent.locator(".pop-tit-1:has-text('주소찾기')").count()) {
         await this.handleModal('address_modal');
@@ -32,10 +68,6 @@ export class BaseModal {
     }
   }
 
-  /**
-   * 모달 유형에 따라 적절한 핸들러 호출
-   * @param modalType 감지된 모달 타입
-   */
   async handleModal(modalType: string): Promise<void> {
     try {
       switch (modalType) {
@@ -52,74 +84,136 @@ export class BaseModal {
           await this.handleMarketPopupModal();
           break;
         default:
-          console.error(`처리할 수 없는 모달창 타입: ${modalType}`);
+          console.error(`처리할 수 없는 모달 타입: ${modalType}`);
       }
     } catch (error) {
-      console.error(`모달창 처리 실패: ${error}`);
+      console.error(`모달 처리 중 에러 발생: ${error}`);
     }
   }
 
-  /**
-   * 이벤트 모달 처리
-   */
   async handleEventModal(): Promise<void> {
-    console.log('🎉 이벤트 모달 처리 중...');
     const closeButton = this.page.locator('.event-modal-close');
     if (await closeButton.isVisible()) {
       await closeButton.click();
       await this.page.waitForSelector('.event-modal', { state: 'hidden' });
-      console.log(' 이벤트 모달 닫힘 완료');
     }
   }
 
-  /**
-   * 확인 모달 처리
-   */
   async handleConfirmModal(): Promise<void> {
-    try {
-      console.log('확인 모달 처리 중...');
-      const confirmButton = this.page.locator('div.c-btn-group button.c-btn-solid-1-m');
-      if (await confirmButton.isVisible()) {
-        await confirmButton.click();
-        await this.page.waitForSelector('div.modal-dialog', { state: 'hidden' });
-        console.log('확인 모달 닫힘 완료');
-      }
-    } catch (error) {
-      console.error(`❌ 확인 모달 처리 실패: ${error}`);
+    const confirmBtn = this.page.locator('div.c-btn-group button.c-btn-solid-1-m');
+    if (await confirmBtn.isVisible()) {
+      await confirmBtn.click();
+      await this.page.waitForSelector('div.modal-dialog', { state: 'hidden' });
     }
   }
 
-  /**
-   * 주소 찾기 모달 처리
-   */
   async handleAddressModal(): Promise<void> {
-    try {
-      console.log('📍 주소 찾기 모달 처리 중...');
-      const addressInput = this.page.locator('#address-search-input');
-      await addressInput.fill('서울특별시 강남구 테헤란로');
-      const searchButton = this.page.locator('#address-search-btn');
-      await searchButton.click();
-      await this.page.waitForSelector('.modal-content', { state: 'hidden' });
-      console.log('주소 찾기 완료');
-    } catch (error) {
-      console.error(`주소 찾기 모달 처리 실패: ${error}`);
+    const input = this.page.locator('#address-search-input');
+    const button = this.page.locator('#address-search-btn');
+
+    await input.fill('서울특별시 강남구 테헤란로');
+    await button.click();
+    await this.page.waitForSelector('.modal-content', { state: 'hidden' });
+  }
+
+  async handleMarketPopupModal(): Promise<void> {
+    const closeButton = this.page.locator('.market-popup-close');
+    if (await closeButton.isVisible()) {
+      await closeButton.click();
+      await this.page.waitForSelector('.market-popup', { state: 'hidden' });
     }
   }
 
   /**
-   * 마켓 팝업 모달 처리
+   * 공통 모달 처리 (체크박스, 닫기 버튼 등)
    */
-  async handleMarketPopupModal(): Promise<void> {
+  async checkCommonModals(): Promise<void> {
     try {
-      console.log('🛍️ 마켓 팝업 모달 처리 중...');
-      const closeButton = this.page.locator('.market-popup-close');
-      if (await closeButton.isVisible()) {
-        await closeButton.click();
-        await this.page.waitForSelector('.market-popup', { state: 'hidden' });
-        console.log(' 마켓 팝업 모달 닫힘 완료');
+      await this.waitLoading();
+      await this.page.waitForTimeout(500);
+      await this.checkModalWithCheckbox();
+      await this.checkModalWithCloseButton();
+      await this.page.waitForTimeout(500);
+      await this.waitLoading();
+    } catch {
+      await this.page.waitForTimeout(500);
+      await this.waitLoading();
+    }
+  }
+
+  private async checkModalWithCheckbox(): Promise<void> {
+    try {
+      const className = await this.page.locator('body').getAttribute('class');
+      if (className?.includes('modal-open')) {
+        await this.baseActions.click(this.selectors.modalCheckbox);
       }
-    } catch (error) {
-      console.error(`마켓 팝업 모달 처리 실패: ${error}`);
+    } catch {}
+  }
+
+  private async checkModalWithCloseButton(): Promise<void> {
+    try {
+      const className = await this.page.locator('body').getAttribute('class');
+      if (className?.includes('modal-open')) {
+        await this.baseActions.click(this.selectors.modalCloseButton);
+      }
+    } catch {}
+  }
+
+  async checkModalWithActionButton(): Promise<void> {
+    try {
+      const className = await this.page.locator('body').getAttribute('class');
+      if (className?.includes('modal-open')) {
+        await this.baseActions.click(this.selectors.modalActionButton);
+      }
+    } catch {}
+  }
+
+  async checkModalDimmedLayer(): Promise<void> {
+    try {
+      const dimmed = this.page.locator(this.selectors.dimmedLayer);
+      if (await dimmed.isVisible()) {
+        await this.baseActions.click(this.selectors.modalInsButton);
+      }
+    } catch {}
+  }
+
+  /**
+   * 팝업 탭 모두 닫기
+   */
+  async closeAllPopups(context: BrowserContext): Promise<void> {
+    const pages = context.pages();
+    const mainPage = pages[0];
+
+    for (const page of pages) {
+      if (page !== mainPage) {
+        await page.close();
+      }
+    }
+
+    await mainPage.bringToFront();
+  }
+
+  /**
+   * 로딩 스피너 대기
+   */
+  async waitLoading(): Promise<void> {
+    if (this.webActions) {
+      await this.webActions.waitForSpinnerToDisappear('.loading-spinner');
+    }
+  }
+
+  /**
+   * 모달이 나타날 때까지 지정된 요소를 클릭
+   */
+  async clickUntilModalDisplayed(
+    triggerSelector: string,
+    modalSelector: string = '.modal-content',
+  ): Promise<void> {
+    try {
+      await this.page.click(triggerSelector);
+      await this.page.waitForSelector(modalSelector, { state: 'visible', timeout: 5000 });
+    } catch (e) {
+      throw new Error(`모달 표시 실패: ${modalSelector} — ${(e as Error).message}`);
     }
   }
 }

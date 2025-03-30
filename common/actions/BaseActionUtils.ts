@@ -7,10 +7,10 @@ import type { Browser, Element } from 'webdriverio';
  */
 export class BaseActionUtils {
   protected page: Page;
-  protected driver?: Browser;
+  protected driver: Browser;
   public jsForce: JsForceActions;
 
-  constructor(page: Page, driver?: Browser) {
+  constructor(page: Page, driver: Browser) {
     this.page = page;
     this.driver = driver;
     this.jsForce = new JsForceActions(page);
@@ -263,7 +263,7 @@ export class BaseActionUtils {
   }
 
   /**
-   * 특정 순서의 요소 찾기 (Selenium의 find_elements()[index] 대체)
+   * Playwright: 특정 순서의 요소 찾기 (Selenium의 find_elements()[index] 대체)
    */
   public async findElementByIndex(selector: string, index: number): Promise<Locator | null> {
     const elements = await this.findElements(selector);
@@ -289,5 +289,106 @@ export class BaseActionUtils {
    */
   public async exists(selector: string): Promise<boolean> {
     return (await this.getElementCount(selector)) > 0;
+  }
+
+  /**
+   * Playwright: 요소가 존재하면 클릭
+   */
+  public async clickIfExists(selector: string): Promise<void> {
+    const element = this.page.locator(selector);
+    if (await element.count()) {
+      await element.click();
+    }
+  }
+  /**
+   * Playwright: 요소를 화면 중앙으로 스크롤
+   */
+  public async scrollToCenter(selector: string): Promise<void> {
+    await this.page.evaluate(sel => {
+      const el = document.querySelector(sel);
+      if (el) el.scrollIntoView({ block: 'center', behavior: 'auto' });
+    }, selector);
+  }
+
+  /**
+   * Playwright: 페이지를 지정된 Y 높이까지 스크롤
+   */
+  public async scrollToY(height: number): Promise<void> {
+    await this.page.evaluate(async targetY => {
+      const scrollStep = 50;
+      const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+
+      while (document.scrollingElement?.scrollTop! < targetY) {
+        window.scrollBy(0, scrollStep);
+        await delay(100);
+      }
+    }, height);
+  }
+
+  /**
+   * Playwright: 요소를 화면 뷰 안으로 스크롤합니다.
+   */
+  public async scrollElementIntoView(
+    target: string | Locator,
+    alignToTop: boolean = true,
+  ): Promise<void> {
+    const locator = typeof target === 'string' ? this.page.locator(target) : target;
+    const handle = await locator.elementHandle();
+
+    if (handle) {
+      await handle.evaluate((el, align) => {
+        el.scrollIntoView(align);
+      }, alignToTop);
+    }
+  }
+
+  /**
+   * Playwright: 특정 요소의 텍스트가 지정된 문자열 리스트를 모두 포함하고 있는지 확인
+   */
+  public async textListInElement(
+    parentSelector: string,
+    expectedTexts: string[],
+  ): Promise<boolean> {
+    const locator = this.page.locator(parentSelector);
+
+    try {
+      await locator.scrollIntoViewIfNeeded();
+      await locator.waitFor({ state: 'visible', timeout: 5000 });
+
+      const text = await locator.innerText();
+      return expectedTexts.every(t => text.includes(t));
+    } catch {
+      return false;
+    }
+  }
+
+  /**
+   * Playwright: 특정 selector로 요소 목록을 수집한 후 랜덤 요소의 속성(JSON 형태)을 파싱하여 반환
+   */
+  public async getRandomElementByAttribute(
+    waitSelector: string,
+    hoverSelector: string | null,
+    listSelector: string,
+    attributeName: string,
+  ): Promise<any> {
+    await this.waitForVisible(waitSelector);
+
+    if (hoverSelector) {
+      await this.hover(hoverSelector);
+    }
+
+    const elements = await this.findElements(listSelector);
+    const count = elements.length;
+    if (count === 0) {
+      throw new Error(`요소를 찾을 수 없습니다: ${listSelector}`);
+    }
+
+    const randomIndex = Math.floor(Math.random() * count);
+    const attr = await elements[randomIndex].getAttribute(attributeName);
+
+    if (!attr) {
+      throw new Error(`속성 '${attributeName}'이(가) 존재하지 않습니다.`);
+    }
+    return JSON.parse(attr);
   }
 }
