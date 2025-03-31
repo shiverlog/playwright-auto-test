@@ -3,6 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
+import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig';
 import { ALL_POCS, POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
 import { type Project, defineConfig, devices } from '@playwright/test';
 /**
@@ -11,6 +12,7 @@ import { type Project, defineConfig, devices } from '@playwright/test';
  */
 import dotenv from 'dotenv';
 import path from 'path';
+import 'tsconfig-paths/register';
 
 // 환경 변수 로드
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -153,6 +155,24 @@ type E2EProjectConfig = {
   outputKey: string;
 };
 
+const realDeviceProjects: Project[] = ALL_DEVICES.slice(0, MAX_REAL_DEVICES).map(
+  ({ name, platform, config }) => ({
+    name: `Real Device - ${platform.toUpperCase()} - ${name}`,
+    testMatch: [`e2e/${platform}/**/*.spec.ts`],
+    use: {
+      headless: false,
+      viewport: { width: 390, height: 844 },
+      baseURL: process.env.BASE_URL || 'http://localhost:3000',
+      deviceConfig: config, // Appium 연동 대비
+    },
+    reporter: [
+      ['list'],
+      ['json', { outputFile: `logs/${platform}-${name}.json` }],
+      ['allure-playwright', { outputFolder: `allure-results/${platform}-${name}` }],
+    ],
+  }),
+);
+
 const E2E_CONFIGS: E2EProjectConfig[] = [
   {
     name: 'PC Web - Chrome',
@@ -230,6 +250,9 @@ const e2eProjects = generateE2EProjects();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
+  // 초기화 작업
+  globalSetup: require.resolve('./globalSetup'),
+  globalTeardown: require.resolve('./globalTeardown'),
   // 공통 테스트 폴더 경로
   testDir: '.',
   testMatch: [
@@ -264,6 +287,7 @@ export default defineConfig({
     },
     ...e2eProjects,
     ...(pocProjects.length ? pocProjects : []),
+    ...realDeviceProjects,
   ],
   /* Run your local dev server before starting the tests */
   webServer: {

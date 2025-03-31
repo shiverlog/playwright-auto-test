@@ -44,7 +44,7 @@
     // Node.js 환경에서 사용하기 위한 모듈 시스템 설정(ESNext, CommonJS)
     "module": "ESNext",
     // 컴파일된 코드의 타겟 ES 버전 (ECMAScript 6)
-    "target": "ES6",
+    "target": "ES2022",
     // TypeScript 타입 선언 파일(.d.ts) 생성
     "declaration": true,
     // 엄격한 타입 검사 모드 활성화 (타입 안정성을 높임)
@@ -110,11 +110,8 @@
     "tests",
     "tests-examples",
     "playwright.config.ts",
-    "zas-is/playwright",
-    "zas-is/scripts",
-    "common/utils/scriptRunner.ts",
-    "zas-is/AlertActions.ts"
+    "common/utils/scriptRunner.ts"
   ],
   // TypeScript 컴파일 대상에서 제외
-  "exclude": ["node_modules", "dist", "example", "zas-is"]
+  "exclude": ["node_modules", "dist", "example"]
 }

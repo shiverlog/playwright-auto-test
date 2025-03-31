@@ -1,4 +1,51 @@
 {
+  "name": "playwright-auto-test",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "./index.js",
+  "description": "Playwright + Appium 기반 테스트 자동화 프로젝트",
+  "author": "Shiwoo Min",
+  "license": "ISC",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "vite",
+    "prepare": "husky install",
+    "test": "cross-env NODE_OPTIONS=-r tsconfig-paths/register npx playwright test",
+    "test:report": "npx playwright show-report",
+    "test:ui": "npx playwright test --ui",
+    "test:pc": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=pc npx playwright test",
+    "test:pc:chrome": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=pc npx playwright test --project='POC - PC - Chrome'",
+    "test:pc:firefox": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=pc npx playwright test --project='POC - PC - Firefox'",
+    "test:pc:safari": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=pc npx playwright test --project='POC - PC - Safari'",
+    "test:pc:edge": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=pc npx playwright test --project='POC - PC - Edge'",
+    "test:pc:debug": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=pc npx playwright test --headed --debug",
+    "test:mw": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=mw npx playwright test",
+    "test:mw:chrome": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=mw npx playwright test --project='POC - MW - Mobile Chrome'",
+    "test:mw:safari": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=mw npx playwright test --project='POC - MW - Mobile Safari'",
+    "test:mw:debug": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=mw npx playwright test --headed --debug",
+    "test:aos": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=aos npx playwright test",
+    "test:aos:debug": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=aos npx playwright test --headed --debug",
+    "test:ios": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=ios npx playwright test",
+    "test:ios:debug": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=ios npx playwright test --headed --debug",
+    "test:api": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC=api npx playwright test",
+    "test:all": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC= npx playwright test",
+    "test:all:debug": "cross-env NODE_OPTIONS=-r tsconfig-paths/register POC= npx playwright test --headed --debug",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint --ext .ts .",
+    "lint:fix": "eslint --ext .ts . --fix",
+    "format": "prettier --write '**/*.{ts,tsx,js,json}'",
+    "clean": "rimraf dist",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "commit": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
   "devDependencies": {
     "@faker-js/faker": "^9.6.0",
     "@playwright/test": "^1.51.0",
@@ -10,23 +57,23 @@
     "@types/webdriverio": "^4.13.3",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
+    "@wdio/types": "^9.12.2",
     "allure-playwright": "^3.2.0",
-    "appium": "^2.17.0",
+    "appium": "^1.17.1",
     "appium-uiautomator2-driver": "^4.1.0",
-    "appium-xcuitest-driver": "^8.3.3",
+    "appium-xcuitest-driver": "^4.4.6",
     "casual": "^1.6.2",
     "chromedriver": "^134.0.5",
     "commitizen": "^4.3.1",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
-    "cz-customizable": "^7.4.0",
     "debug": "^4.4.0",
     "dotenv": "^16.4.7",
     "eslint": "^9.22.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.3",
-    "forever": "^4.0.3",
+    "forever": "^1.0.1",
     "husky": "^8.0.3",
     "jest-circus": "^29.7.0",
     "lint-staged": "^15.4.3",
@@ -39,20 +86,13 @@
     "playwright-expect": "^0.1.2",
     "playwright-lighthouse": "^4.0.0",
     "prettier": "^3.5.3",
+    "rimraf": "^5.0.0",
     "start-server-and-test": "^2.0.11",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.2",
     "vite": "^6.2.2",
-    "webdriverio": "^9.12.1"
-  },
-  "name": "playwright-auto-test",
-  "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs",
-    "example": "example",
-    "test": "tests"
+    "webdriverio": "^9.12.2"
   },
   "dependencies": {
     "@google-cloud/pubsub": "^4.10.0",
@@ -111,49 +151,22 @@
     "swagger-ui-express": "^5.0.1",
     "to-regex-range": "^5.0.1",
     "ts-morph": "^25.0.1",
+    "tsconfig-paths": "^4.2.0",
     "undici-types": "^6.20.0",
     "uuid": "^10.0.0",
     "v8-compile-cache-lib": "^3.0.1",
-    "wd": "^1.14.0",
+    "wd": "^0.0.26",
     "winston": "^3.17.0",
     "winston-daily-rotate-file": "^5.0.0",
     "xlsx": "^0.18.5",
     "xmlbuilder": "^15.1.1",
     "yn": "^3.1.1"
   },
-  "scripts": {
-    "start": "vite",
-    "prepare": "husky install",
-    "test": "npx playwright test",
-    "test:report": "npx playwright show-report",
-    "test:ui": "npx playwright test --ui",
-    "test:pc": "POC=pc npx playwright test",
-    "test:pc:chrome": "POC=pc npx playwright test --project='POC - PC - Chrome'",
-    "test:pc:firefox": "POC=pc npx playwright test --project='POC - PC - Firefox'",
-    "test:pc:safari": "POC=pc npx playwright test --project='POC - PC - Safari'",
-    "test:pc:edge": "POC=pc npx playwright test --project='POC - PC - Edge'",
-    "test:pc:debug": "POC=pc npx playwright test --headed --debug",
-    "test:mw": "POC=mw npx playwright test",
-    "test:mw:chrome": "POC=mw npx playwright test --project='POC - MW - Mobile Chrome'",
-    "test:mw:safari": "POC=mw npx playwright test --project='POC - MW - Mobile Safari'",
-    "test:mw:debug": "POC=mw npx playwright test --headed --debug",
-    "test:aos": "POC=aos npx playwright test",
-    "test:aos:debug": "POC=aos npx playwright test --headed --debug",
-    "test:ios": "POC=ios npx playwright test",
-    "test:ios:debug": "POC=ios npx playwright test --headed --debug",
-    "test:api": "POC=api npx playwright test",
-    "test:all": "POC= npx playwright test",
-    "test:all:debug": "POC= npx playwright test --headed --debug",
-    "commit": "cz"
+  "directories": {
+    "doc": "docs",
+    "example": "example",
+    "test": "tests"
   },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-customizable"
-    }
-  },
-  "keywords": [],
-  "author": "Shiwoo Min",
-  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shiverlog/playwright-auto-test.git"
@@ -162,5 +175,5 @@
     "url": "https://github.com/shiverlog/playwright-auto-test/issues"
   },
   "homepage": "https://github.com/shiverlog/playwright-auto-test#readme",
-  "description": ""
+  "keywords": []
 }

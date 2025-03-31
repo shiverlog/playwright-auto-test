@@ -176,6 +176,9 @@ importers:
       ts-morph:
         specifier: ^25.0.1
         version: 25.0.1
+      tsconfig-paths:
+        specifier: ^4.2.0
+        version: 4.2.0
       undici-types:
         specifier: ^6.20.0
         version: 6.21.0
@@ -234,6 +237,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^8.26.1
         version: 8.28.0(eslint@9.23.0(jiti@2.4.2))(typescript@5.8.2)
+      '@wdio/types':
+        specifier: ^9.12.2
+        version: 9.12.2
       allure-playwright:
         specifier: ^3.2.0
         version: 3.2.1(@playwright/test@1.51.1)
@@ -321,6 +327,9 @@ importers:
       prettier:
         specifier: ^3.5.3
         version: 3.5.3
+      rimraf:
+        specifier: ^5.0.0
+        version: 5.0.10
       start-server-and-test:
         specifier: ^2.0.11
         version: 2.0.11
@@ -337,7 +346,7 @@ importers:
         specifier: ^6.2.2
         version: 6.2.3(@types/node@22.13.14)(jiti@2.4.2)(yaml@2.7.0)
       webdriverio:
-        specifier: ^9.12.1
+        specifier: ^9.12.2
         version: 9.12.2
 
 packages:
@@ -6206,6 +6215,10 @@ packages:
 
   tsconfig-paths@3.15.0:
     resolution: {integrity: sha512-2Ac2RgzDe/cn48GvOe3M+o82pEFewD3UPbyoUHHdKasHwJKjds4fLXWf/Ux5kATBKN20oaFGu+jbElp1pos0mg==}
+
+  tsconfig-paths@4.2.0:
+    resolution: {integrity: sha512-NoZ4roiN7LnbKn9QqE1amc9DJfzvZXxF4xDavcOWt1BPkdx+m+0gJuPM+S0vCe7zTJMYUP0R8pO2XMr+Y8oLIg==}
+    engines: {node: '>=6'}
 
   tslib@1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
@@ -13858,6 +13871,12 @@ snapshots:
     dependencies:
       '@types/json5': 0.0.29
       json5: 1.0.2
+      minimist: 1.2.8
+      strip-bom: 3.0.0
+
+  tsconfig-paths@4.2.0:
+    dependencies:
+      json5: 2.2.3
       minimist: 1.2.8
       strip-bom: 3.0.0
 

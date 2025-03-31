@@ -1,22 +1,24 @@
+import { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 
-const logger = Logger.getLogger('mw');
-
-export async function handleMwSetup(): Promise<void> {
+export async function handleMwSetup(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[MW] 모바일 웹 설정 시작');
-    logger.info('[MW] 설정 완료');
+    logger.info(`[${poc.toUpperCase()}] Mobile Web 테스트 설정 시작`);
+    logger.info(`[${poc.toUpperCase()}] 설정 완료`);
   } catch (error) {
-    logger.error(`[MW] 설정 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 설정 실패: ${error}`);
     throw error;
   }
 }
 
-export async function handleMwTeardown(): Promise<void> {
+export async function handleMwTeardown(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[MW] 테스트 종료');
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 시작`);
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 완료`);
   } catch (error) {
-    logger.error(`[MW] 종료 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 종료 실패: ${error}`);
     throw error;
   }
 }

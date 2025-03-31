@@ -3,6 +3,12 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
+import {
+  ANDROID_DEVICES,
+  AndroidDeviceConfig,
+  IOSDeviceConfig,
+  IOS_DEVICES,
+} from '@common/config/BaseDeviceConfig';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
 import chromedriverPath from 'chromedriver';
 import dotenv from 'dotenv';
@@ -28,31 +34,51 @@ export const TIMEOUT = 20 * 1000;
 /**
  * Appium 디바이스 설정
  */
-const devicesPath = path.resolve(__dirname, '../config/devices.json');
-let deviceConfig = { android: 'Galaxy Note 20 Ultra', ios: 'iPhone 15 PLUS', useProxy: false };
-
-if (fs.existsSync(devicesPath)) {
-  try {
-    const raw = fs.readFileSync(devicesPath, 'utf-8');
-    const parsed = JSON.parse(raw);
-    deviceConfig = {
-      android: parsed.android || deviceConfig.android,
-      ios: parsed.ios || deviceConfig.ios,
-      useProxy: parsed.useProxy ?? deviceConfig.useProxy,
-    };
-  } catch (e) {
-    console.warn('devices.json 파싱 실패. 기본값을 사용합니다.', e);
-  }
+// 공통 타입 정의
+interface DeviceItem<T> {
+  name: string;
+  platform: 'android' | 'ios';
+  config: T;
 }
 
-export const ANDROID_DEVICE = deviceConfig.android;
-export const IOS_DEVICE = deviceConfig.ios;
-export const USE_PROXY = deviceConfig.useProxy;
+// Android 기기 배열
+export const ALL_ANDROID_DEVICES: DeviceItem<AndroidDeviceConfig>[] = Object.entries(
+  ANDROID_DEVICES,
+).map(([name, config]) => ({
+  name,
+  platform: 'android',
+  config,
+}));
+
+// iOS 기기 배열
+export const ALL_IOS_DEVICES: DeviceItem<IOSDeviceConfig>[] = Object.entries(IOS_DEVICES).map(
+  ([name, config]) => ({
+    name,
+    platform: 'ios',
+    config,
+  }),
+);
+
+// 전체 기기 배열
+export const ALL_DEVICES = [...ALL_ANDROID_DEVICES, ...ALL_IOS_DEVICES];
+
+// Chromedriver Path (npm chromedriver 자동 관리)
+export const CHROMEDRIVER_PATH = chromedriverPath;
 
 /**
- *  Chromedriver Path (npm chromedriver 자동 관리)
+ * e2e 전용 기기
  */
-export const CHROMEDRIVER_PATH = chromedriverPath;
+export const ANDROID_DEVICE = process.env.ANDROID_DEVICE || 'Galaxy Note20 Ultra';
+export const IOS_DEVICE = process.env.IOS_DEVICE || 'iPhone 15 Plus';
+
+// android 기기 셋팅
+export const CURRENT_ANDROID_CONFIG: AndroidDeviceConfig =
+  ANDROID_DEVICES[ANDROID_DEVICE] || ANDROID_DEVICES['Galaxy Note20 Ultra'];
+// ios 기기 셋팅
+export const CURRENT_IOS_CONFIG: IOSDeviceConfig =
+  IOS_DEVICES[IOS_DEVICE] || IOS_DEVICES['iPhone 15 Plus'];
+// MAX 기기 테스트 연결 갯수 셋팅
+export const MAX_REAL_DEVICES = parseInt(process.env.MAX_REAL_DEVICES || '2', 10);
 
 /**
  * Playwright 환경 설정

@@ -1,22 +1,24 @@
+import { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 
-const logger = Logger.getLogger('aos');
-
-export async function handleAndroidSetup(): Promise<void> {
+export async function handleAndroidSetup(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[AOS] Android 환경 설정 시작');
-    logger.info('[AOS] 설정 완료');
+    logger.info(`[${poc.toUpperCase()}] Android 테스트 설정 시작`);
+    logger.info(`[${poc.toUpperCase()}] 설정 완료`);
   } catch (error) {
-    logger.error(`[AOS] 설정 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 설정 실패: ${error}`);
     throw error;
   }
 }
 
-export async function handleAndroidTeardown(): Promise<void> {
+export async function handleAndroidTeardown(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[AOS] Android 테스트 종료');
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 시작`);
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 완료`);
   } catch (error) {
-    logger.error(`[AOS] 종료 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 종료 실패: ${error}`);
     throw error;
   }
 }

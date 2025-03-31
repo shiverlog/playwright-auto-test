@@ -1,22 +1,24 @@
+import { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 
-const logger = Logger.getLogger('api');
-
-export async function handleApiSetup(): Promise<void> {
+export async function handleApiSetup(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[API] API 환경 설정 시작');
-    logger.info('[API] API 환경 설정 완료');
+    logger.info(`[${poc.toUpperCase()}] API 테스트 설정 시작`);
+    logger.info(`[${poc.toUpperCase()}] 설정 완료`);
   } catch (error) {
-    logger.error(`[API] 설정 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 설정 실패: ${error}`);
     throw error;
   }
 }
 
-export async function handleApiTeardown(): Promise<void> {
+export async function handleApiTeardown(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[API] API 테스트 종료');
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 시작`);
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 완료`);
   } catch (error) {
-    logger.error(`[API] 종료 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 종료 실패: ${error}`);
     throw error;
   }
 }

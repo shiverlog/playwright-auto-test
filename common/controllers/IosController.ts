@@ -1,22 +1,24 @@
+import { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 
-const logger = Logger.getLogger('ios');
-
-export async function handleIosSetup(): Promise<void> {
+export async function handleIosSetup(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[iOS] iOS 환경 설정 시작');
-    logger.info('[iOS] 설정 완료');
+    logger.info(`[${poc.toUpperCase()}] iOS 테스트 설정 시작`);
+    logger.info(`[${poc.toUpperCase()}] 설정 완료`);
   } catch (error) {
-    logger.error(`[iOS] 설정 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 설정 실패: ${error}`);
     throw error;
   }
 }
 
-export async function handleIosTeardown(): Promise<void> {
+export async function handleIosTeardown(poc: POCType): Promise<void> {
+  const logger = Logger.getLogger(poc);
   try {
-    logger.info('[iOS] 테스트 종료');
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 시작`);
+    logger.info(`[${poc.toUpperCase()}] 테스트 종료 완료`);
   } catch (error) {
-    logger.error(`[iOS] 종료 실패: ${error}`);
+    logger.error(`[${poc.toUpperCase()}] 종료 실패: ${error}`);
     throw error;
   }
 }

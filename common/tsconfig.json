@@ -6,5 +6,5 @@
     "composite": true,
     "declaration": true
   },
-  "include": ["./**/*.ts", "../zas-is/AlertActions.ts"]
+  "include": ["./**/*.ts"]
 }

@@ -7,6 +7,8 @@
   "recommendations": [
     // Error Lens - 오류 표시
     "usernamehw.errorlens",
+    // Material Icon Theme - 아이콘 테마
+    "PKief.material-icon-theme",
     // Playwright 공식 확장 프로그램
     "ms-playwright.playwright",
     // Playwright Test Explorer - 테스트를 VS Code 내에서 실행 후 UI로 결과 확인
