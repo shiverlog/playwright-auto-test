@@ -43,7 +43,10 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "./.cz-config.cjs"
     }
   },
   "devDependencies": {
@@ -67,6 +70,7 @@
     "commitizen": "^4.3.1",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
+    "cz-customizable": "^7.4.0",
     "debug": "^4.4.0",
     "dotenv": "^16.4.7",
     "eslint": "^9.22.0",
@@ -169,7 +173,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shiverlog/playwright-auto-test.git"
+    "url": "https://github.com/shiverlog/playwright-auto-test.git"
   },
   "bugs": {
     "url": "https://github.com/shiverlog/playwright-auto-test/issues"

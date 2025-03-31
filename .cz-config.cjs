@@ -16,13 +16,11 @@ module.exports = {
     { name: 'api' },
     { name: 'speedtest' },
   ],
-  allowCustomScopes: true, // 커스텀 스코프 입력도 허용
+  allowCustomScopes: true,
   allowBreakingChanges: ['feat', 'fix'],
   skipQuestions: ['body', 'footer'],
-
-  // 커밋 메시지 포맷 커스터마이징
   subjectLimit: 100,
-  subject: '변경 메시지 작성:',
+
   messages: {
     type: '변경유형 선택:',
     scope: '변경 범위 선택:',
