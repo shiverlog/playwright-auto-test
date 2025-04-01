@@ -15,6 +15,7 @@ module.exports = {
     { name: 'ios' },
     { name: 'api' },
     { name: 'speedtest' },
+    { name: 'setting/common' },
   ],
   allowCustomScopes: true,
   allowBreakingChanges: ['feat', 'fix'],

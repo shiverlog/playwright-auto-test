@@ -198,6 +198,9 @@ npm install --legacy-peer-deps
 
 # 모든 사용자(Everyone)에게 해당 폴더 및 하위 폴더에 대한 전체 제어 권한 부여
 icacls "E:\playwright-auto-test" /grant Everyone:F /T
+
+# 인증 무시하고 playwright install
+NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright install
 ```
 
 `speedtest`

@@ -157,6 +157,11 @@ services:
       - PUBSUB_EMULATOR_HOST=0.0.0.0:8085
     ports:
       - '8085:8085'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8085']
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Mosaic DB 서비스
   mosaic-db:

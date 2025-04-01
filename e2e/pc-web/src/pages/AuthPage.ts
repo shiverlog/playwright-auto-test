@@ -1,18 +1,23 @@
 import { WebActionUtils } from '@common/actions/WebActionUtils';
 import { authLocator } from '@common/locators/authLocator';
 import { urlLocator } from '@common/locators/urlLocator';
+import { Modal } from '@e2e/pc/components/Modal';
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
 export class AuthPage extends WebActionUtils {
+  private modal: Modal;
+
   constructor(page: Page) {
     super(page);
+    this.modal = new Modal(page);
   }
 
   // 홈페이지 이동
   async gotoHomePage() {
     await this.page.goto(urlLocator.main.PC);
     await this.page.waitForLoadState('networkidle');
+    await this.modal.checkAllModals();
   }
 
   // 로그인 페이지로 이동
@@ -67,23 +72,23 @@ export class AuthPage extends WebActionUtils {
     }
   }
 
-  // 로그아웃 시나리오 실행
-  async logout(): Promise<boolean> {
-    try {
-      // 홈페이지 이동
-      await this.gotoHomePage();
-      // 로그아웃 버튼 클릭
-      await this.gotoLogoutPage();
+  // // 로그아웃 시나리오 실행
+  // async logout(): Promise<boolean> {
+  //   try {
+  //     // 홈페이지 이동
+  //     await this.gotoHomePage();
+  //     // 로그아웃 버튼 클릭
+  //     await this.gotoLogoutPage();
 
-      //  메인 화면의 로그아웃 버튼 클릭
-      await this.page.goto(urlLocator.main.PC);
-      await this.click(authLocator.logout_btn);
-      await this.page.waitForLoadState('networkidle');
-      await expect(this.page.locator(authLocator.login_btn.PC)).toHaveText(/로그인/);
-      return true;
-    } catch (err) {
-      console.error('[Logout Failed]', err);
-      return false;
-    }
-  }
+  //     //  메인 화면의 로그아웃 버튼 클릭
+  //     await this.page.goto(urlLocator.main.PC);
+  //     await this.click(authLocator.logout_btn);
+  //     await this.page.waitForLoadState('networkidle');
+  //     await expect(this.page.locator(authLocator.login_btn.PC)).toHaveText(/로그인/);
+  //     return true;
+  //   } catch (err) {
+  //     console.error('[Logout Failed]', err);
+  //     return false;
+  //   }
+  // }
 }

@@ -31,7 +31,6 @@
       "@e2e/mw/src/*": ["e2e/mobile-web/src/*"],
       "@e2e/pc/*": ["e2e/pc-web/*"],
       "@e2e/pc/src/*": ["e2e/pc-web/src/*"],
-      "@batch/*": ["batch/*"],
       "@pubsub/*": ["pubsub/*"],
       "@mosaic-db/*": ["mosaic-db/*"],
       "@speedtest/*": ["speedtest/*"],
@@ -41,8 +40,8 @@
     "outDir": "dist",
     // TypeScript 파일의 루트 디렉터리 지정
     "rootDir": "./",
-    // Node.js 환경에서 사용하기 위한 모듈 시스템 설정(ESNext, CommonJS)
-    "module": "ESNext",
+    // Node.js 환경에서 사용하기 위한 모듈 시스템 설정(ESNext, NodeNext,CommonJS)
+    "module": "NodeNext",
     // 컴파일된 코드의 타겟 ES 버전 (ECMAScript 6)
     "target": "ES2022",
     // TypeScript 타입 선언 파일(.d.ts) 생성
@@ -66,7 +65,7 @@
     // JavaScript 허용
     "allowJs": true,
     // 모듈 해석 방법을 Node.js 스타일로 지정
-    "moduleResolution": "Node",
+    "moduleResolution": "NodeNext",
     // JSON 파일을 import할 수 있도록 허용
     "resolveJsonModule": true,
     // 대소문자 일관성을 유지하여 파일을 가져오기 (OS 간 호환성 문제 방지)
@@ -110,6 +109,8 @@
     "tests",
     "tests-examples",
     "playwright.config.ts",
+    "globalSetup.ts",
+    "globalTeardown.ts",
     "common/utils/scriptRunner.ts"
   ],
   // TypeScript 컴파일 대상에서 제외

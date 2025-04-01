@@ -1,5 +1,5 @@
 import type { AndroidDeviceConfig, IOSDeviceConfig } from '@common/config/BaseDeviceConfig';
-import { POCType } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { BaseFixture } from '@common/fixtures/BaseFixture';
 import { Logger } from '@common/logger/customLogger';
 import { AppiumServerUtils } from '@common/utils/appiumServerUtils';

@@ -4,5 +4,11 @@
  */
 declare module 'chromedriver' {
   const path: string;
+  export const version: string;
+  export const chromeDriverVersion: string;
+  export const folder: string;
+  export const arch: string;
+  export const platform: string;
+  export const url: string;
   export default path;
 }

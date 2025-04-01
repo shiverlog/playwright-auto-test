@@ -4,7 +4,8 @@
  * Date : 2024-03-10
  */
 import { FILE_RETENTION_DAYS } from '@common/config/BaseConfig';
-import { ALL_POCS, POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
+import { ALL_POCS, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import fs from 'fs';
 import path from 'path';

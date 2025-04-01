@@ -1,8 +1,3 @@
-/**
- * Description : settings.json - 📌 VS Code 프로젝트 설정 파일 (코드 스타일 및 확장 프로그램 설정)
- * Author : Shiwoo Min
- * Date : 2024-03-10
- */
 {
   // 탭 크기
   "editor.tabSize": 2,
@@ -58,6 +53,10 @@
   "typescript.updateImportsOnFileMove.enabled": "always",
   // 자동 타입 획득을 방지하여 불필요한 네트워크 요청을 막음
   "typescript.suggestionActions.enabled": false,
+  // VSCode가 프로젝트 내 TypeScript를 사용하게 함
+  "typescript.tsdk": "node_modules/typescript/lib",
+  // tsconfig 경로 명시 (보통 필요 없음, tsconfig.json 루트에 있으면 자동 인식)
+  "typescript.enablePromptUseWorkspaceTsdk": true,
   // 파일을 새 탭에서 열기
   "workbench.editor.enablePreview": false,
   // 열린 탭 표시
@@ -101,6 +100,10 @@
   // "typescript.preferences.quoteStyle": "single",
   // Git 저장소 변경사항을 자동으로 가져오기
   "git.autofetch": true,
+  // ESLint 유효성 검사 언어 명시
+  "eslint.validate": ["typescript", "javascript"],
+  // 파일 저장 시 포맷 오류 무시
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
   // 스펠링 검사에서 제외할 사용자 정의 단어 목록
   "cSpell.userWords": [
     "UPLUS",
@@ -126,6 +129,7 @@
     "commitlint",
     "Chromedriver",
     "udid",
-    "XCUI"
+    "XCUI",
+    "healthcheck"
   ]
 }

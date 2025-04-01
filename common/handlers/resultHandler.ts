@@ -1,4 +1,5 @@
-import { ALL_POCS, POCType, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import { ALL_POCS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { errorHandler } from '@common/handlers/errorHandler';
 import { Logger } from '@common/logger/customLogger';
 import * as fs from 'fs/promises';

@@ -13,6 +13,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/**", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": ""
       },
@@ -27,6 +28,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/**", "--headed", "--debug", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": ""
       },
@@ -41,6 +43,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/pc-web", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": "pc"
       },
@@ -55,6 +58,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/mobile-web", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": "mw"
       },
@@ -69,6 +73,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/android", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": "aos"
       },
@@ -83,6 +88,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/ios", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": "ios"
       },
@@ -97,6 +103,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/api", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": "api"
       },
@@ -111,6 +118,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "speedtest", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": ""
       },
@@ -125,12 +133,15 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "--ui"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": ""
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
+
+    // e2e/pc-web/src/steps/LoginStep.ts만 실행
     {
       "name": "Run Playwright E2E-PC LoginStep Only",
       "type": "node",
@@ -142,6 +153,7 @@
         "--project=POC - PC - Chrome",
         "--reporter=html"
       ],
+      "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": "pc"
       },

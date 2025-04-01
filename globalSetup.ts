@@ -1,9 +1,8 @@
+import { ALL_POCS } from '@common/constants/PathConstants.js';
+import type { POCType } from '@common/constants/PathConstants.js';
+import { PocSetupController } from '@common/controllers/PocSetupController.js';
+import { Logger } from '@common/logger/customLogger.js';
 import dotenv from 'dotenv';
-import 'tsconfig-paths/register';
-
-import { ALL_POCS, POCType } from './common/constants/PathConstants';
-import { PocSetupController } from './common/controllers/PocSetupController';
-import { Logger } from './common/logger/customLogger';
 
 dotenv.config();
 

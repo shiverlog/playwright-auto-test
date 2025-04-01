@@ -1,4 +1,5 @@
-import { POCType, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import { TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
 import path from 'path';
 

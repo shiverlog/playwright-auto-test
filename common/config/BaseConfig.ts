@@ -3,17 +3,18 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import {
-  ANDROID_DEVICES,
-  AndroidDeviceConfig,
-  IOSDeviceConfig,
-  IOS_DEVICES,
-} from '@common/config/BaseDeviceConfig';
+import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig';
+import type { AndroidDeviceConfig, IOSDeviceConfig } from '@common/config/BaseDeviceConfig';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
-import chromedriverPath from 'chromedriver';
+import chromedriver from 'chromedriver';
 import dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import { dirname } from 'path';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // 환경 변수 로드 (.env 파일 지원)
 dotenv.config();
@@ -63,7 +64,7 @@ export const ALL_IOS_DEVICES: DeviceItem<IOSDeviceConfig>[] = Object.entries(IOS
 export const ALL_DEVICES = [...ALL_ANDROID_DEVICES, ...ALL_IOS_DEVICES];
 
 // Chromedriver Path (npm chromedriver 자동 관리)
-export const CHROMEDRIVER_PATH = chromedriverPath;
+export const CHROMEDRIVER_PATH = chromedriver;
 
 /**
  * e2e 전용 기기

@@ -1,5 +1,6 @@
 import { emailConfig } from '@common/config/BaseConfig';
-import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { ALL_POCS } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import { NotificationHandler } from '@common/notifications/notificationHandler';
 import nodemailer from 'nodemailer';

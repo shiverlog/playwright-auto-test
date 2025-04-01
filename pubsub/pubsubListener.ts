@@ -1,4 +1,5 @@
-import { ALL_POCS, FOLDER_PATHS, POCType } from '@common/constants/PathConstants';
+import { ALL_POCS, FOLDER_PATHS } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import { Message, PubSub } from '@google-cloud/pubsub';
 import { exec } from 'child_process';

@@ -1,4 +1,4 @@
-import { POCType } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 
 export async function handleAndroidSetup(poc: POCType): Promise<void> {

@@ -1,4 +1,5 @@
-import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { ALL_POCS } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { handleAndroidSetup, handleAndroidTeardown } from '@common/controllers/AndroidController';
 import { handleApiSetup, handleApiTeardown } from '@common/controllers/ApiController';
 import { handleIosSetup, handleIosTeardown } from '@common/controllers/IosController';

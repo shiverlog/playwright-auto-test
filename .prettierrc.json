@@ -8,6 +8,7 @@
   "semi": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
+    "^node:",
     "^github",
     "^vscode",
     "^docs",
@@ -24,5 +25,7 @@
   ],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
+  "importOrderBuiltinModulesToTop": true,
+  "importOrderCaseInsensitive": true,
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"]
 }

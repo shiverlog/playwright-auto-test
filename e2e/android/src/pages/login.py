@@ -1,25 +1,4 @@
 
-    # 로그아웃
-    def logout(self):
-        self.fc.gotoHome()
-        try:
-            #  FIXME 다른 UI가 로그아웃 버튼을 가려서 클릭이 불가능. excute_script로 클릭
-            self.fc.movepage(self.fc.var['login_el']['logout_btn'])      # 로그아웃 버튼 선택
-            self.fc.wait_loading()
-            assert self.fc.var['common_el']['url'] in self.fc.loading_find_css(self.fc.var['mainpage_el']['KV']).get_property('baseURI'), self.DBG.logger.debug("로그아웃 후 메인페이지 이동 실패")
-
-            self.fc.loading_find_css(self.fc.var['common_el']['메인_메뉴']).click()
-            assert "로그인" in self.fc.loading_find_css(self.fc.var['login_el']['login_btn']).get_property('innerText') , self.DBG.logger.debug("정상 로그아웃 실패")
-
-        except  Exception as e :
-            self.DBG.print_dbg(e, f"로그아웃 정상 동작 확인", False)
-            return False
-
-        else :
-            self.DBG.print_dbg("로그아웃 정상 동작 확인")
-            return True
-
-
     def do_login(self, login_type:str):
         '''
         U+ID, 카카오, 네이버 로그인

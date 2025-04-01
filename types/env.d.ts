@@ -1,6 +1,6 @@
-interface ImportMetaEnv {
-  UPLUS_ID: string;
-  UPLUS_PW: string;
-  ENV: 'development' | 'staging' | 'production';
-  HEADLESS: 'true' | 'false';
+interface ImportMetaEnv extends Readonly<Record<string, string>> {
+  readonly UPLUS_ID: string;
+  readonly UPLUS_PW: string;
+  readonly ENV: 'development' | 'staging' | 'production';
+  readonly HEADLESS: 'true' | 'false';
 }

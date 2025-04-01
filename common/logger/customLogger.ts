@@ -3,12 +3,8 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import {
-  ALL_POCS,
-  POCType,
-  POC_RESULT_PATHS,
-  TEST_RESULT_FILE_NAME,
-} from '@common/constants/PathConstants';
+import { ALL_POCS, POC_RESULT_PATHS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import fs from 'fs';
 import path from 'path';
 import winston from 'winston';

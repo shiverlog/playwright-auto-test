@@ -1,4 +1,5 @@
-import { ALL_POCS, POCType } from '@common/constants/PathConstants';
+import { ALL_POCS } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import type { Page } from '@playwright/test';
 

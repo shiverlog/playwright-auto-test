@@ -1,17 +1,4 @@
 
-class LoginPage():
-    def logout(self):
-        '''
-        로그아웃
-        '''
-        self.FC.gotoHome()
-
-        self.FC.movepage(self.FC.var['login_el']['logout_btn'], address=self.FC.var['common_el']['home_url'])
-        self.FC.wait_loading()
-        assert self.FC.loading_find_css(self.FC.var['mainpage_el']['KV']).get_property('baseURI') == self.FC.var['common_el']['home_url'], self.DBG.logger.debug("로그아웃 후 메인페이지 이동 실패")
-        self.FC.loading_find_css(self.FC.var['common_el']['메뉴_버튼']).click()
-        assert "로그인" in self.FC.loading_find_css(self.FC.var['login_el']['login_btn']).get_property('innerText') , self.DBG.logger.debug("정상 로그아웃 실패")
-
     def do_login(self, login_type:str):
         '''
         U+ID, 카카오, 네이버 로그인

@@ -1,5 +1,5 @@
-import { BaseActionUtils } from '@common/actions/BaseActionUtils';
-import { appMenuLocator } from '@common/locators/uiLocator';
+import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
+import { appMenuLocator } from '@common/locators/uiLocator.js';
 import type { Page } from '@playwright/test';
 
 export class BaseHeader {

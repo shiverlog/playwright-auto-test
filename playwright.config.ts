@@ -3,18 +3,23 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig';
-import { ALL_POCS, POCType, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
-import { type Project, defineConfig, devices } from '@playwright/test';
+import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
+import { ALL_POCS, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants.js';
+import type { POCType } from '@common/constants/PathConstants.js';
+import { defineConfig, devices, type Project } from '@playwright/test';
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
 import dotenv from 'dotenv';
 import path from 'path';
+import { dirname } from 'path';
 import 'tsconfig-paths/register';
-
 // 환경 변수 로드
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // 현재 실행 중인 POC 지정
@@ -251,8 +256,8 @@ const e2eProjects = generateE2EProjects();
  */
 export default defineConfig({
   // 초기화 작업
-  globalSetup: require.resolve('./globalSetup'),
-  globalTeardown: require.resolve('./globalTeardown'),
+  globalSetup: path.resolve(__dirname, './globalSetup.ts'),
+  globalTeardown: path.resolve(__dirname, './globalTeardown.ts'),
   // 공통 테스트 폴더 경로
   testDir: '.',
   testMatch: [

@@ -3,7 +3,8 @@
  * Author : Shiwoo Min
  * Date : 2024-03-10
  */
-import { ALL_POCS, POCType, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import { ALL_POCS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import * as fs from 'fs/promises';
 import type { BrowserContext, Page } from 'playwright';

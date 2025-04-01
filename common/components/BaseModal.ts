@@ -6,7 +6,7 @@ import type { Browser } from 'webdriverio';
 
 export class BaseModal {
   protected page: Page;
-  protected driver: Browser;
+  protected driver?: Browser;
 
   protected baseActions: BaseActionUtils;
   protected webActions?: WebActionUtils;
@@ -20,17 +20,16 @@ export class BaseModal {
     dimmedLayer: '.dimmed',
   };
 
-  constructor(page: Page, driver: Browser) {
+  constructor(page: Page, driver?: Browser) {
     this.page = page;
     this.driver = driver;
 
-    this.baseActions = new BaseActionUtils(page, driver);
+    this.baseActions = new BaseActionUtils(page, driver!);
 
-    // 플랫폼별 액션 유틸 주입
-    try {
-      this.mobileActions = new MobileActionUtils(page, driver!);
-    } catch {
-      this.webActions = new WebActionUtils(page, driver);
+    if (driver) {
+      this.mobileActions = new MobileActionUtils(page, driver);
+    } else {
+      this.webActions = new WebActionUtils(page, driver!);
     }
   }
 
@@ -42,13 +41,9 @@ export class BaseModal {
     return !!this.webActions;
   }
 
-  /**
-   * 모달 타입 결정 및 처리
-   */
   async determineModalType(): Promise<void> {
     try {
       await this.page.waitForSelector('.modal-content', { timeout: 5000 });
-
       const modalContent = this.page.locator('.modal-content');
 
       if (await modalContent.locator(".pop-tit-1:has-text('주소찾기')").count()) {
@@ -61,10 +56,10 @@ export class BaseModal {
       } else if (await modalContent.locator(".pop-tit-1:has-text('4G 요금제 선택')").count()) {
         await this.handleModal('plan_select_modal');
       } else {
-        console.error('알 수 없는 모달 감지');
+        console.warn('[Modal] 알 수 없는 모달 감지');
       }
     } catch (error) {
-      console.error(`모달 타입 결정 중 오류 발생: ${error}`);
+      console.error(`[Modal] 모달 타입 결정 중 오류 발생: ${error}`);
     }
   }
 
@@ -84,10 +79,10 @@ export class BaseModal {
           await this.handleMarketPopupModal();
           break;
         default:
-          console.error(`처리할 수 없는 모달 타입: ${modalType}`);
+          console.warn(`[Modal] 처리할 수 없는 모달 타입: ${modalType}`);
       }
     } catch (error) {
-      console.error(`모달 처리 중 에러 발생: ${error}`);
+      console.error(`[Modal] 모달 처리 중 에러 발생: ${error}`);
     }
   }
 
@@ -124,9 +119,6 @@ export class BaseModal {
     }
   }
 
-  /**
-   * 공통 모달 처리 (체크박스, 닫기 버튼 등)
-   */
   async checkCommonModals(): Promise<void> {
     try {
       await this.waitLoading();
@@ -177,9 +169,6 @@ export class BaseModal {
     } catch {}
   }
 
-  /**
-   * 팝업 탭 모두 닫기
-   */
   async closeAllPopups(context: BrowserContext): Promise<void> {
     const pages = context.pages();
     const mainPage = pages[0];
@@ -193,18 +182,12 @@ export class BaseModal {
     await mainPage.bringToFront();
   }
 
-  /**
-   * 로딩 스피너 대기
-   */
   async waitLoading(): Promise<void> {
     if (this.webActions) {
       await this.webActions.waitForSpinnerToDisappear('.loading-spinner');
     }
   }
 
-  /**
-   * 모달이 나타날 때까지 지정된 요소를 클릭
-   */
   async clickUntilModalDisplayed(
     triggerSelector: string,
     modalSelector: string = '.modal-content',
