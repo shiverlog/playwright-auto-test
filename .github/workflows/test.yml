@@ -22,16 +22,37 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
 
-      # 의존성 설치 (npm 기준)
+      # 의존성 설치 (pnpm 사용)
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      # Turbo 캐시 복원
+      - name: Restore Turbo Cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            .turbo
+            node_modules/.cache/turbo
+          key: ${{ runner.os }}-turbo-${{ github.ref }}-${{ hashFiles('**/tsconfig.json', '**/package.json', '**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.ref }}
+            ${{ runner.os }}-turbo-main
 
       # 코드 스타일 검사 (ESLint 등)
       - name: Run Lint
-        run: npm run lint
+        run: pnpm lint
         continue-on-error: true # Lint 실패해도 테스트 계속 진행
+
+      # 타입 체크 (tsc)
+      - name: Typecheck
+        run: pnpm typecheck:all
 
       # 유닛 테스트 실행
       - name: Run Unit Tests

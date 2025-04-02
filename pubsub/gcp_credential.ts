@@ -1,6 +1,6 @@
-import { ALL_POCS } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
-import { Logger } from '@common/logger/customLogger';
+import type { POCType } from '@common/constants/PathConstants.js';
+import { ALL_POCS } from '@common/constants/PathConstants.js';
+import { Logger } from '@common/logger/customLogger.js';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
 import { JWT } from 'google-auth-library';

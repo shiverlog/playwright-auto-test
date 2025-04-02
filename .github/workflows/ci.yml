@@ -1,13 +1,13 @@
 # Description : ci.yml - 📌 CI/CD 워크플로우
 # Author : Shiwoo Min
-# Date : 2024-03-10
+# Date : 2025-03-25
 
 name: CI - Workflow
 
 on:
   workflow_call:
 
-# 중복된 워크플로우 실행 방지 (같은 브랜치에서 병렬 실행 중이면 취소)
+# 중복된 워크플로우 실행 방지
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -33,20 +33,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: 'pnpm'
 
       # 의존성 설치 (npm 기준)
-      - name: Install dependencies (npm)
-        run: npm ci
+      - name: Install dependencies (pnpm)
+        run: pnpm install --frozen-lockfile
 
       # Lint 실행 (오류가 나도 계속 진행)
       - name: Run Lint
-        run: npm run lint
+        run: pnpm run lint
         continue-on-error: true
 
       # 유닛 테스트 실행
       - name: Run Unit Tests
-        run: npm test
+        run: pnpm test
 
   # 2. 빌드 단계: Docker 이미지 빌드 및 푸시
   build:
@@ -90,26 +90,37 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       # 영향 받은 프로젝트 빌드 (Nx 기반)
-      - name: Build affected projects (Nx)
+      - name: Show Affected Apps
         run: |
-          BASE_BRANCH=$(git rev-parse HEAD^)
-          pnpm nx affected --target=build --base=$BASE_BRANCH --head=HEAD --parallel=3
+          BASE_BRANCH=$(git merge-base origin/main HEAD)
+          echo "Base branch: $BASE_BRANCH"
+          pnpm nx show projects --affected --type app --base=$BASE_BRANCH --head=HEAD
 
       # 영향 받은 앱 기준으로 Docker 이미지 빌드 및 푸시
       - name: Build and push Docker images
         env:
           IMAGE_NAME: ${{ github.repository }}
+          BUILD_ENV: production
         run: |
-          BASE_BRANCH=$(git rev-parse HEAD^)
+          set -e
+          BASE_BRANCH=$(git merge-base origin/main HEAD)
           AFFECTED_PROJECTS=$(pnpm nx show projects --affected --type app --base=$BASE_BRANCH --head=HEAD)
 
-          # 공백 정리 및 배열화
           AFFECTED_PROJECTS=$(echo "$AFFECTED_PROJECTS" | tr -s '[:space:]' ' ')
           IFS=' ' read -r -a PROJECTS <<< "$AFFECTED_PROJECTS"
 
           for project in "${PROJECTS[@]}"; do
             FINAL_IMAGE_NAME="${IMAGE_NAME}-${project}"
-            echo "Building image: $FINAL_IMAGE_NAME"
-            docker build --build-arg="BUILD_ENV=${BUILD_ENV}" -t $FINAL_IMAGE_NAME -f apps/$project/Dockerfile .
+            DOCKERFILE_PATH="apps/$project/Dockerfile"
+
+            echo "::group::Building image for $project"
+            if [[ ! -f "$DOCKERFILE_PATH" ]]; then
+              echo "[WARN] Dockerfile not found: $DOCKERFILE_PATH"
+              echo "::endgroup::"
+              continue
+            fi
+
+            docker build --build-arg="BUILD_ENV=${BUILD_ENV}" -t $FINAL_IMAGE_NAME -f $DOCKERFILE_PATH .
             docker push $FINAL_IMAGE_NAME
+            echo "::endgroup::"
           done

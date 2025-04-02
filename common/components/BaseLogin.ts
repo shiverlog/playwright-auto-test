@@ -1,7 +1,21 @@
+/**
+ * Description : BaseLogin.ts - 📌 로그인 인증 관련 컨포넌트
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import { Page } from '@playwright/test';
 
-export abstract class BaseLogin {
-  constructor(protected page: Page) {}
+type SelectorConfig = {
+  menu: string;
+  status: string;
+  back: string;
+};
+
+export class BaseLogin {
+  constructor(
+    protected page: Page,
+    private selectors: SelectorConfig,
+  ) {}
 
   protected interpretLoginText(text: string | null | undefined): boolean | null {
     if (!text || text.trim() === '') return null;
@@ -15,7 +29,7 @@ export abstract class BaseLogin {
 
   public async isLoggedIn(): Promise<boolean> {
     try {
-      const { menu, status, back } = this.getSelectors();
+      const { menu, status, back } = this.selectors;
 
       await this.page.click(menu);
       await this.page.waitForSelector(status, { state: 'visible' });
@@ -31,10 +45,4 @@ export abstract class BaseLogin {
       return false;
     }
   }
-
-  protected abstract getSelectors(): {
-    menu: string;
-    status: string;
-    back: string;
-  };
 }

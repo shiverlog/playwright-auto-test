@@ -1,9 +1,11 @@
+/**
+ * Description : WebActions.ts - 📌 Playwright: 웹 전용 액션 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils';
 import type { Locator, Page } from '@playwright/test';
 
-/**
- * Playwright: 웹 전용 액션 유틸리티 클래스
- */
 export class WebActionUtils extends BaseActionUtils<undefined> {
   constructor(page: Page) {
     super(page);

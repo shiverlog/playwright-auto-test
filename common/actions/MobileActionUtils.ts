@@ -1,3 +1,9 @@
+/**
+ * Description : MobileActions.ts - 📌 Appium + Playwright: 모바일 전용 액션 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ * - Playwright와 Appium을 기반으로 다양한 모바일 테스트 액션을 제공하며, 플랫폼(Android/iOS)에 따라 서로 다른 로직을 처리
+ */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils';
 import { ActionConstants } from '@common/constants/ActionConstants';
 import type { Locator, Page } from '@playwright/test';
@@ -5,13 +11,6 @@ import { execSync } from 'child_process';
 import type { Browser, Element } from 'webdriverio';
 
 const DEFAULT_RETRY = 5;
-
-type Platform = 'android' | 'ios';
-
-/**
- * Appium + Playwright: 모바일 전용 액션 유틸리티 클래스
- * Playwright와 Appium을 기반으로 다양한 모바일 테스트 액션을 제공하며, 플랫폼(Android/iOS)에 따라 서로 다른 로직을 처리
- */
 export class MobileActionUtils extends BaseActionUtils<Browser> {
   declare protected driver: Browser;
   private platform: 'android' | 'ios';

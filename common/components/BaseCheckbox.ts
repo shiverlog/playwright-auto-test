@@ -1,6 +1,11 @@
+/**
+ * Description : BaseCheckbox.ts - 📌 체크박스 컨포넌트
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import { type Locator, test } from '@playwright/test';
 
-export default class BaseCheckbox {
+export class BaseCheckbox {
   private locator!: Locator;
   private description!: string;
 

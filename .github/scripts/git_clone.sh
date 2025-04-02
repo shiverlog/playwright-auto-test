@@ -1,42 +1,49 @@
 #!/bin/bash
 
+# POC 이름 (ex: pc, mw, aos, ios)
 POC=$1
 
-# GitLab 단일 모노레포 주소
-REPO_URL="http://gitlab.uhdcsre.com/digital-platform-team/qa/appium-monorepo.git"
+# 필수 변수 설정
+REPO_URL="https://github.com/shiverlog/playwright-auto-test.git"
+BRANCH="release"
+WORKSPACE_DIR="./playwright-auto-test"
+LOG_PATH="./logs" # 수정됨: 명시적으로 로그 경로 설정
 
-# 기본 디렉토리 설정
-WORKSPACE_DIR="./external/appium-monorepo"
-LOG_PATH="./logs"
+# 에러 발생 시 종료
+set -e
+
+# POC 유효성 검사
+if [[ -z "$POC" ]]; then
+  echo "[ERROR] POC 값을 입력해주세요 (예: pc | mw | aos | ios)"
+  exit 1
+fi
+
+# 로그 디렉토리 생성
 mkdir -p "$LOG_PATH"
 
-# POC 검증
-if [[ -z "$POC" ]]; then
-  echo "POC 값을 입력해주세요 (예: pc | mw | aos | ios)"
-  exit 1
-fi
+echo "[INFO] [$POC] Git 작업 시작..."
 
-echo "[$POC] Git 작업 시작..."
-
-# git clone 또는 pull
+# 저장소 클론 또는 업데이트
 if [[ -d "$WORKSPACE_DIR/.git" ]]; then
-  echo "디렉토리 존재 → git pull"
-  cd "$WORKSPACE_DIR" || exit 1
-  git reset --hard
-  git checkout release
-  git pull origin release
+  echo "[INFO] 기존 디렉토리 존재 → git pull 실행"
+  cd "$WORKSPACE_DIR"
+  git fetch origin
+  git reset --hard "origin/$BRANCH"
+  git checkout "$BRANCH"
+  git pull origin "$BRANCH"
 else
-  echo "디렉토리 없음 → git clone"
+  echo "[INFO] 디렉토리 없음 → git clone 실행"
   git clone "$REPO_URL" "$WORKSPACE_DIR"
-  cd "$WORKSPACE_DIR" || exit 1
-  git checkout release
+  cd "$WORKSPACE_DIR"
+  git checkout "$BRANCH"
 fi
 
-# POC 디렉토리 확인
+# POC 디렉토리 존재 여부 확인
 if [[ ! -d "$POC" ]]; then
-  echo "[$POC] 디렉토리가 모노레포 내에 존재하지 않습니다: $WORKSPACE_DIR/$POC"
+  echo "[ERROR] [$POC] 디렉토리가 존재하지 않습니다: $WORKSPACE_DIR/$POC"
   exit 1
 fi
 
-echo "[$POC] Git 클론 및 검증 완료"
+# 완료 메시지 및 로그 기록
+echo "[INFO] [$POC] Git 클론 및 디렉토리 검증 완료"
 echo "[$POC] Git 완료 @ $(date)" | tee "$LOG_PATH/git_clone_result_${POC}.log"

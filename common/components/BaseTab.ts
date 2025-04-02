@@ -3,9 +3,6 @@ import { BaseActionUtils } from '@common/actions/BaseActionUtils';
 export class BaseTab extends BaseActionUtils {
   /**
    * 탭 메뉴 클릭 및 콘텐츠 확인
-   * @param tabSelector 탭 요소 목록 selector
-   * @param contentSelector 콘텐츠 영역 selector
-   * @param tabContentListSelector 탭 내 콘텐츠 목록 selector
    */
   public async checkTabs(
     tabSelector: string,

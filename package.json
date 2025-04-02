@@ -9,7 +9,15 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "engineStrict": true,
   "packageManager": "pnpm@10.7.0",
+  "workspaces": [
+    "common",
+    "e2e/*",
+    "speedtest",
+    "pubsub",
+    "mosaic-db"
+  ],
   "scripts": {
     "build": "turbo run build",
     "build:tsc": "tsc",
@@ -49,6 +57,12 @@
     "commit": "cz"
   },
   "husky": {},
+  "lint-staged": {
+    "*.{ts,tsx,js,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-customizable"

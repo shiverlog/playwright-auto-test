@@ -1,3 +1,8 @@
+/**
+ * Description : BaseHeader.ts - 📌 헤더/GNB 컨포넌트
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { appMenuLocator } from '@common/locators/uiLocator.js';
 import type { Page } from '@playwright/test';
@@ -5,7 +10,7 @@ import type { Page } from '@playwright/test';
 export class BaseHeader {
   private page: Page;
   private baseActions: BaseActionUtils;
-  private var: Record<string, any>; // common_el 등에서 참조할 변수
+  private var: Record<string, any>;
 
   constructor(page: Page, baseActions: BaseActionUtils, varMap: Record<string, any>) {
     this.page = page;

@@ -1,3 +1,8 @@
+/**
+ * Description : IElementActions.ts - 📌 DSL Element 인터페이스
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import type { Locator } from '@playwright/test';
 
 export interface IElementActions {

@@ -1,12 +1,14 @@
-import { JsForceActions } from '@common/actions/JsForceActions';
-import type { Locator, Page } from '@playwright/test';
-
 /**
- * BaseActionUtils: 공통 액션 유틸리티 클래스
+ * Description : BaseActionUtils.ts - 📌 공통 액션 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
  * TDriver는 제네릭 타입 매개변수를 사용하여
  * - WebActionUtils 에서는 Playwright page 만 사용
  * - MobileActionUtils 에서는 Playwright + Appium 드라이버 객체를 함께 관리
  */
+import { JsForceActions } from '@common/actions/JsForceActions';
+import type { Locator, Page } from '@playwright/test';
+
 export class BaseActionUtils<TDriver = unknown> {
   protected page: Page;
   protected js: JsForceActions;

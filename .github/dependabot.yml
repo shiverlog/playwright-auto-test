@@ -14,14 +14,14 @@ updates:
       timezone: 'Asia/Seoul'
     open-pull-requests-limit: 10
     labels:
-      - dependencies
       - github-actions
+      - dependencies
     commit-message:
-      prefix: 'Update'
+      prefix: 'Update GitHub Actions'
       include: 'scope'
     versioning-strategy: increase-if-necessary
 
-  # npm 의존성 업데이트
+  # pnpm 의존성 업데이트
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -31,12 +31,12 @@ updates:
       timezone: 'Asia/Seoul'
     open-pull-requests-limit: 5
     labels:
-      - dependencies
       - npm
+      - dependencies
     ignore:
       - dependency-name: 'playwright'
     commit-message:
-      prefix: 'NPM'
+      prefix: 'Update NPM (pnpm)'
       include: 'scope'
     versioning-strategy: increase-if-necessary
 
@@ -49,10 +49,10 @@ updates:
       time: '09:00'
       timezone: 'Asia/Seoul'
     labels:
-      - dependencies
       - docker
+      - dependencies
     commit-message:
-      prefix: 'Docker'
+      prefix: 'Update Docker'
     versioning-strategy: increase-if-necessary
 
   - package-ecosystem: 'docker'
@@ -63,10 +63,10 @@ updates:
       time: '09:00'
       timezone: 'Asia/Seoul'
     labels:
-      - dependencies
       - docker
+      - dependencies
     commit-message:
-      prefix: 'Docker'
+      prefix: 'Update Docker'
     versioning-strategy: increase-if-necessary
 
   - package-ecosystem: 'docker'
@@ -77,10 +77,10 @@ updates:
       time: '09:00'
       timezone: 'Asia/Seoul'
     labels:
-      - dependencies
       - docker
+      - dependencies
     commit-message:
-      prefix: 'Docker'
+      prefix: 'Update Docker'
     versioning-strategy: increase-if-necessary
 
   - package-ecosystem: 'docker'
@@ -91,10 +91,10 @@ updates:
       time: '09:00'
       timezone: 'Asia/Seoul'
     labels:
-      - dependencies
       - docker
+      - dependencies
     commit-message:
-      prefix: 'Docker'
+      prefix: 'Update Docker'
     versioning-strategy: increase-if-necessary
 
   - package-ecosystem: 'docker'
@@ -105,10 +105,10 @@ updates:
       time: '09:00'
       timezone: 'Asia/Seoul'
     labels:
-      - dependencies
       - docker
+      - dependencies
     commit-message:
-      prefix: 'Docker'
+      prefix: 'Update Docker'
     versioning-strategy: increase-if-necessary
 
   - package-ecosystem: 'docker'
@@ -119,8 +119,8 @@ updates:
       time: '09:00'
       timezone: 'Asia/Seoul'
     labels:
-      - dependencies
       - docker
+      - dependencies
     commit-message:
-      prefix: 'Docker'
+      prefix: 'Update Docker'
     versioning-strategy: increase-if-necessary

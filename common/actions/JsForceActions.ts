@@ -1,5 +1,7 @@
 /**
- * JsForceActions: 자바스크립트 기반 강제 액션 유틸리티
+ * Description : JsForceActions.ts - 📌 자바스크립트 기반 강제 액션 유틸리티
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
  * - headless 환경이나 특수 상황에서 Playwright 기본 API로 동작하지 않을 때 활용
  */
 import type { Page } from '@playwright/test';

@@ -4,45 +4,39 @@
 
 name: CI/CD Pipeline
 
-# [트리거 조건]
-# main, develop, release 브랜치에 push 또는 pull_request 발생 시 실행
+# 트리거 조건: main, develop, release 브랜치에 push 또는 pull_request 발생 시 실행
 on:
   push:
     branches: [main, develop, release]
   pull_request:
     branches: [main, develop, release]
 
-# [중복 실행 제어]
-# 같은 브랜치에서 이전 워크플로우가 실행 중이면 취소하고 새로운 워크 실행
+# 중복 실행 제어: 같은 브랜치에서 이전 워크플로우가 실행 중이면 취소하고 새로운 워크 실행
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  # [CI 단계]
-  # Lint, Unit Test, Build & Docker 이미지 생성 (ci.yml 호출)
+  # CI 단계: Lint, Unit Test, Build & Docker 이미지 생성 (ci.yml 호출)
   ci:
     name: CI - Build & Test
     uses: ./.github/workflows/ci.yml
     secrets: inherit
 
-  # [Test 단계]
-  # 단일 실행 기반 Lint, Unit, Playwright 테스트 (test.yml 호출)
+  # Test 단계: 단일 실행 기반 Lint, Unit, Playwright 테스트 (test.yml 호출)
   test:
     name: Test - Lint, Unit, Playwright
     uses: ./.github/workflows/test.yml
     secrets: inherit
 
-  # [Playwright 병렬 테스트 단계]
-  # 다양한 브라우저 및 디바이스 조합으로 E2E 테스트 실행 (playwright.yml 호출)
+  # Playwright 병렬 테스트 단계: 다양한 브라우저 및 디바이스 조합으로 E2E 테스트 실행 (playwright.yml 호출)
   playwright:
     name: Playwright Matrix Tests
     uses: ./.github/workflows/playwright.yml
     secrets: inherit
 
-  # [CD 단계]
-  # main 또는 release 브랜치에서만 실행
-  # 배포는 반드시 CI가 성공해야 가능 (needs: [ci])
+  # CD 단계: main 또는 release 브랜치에서만 실행
+  # 배포는 반드시 CI가 성공해야 가능
   cd:
     name: CD - Deploy to Production
     if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release')

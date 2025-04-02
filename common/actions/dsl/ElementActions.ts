@@ -1,10 +1,12 @@
+/**
+ * Description : ElementActions.ts - 📌 DSL 스타일 Element 액션 클래스 (Playwright + Appium 통합)
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import type { Locator, Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import type { Browser, Element } from 'webdriverio';
 
-/**
- * DSL 스타일 Element 액션 클래스 (Playwright + Appium 통합)
- */
 export class ElementActions {
   private locator?: Locator;
   private element?: Element;

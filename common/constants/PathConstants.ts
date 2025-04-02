@@ -1,7 +1,7 @@
 /**
  * Description : PathConstants.ts - 📌 POC 타입 정의와 경로 매핑, 파일명 관련 로직 정의
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-25
  */
 import { BASE_PATH } from '@common/config/BaseConfig';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
