@@ -1,0 +1,387 @@
+.
+├── CODEOWNERS
+├── Dockerfile
+├── common
+│   ├── Dockerfile
+│   ├── actions
+│   │   ├── BaseActionUtils.ts
+│   │   ├── JsForceActions.ts
+│   │   ├── MobileActionUtils.ts
+│   │   ├── WebActionUtils.ts
+│   │   └── dsl
+│   ├── components
+│   │   ├── BaseCart.ts
+│   │   ├── BaseCheckbox.ts
+│   │   ├── BaseContent.ts
+│   │   ├── BaseHeader.ts
+│   │   ├── BaseKV.ts
+│   │   ├── BaseLogin.ts
+│   │   ├── BaseModal.ts
+│   │   ├── BaseSearch.ts
+│   │   ├── BaseSidebar.ts
+│   │   └── BaseTab.ts
+│   ├── config
+│   │   ├── BaseConfig.ts
+│   │   └── BaseDeviceConfig.ts
+│   ├── constants
+│   │   ├── ActionConstants.ts
+│   │   ├── ContextConstants.ts
+│   │   ├── DBConstants.ts
+│   │   ├── HTMLConstants.ts
+│   │   ├── PathConstants.ts
+│   │   ├── TestConstants.ts
+│   │   ├── TextConstants.ts
+│   │   └── UIConstants.ts
+│   ├── controllers
+│   │   ├── AndroidController.ts
+│   │   ├── ApiController.ts
+│   │   ├── IosController.ts
+│   │   ├── MobileWebController.ts
+│   │   ├── PcController.ts
+│   │   └── PocSetupController.ts
+│   ├── elements
+│   │   └── AppElement.ts
+│   ├── fixtures
+│   │   ├── BaseAppFixture.ts
+│   │   ├── BaseFixture.ts
+│   │   ├── BasePocFixture.ts
+│   │   └── BaseWebFixture.ts
+│   ├── formatters
+│   │   ├── formatters.ts
+│   │   ├── slackForm.ts
+│   │   └── teamsForm.ts
+│   ├── handlers
+│   │   ├── cleanupHandler.ts
+│   │   ├── errorHandler.ts
+│   │   └── resultHandler.ts
+│   ├── locators
+│   │   ├── authLocator.ts
+│   │   ├── benefit.ts
+│   │   ├── direct.ts
+│   │   ├── gnbLocator.ts
+│   │   ├── internet-iptv.ts
+│   │   ├── mainLocator.ts
+│   │   ├── mobile.ts
+│   │   ├── mypage.ts
+│   │   ├── searchLocator.ts
+│   │   ├── support.ts
+│   │   ├── uiLocator.ts
+│   │   └── urlLocator.ts
+│   ├── logger
+│   │   └── customLogger.ts
+│   ├── notifications
+│   │   ├── email
+│   │   ├── notificationHandler.ts
+│   │   ├── slack
+│   │   └── teams
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── utils
+│       ├── AppPermissionsUtils.ts
+│       ├── AssertUtils.ts
+│       ├── ChromeAccessUtils.ts
+│       ├── LocatorToExcel.ts
+│       ├── NetworkUtils.ts
+│       ├── SafariAccessUtils.ts
+│       ├── TestPathUtils.ts
+│       ├── appiumServerUtils.ts
+│       ├── contextUtils.ts
+│       ├── locatorUtils.ts
+│       ├── portUtils.ts
+│       ├── scriptRunner.ts
+│       ├── testPerformance.ts
+│       └── waitUtils.ts
+├── dependencies.json
+├── docker-compose.base.yml
+├── docker-compose.yml
+├── docs
+│   ├── 0w-1_Recommended_Playwright&API.md
+│   ├── 0w-2_Monorepo_Architecture.md
+│   ├── 0w-3_Refactoring_With_Playwright.md
+│   ├── 0w-4_Reference.md
+│   ├── 0w-5_OOP_Concepts.md
+│   ├── 1w-1_Playwright_Guide.md
+│   ├── 1w-2_Typescript_Guide.md
+│   ├── 1w-3_appium_guide.md
+│   ├── 1w-4_git_guide.md
+│   ├── 1w-5_ubuntu&docker_guide.md
+│   ├── 1w-6_naming_conventions.md
+│   ├── 1w-7_VScode-extensions.md
+│   ├── 1w-8_npm-related.md
+│   ├── 1w_weekly_report.md
+│   ├── 2w-1_playwright-arch.md
+│   ├── 2w-2_Mosaic-db.md
+│   ├── 2w-3_modularization.md
+│   ├── 2w_weekly_report.md
+│   ├── 3w_Settings.md
+│   ├── 4w_POC.md
+│   ├── 5w_Dockerizing.md
+│   ├── README.md
+│   ├── SECURITY.md
+│   └── images
+│       ├── android_setting.png
+│       ├── appium.png
+│       └── architecture.png
+├── e2e
+│   ├── android
+│   │   ├── Dockerfile
+│   │   ├── config
+│   │   ├── coverage
+│   │   ├── devices.json
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
+│   │   ├── requirements.txt
+│   │   ├── src
+│   │   ├── tests
+│   │   └── tsconfig.json
+│   ├── api
+│   │   ├── Dockerfile
+│   │   ├── REST
+│   │   ├── SOAP
+│   │   ├── coverage
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
+│   │   ├── swagger.ts
+│   │   ├── test-results
+│   │   └── tsconfig.json
+│   ├── ios
+│   │   ├── Dockerfile
+│   │   ├── config
+│   │   ├── coverage
+│   │   ├── devices.json
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
+│   │   ├── requirements.txt
+│   │   ├── src
+│   │   ├── test-results
+│   │   ├── tests
+│   │   └── tsconfig.json
+│   ├── mobile-web
+│   │   ├── Dockerfile
+│   │   ├── components
+│   │   ├── config
+│   │   ├── coverage
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
+│   │   ├── src
+│   │   ├── test-results
+│   │   ├── tests
+│   │   └── tsconfig.json
+│   ├── pc-web
+│   │   ├── Dockerfile
+│   │   ├── components
+│   │   ├── config
+│   │   ├── coverage
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── src
+│   │   ├── test-results
+│   │   ├── tests
+│   │   └── tsconfig.json
+│   └── scripts
+│       └── run-all-pocs.ts
+├── globalSetup.ts
+├── globalTeardown.ts
+├── index.html
+├── mosaic-db
+│   ├── CMakeLists.txt
+│   ├── Dockerfile
+│   ├── LICENSE
+│   ├── README.md
+│   ├── benchmarks
+│   │   ├── CMakeLists.txt
+│   │   ├── MEESUT.h
+│   │   ├── bench.cc
+│   │   ├── bench.h
+│   │   ├── dbtest.cc
+│   │   ├── dbtest.h
+│   │   ├── egen
+│   │   ├── record
+│   │   ├── run-microbench.sh
+│   │   ├── run.sh
+│   │   ├── tpcc
+│   │   ├── tpce.cc
+│   │   ├── tpce.h
+│   │   └── ycsb
+│   ├── connection.ts
+│   ├── corobase-task.cc
+│   ├── corobase.cc
+│   ├── dbcore
+│   │   ├── CMakeLists.txt
+│   │   ├── burt-hash.h
+│   │   ├── burt-hash.py
+│   │   ├── defer.h
+│   │   ├── dlog-defs.h
+│   │   ├── dlog-tx.h
+│   │   ├── dlog.cpp
+│   │   ├── dlog.h
+│   │   ├── dynarray.cpp
+│   │   ├── dynarray.h
+│   │   ├── epoch.cpp
+│   │   ├── epoch.h
+│   │   ├── mcs_lock.cpp
+│   │   ├── mcs_lock.h
+│   │   ├── pcommit.cpp
+│   │   ├── pcommit.h
+│   │   ├── rcu.cpp
+│   │   ├── rcu.h
+│   │   ├── sc-hash.h
+│   │   ├── serial.cpp
+│   │   ├── serial.h
+│   │   ├── size-encode.cpp
+│   │   ├── size-encode.h
+│   │   ├── sm-alloc.cpp
+│   │   ├── sm-alloc.h
+│   │   ├── sm-common.cpp
+│   │   ├── sm-common.h
+│   │   ├── sm-config.cpp
+│   │   ├── sm-config.h
+│   │   ├── sm-coroutine.cpp
+│   │   ├── sm-coroutine.h
+│   │   ├── sm-defs.h
+│   │   ├── sm-exceptions.cpp
+│   │   ├── sm-exceptions.h
+│   │   ├── sm-object.cpp
+│   │   ├── sm-object.h
+│   │   ├── sm-oid-alloc.cpp
+│   │   ├── sm-oid-alloc.h
+│   │   ├── sm-oid.cpp
+│   │   ├── sm-oid.h
+│   │   ├── sm-rc.h
+│   │   ├── sm-spinlock.cpp
+│   │   ├── sm-spinlock.h
+│   │   ├── sm-table.cpp
+│   │   ├── sm-table.h
+│   │   ├── sm-thread.cpp
+│   │   ├── sm-thread.h
+│   │   ├── stopwatch.h
+│   │   ├── stub-impl.h
+│   │   ├── tests
+│   │   ├── xid.cpp
+│   │   └── xid.h
+│   ├── engine.cc
+│   ├── engine.h
+│   ├── engine_internal.h
+│   ├── macros.h
+│   ├── masstree
+│   │   ├── AUTHORS
+│   │   ├── CMakeLists.txt
+│   │   ├── GNUmakefile.in
+│   │   ├── LICENSE
+│   │   ├── README.md
+│   │   ├── btree_leaflink.hh
+│   │   ├── circular_int.hh
+│   │   ├── compiler.cc
+│   │   ├── compiler.hh
+│   │   ├── config-debug.h
+│   │   ├── config-release.h
+│   │   ├── configure.ac
+│   │   ├── hashcode.hh
+│   │   ├── kpermuter.hh
+│   │   ├── ksearch.hh
+│   │   ├── kvproto.hh
+│   │   ├── kvstats.hh
+│   │   ├── local_vector.hh
+│   │   ├── masstree.hh
+│   │   ├── masstree_btree.cc
+│   │   ├── masstree_btree.h
+│   │   ├── masstree_get.hh
+│   │   ├── masstree_insert.hh
+│   │   ├── masstree_key.hh
+│   │   ├── masstree_print.hh
+│   │   ├── masstree_remove.hh
+│   │   ├── masstree_scan.hh
+│   │   ├── masstree_split.hh
+│   │   ├── masstree_struct.hh
+│   │   ├── masstree_tcursor.hh
+│   │   ├── mtcounters.hh
+│   │   ├── nodeversion.hh
+│   │   ├── str.cc
+│   │   ├── str.hh
+│   │   ├── straccum.cc
+│   │   ├── straccum.hh
+│   │   ├── string.cc
+│   │   ├── string.hh
+│   │   ├── string_base.hh
+│   │   ├── string_slice.hh
+│   │   ├── stringbag.hh
+│   │   └── timestamp.hh
+│   ├── str_arena.h
+│   ├── tests
+│   │   ├── CMakeLists.txt
+│   │   ├── coroutine
+│   │   ├── dlog
+│   │   └── masstree
+│   ├── third-party
+│   │   ├── foedus
+│   │   ├── gflags
+│   │   ├── glog
+│   │   └── sparsehash
+│   ├── tuple.cc
+│   ├── tuple.h
+│   ├── txn-mvocc.cc
+│   ├── txn-ssi.cc
+│   ├── txn-ssn.cc
+│   ├── txn.cc
+│   ├── txn.h
+│   ├── util.h
+│   └── varstr.h
+├── package-lock.json
+├── package.json
+├── playwright.config.local.ts
+├── playwright.config.ts
+├── pnpm-lock.yaml
+├── pubsub
+│   ├── Dockerfile
+│   ├── gc-automation-test-f2.json
+│   ├── gc-automation-test-fe.json
+│   ├── gcp_credential.ts
+│   ├── pubsubListener.ts
+│   ├── pubsubPull.ts
+│   ├── pubsubRunner.ts
+│   ├── pubsubsubscriber.ts
+│   └── service-account-punsub-key.json
+├── speedtest
+│   ├── Dockerfile
+│   ├── config
+│   │   ├── carrierPages.ts
+│   │   ├── performanceTestPages.ts
+│   │   └── url.ts
+│   ├── devices.json
+│   ├── output
+│   │   └── test_results.json
+│   ├── package.json
+│   ├── playwright-report
+│   │   └── report.html
+│   ├── playwright.config.ts
+│   ├── src
+│   │   ├── pages
+│   │   ├── publishSheetToPubSub.ts
+│   │   ├── saveLogs.ts
+│   │   ├── sendDataToSheet.ts
+│   │   ├── sendResults.ts
+│   │   ├── speedTest.ts
+│   │   ├── steps
+│   │   └── video_analysis
+│   ├── test-results
+│   ├── tests
+│   │   └── redirect.spec.ts
+│   └── tsconfig.json
+├── structure.txt
+├── tsconfig.json
+├── types
+│   ├── chromedriver.d.ts
+│   ├── device-config.ts
+│   ├── env-config.ts
+│   ├── env.d.ts
+│   ├── global.d.ts
+│   ├── playwright-config.ts
+│   ├── pubsub-config.ts
+│   └── test-context.d.ts
+└── vite.config.ts
+
+88 directories, 297 files

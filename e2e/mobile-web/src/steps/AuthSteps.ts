@@ -12,9 +12,4 @@ export class AuthSteps {
     const success = await this.authPage.doUplusLogin(id, pw);
     if (!success) throw new Error('로그인 실패');
   }
-  // 로그아웃
-  async logout(): Promise<void> {
-    const success = await this.authPage.logout();
-    if (!success) throw new Error('로그아웃 실패');
-  }
 }

@@ -9,13 +9,16 @@ const DEFAULT_RETRY = 5;
 type Platform = 'android' | 'ios';
 
 /**
- * Appium: 모바일 전용 액션 유틸리티 클래스
+ * Appium + Playwright: 모바일 전용 액션 유틸리티 클래스
+ * Playwright와 Appium을 기반으로 다양한 모바일 테스트 액션을 제공하며, 플랫폼(Android/iOS)에 따라 서로 다른 로직을 처리
  */
-export class MobileActionUtils extends BaseActionUtils {
+export class MobileActionUtils extends BaseActionUtils<Browser> {
+  declare protected driver: Browser;
   private platform: 'android' | 'ios';
 
   constructor(page: Page, driver: Browser) {
     super(page, driver);
+
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();
     if (platformName?.includes('android')) this.platform = 'android';
     else if (platformName?.includes('ios')) this.platform = 'ios';

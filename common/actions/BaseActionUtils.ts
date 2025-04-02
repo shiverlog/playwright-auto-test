@@ -1,19 +1,19 @@
 import { JsForceActions } from '@common/actions/JsForceActions';
 import type { Locator, Page } from '@playwright/test';
-import type { Browser, Element } from 'webdriverio';
 
 /**
  * BaseActionUtils: 공통 액션 유틸리티 클래스
+ * TDriver는 제네릭 타입 매개변수를 사용하여
+ * - WebActionUtils 에서는 Playwright page 만 사용
+ * - MobileActionUtils 에서는 Playwright + Appium 드라이버 객체를 함께 관리
  */
-export class BaseActionUtils {
+export class BaseActionUtils<TDriver = unknown> {
   protected page: Page;
-  protected driver: Browser;
-  public jsForce: JsForceActions;
+  protected js: JsForceActions;
 
-  constructor(page: Page, driver: Browser) {
+  constructor(page: Page, driver?: TDriver) {
     this.page = page;
-    this.driver = driver;
-    this.jsForce = new JsForceActions(page);
+    this.js = new JsForceActions(page);
   }
 
   // ========== Common ==========
@@ -103,7 +103,7 @@ export class BaseActionUtils {
   /**
    *  Playwright: 요소 찾기
    */
-  public findElement(selector: string): Locator | undefined {
+  public findElement(selector: string): Locator {
     return this.page.locator(selector);
   }
 
@@ -178,7 +178,7 @@ export class BaseActionUtils {
   /**
    *  Playwright: 텍스트 포함된 요소 찾기
    */
-  public async findElementWithText(selector: string, text: string): Promise<Locator | undefined> {
+  public async findElementWithText(selector: string, text: string): Promise<Locator> {
     return this.page.locator(selector, { hasText: text });
   }
 
@@ -300,6 +300,7 @@ export class BaseActionUtils {
       await element.click();
     }
   }
+
   /**
    * Playwright: 요소를 화면 중앙으로 스크롤
    */

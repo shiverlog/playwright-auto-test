@@ -1,32 +1,27 @@
 import { Platform as PLATFORM } from '@common/constants/ContextConstants';
 
 // 타입만 따로 추출
-export type Platform = typeof PLATFORM[keyof typeof PLATFORM];
+export type Platform = (typeof PLATFORM)[keyof typeof PLATFORM];
 
-// 필수 플랫폼만 정의
-export const baseUrls = {
+// 모든 Platform 키를 포함한 baseUrls
+export const baseUrls: Record<Platform, string> = {
   [PLATFORM.PC_WEB]: 'https://www.lguplus.com',
   [PLATFORM.MOBILE_WEB]: 'https://m.lguplus.com',
   [PLATFORM.NATIVE_APP]: 'https://app.lguplus.com/apcm/main',
-} as const;
+  [PLATFORM.ANDROID_APP]: 'https://app.lguplus.com/apcm/main',
+  [PLATFORM.IOS_APP]: 'https://app.lguplus.com/apcm/main',
+};
 
-// URL 매핑 함수: ANDROID/IOS는 내부에서 처리
-const mappingUrls = (
-  path: string,
-  includeAppPlatforms = true
-): Record<Platform, string> => {
-  const urls: Partial<Record<Platform, string>> = {
+// URL 매핑 함수
+const mappingUrls = (path: string): Record<Platform, string> => {
+  const urls: Record<Platform, string> = {
     [PLATFORM.PC_WEB]: `${baseUrls[PLATFORM.PC_WEB]}${path}`,
     [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}${path}`,
     [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}${path}`,
+    [PLATFORM.ANDROID_APP]: `${baseUrls[PLATFORM.ANDROID_APP]}${path}`,
+    [PLATFORM.IOS_APP]: `${baseUrls[PLATFORM.IOS_APP]}${path}`,
   };
-
-  if (includeAppPlatforms) {
-    urls[PLATFORM.ANDROID_APP] = urls[PLATFORM.NATIVE_APP]!;
-    urls[PLATFORM.IOS_APP] = urls[PLATFORM.NATIVE_APP]!;
-  }
-
-  return urls as Record<Platform, string>;
+  return urls;
 };
 
 // 최종 URL 매핑 객체
@@ -50,11 +45,7 @@ export const urlLocator = {
   smart_device: mappingUrls('/mobile/device/smart-device'),
   esim: mappingUrls('/mobile/esim'),
 
-  usim: {
-    [PLATFORM.PC_WEB]: `${baseUrls[PLATFORM.PC_WEB]}/mobile/usim`,
-    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}/mobile/sim-card/usim`,
-    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}/mobile/sim-card/usim`,
-  } as Record<Platform, string>,
+  usim: mappingUrls('/mobile/sim-card/usim'),
 
   // GNB - 인터넷/IPTV
   iptv: mappingUrls('/internet-iptv'),
@@ -94,13 +85,6 @@ export const urlLocator = {
   cart: mappingUrls('/cart'),
 
   // 검색
-  search: {
-    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}/search`,
-    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}/search`,
-  } as Record<Platform, string>,
-
-  search_result: {
-    [PLATFORM.MOBILE_WEB]: `${baseUrls[PLATFORM.MOBILE_WEB]}/search/result`,
-    [PLATFORM.NATIVE_APP]: `${baseUrls[PLATFORM.NATIVE_APP]}/search/result`,
-  } as Record<Platform, string>,
+  search: mappingUrls('/search'),
+  search_result: mappingUrls('/search/result'),
 };

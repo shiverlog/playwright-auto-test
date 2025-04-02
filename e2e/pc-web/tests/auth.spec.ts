@@ -1,4 +1,4 @@
-import { AuthSteps } from '@e2e/pc/src/steps/AuthStep';
+import { AuthSteps } from '@e2e/pc/src/steps/AuthStep.js';
 import { test } from '@playwright/test';
 
 test.describe('로그인 테스트', () => {

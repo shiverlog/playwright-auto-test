@@ -130,6 +130,9 @@
     "Chromedriver",
     "udid",
     "XCUI",
-    "healthcheck"
+    "healthcheck",
+    "networkidle",
+    "xcrun",
+    "ideviceinstaller"
   ]
 }

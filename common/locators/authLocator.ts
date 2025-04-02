@@ -6,20 +6,29 @@ import { UIType } from '@common/constants/ContextConstants';
 export const authLocator = {
   // 디바이스 타입별 셀렉터
   myinfo_icon: {
-    [UIType.PC]: 'a.icon-myInfo-1',
+    PC: 'a.icon-myInfo-1',
+    MOBILE: '',
+    APP: '',
   },
   myinfo_top: {
-    [UIType.PC]: 'div.myInfo-list div.myInfo-top',
+    PC: 'div.myInfo-list div.myInfo-top',
+    MOBILE: '',
+    APP: '',
   },
   login_box: {
-    [UIType.APP]: 'div.loginBox',
+    APP: 'div.loginBox',
+    PC: '',
+    MOBILE: '',
   },
   main_login_btn: {
-    [UIType.PC]: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
+    PC: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
+    MOBILE: '',
+    APP: '',
   },
   login_btn: {
-    [UIType.PC]: '.loginList > li:nth-of-type(1) > a',
-    [UIType.APP]: '.nm-app-login-way li:nth-of-type(1)',
+    PC: '.loginList > li:nth-of-type(1) > a',
+    APP: '.nm-app-login-way li:nth-of-type(1)',
+    MOBILE: '',
   },
 
   // 공통 단일 셀렉터
@@ -55,10 +64,10 @@ export const authLocator = {
   main_logout_btn: '.btn-logout c-btn-outline-2-s',
 } as const;
 
-// 타입 정의 (자동 추론)
+// 전체 타입
 export type AuthLocator = typeof authLocator;
 
-// UIType 기반의 필드를 추출하고 싶은 경우 유틸리티 타입도 사용 가능
+// UIType 기반 필드 추출
 export type AuthLocatorByUIType = {
   [K in keyof AuthLocator as AuthLocator[K] extends Record<UIType, string> ? K : never]: Record<
     UIType,

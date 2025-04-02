@@ -29,7 +29,7 @@ export class BaseModal {
     if (driver) {
       this.mobileActions = new MobileActionUtils(page, driver);
     } else {
-      this.webActions = new WebActionUtils(page, driver!);
+      this.webActions = new WebActionUtils(page!);
     }
   }
 

@@ -4,6 +4,7 @@
  * Date : 2024-03-10
  */
 import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
+import { BASE_DEVICES } from '@common/config/BaseDeviceConfig.js';
 import { ALL_POCS, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants.js';
 import type { POCType } from '@common/constants/PathConstants.js';
 import { defineConfig, devices, type Project } from '@playwright/test';
@@ -42,24 +43,15 @@ const browserMatrix: Record<Exclude<POCType, ''>, string[]> = {
 const pocProjects = pocList.flatMap(poc => {
   const basePath = POC_PATH(poc) as string;
   const resultPaths = POC_RESULT_PATHS(basePath);
-
+  const deviceInfo = BASE_DEVICES[poc as Exclude<POCType, ''>];
+  // 'device' 속성이 없는 경우 스킵
+  if (!deviceInfo || !('device' in deviceInfo)) return [];
   return browserMatrix[poc as Exclude<POCType, ''>].map(browser => {
     const browserLabel = browser.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-
-    // 디바이스 설정
-    let device;
-    if (browser.includes('android-app')) device = devices['galaxy note 20 ultra'];
-    else if (browser.includes('ios-app')) device = devices['iPhone 12'];
-    else if (browser === 'mobile-chrome') device = devices['galaxy note 20 ultra'];
-    else if (browser === 'mobile-safari') device = devices['iPhone 12'];
-    else if (browser === 'firefox') device = devices['Desktop Firefox'];
-    else if (browser === 'safari') device = devices['Desktop Safari'];
-    else device = devices['Desktop Chrome'];
-
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     // 기본 환경 설정 (Global Configuration)
     const useOptions: any = {
-      ...device,
+      ...(deviceInfo.device ?? {}),
       /**
        * 브라우저 실행 모드 설정:
        * - process.env.HEADLESS=true - 브라우저 headless 모드
@@ -69,7 +61,7 @@ const pocProjects = pocList.flatMap(poc => {
       /* Base URL to use in actions like `await page.goto('/')`. */
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
       // 기본 화면 크기 설정
-      viewport: { width: 1920, height: 1080 },
+      viewport: deviceInfo.device?.viewport ?? { width: 1920, height: 1080 },
       // 테스트 실패 시만 스크린샷 저장
       screenshot: 'only-on-failure',
       // 실패한 테스트의 경우에만 비디오 녹화 유지

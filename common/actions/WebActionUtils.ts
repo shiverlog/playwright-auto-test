@@ -1,13 +1,12 @@
 import { BaseActionUtils } from '@common/actions/BaseActionUtils';
 import type { Locator, Page } from '@playwright/test';
-import type { Browser } from 'webdriverio';
 
 /**
  * Playwright: 웹 전용 액션 유틸리티 클래스
  */
-export class WebActionUtils extends BaseActionUtils {
-  constructor(page: Page, driver: Browser) {
-    super(page, driver);
+export class WebActionUtils extends BaseActionUtils<undefined> {
+  constructor(page: Page) {
+    super(page);
   }
 
   /**

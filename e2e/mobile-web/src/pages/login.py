@@ -1,16 +1,6 @@
 
-    def do_login(self, login_type:str):
-        '''
-        U+ID, 카카오, 네이버 로그인
-        '''
-        self.FC.gotoHome()
-        self.FC.wait_loading()
-
     self.FC.movepage(self.FC.var['login_el']['login_btn'], address=self.FC.var['login_el']['login_url'])
     self.FC.wait_loading()
-    dict = {
-        "uplus" : [os.environ['UPLUS_ID'], os.environ['UPLUS_PW']],
-    }
 
     self.FC.loading_find_css(self.FC.var['login_el'][f'{login_type}_login_img']).get_property('parentElement').click()
     self.FC.wait_loading()

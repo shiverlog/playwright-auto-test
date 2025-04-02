@@ -1,88 +1,73 @@
-import { WebActionUtils } from '@common/actions/WebActionUtils';
-import { authLocator } from '@common/locators/authLocator';
-import { urlLocator } from '@common/locators/urlLocator';
+import type { JsForceActions } from '@common/actions/JsForceActions.js';
+import { WebActionUtils } from '@common/actions/WebActionUtils.js';
+import { BaseHeader } from '@common/components/BaseHeader.js';
+import { BaseModal } from '@common/components/BaseModal.js';
+import { Platform, UIType } from '@common/constants/ContextConstants.js';
+import { authLocator } from '@common/locators/authLocator.js';
+import { urlLocator } from '@common/locators/urlLocator.js';
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
 export class AuthPage extends WebActionUtils {
+  declare protected page: Page;
+  declare protected js: JsForceActions;
+  protected modal: BaseModal;
+  protected hamburger: BaseHeader;
+  protected platform: Platform;
+  protected uiType: UIType;
+
   constructor(page: Page) {
     super(page);
+    this.modal = new BaseModal(page, undefined);
+    this.platform = 'MOBILE_WEB';
+    this.uiType = 'MOBILE';
   }
 
   // 홈페이지 이동
   async gotoHomePage() {
-    await this.page.goto(urlLocator.main.PC);
+    await this.page.goto(urlLocator.main[this.platform]);
     await this.page.waitForLoadState('networkidle');
+    await this.modal.checkCommonModals();
   }
 
   // 로그인 페이지로 이동
   async gotoLoginPage() {
-    // GNB 유저 아이콘 클릭
-    await this.click(authLocator.myinfo_icon.PC);
-    // 메인 로그인 버튼 클릭
-    await this.forceClickJS(authLocator.main_login_btn.PC);
+    await this.hamburger.goToHamburgerMenu;
+    await this.page.click(authLocator.myinfo_icon[this.uiType]);
+    await this.js.forceClick(authLocator.main_login_btn[this.uiType]);
     await this.page.waitForLoadState('networkidle');
   }
 
   // 로그아웃 페이지로 이동
   async gotoLogoutPage() {
-    // GNB 유저 아이콘 클릭
-    await this.click(authLocator.myinfo_icon.PC);
-    // 메인 로그아웃 버튼 클릭
-    await this.forceClickJS(authLocator.main_logout_btn);
+    await this.page.click(authLocator.myinfo_icon[this.uiType]);
+    await this.js.forceClick(authLocator.main_logout_btn);
     await this.page.waitForLoadState('networkidle');
   }
 
   // 로그인 시나리오 실행
   async doUplusLogin(id: string, pw: string): Promise<boolean> {
     try {
-      // 홈페이지 이동
       await this.gotoHomePage();
-      // 로그인 페이지로 이동
       await this.gotoLoginPage();
-      // U+ 로그인 버튼 클릭
-      await this.forceClickJS(authLocator.uplus_login_btn);
+      await this.js.forceClick(authLocator.uplus_login_btn);
       await this.page.waitForLoadState('networkidle');
-      // U+ ID 입력 전 초기화 버튼 클릭
-      await this.forceClickJS(authLocator.uplus_clear_btn);
-      // U+ ID 입력
-      await this.forceTypeJS(authLocator.uplus_id_input, id);
-      // 툴팁 닫기
+      await this.js.forceClick(authLocator.uplus_clear_btn);
+      await this.js.forceType(authLocator.uplus_id_input, id);
+
       for (let i = 0; i < 3; i++) {
         const tooltip = this.page.locator('.c-tooltip');
         if ((await tooltip.count()) === 0) break;
-        await this.click('.c-ttp-inner .item:nth-of-type(1) .nm-tooltip-button');
+        await this.page.click('.c-ttp-inner .item:nth-of-type(1) .nm-tooltip-button');
       }
-      // U+ PW 입력
-      await this.forceTypeJS(authLocator.uplus_pw_input, pw);
-      // 로그인 전송 버튼 클릭
-      await this.forceClickJS(authLocator.uplus_login_submit_btn);
+
+      await this.js.forceType(authLocator.uplus_pw_input, pw);
+      await this.js.forceClick(authLocator.uplus_login_submit_btn);
       await this.page.waitForLoadState('networkidle');
-      // await expect(this.page.locator('div#KV')).toBeVisible();
 
       return true;
     } catch (err) {
       console.error('[Login Failed]', err);
-      return false;
-    }
-  }
-
-  // 로그아웃 시나리오 실행
-  async logout(): Promise<boolean> {
-    try {
-      // 홈페이지 이동
-      await this.gotoHomePage();
-      // 로그아웃 버튼 클릭
-      await this.gotoLogoutPage();
-
-      //  메인 화면의 로그아웃 버튼 클릭
-      await this.page.goto(urlLocator.main.PC);
-      await this.click(authLocator.logout_btn);
-      await this.page.waitForLoadState('networkidle');
-      await expect(this.page.locator(authLocator.login_btn.PC)).toHaveText(/로그인/);
-      return true;
-    } catch (err) {
-      console.error('[Logout Failed]', err);
       return false;
     }
   }

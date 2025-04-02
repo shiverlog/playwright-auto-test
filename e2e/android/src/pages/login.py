@@ -1,8 +1,5 @@
 
     def do_login(self, login_type:str):
-        '''
-        U+ID, 카카오, 네이버 로그인
-        '''
         self.fc.gotoHome()
         try:
             if self.driver.current_url != self.fc.var['login_el']['url']:
@@ -12,13 +9,6 @@
             self.fc.is_exists_element_click(self.fc.loading_find_css(self.fc.var['login_el'][f'{login_type}_login_img']))
             self.fc.wait_loading()
             self.fc.modal_ck2() # 결함 DCBGQA-4368
-
-            dict = {
-                "uplus" : [os.environ['UPLUS_ID'], os.environ['UPLUS_PW']],
-                "kakao" : [],
-                "naver" : [],
-            }
-
             self.fc.is_exists_element_click(self.fc.loading_find_css(self.fc.var['login_el'][f'{login_type}_입력한문자삭제']))
 
             self.fc.wait_loading()
