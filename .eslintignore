@@ -18,3 +18,7 @@ pnpm-lock.yaml
 
 # Playwright 테스트 결과 제외
 test-results/
+
+# 필요 시 특정 설정 파일만 제외
+vite.config.ts
+eslintrc.cjs

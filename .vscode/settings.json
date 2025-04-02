@@ -1,3 +1,8 @@
+/**
+ * Description : settings.json - 📌 VS Code에서 Setting 설정 파일
+ * Author : Shiwoo Min
+ * Date : 2025-03-20
+ */
 {
   // 탭 크기
   "editor.tabSize": 2,
@@ -133,6 +138,7 @@
     "healthcheck",
     "networkidle",
     "xcrun",
-    "ideviceinstaller"
+    "ideviceinstaller",
+    "KHTML"
   ]
 }

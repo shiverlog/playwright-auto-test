@@ -1,6 +1,7 @@
 /**
- * 타입 정의: env-config.ts
- * 설명: 슬랙/이메일/Teams 환경 설정 타입 정의
+ * Description : notification-config.ts - 📌 슬랙/이메일/Teams 환경 설정 타입 정의
+ * Author : Shiwoo Min
+ * Date : 2025-04-02
  */
 
 /**

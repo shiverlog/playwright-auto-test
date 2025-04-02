@@ -1,7 +1,7 @@
 /**
- * Description : general-testing.code-snippets - 📌 VS Code 테스팅 공통 스니펫 설정 파일
+ * Description : general-testing.code-snippets - 📌 VS Code Jest/Mocha 테스팅 공통 스니펫 설정 파일(사용X)
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-20
  */
 {
   // Jest/Mocha Describe 블록 생성

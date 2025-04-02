@@ -1,7 +1,7 @@
 /**
  * Description : playwright.config.ts - 📌 Playwright Config 테스트 실행 환경 정의 파일
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-04-20
  */
 import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
 import { BASE_DEVICES } from '@common/config/BaseDeviceConfig.js';
@@ -13,12 +13,14 @@ import { defineConfig, devices, type Project } from '@playwright/test';
  * https://github.com/motdotla/dotenv
  */
 import dotenv from 'dotenv';
+import os from 'os';
 import path from 'path';
 import { dirname } from 'path';
 import 'tsconfig-paths/register';
 // 환경 변수 로드
 import { fileURLToPath } from 'url';
 
+// ESM 환경 경로 설정
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '.env') });
@@ -265,8 +267,8 @@ export default defineConfig({
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
-  // 테스트 실행 시 동시 실행할 워커(worker) 수 설정
-  workers: process.env.CI ? 1 : undefined,
+  // 테스트 실행 시 동시 실행할 워커(worker) 수 설정 : 로컬은 CPU 75% 사용
+  workers: process.env.CI ? 1 : Math.max(1, Math.floor(os.cpus().length * 0.75)),
 
   // 타임아웃 설정 (Timeouts)
   timeout: 30 * 1000,

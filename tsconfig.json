@@ -1,7 +1,7 @@
 /**
  * Description : tsconfig.json - 📌 컴파일러 옵션 및 빌드 설정을 정의하는 구성 파일
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-04-01
  */
 {
   "name": "playwright-auto-test",
@@ -75,7 +75,7 @@
     // `any` 타입을 허용하지 않음
     "noImplicitAny": true,
     // 타입 정의 파일 경로 지정
-    "typeRoots": ["./types", "./node_modules/@types"],
+    "typeRoots": ["common/types", "./node_modules/@types"],
     // import 시 기본 내보내기 허용
     "allowSyntheticDefaultImports": true
   },
@@ -113,7 +113,7 @@
     "playwright.config.ts",
     "globalSetup.ts",
     "globalTeardown.ts",
-    "common/utils/scriptRunner.ts"
+    "common/utils/test/scriptRunner.ts"
   ],
   // TypeScript 컴파일 대상에서 제외
   "exclude": ["node_modules", "dist", "example"]

@@ -1,5 +1,7 @@
 /**
- * Appium 옵션 상세 설정을 정의하는 인터페이스
+ * Description : device-config.ts - 📌 Appium 옵션 상세 설정을 정의하는 인터페이스
+ * Author : Shiwoo Min
+ * Date : 2025-04-02
  * - 플랫폼, 디바이스, 크롬드라이버, 타임아웃 등 다양한 속성 포함
  */
 export interface DeviceOptions {

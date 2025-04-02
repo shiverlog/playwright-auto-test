@@ -1,4 +1,4 @@
-import { ALL_POCS } from '@common/constants/PathConstants';
+import { ALL_POCS } from '@common/constants/PathConstants.js';
 import { execSync } from 'child_process';
 
 (async () => {

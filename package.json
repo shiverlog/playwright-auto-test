@@ -9,7 +9,15 @@
   "engines": {
     "node": ">=18.0.0"
   },
+  "packageManager": "pnpm@10.7.0",
   "scripts": {
+    "build": "turbo run build",
+    "build:tsc": "tsc",
+    "build:ts": "turbo run build --filter=...common",
+    "test:web": "turbo run test:web",
+    "test:app": "turbo run test:app",
+    "lint:all": "turbo run lint",
+    "typecheck:all": "turbo run typecheck",
     "start": "vite",
     "prepare": "husky install",
     "test": "cross-env npx playwright test",
@@ -37,8 +45,7 @@
     "lint:fix": "eslint --ext .ts . --fix",
     "format": "prettier --write '**/*.{ts,tsx,js,json}'",
     "clean": "rimraf dist",
-    "prebuild": "npm run clean",
-    "build": "tsc",
+    "prebuild": "pnpm run clean",
     "commit": "cz"
   },
   "husky": {},
@@ -95,6 +102,7 @@
     "start-server-and-test": "^2.0.11",
     "supertest": "^7.0.0",
     "ts-node": "^10.9.2",
+    "turbo": "^2.4.4",
     "typescript": "^5.8.2",
     "vite": "^6.2.2",
     "webdriverio": "^9.12.2"

@@ -2,8 +2,8 @@ import type { AndroidDeviceConfig, IOSDeviceConfig } from '@common/config/BaseDe
 import type { POCType } from '@common/constants/PathConstants';
 import { BaseFixture } from '@common/fixtures/BaseFixture';
 import { Logger } from '@common/logger/customLogger';
-import { AppiumServerUtils } from '@common/utils/appiumServerUtils';
-import { getAvailablePort } from '@common/utils/portUtils';
+import { AppiumServerUtils } from '@common/utils/appium/appiumServerUtils';
+import { getAvailablePort } from '@common/utils/network/portUtils';
 import { test as base, expect } from '@playwright/test';
 import type { Browser, DesiredCapabilities, Options } from 'webdriverio';
 import { remote } from 'webdriverio';

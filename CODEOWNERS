@@ -1,4 +1,16 @@
+/**
+ * Description : CODEOWNERS - 📌 PR 리뷰 자동화
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 # 프로젝트 코드 변경 시 리뷰
+# 공통 설정
+/common/            @shiverlog @qa-team
 
-- @shiverlog
-  Dockerfile @shiverlog
+# Playwright 설정
+/playwright.config.ts  @shiverlog
+
+# 모든 JS/TS 파일에 리뷰어 지정
+*.ts                @shiverlog
+*.js                 @shiverlog
+

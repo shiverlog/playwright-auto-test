@@ -1,6 +1,7 @@
 /**
- * 타입 정의: pubsub-config.ts
- * 설명: Pub/Sub 관련 설정 타입 정의
+ * Description : pubsub-config.ts - 📌 Pub/Sub 관련 설정 타입 정의
+ * Author : Shiwoo Min
+ * Date : 2025-04-02
  */
 
 /**

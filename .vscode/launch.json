@@ -1,7 +1,7 @@
 /**
  * Description : launch.json - 📌 VS Code에서 Debug 및 Testing 실행 설정 파일
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-20
  */
 {
   "version": "0.2.0",
@@ -136,26 +136,6 @@
       "runtimeArgs": ["--require", "tsconfig-paths/register"],
       "env": {
         "POC": ""
-      },
-      "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
-    },
-
-    // e2e/pc-web/src/steps/LoginStep.ts만 실행
-    {
-      "name": "Run Playwright E2E-PC LoginStep Only",
-      "type": "node",
-      "request": "launch",
-      "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": [
-        "test",
-        "e2e/pc-web/src/steps/LoginStep.ts",
-        "--project=POC - PC - Chrome",
-        "--reporter=html"
-      ],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
-      "env": {
-        "POC": "pc"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"

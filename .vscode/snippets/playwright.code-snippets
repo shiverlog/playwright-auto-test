@@ -1,7 +1,7 @@
 /**
  * Description : appium.code-snippets - 📌 VS Code Playwright 관련 스니펫 설정 파일
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-20
  */
 {
   // Playwright 기본 테스트 템플릿
@@ -45,7 +45,8 @@
   "Playwright API Request": {
     "prefix": "pwAPI",
     "body": [
-      "const response = await page.request.get('${1:/api/endpoint}');",
+      "const requestContext = await request.newContext();",
+      "const response = await requestContext.get('${1:/api/endpoint}');",
       "const data = await response.json();",
       "console.log(data);",
     ],
@@ -55,8 +56,8 @@
   "Playwright Click and Wait": {
     "prefix": "pwClickWait",
     "body": [
-      "await page.locator('${1:selector}').waitFor();",
-      "await page.locator('${1:selector}').click();",
+      "await page.waitForSelector('${1:selector}', { timeout: 5000 });",
+      "await page.click('${1:selector}');",
     ],
   },
 
@@ -88,12 +89,11 @@
     "prefix": "pwIntercept",
     "body": [
       "await page.route('${1:/api/*}', async route => {",
-      "  const response = await route.request().response();",
-      "  let body = await response.text();",
-      "  body = body.replace('${2:oldValue}', '${3:newValue}');",
+      "  const mockData = { ${2:\"key\": \"value\"} };",
       "  await route.fulfill({",
-      "    response,",
-      "    body",
+      "    status: 200,",
+      "    contentType: 'application/json',",
+      "    body: JSON.stringify(mockData)",
       "  });",
       "});",
     ],
@@ -112,9 +112,10 @@
   "Playwright Multiple Elements": {
     "prefix": "pwMulti",
     "body": [
-      "const elements = await page.locator('${1:selector}').all();",
-      "for (const element of elements) {",
-      "  await element.click();",
+      "const elements = page.locator('${1:selector}');",
+      "const count = await elements.count();",
+      "for (let i = 0; i < count; i++) {",
+      "  await elements.nth(i).click();",
       "}",
     ],
   },
@@ -123,5 +124,11 @@
   "Playwright Capture Console Log": {
     "prefix": "pwConsoleLog",
     "body": ["page.on('console', msg => console.log(`PAGE LOG: ${msg.text()}`));"],
+  },
+
+  // Playwright에서 특정 요소의 텍스트를 검사하는 스니펫
+  "Playwright Assert Text": {
+    "prefix": "pwExpectText",
+    "body": ["await expect(page.locator('${1:selector}')).toHaveText('${2:Expected Text}');"],
   },
 }

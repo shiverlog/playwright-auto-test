@@ -1,14 +1,14 @@
 /**
  * Description : appium.code-snippets - 📌 VS Code Appium 관련 스니펫 설정 파일
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-20
  */
 {
   // Appium 기본 설정
   "Appium Basic Setup": {
     "prefix": "appiumSetup",
     "body": [
-      "const wdio = require('webdriverio');",
+      "import { remote } from 'webdriverio';",
       "",
       "const opts = {",
       "  path: '/wd/hub',",
@@ -21,9 +21,11 @@
       "  }",
       "};",
       "",
-      "const driver = await wdio.remote(opts);",
+      "const driver = await remote(opts);",
       "",
-      "await driver.quit();",
+      "// ... 테스트 액션 수행 ...",
+      "",
+      "await driver.deleteSession();",
     ],
   },
 
@@ -50,6 +52,7 @@
     "prefix": "appiumInput",
     "body": [
       "const inputField = await driver.$('${1:selector}');",
+      "await inputField.waitForDisplayed();",
       "await inputField.setValue('${2:input text}');",
     ],
   },
@@ -59,6 +62,7 @@
     "prefix": "appiumClear",
     "body": [
       "const inputField = await driver.$('${1:selector}');",
+      "await inputField.waitForDisplayed();",
       "await inputField.clearValue();",
     ],
     "description": "Appium에서 입력 필드 내용 지우기",
@@ -69,7 +73,8 @@
     "prefix": "appiumScreenshot",
     "body": [
       "const screenshot = await driver.takeScreenshot();",
-      "require('fs').writeFileSync('${1:screenshot.png}', screenshot, 'base64');",
+      "import fs from 'fs';",
+      "fs.writeFileSync('${1:screenshot.png}', screenshot, 'base64');",
     ],
   },
 

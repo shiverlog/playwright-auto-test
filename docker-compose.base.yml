@@ -1,6 +1,6 @@
-# Description : docker-compose.base.yml - 📌 Dockerizing 실행 환경 정의 파일
+# Description : docker-compose.base.yml - 📌 Docker 실행 환경 정의 파일
 # Author : Shiwoo Min
-# Date : 2024-03-10
+# Date : 2025-03-20
 
 version: '3.9'
 

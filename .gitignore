@@ -1,10 +1,24 @@
+# node_modules 폴더
 node_modules/
 
-# Playwright
+# 환경변수/환경세팅
+.env
+.env.*
+
+# Playwright 관련 폴더
 /test-results/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
 
-# 환경설정
-.env
+# coverage, logs
+coverage/
+logs/
+*.log
+
+# build output
+dist/
+out/
+
+# system
+.DS_Store
