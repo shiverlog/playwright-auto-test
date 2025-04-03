@@ -1,7 +1,7 @@
 /**
  * Description : errorHandler.ts - 📌 공통 에러 처리 핸들러
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-30
  */
 import { ALL_POCS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
 import type { POCType } from '@common/constants/PathConstants';

@@ -1,9 +1,9 @@
 import type { JsForceActions } from '@common/actions/JsForceActions.js';
 import { WebActionUtils } from '@common/actions/WebActionUtils.js';
 import { BaseModal } from '@common/components/BaseModal.js';
-import { Platform, UIType } from '@common/constants/ContextConstants.js';
 import { authLocator } from '@common/locators/authLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
+import { Platform, UIType } from '@common/types/platform-types.js';
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 

@@ -1,10 +1,22 @@
+/**
+ * Description : PocInitializer.ts - 📌 각 POC 테스트 환경 초기화 및 정리 매니저
+ * Author : Shiwoo Min
+ * Date : 2025-04-03
+ */
 import { ALL_POCS } from '@common/constants/PathConstants';
 import type { POCType } from '@common/constants/PathConstants';
-import { handleAndroidSetup, handleAndroidTeardown } from '@common/controllers/AndroidController';
-import { handleApiSetup, handleApiTeardown } from '@common/controllers/ApiController';
-import { handleIosSetup, handleIosTeardown } from '@common/controllers/IosController';
-import { handleMwSetup, handleMwTeardown } from '@common/controllers/MobileWebController';
-import { handlePcSetup, handlePcTeardown } from '@common/controllers/PcController';
+import {
+  cleanupAndroidTestEnv,
+  initializeAndroidTestEnv,
+} from '@common/initializers/androidTestEnv.js';
+import { cleanupApiTestEnv, initializeApiTestEnv } from '@common/initializers/apiTestEnv.js';
+import { cleanupOldFiles } from '@common/initializers/cleanupOldFiles';
+import { cleanupIosTestEnv, initializeIosTestEnv } from '@common/initializers/iosTestEnv.js';
+import {
+  cleanupMobileWebTestEnv,
+  initializeMobileWebTestEnv,
+} from '@common/initializers/mobileWebTestEnv.js';
+import { cleanupPcTestEnv, initializePcTestEnv } from '@common/initializers/pcTestEnv.js';
 import { Logger } from '@common/logger/customLogger';
 
 type PocHandlers = {
@@ -12,30 +24,33 @@ type PocHandlers = {
   teardown: (poc: POCType) => Promise<void>;
 };
 
+// 각 POC 타입에 따라 초기화/정리 핸들러 맵 구성
 const POC_HANDLER_MAP: Record<Exclude<POCType, ''>, PocHandlers> = {
   pc: {
-    setup: poc => handlePcSetup(poc),
-    teardown: poc => handlePcTeardown(poc),
+    setup: initializePcTestEnv,
+    teardown: cleanupPcTestEnv,
   },
   mw: {
-    setup: poc => handleMwSetup(poc),
-    teardown: poc => handleMwTeardown(poc),
+    setup: initializeMobileWebTestEnv,
+    teardown: cleanupMobileWebTestEnv,
   },
   aos: {
-    setup: poc => handleAndroidSetup(poc),
-    teardown: poc => handleAndroidTeardown(poc),
+    setup: initializeAndroidTestEnv,
+    teardown: cleanupAndroidTestEnv,
   },
   ios: {
-    setup: poc => handleIosSetup(poc),
-    teardown: poc => handleIosTeardown(poc),
+    setup: initializeIosTestEnv,
+    teardown: cleanupIosTestEnv,
   },
   api: {
-    setup: poc => handleApiSetup(poc),
-    teardown: poc => handleApiTeardown(poc),
+    setup: initializeApiTestEnv,
+    teardown: cleanupApiTestEnv,
   },
 };
 
-export class PocSetupController {
+// POC 테스트 환경 초기화/정리 전용 클래스
+export class PocInitializer {
+  // POC별 초기화 작업
   public static async setup(poc: POCType): Promise<void> {
     const pocList = poc === '' ? ALL_POCS : [poc];
 
@@ -51,6 +66,9 @@ export class PocSetupController {
         }
 
         try {
+          // 오래된 파일 삭제
+          await cleanupOldFiles(current);
+          // POC-specific 환경 초기화
           await handler.setup(current);
           logger.info(`[SETUP] ${current.toUpperCase()} 완료`);
         } catch (error: any) {
@@ -61,6 +79,7 @@ export class PocSetupController {
     );
   }
 
+  // POC별 정리 작업
   public static async teardown(poc: POCType): Promise<void> {
     const pocList = poc === '' ? ALL_POCS : [poc];
 

@@ -1,3 +1,8 @@
+/**
+ * Description : TextConstants.ts - 📌 공통 UI 텍스트 상수 정의
+ * Author : Shiwoo Min
+ * Date : 2025-04-03
+ */
 export const TextConstants = {
   GNB_LIST: [
     '모바일',

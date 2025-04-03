@@ -1,7 +1,7 @@
 /**
  * Description : UIConstants.ts - 📌 UI 컴포넌트 관련 상수 (CSS 클래스, UI 속성 등)
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-20
  */
 export default class HomePageConstants {
   // 로그인 및 사용자 관련 요소

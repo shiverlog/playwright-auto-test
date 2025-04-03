@@ -3,17 +3,13 @@
  * Author : Shiwoo Min
  * Date : 2025-04-03
  */
+import type { POCKey, POCType } from '@common/types/platform-types';
 
-/**
- * POC(Purpose Of Coverage) 구분 타입 정의
- */
-export type POCType = 'pc' | 'mw' | 'aos' | 'ios' | 'api' | '';
-// POC에서 빈 문자열 제외한 타입
-export type POCKey = Exclude<POCType, ''>;
-// POC → 폴더명 매핑 타입
-export type POCFolderMap = Record<POCKey, string>;
 // 전체 POC 배열 타입
 export type AllPOCs = POCKey[];
+
+// POC 별 매핑 폴더 타입 (단일 또는 다중 경로 지원)
+export type POCFolderMap = Record<POCKey, string | string[]>;
 
 /**
  * E2E 테스트 프로젝트 타입 정의
@@ -42,8 +38,10 @@ export type E2EProjectConfig = {
  * 런치 옵션 타입 정의
  */
 export interface LaunchOptions {
-  slowMo: number; // 동작을 느리게 실행할 시간(ms)
-  devtools: boolean; // 개발자 도구 열기 여부
+  // 동작을 느리게 실행할 시간(ms)
+  slowMo: number;
+  // 개발자 도구 열기 여부
+  devtools: boolean;
 }
 
 /**

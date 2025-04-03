@@ -1,4 +1,4 @@
-import { AppElement } from '@common/elements/AppElement';
+import { AppElement } from '@common/actions/elements/AppElement';
 import { expect, test } from '@common/fixtures/BaseAppFixture';
 
 test('AOS 앱이 정상적으로 실행되는지 확인', async ({ driver }) => {

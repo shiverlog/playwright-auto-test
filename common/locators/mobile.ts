@@ -1,4 +1,4 @@
-import { UIType } from '@common/constants/ContextConstants';
+import { UIType } from '@common/types/platform-types';
 
 // Type 미지정시, 공통부분으로 로직 처리
 export const getLocatorByUIType = (

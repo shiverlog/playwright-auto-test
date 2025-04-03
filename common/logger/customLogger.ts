@@ -1,7 +1,7 @@
 /**
  * Description : customLogger.ts - 📌 공통 Logger 적용
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-10
  */
 import { ALL_POCS, POC_RESULT_PATHS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
 import type { POCType } from '@common/constants/PathConstants';

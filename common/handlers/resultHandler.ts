@@ -1,3 +1,8 @@
+/**
+ * Description : resultHandler.ts - 📌 테스트 결과 저장 핸들러
+ * Author : Shiwoo Min
+ * Date : 2025-03-30
+ */
 import { ALL_POCS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
 import type { POCType } from '@common/constants/PathConstants';
 import { errorHandler } from '@common/handlers/errorHandler';
@@ -5,14 +10,11 @@ import { Logger } from '@common/logger/customLogger';
 import * as fs from 'fs/promises';
 import type { BrowserContext, Page } from 'playwright';
 
-/**
- * 테스트 결과 저장 핸들러 - POC별 또는 전체 저장 지원 (병렬 실행 고려)
- */
 export async function resultHandler(
   poc: POCType,
   status: 'PASS' | 'FAIL',
   details?: string,
-  page?: Page, // 페이지를 추가로 받을 수 있도록
+  page?: Page,
 ): Promise<void> {
   const pocList = poc === '' ? ALL_POCS : [poc];
   const timestamp = new Date().toISOString();

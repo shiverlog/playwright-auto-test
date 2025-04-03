@@ -6,9 +6,9 @@
 import { BaseActionUtils } from '@common/actions/BaseActionUtils';
 import { MobileActionUtils } from '@common/actions/MobileActionUtils';
 import { WebActionUtils } from '@common/actions/WebActionUtils';
-import { Platform, UIType } from '@common/constants/ContextConstants.js';
 import { mobileMenuLocator, overlayLocator } from '@common/locators/uiLocator';
 import { urlLocator } from '@common/locators/urlLocator';
+import { Platform, UIType } from '@common/types/platform-types.js';
 import type { BrowserContext, Page } from '@playwright/test';
 import type { Browser } from 'webdriverio';
 

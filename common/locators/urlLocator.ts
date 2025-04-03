@@ -1,4 +1,4 @@
-import { Platform as PLATFORM } from '@common/constants/ContextConstants';
+import { Platform as PLATFORM } from '@common/types/platform-types';
 
 // 타입만 따로 추출
 export type Platform = (typeof PLATFORM)[keyof typeof PLATFORM];

@@ -1,7 +1,7 @@
 /**
- * Description : errorHandler.ts - 📌 공통 로그 초기화 핸들러
+ * Description : cleanupInitializer.ts - 📌 특정 POC 타입 또는 전체 POC에 대해 오래된 파일을 정리하는 함수
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-30
  */
 import { FILE_RETENTION_DAYS } from '@common/config/BaseConfig';
 import { ALL_POCS, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants';
@@ -10,10 +10,6 @@ import { Logger } from '@common/logger/customLogger';
 import fs from 'fs';
 import path from 'path';
 
-/**
- * 특정 POC 타입 또는 전체 POC에 대해 오래된 파일을 정리하는 함수
- * @param {POCType} poc - POC 타입 (''일 경우 전체)
- */
 export async function cleanupOldFiles(poc: POCType): Promise<void> {
   const pocList = poc === '' ? ALL_POCS : [poc];
 

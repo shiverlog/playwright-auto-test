@@ -12,12 +12,12 @@ export type POCType = 'pc' | 'mw' | 'aos' | 'ios' | 'api' | '';
 // 전체 POC 리스트
 export const ALL_POCS: Exclude<POCType, ''>[] = ['pc', 'mw', 'aos', 'ios', 'api'];
 
-// POC 별 폴더 이름 매핑 함수s
-export const POC_FOLDER_MAP: Record<Exclude<POCType, ''>, string> = {
+// POC 별 폴더 이름 매핑 함수
+export const POC_FOLDER_MAP: Record<Exclude<POCType, ''>, string | string[]> = {
+  mw: ['pc-mobile-web', 'emulator-mobile-web'],
   pc: 'pc-web',
-  mw: 'mobile-web',
-  aos: 'android',
-  ios: 'ios',
+  aos: 'android-app',
+  ios: 'ios-app',
   api: 'api',
 };
 

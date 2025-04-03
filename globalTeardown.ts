@@ -5,7 +5,7 @@
  */
 import type { POCType } from '@common/constants/PathConstants.js';
 import { ALL_POCS } from '@common/constants/PathConstants.js';
-import { PocSetupController } from '@common/controllers/PocSetupController.js';
+import { PocInitializer } from '@common/initializers/PocInitializer.js';
 import { Logger } from '@common/logger/customLogger.js';
 import dotenv from 'dotenv';
 
@@ -22,7 +22,7 @@ async function globalTeardown() {
       logger.info(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 테스트 종료 처리 시작`);
 
       try {
-        await PocSetupController.teardown(poc);
+        await PocInitializer.teardown(poc);
         logger.info(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 종료 처리 완료`);
       } catch (err) {
         logger.error(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 종료 처리 실패: ${err}`);

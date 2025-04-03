@@ -1,16 +1,15 @@
+/**
+ * Description : notificationHandler.ts - 📌 공통 NotificationHandler 클래스
+ * Author : Shiwoo Min
+ * Date : 2025-03-30
+ */
 import { ALL_POCS } from '@common/constants/PathConstants';
 import type { POCType } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 
-/**
- * 공통 NotificationHandler 클래스
- */
 export class NotificationHandler {
   /**
    * 플랫폼에 맞는 메시지 전송 메서드
-   * @param poc - POC 타입
-   * @param message - 전송할 메시지 내용
-   * @param isSuccess - 성공 여부
    */
   protected static async sendMessage(poc: POCType, message: string, isSuccess: boolean = true) {
     const logger = Logger.getLogger(poc);
@@ -22,8 +21,6 @@ export class NotificationHandler {
 
   /**
    * 전체 POC에 대해 메시지 전송 (병렬 처리)
-   * @param message - 전송할 메시지
-   * @param isSuccess - 성공 여부
    */
   public static async batchSendMessage(message: string, isSuccess: boolean = true) {
     const sendMessages = ALL_POCS.map(poc =>

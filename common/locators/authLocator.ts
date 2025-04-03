@@ -1,4 +1,4 @@
-import { UIType } from '@common/constants/ContextConstants';
+import { UIType } from '@common/types/platform-types';
 
 /**
  * 로그인 관련 로케이터

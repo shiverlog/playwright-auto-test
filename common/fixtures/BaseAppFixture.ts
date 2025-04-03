@@ -6,11 +6,7 @@
 import type { POCType } from '@common/constants/PathConstants';
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
-import type {
-  DeviceConfigWithPort,
-  DeviceOptions,
-  RemoteOptions,
-} from '@common/types/device-config';
+import type { DeviceConfigWithPort, DeviceOptions } from '@common/types/device-config';
 import { AppiumServerUtils } from '@common/utils/appium/appiumServerUtils';
 import { getAvailablePort } from '@common/utils/network/portUtils';
 import { test as base, expect } from '@playwright/test';
@@ -20,6 +16,12 @@ import type { Browser, DesiredCapabilities, Options } from 'webdriverio';
 // Appium 서버 유틸 인스턴스
 const appiumUtils = new AppiumServerUtils();
 
+// remote wrapper 함수
+const getRemoteDriver = async (options: Options): Promise<Browser> => {
+  const remoteFunc = remote as unknown as (options: Options) => Promise<Browser>;
+  return await remoteFunc(options);
+};
+
 /**
  * Appium 드라이버 생성 함수
  */
@@ -27,7 +29,6 @@ async function createAppiumDriver(config: DeviceConfigWithPort): Promise<Browser
   const port = config.port || 4723;
   const opts: DeviceOptions = config.appium?.options || config['appium:options'] || {};
 
-  // Appium capabilities 구성 (W3C 표준에 맞게 "appium:" prefix 사용)
   const capabilities: DesiredCapabilities = {
     platformName: config.platformName,
     browserName: config.browserName || '',
@@ -54,7 +55,8 @@ async function createAppiumDriver(config: DeviceConfigWithPort): Promise<Browser
     capabilities: [capabilities],
   };
 
-  const driver = await remote(options as Options);
+  // 타입문제 우회(Type 'void' is not assignable to type 'Browser')
+  const driver = await getRemoteDriver(options);
   return driver;
 }
 

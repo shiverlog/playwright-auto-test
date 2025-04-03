@@ -1,3 +1,8 @@
+/**
+ * Description : AppElement.ts - 📌 Appium 기반의 단일 Element 조작을 위한 Wrapper 클래스
+ * Author : Shiwoo Min
+ * Date : 2025-04-01
+ */
 import type { Browser, Element } from 'webdriverio';
 
 /**
@@ -144,5 +149,52 @@ export class AppElement {
    */
   getRaw(): Element {
     return this.element;
+  }
+
+  /**
+   * 텍스트가 포함되어 있는지 검사
+   */
+  async containsText(expected: string): Promise<boolean> {
+    const text = await this.getText();
+    return text.includes(expected);
+  }
+
+  /**
+   * 포커스 설정
+   */
+  async focus(): Promise<this> {
+    await this.driver.execute('arguments[0].focus()', this.element);
+    return this;
+  }
+
+  /**
+   * 포커스 해제
+   */
+  async blur(): Promise<this> {
+    await this.driver.execute('arguments[0].blur()', this.element);
+    return this;
+  }
+
+  /**
+   * 스크롤로 노출
+   */
+  async scrollIntoView(): Promise<this> {
+    await this.driver.execute('arguments[0].scrollIntoView(true)', this.element);
+    return this;
+  }
+
+  /**
+   * 길게 누르기
+   */
+  async longPress(duration = 1000): Promise<this> {
+    const rect = await (this.element as any).getRect();
+    const x = rect.x + rect.width / 2;
+    const y = rect.y + rect.height / 2;
+    await this.driver.touchAction([
+      { action: 'press', x, y },
+      { action: 'wait', ms: duration },
+      { action: 'release' },
+    ]);
+    return this;
   }
 }
