@@ -1,6 +1,6 @@
+// tree -I "node_modules|dist|coverage|.git|output" -L 5 > structure.txt
 .
 ├── CODEOWNERS
-├── Dockerfile
 ├── common
 │   ├── Dockerfile
 │   ├── actions
@@ -9,6 +9,8 @@
 │   │   ├── MobileActionUtils.ts
 │   │   ├── WebActionUtils.ts
 │   │   └── dsl
+│   │       ├── ElementActions.ts
+│   │       └── IElementActions.ts
 │   ├── components
 │   │   ├── BaseCart.ts
 │   │   ├── BaseCheckbox.ts
@@ -53,12 +55,12 @@
 │   ├── handlers
 │   │   ├── cleanupHandler.ts
 │   │   ├── errorHandler.ts
+│   │   ├── notificationHandler.ts
 │   │   └── resultHandler.ts
 │   ├── locators
 │   │   ├── authLocator.ts
 │   │   ├── benefit.ts
 │   │   ├── direct.ts
-│   │   ├── gnbLocator.ts
 │   │   ├── internet-iptv.ts
 │   │   ├── mainLocator.ts
 │   │   ├── mobile.ts
@@ -71,27 +73,46 @@
 │   │   └── customLogger.ts
 │   ├── notifications
 │   │   ├── email
-│   │   ├── notificationHandler.ts
+│   │   │   └── emailHandler.ts
 │   │   ├── slack
+│   │   │   ├── slack.ts
+│   │   │   └── slackHandler.ts
 │   │   └── teams
+│   │       ├── teams.ts
+│   │       └── teamsHandler.ts
 │   ├── package.json
 │   ├── tsconfig.json
+│   ├── types
+│   │   ├── chromedriver.d.ts
+│   │   ├── device-config.ts
+│   │   ├── import-meta-env.d.ts
+│   │   ├── node-global.d.ts
+│   │   ├── notification-config.ts
+│   │   ├── playwright-config.ts
+│   │   ├── pubsub-config.ts
+│   │   └── test-context.d.ts
 │   └── utils
-│       ├── AppPermissionsUtils.ts
-│       ├── AssertUtils.ts
-│       ├── ChromeAccessUtils.ts
-│       ├── LocatorToExcel.ts
-│       ├── NetworkUtils.ts
-│       ├── SafariAccessUtils.ts
-│       ├── TestPathUtils.ts
-│       ├── appiumServerUtils.ts
-│       ├── contextUtils.ts
-│       ├── locatorUtils.ts
-│       ├── portUtils.ts
-│       ├── scriptRunner.ts
-│       ├── testPerformance.ts
-│       └── waitUtils.ts
-├── dependencies.json
+│       ├── appium
+│       │   ├── AppPermissionsUtils.ts
+│       │   └── appiumServerUtils.ts
+│       ├── browser
+│       │   ├── ChromeAccessUtils.ts
+│       │   └── SafariAccessUtils.ts
+│       ├── context
+│       │   └── contextUtils.ts
+│       ├── network
+│       │   ├── NetworkUtils.ts
+│       │   └── portUtils.ts
+│       ├── other
+│       │   ├── LocatorToExcel.ts
+│       │   └── locatorUtils.ts
+│       ├── performance
+│       │   ├── testPerformance.ts
+│       │   └── waitUtils.ts
+│       └── test
+│           ├── AssertUtils.ts
+│           ├── TestPathUtils.ts
+│           └── scriptRunner.ts
 ├── docker-compose.base.yml
 ├── docker-compose.yml
 ├── docs
@@ -123,64 +144,148 @@
 │       ├── appium.png
 │       └── architecture.png
 ├── e2e
-│   ├── android
+│   ├── android-app
 │   │   ├── Dockerfile
-│   │   ├── config
-│   │   ├── coverage
-│   │   ├── devices.json
 │   │   ├── package.json
 │   │   ├── playwright-report
+│   │   │   └── index.html
 │   │   ├── playwright.config.ts
-│   │   ├── requirements.txt
 │   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
 │   │   ├── tests
+│   │   │   ├── auth.spec.ts
+│   │   │   └── testSuite.spec.ts
 │   │   └── tsconfig.json
 │   ├── api
 │   │   ├── Dockerfile
 │   │   ├── REST
+│   │   │   └── LOGIN.json
 │   │   ├── SOAP
-│   │   ├── coverage
+│   │   │   ├── AccountLoginRequest.xml
+│   │   │   └── AccountLogoutRequest.xml
 │   │   ├── package.json
 │   │   ├── playwright-report
+│   │   │   └── report.html
 │   │   ├── playwright.config.ts
 │   │   ├── swagger.ts
 │   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
+│   │   │   ├── screenshots
+│   │   │   │   └── screenshot.png
+│   │   │   ├── traces
+│   │   │   │   └── trace.xyz
+│   │   │   └── videos
+│   │   │       └── video.mp4
 │   │   └── tsconfig.json
-│   ├── ios
+│   ├── emulator-mobile-web
 │   │   ├── Dockerfile
-│   │   ├── config
-│   │   ├── coverage
-│   │   ├── devices.json
 │   │   ├── package.json
 │   │   ├── playwright-report
+│   │   │   └── index.html
 │   │   ├── playwright.config.ts
-│   │   ├── requirements.txt
 │   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
 │   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
+│   │   │   ├── screenshots
+│   │   │   │   └── screenshot.png
+│   │   │   ├── traces
+│   │   │   │   └── trace.xyz
+│   │   │   └── videos
+│   │   │       └── video.mp4
 │   │   ├── tests
+│   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
-│   ├── mobile-web
+│   ├── ios-app
 │   │   ├── Dockerfile
-│   │   ├── components
-│   │   ├── config
-│   │   ├── coverage
 │   │   ├── package.json
 │   │   ├── playwright-report
+│   │   │   └── index.html
 │   │   ├── playwright.config.ts
 │   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
 │   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
+│   │   │   ├── screenshots
+│   │   │   │   └── screenshot.png
+│   │   │   ├── traces
+│   │   │   │   └── trace.xyz
+│   │   │   └── videos
+│   │   │       └── video.mp4
 │   │   ├── tests
+│   │   │   ├── auth.spec.ts
+│   │   │   └── testSuite.spec.ts
+│   │   └── tsconfig.json
+│   ├── pc-mobile-web
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   │   └── index.html
+│   │   ├── playwright.config.ts
+│   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
+│   │   │   ├── screenshots
+│   │   │   │   └── screenshot.png
+│   │   │   ├── traces
+│   │   │   │   └── trace.xyz
+│   │   │   └── videos
+│   │   │       └── video.mp4
+│   │   ├── tests
+│   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
 │   ├── pc-web
 │   │   ├── Dockerfile
-│   │   ├── components
-│   │   ├── config
-│   │   ├── coverage
 │   │   ├── package.json
 │   │   ├── playwright-report
+│   │   │   └── index.html
 │   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   └── AuthPage.ts
+│   │   │   └── steps
+│   │   │       └── AuthStep.ts
 │   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
+│   │   │   ├── screenshots
+│   │   │   │   └── screenshot.png
+│   │   │   ├── traces
+│   │   │   │   └── trace.xyz
+│   │   │   └── videos
+│   │   │       └── video.mp4
 │   │   ├── tests
+│   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
 │   └── scripts
 │       └── run-all-pocs.ts
@@ -200,13 +305,229 @@
 │   │   ├── dbtest.cc
 │   │   ├── dbtest.h
 │   │   ├── egen
+│   │   │   ├── AddressTable.cpp
+│   │   │   ├── AddressTable.h
+│   │   │   ├── BaseLoader.h
+│   │   │   ├── BaseLoaderFactory.h
+│   │   │   ├── BaseLogFormatter.h
+│   │   │   ├── BaseLogger.cpp
+│   │   │   ├── BaseLogger.h
+│   │   │   ├── BigMath.h
+│   │   │   ├── Brokers.h
+│   │   │   ├── CE.cpp
+│   │   │   ├── CE.h
+│   │   │   ├── CESUTInterface.h
+│   │   │   ├── CETxnInputGenerator.cpp
+│   │   │   ├── CETxnInputGenerator.h
+│   │   │   ├── CETxnMixGenerator.cpp
+│   │   │   ├── CETxnMixGenerator.h
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── ChargeTable.h
+│   │   │   ├── CommissionRateTable.h
+│   │   │   ├── CompanyCompetitorFile.h
+│   │   │   ├── CompanyCompetitorTable.h
+│   │   │   ├── CompanyFile.h
+│   │   │   ├── CompanyTable.h
+│   │   │   ├── CustomerAccountsAndPermissionsTable.h
+│   │   │   ├── CustomerSelection.cpp
+│   │   │   ├── CustomerSelection.h
+│   │   │   ├── CustomerTable.cpp
+│   │   │   ├── CustomerTable.h
+│   │   │   ├── CustomerTaxratesTable.h
+│   │   │   ├── DM.cpp
+│   │   │   ├── DM.h
+│   │   │   ├── DMSUTInterface.h
+│   │   │   ├── DailyMarketTable.h
+│   │   │   ├── DateTime.cpp
+│   │   │   ├── DateTime.h
+│   │   │   ├── DriverParamSettings.h
+│   │   │   ├── DriverTypes.h
+│   │   │   ├── EGenBaseLoader_stdafx.h
+│   │   │   ├── EGenError.h
+│   │   │   ├── EGenGenerateAndLoad.cpp
+│   │   │   ├── EGenGenerateAndLoad.h
+│   │   │   ├── EGenGenerateAndLoadBaseOutput.h
+│   │   │   ├── EGenGenerateAndLoadStandardOutput.h
+│   │   │   ├── EGenGenerateAndLoad_stdafx.h
+│   │   │   ├── EGenLoader.cpp
+│   │   │   ├── EGenLoader_stdafx.h
+│   │   │   ├── EGenLogFormatterTab.cpp
+│   │   │   ├── EGenLogFormatterTab.h
+│   │   │   ├── EGenLogger.h
+│   │   │   ├── EGenNullLoader_stdafx.h
+│   │   │   ├── EGenStandardTypes.h
+│   │   │   ├── EGenTables_common.h
+│   │   │   ├── EGenTables_stdafx.h
+│   │   │   ├── EGenUtilities_stdafx.h
+│   │   │   ├── EGenValidate.cpp
+│   │   │   ├── EGenVersion.cpp
+│   │   │   ├── EGenVersion.h
+│   │   │   ├── ExchangeTable.h
+│   │   │   ├── FinalTransform.h
+│   │   │   ├── FinancialTable.h
+│   │   │   ├── FixedArray.h
+│   │   │   ├── FixedMap.h
+│   │   │   ├── FlatAccountPermissionLoad.h
+│   │   │   ├── FlatAddressLoad.h
+│   │   │   ├── FlatBrokerLoad.h
+│   │   │   ├── FlatCashTransactionLoad.h
+│   │   │   ├── FlatChargeLoad.h
+│   │   │   ├── FlatCommissionRateLoad.h
+│   │   │   ├── FlatCompanyCompetitorLoad.h
+│   │   │   ├── FlatCompanyLoad.h
+│   │   │   ├── FlatCustomerAccountLoad.h
+│   │   │   ├── FlatCustomerLoad.h
+│   │   │   ├── FlatCustomerTaxrateLoad.h
+│   │   │   ├── FlatDailyMarketLoad.h
+│   │   │   ├── FlatExchangeLoad.h
+│   │   │   ├── FlatFile.h
+│   │   │   ├── FlatFileLoad_common.h
+│   │   │   ├── FlatFileLoad_stdafx.h
+│   │   │   ├── FlatFileLoader.cpp
+│   │   │   ├── FlatFileLoader.h
+│   │   │   ├── FlatFinancialLoad.h
+│   │   │   ├── FlatHoldingHistoryLoad.h
+│   │   │   ├── FlatHoldingLoad.h
+│   │   │   ├── FlatHoldingSummaryLoad.h
+│   │   │   ├── FlatIndustryLoad.h
+│   │   │   ├── FlatLastTradeLoad.h
+│   │   │   ├── FlatLoaderFactory.h
+│   │   │   ├── FlatNewsItemLoad.h
+│   │   │   ├── FlatNewsXRefLoad.h
+│   │   │   ├── FlatSectorLoad.h
+│   │   │   ├── FlatSecurityLoad.h
+│   │   │   ├── FlatSettlementLoad.h
+│   │   │   ├── FlatStatusTypeLoad.h
+│   │   │   ├── FlatTaxrateLoad.h
+│   │   │   ├── FlatTradeHistoryLoad.h
+│   │   │   ├── FlatTradeLoad.h
+│   │   │   ├── FlatTradeRequestLoad.h
+│   │   │   ├── FlatTradeTypeLoad.h
+│   │   │   ├── FlatWatchItemLoad.h
+│   │   │   ├── FlatWatchListLoad.h
+│   │   │   ├── FlatZipCodeLoad.h
+│   │   │   ├── HoldingsAndTradesTable.h
+│   │   │   ├── IndustryTable.h
+│   │   │   ├── InputFile.h
+│   │   │   ├── InputFileNoWeight.h
+│   │   │   ├── InputFlatFilesDeclarations.h
+│   │   │   ├── InputFlatFilesStructure.cpp
+│   │   │   ├── InputFlatFilesStructure.h
+│   │   │   ├── LastTradeTable.h
+│   │   │   ├── MEE.cpp
+│   │   │   ├── MEE.h
+│   │   │   ├── MEEPriceBoard.cpp
+│   │   │   ├── MEEPriceBoard.h
+│   │   │   ├── MEESUTInterface.h
+│   │   │   ├── MEESecurity.cpp
+│   │   │   ├── MEESecurity.h
+│   │   │   ├── MEETickerTape.cpp
+│   │   │   ├── MEETickerTape.h
+│   │   │   ├── MEETradeRequestActions.h
+│   │   │   ├── MEETradingFloor.cpp
+│   │   │   ├── MEETradingFloor.h
+│   │   │   ├── MiscConsts.h
+│   │   │   ├── Money.cpp
+│   │   │   ├── Money.h
+│   │   │   ├── NewsItemAndXRefTable.h
+│   │   │   ├── NullLoad_stdafx.h
+│   │   │   ├── NullLoader.h
+│   │   │   ├── NullLoaderFactory.h
+│   │   │   ├── Person.cpp
+│   │   │   ├── Person.h
+│   │   │   ├── RNGSeeds.h
+│   │   │   ├── Random.cpp
+│   │   │   ├── Random.h
+│   │   │   ├── ReadRowFunctions.cpp
+│   │   │   ├── ReadRowFunctions_istream.cpp
+│   │   │   ├── ReadRowFunctions_sscanf.cpp
+│   │   │   ├── SectorTable.h
+│   │   │   ├── SecurityFile.h
+│   │   │   ├── SecurityPriceRange.h
+│   │   │   ├── SecurityTable.h
+│   │   │   ├── StatusTypeTable.h
+│   │   │   ├── SyncLockInterface.h
+│   │   │   ├── TableConsts.h
+│   │   │   ├── TableTemplate.h
+│   │   │   ├── Table_Defs.h
+│   │   │   ├── TaxrateTable.h
+│   │   │   ├── TimerWheel.h
+│   │   │   ├── TimerWheelTimer.h
+│   │   │   ├── TradeGen.cpp
+│   │   │   ├── TradeGen.h
+│   │   │   ├── TradeTypeIDs.h
+│   │   │   ├── TradeTypeTable.h
+│   │   │   ├── TxnHarnessBrokerVolume.h
+│   │   │   ├── TxnHarnessCustomerPosition.h
+│   │   │   ├── TxnHarnessDBInterface.h
+│   │   │   ├── TxnHarnessDataMaintenance.h
+│   │   │   ├── TxnHarnessMarketFeed.h
+│   │   │   ├── TxnHarnessMarketWatch.h
+│   │   │   ├── TxnHarnessSecurityDetail.h
+│   │   │   ├── TxnHarnessSendToMarketInterface.h
+│   │   │   ├── TxnHarnessStructs.h
+│   │   │   ├── TxnHarnessTradeCleanup.h
+│   │   │   ├── TxnHarnessTradeLookup.h
+│   │   │   ├── TxnHarnessTradeOrder.h
+│   │   │   ├── TxnHarnessTradeResult.h
+│   │   │   ├── TxnHarnessTradeStatus.h
+│   │   │   ├── TxnHarnessTradeUpdate.h
+│   │   │   ├── WatchListsAndItemsTable.h
+│   │   │   ├── Wheel.h
+│   │   │   ├── WheelTime.cpp
+│   │   │   ├── WheelTime.h
+│   │   │   ├── ZipCodeTable.h
+│   │   │   ├── bucketsimulator.cpp
+│   │   │   ├── bucketsimulator.h
+│   │   │   ├── error.cpp
+│   │   │   ├── error.h
+│   │   │   ├── flat
+│   │   │   │   └── egen_flat_in
+│   │   │   ├── locking.cpp
+│   │   │   ├── locking.h
+│   │   │   ├── progressmeter.cpp
+│   │   │   ├── progressmeter.h
+│   │   │   ├── progressmeterinterface.cpp
+│   │   │   ├── progressmeterinterface.h
+│   │   │   ├── shore_tpce_egen.h
+│   │   │   ├── strutil.cpp
+│   │   │   ├── strutil.h
+│   │   │   ├── threading.cpp
+│   │   │   ├── threading.h
+│   │   │   ├── threading_pthread.h
+│   │   │   ├── threading_single.h
+│   │   │   ├── unusedflag.h
+│   │   │   └── user_time.h
 │   │   ├── record
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── cursor.h
+│   │   │   ├── encoder.h
+│   │   │   ├── inline_str.h
+│   │   │   ├── serializer.h
+│   │   │   └── varint.h
 │   │   ├── run-microbench.sh
 │   │   ├── run.sh
 │   │   ├── tpcc
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── tpcc-config.cc
+│   │   │   ├── tpcc-config.h
+│   │   │   ├── tpcc-hybrid-coro.cc
+│   │   │   ├── tpcc-sequential.cc
+│   │   │   ├── tpcc-simple-coro.cc
+│   │   │   └── tpcc.h
 │   │   ├── tpce.cc
 │   │   ├── tpce.h
 │   │   └── ycsb
+│   │       ├── CMakeLists.txt
+│   │       ├── run-ycsb.sh
+│   │       ├── ycsb-config.cc
+│   │       ├── ycsb-config.h
+│   │       ├── ycsb-flat-coro.cc
+│   │       ├── ycsb-hybrid-coro.cc
+│   │       ├── ycsb-nested-coro.cc
+│   │       ├── ycsb-sequential.cc
+│   │       ├── ycsb-simple-coro.cc
+│   │       └── ycsb.h
 │   ├── connection.ts
 │   ├── corobase-task.cc
 │   ├── corobase.cc
@@ -261,6 +582,19 @@
 │   │   ├── stopwatch.h
 │   │   ├── stub-impl.h
 │   │   ├── tests
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── test-cslist.cpp
+│   │   │   ├── test-dynarray.cpp
+│   │   │   ├── test-epoch.cpp
+│   │   │   ├── test-rcu.cpp
+│   │   │   ├── test-sc-hash.cpp
+│   │   │   ├── test-size-encode.cpp
+│   │   │   ├── test-sm-oid-alloc.cpp
+│   │   │   ├── test-sm-oid.cpp
+│   │   │   ├── test-window-buffer.cpp
+│   │   │   ├── test-xid.cpp
+│   │   │   ├── w_rand.cpp
+│   │   │   └── w_rand.h
 │   │   ├── xid.cpp
 │   │   └── xid.h
 │   ├── engine.cc
@@ -314,13 +648,72 @@
 │   ├── tests
 │   │   ├── CMakeLists.txt
 │   │   ├── coroutine
+│   │   │   ├── CMakeLists.txt
+│   │   │   ├── coroutine_test_base.h
+│   │   │   ├── resume_order.cpp
+│   │   │   ├── return_complex_type.cpp
+│   │   │   ├── return_primary_type.cpp
+│   │   │   ├── suspend_order.cpp
+│   │   │   └── test_main.cpp
 │   │   ├── dlog
+│   │   │   ├── CMakeLists.txt
+│   │   │   └── test_dlog.cpp
 │   │   └── masstree
+│   │       ├── CMakeLists.txt
+│   │       ├── concurrent.cpp
+│   │       ├── gbench_main.cpp
+│   │       ├── perf_concurrent.cpp
+│   │       ├── perf_single_threaded.cpp
+│   │       ├── record.cpp
+│   │       ├── record.h
+│   │       ├── single_threaded.cpp
+│   │       └── test_main.cpp
 │   ├── third-party
 │   │   ├── foedus
+│   │   │   ├── uniform_random.hpp
+│   │   │   └── zipfian_random.hpp
 │   │   ├── gflags
+│   │   │   ├── include
+│   │   │   │   └── gflags
+│   │   │   └── lib
+│   │   │       ├── libgflags.a
+│   │   │       ├── libgflags.so
+│   │   │       ├── libgflags.so.2.2
+│   │   │       ├── libgflags.so.2.2.2
+│   │   │       ├── libgflags_nothreads.a
+│   │   │       ├── libgflags_nothreads.so
+│   │   │       ├── libgflags_nothreads.so.2.2
+│   │   │       └── libgflags_nothreads.so.2.2.2
 │   │   ├── glog
+│   │   │   ├── include
+│   │   │   │   ├── logging.h
+│   │   │   │   ├── raw_logging.h
+│   │   │   │   ├── stl_logging.h
+│   │   │   │   └── vlog_is_on.h
+│   │   │   └── lib
+│   │   │       ├── libglog.a
+│   │   │       ├── libglog.so
+│   │   │       ├── libglog.so.0
+│   │   │       └── libglog.so.0.3.5
 │   │   └── sparsehash
+│   │       └── src
+│   │           ├── config.h
+│   │           ├── config.h.in
+│   │           ├── config.h.include
+│   │           ├── google
+│   │           ├── hash_test_interface.h
+│   │           ├── hashtable_test.cc
+│   │           ├── libc_allocator_with_realloc_test.cc
+│   │           ├── simple_compat_test.cc
+│   │           ├── simple_test.cc
+│   │           ├── sparsehash
+│   │           ├── sparsetable_unittest.cc
+│   │           ├── stamp-h1
+│   │           ├── template_util_unittest.cc
+│   │           ├── testutil.h
+│   │           ├── time_hash_map.cc
+│   │           ├── type_traits_unittest.cc
+│   │           └── windows
 │   ├── tuple.cc
 │   ├── tuple.h
 │   ├── txn-mvocc.cc
@@ -330,8 +723,9 @@
 │   ├── txn.h
 │   ├── util.h
 │   └── varstr.h
-├── package-lock.json
 ├── package.json
+├── playwright-report
+│   └── index.html
 ├── playwright.config.local.ts
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
@@ -351,37 +745,32 @@
 │   │   ├── carrierPages.ts
 │   │   ├── performanceTestPages.ts
 │   │   └── url.ts
-│   ├── devices.json
-│   ├── output
-│   │   └── test_results.json
 │   ├── package.json
 │   ├── playwright-report
 │   │   └── report.html
 │   ├── playwright.config.ts
 │   ├── src
 │   │   ├── pages
+│   │   │   └── RedirectPage.ts
 │   │   ├── publishSheetToPubSub.ts
 │   │   ├── saveLogs.ts
 │   │   ├── sendDataToSheet.ts
 │   │   ├── sendResults.ts
 │   │   ├── speedTest.ts
 │   │   ├── steps
+│   │   │   └── RedirectSteps.ts
 │   │   └── video_analysis
+│   │       ├── processVideos.ts
+│   │       ├── spinnerDetector.ts
+│   │       └── videoProcessor.ts
 │   ├── test-results
 │   ├── tests
 │   │   └── redirect.spec.ts
 │   └── tsconfig.json
 ├── structure.txt
+├── test-results
 ├── tsconfig.json
-├── types
-│   ├── chromedriver.d.ts
-│   ├── device-config.ts
-│   ├── env-config.ts
-│   ├── env.d.ts
-│   ├── global.d.ts
-│   ├── playwright-config.ts
-│   ├── pubsub-config.ts
-│   └── test-context.d.ts
+├── turbo.json
 └── vite.config.ts
 
-88 directories, 297 files
+136 directories, 637 files

@@ -1,7 +1,8 @@
 /**
  * Description : HTMLConstants.ts - 📌 공통 HTML 요소 선택자 (버튼, 입력 필드, 모달 등)
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-04-03
+ * - 로케이터의 구조 정의를 위해 사용
  */
 export default class HTMLConstants {
   // 로딩 인디케이터

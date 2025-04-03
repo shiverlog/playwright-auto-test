@@ -1,7 +1,7 @@
 /**
  * Description : playwright.config.ts - 📌 Playwright Config 테스트 실행 환경 정의 파일
  * Author : Shiwoo Min
- * Date : 2025-04-20
+ * Date : 2025-04-03
  */
 import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
 import { BASE_DEVICES } from '@common/config/BaseDeviceConfig.js';
@@ -16,7 +16,7 @@ import dotenv from 'dotenv';
 import os from 'os';
 import path from 'path';
 import { dirname } from 'path';
-import 'tsconfig-paths/register';
+import 'tsconfig-paths/register.js';
 // 환경 변수 로드
 import { fileURLToPath } from 'url';
 
@@ -34,9 +34,13 @@ const pocList = ACTIVE_POC === '' ? ALL_POCS : [ACTIVE_POC];
 // 브라우저 조합 동적 생성
 // pc: ['chrome', 'firefox', 'safari', 'edge']
 const browserMatrix: Record<Exclude<POCType, ''>, string[]> = {
-  pc: ['chrome'],
-  mw: ['chrome', 'mobile-chrome', 'mobile-safari'],
+  // pc-web
+  pc: ['pc-chrome'],
+  // pc-mobile-web, device-mobile-web
+  mw: ['pc-chrome', 'android-device-chrome', 'ios-device-safari'],
+  // android-app
   aos: ['android-app'],
+  // ios-app
   ios: ['ios-app'],
   api: [],
 };

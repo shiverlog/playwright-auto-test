@@ -1,6 +1,6 @@
 # Description : Dockerfile - 📌 pub/sub Container Image
 # Author : Shiwoo Min
-# Date : 2024-03-10
+# Date : 2025-03-20
 
 # 경량 베이스 이미지 사용 (Ubuntu 대신 Debian Slim)
 FROM debian:bookworm-slim AS pubsub

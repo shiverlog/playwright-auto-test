@@ -4,8 +4,8 @@
  * Date : 2024-03-10
  */
 import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig';
-import type { AndroidDeviceConfig, IOSDeviceConfig } from '@common/config/BaseDeviceConfig';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
+import type { DeviceConfig } from '@common/types/device-config';
 import chromedriver from 'chromedriver';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
@@ -43,16 +43,16 @@ interface DeviceItem<T> {
 }
 
 // Android 기기 배열
-export const ALL_ANDROID_DEVICES: DeviceItem<AndroidDeviceConfig>[] = Object.entries(
-  ANDROID_DEVICES,
-).map(([name, config]) => ({
-  name,
-  platform: 'android',
-  config,
-}));
+export const ALL_ANDROID_DEVICES: DeviceItem<DeviceConfig>[] = Object.entries(ANDROID_DEVICES).map(
+  ([name, config]) => ({
+    name,
+    platform: 'android',
+    config,
+  }),
+);
 
 // iOS 기기 배열
-export const ALL_IOS_DEVICES: DeviceItem<IOSDeviceConfig>[] = Object.entries(IOS_DEVICES).map(
+export const ALL_IOS_DEVICES: DeviceItem<DeviceConfig>[] = Object.entries(IOS_DEVICES).map(
   ([name, config]) => ({
     name,
     platform: 'ios',
@@ -73,10 +73,10 @@ export const ANDROID_DEVICE = process.env.ANDROID_DEVICE || 'Galaxy Note20 Ultra
 export const IOS_DEVICE = process.env.IOS_DEVICE || 'iPhone 15 Plus';
 
 // android 기기 셋팅
-export const CURRENT_ANDROID_CONFIG: AndroidDeviceConfig =
+export const CURRENT_ANDROID_CONFIG: DeviceConfig =
   ANDROID_DEVICES[ANDROID_DEVICE] || ANDROID_DEVICES['Galaxy Note20 Ultra'];
 // ios 기기 셋팅
-export const CURRENT_IOS_CONFIG: IOSDeviceConfig =
+export const CURRENT_IOS_CONFIG: DeviceConfig =
   IOS_DEVICES[IOS_DEVICE] || IOS_DEVICES['iPhone 15 Plus'];
 // MAX 기기 테스트 연결 갯수 셋팅
 export const MAX_REAL_DEVICES = parseInt(process.env.MAX_REAL_DEVICES || '2', 10);

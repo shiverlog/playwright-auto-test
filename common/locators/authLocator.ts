@@ -4,13 +4,14 @@ import { UIType } from '@common/constants/ContextConstants';
  * 로그인 관련 로케이터
  */
 export const authLocator = {
-  // 디바이스 타입별 셀렉터
-  myinfo_icon: {
+  // 메인 나의 정보 아이콘
+  myInfoIcon: {
     PC: 'a.icon-myInfo-1',
     MOBILE: '',
     APP: '',
   },
-  myinfo_top: {
+  //
+  myinfoTop: {
     PC: 'div.myInfo-list div.myInfo-top',
     MOBILE: '',
     APP: '',
@@ -20,9 +21,10 @@ export const authLocator = {
     PC: '',
     MOBILE: '',
   },
-  main_login_btn: {
+  // 메인 로그인 버튼(모바일은 햄버거 버튼 클릭 후 로그인 링크)
+  mainLoginButton: {
     PC: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
-    MOBILE: '',
+    MOBILE: '//a[normalize-space(text())="로그인"]',
     APP: '',
   },
   login_btn: {
@@ -32,21 +34,21 @@ export const authLocator = {
   },
 
   // 공통 단일 셀렉터
-  logout_btn: '.loginList > li:nth-of-type(2) > a',
-  social_kakao_img: "img[alt*='카카오']",
-  social_naver_img: "img[alt*='네이버']",
-  social_toss_img: "img[alt*='토스']",
-  uplus_img: "img[alt*='u+ID']",
-  mylg_img: "img[alt*='myLGID']",
-  social_apple_img: "img[alt*='애플']",
+  logoutButton: '.loginList > li:nth-of-type(2) > a',
+  socialKakaoImg: "img[alt*='카카오']",
+  socialNaverImg: "img[alt*='네이버']",
+  socialTossImg: "img[alt*='토스']",
+  uplusImg: "img[alt*='u+ID']",
+  mylgImg: "img[alt*='myLGID']",
+  socialAppleImg: "img[alt*='애플']",
 
   // 로그인 버튼
-  uplus_login_btn: 'button:has(img[alt="u+ID"])',
+  uplusLoginButton: 'button:has(img[alt="u+ID"])',
 
-  uplus_id_input: "input[type='text']",
-  uplus_pw_input: "input[type='password']",
-  uplus_login_submit_btn: 'button.nm-login-btn',
-  uplus_clear_btn: "button[title='입력한 문자 삭제']",
+  uplusIdInput: "input[type='text']",
+  uplusPwInput: "input[type='password']",
+  uplusLoginSubmitButton: 'button.nm-login-btn',
+  uplusClearButton: "button[title='입력한 문자 삭제']",
   uplus_save_btn: '.c-btn-rect-1',
 
   // kakao 로그인

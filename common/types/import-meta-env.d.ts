@@ -1,7 +1,7 @@
 /**
- * Description : import-meta-env.d.ts - 📌 import.meta.env 전용 타입 정의
+ * Description : import-meta-env.d.ts - 📌 import.meta.env 환경 전용 타입 정의
  * Author : Shiwoo Min
- * Date : 2025-04-02
+ * Date : 2025-04-03
  */
 interface ImportMetaEnv extends Readonly<Record<string, string>> {
   // U+ 테스트 계정 아이디

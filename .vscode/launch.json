@@ -1,7 +1,7 @@
 /**
  * Description : launch.json - 📌 VS Code에서 Debug 및 Testing 실행 설정 파일
  * Author : Shiwoo Min
- * Date : 2025-03-20
+ * Date : 2025-04-03
  */
 {
   "version": "0.2.0",
@@ -13,7 +13,7 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/**", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": ""
       },
@@ -21,14 +21,14 @@
       "internalConsoleOptions": "neverOpen"
     },
 
-    // e2e 로 시작하는 모든 테스트 폴더 실행
+    // 모든 E2E 테스트 실행 (Headed + Debug)
     {
       "name": "Run Playwright All E2E Tests (Headed - Debug)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/**", "--headed", "--debug", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": ""
       },
@@ -36,14 +36,14 @@
       "internalConsoleOptions": "neverOpen"
     },
 
-    // e2e-pc 폴더의 테스트 실행
+    // PC 웹 테스트 실행
     {
       "name": "Run Playwright E2E-PC",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/pc-web", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": "pc"
       },
@@ -51,59 +51,74 @@
       "internalConsoleOptions": "neverOpen"
     },
 
-    // e2e/mw 폴더의 테스트 실행
+    // 모바일 웹 (PC 뷰포트) 테스트 실행
     {
-      "name": "Run Playwright E2E-MW",
+      "name": "Run Playwright E2E-PC-Mobile-Web",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/mobile-web", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "args": ["test", "e2e/pc-mobile-web", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "mw"
+        "POC": "pc-mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
 
-    // e2e/android 폴더의 테스트 실행
+    // 모바일 웹 (에뮬레이션) 테스트 실행
     {
-      "name": "Run Playwright E2E-AOS",
+      "name": "Run Playwright E2E-Emulator-Mobile-Web",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/android", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "args": ["test", "e2e/emulator-mobile-web", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "aos"
+        "POC": "emulator-mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
 
-    // e2e/ios 폴더의 테스트 실행
+    // Android 앱 테스트 실행
     {
-      "name": "Run Playwright E2E-IOS",
+      "name": "Run Playwright E2E-Android",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/ios", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "args": ["test", "e2e/android-app", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "ios"
+        "POC": "android-app"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
 
-    // e2e/api 폴더의 테스트 실행
+    // iOS 앱 테스트 실행
+    {
+      "name": "Run Playwright E2E-iOS",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
+      "args": ["test", "e2e/ios-app", "--reporter=html"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
+      "env": {
+        "POC": "ios-app"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+
+    // API 테스트 실행
     {
       "name": "Run Playwright E2E-API",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/api", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": "api"
       },
@@ -118,22 +133,22 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "speedtest", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": ""
+        "POC": "aos-mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
 
-    // UI 테스트 실행
+    // UI Mode 테스트 실행
     {
       "name": "Run Playwright UI Mode",
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "--ui"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register"],
+      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": ""
       },

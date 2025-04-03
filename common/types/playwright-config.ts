@@ -1,28 +1,89 @@
 /**
- * 타입 정의: playwright-config.ts
- * 설명: Playwright 런타임 설정 관련 타입
+ * Description : playwright-config.ts - 📌 Playwright 런타임 설정 관련 타입
+ * Author : Shiwoo Min
+ * Date : 2025-04-03
  */
 
 /**
- * Playwright 실행 옵션을 정의하는 인터페이스
+ * POC(Purpose Of Coverage) 구분 타입 정의
  */
-export interface LaunchOptions {
-  // 동작을 느리게 실행할 시간(ms)
-  slowMo: number;
-  // 개발자 도구 열기 여부
-  devtools: boolean;
-}
+export type POCType = 'pc' | 'mw' | 'aos' | 'ios' | 'api' | '';
+// POC에서 빈 문자열 제외한 타입
+export type POCKey = Exclude<POCType, ''>;
+// POC → 폴더명 매핑 타입
+export type POCFolderMap = Record<POCKey, string>;
+// 전체 POC 배열 타입
+export type AllPOCs = POCKey[];
 
 /**
- * Playwright 디바이스 설정 인터페이스
+ * E2E 테스트 프로젝트 타입 정의
  */
-export interface DeviceSettings {
-  // 브라우저 사용자 에이전트
-  userAgent?: string;
-  viewport: {
-    // 화면 너비(px)
+export type E2EProjectConfig = {
+  // 프로젝트 이름
+  name: string;
+  // 테스트 경로
+  path: string;
+  // Playwright 제공 디바이스 키
+  device: keyof typeof import('@playwright/test').devices;
+  // 뷰포트 크기
+  viewport?: {
     width: number;
-    // 화면 높이(px)
     height: number;
   };
+  // 사용자 에이전트 설정
+  userAgent?: string;
+  // 플랫폼 제약 조건
+  platform?: NodeJS.Platform[];
+  // 리포트/로그 저장용 키
+  outputKey: string;
+};
+
+/**
+ * 런치 옵션 타입 정의
+ */
+export interface LaunchOptions {
+  slowMo: number; // 동작을 느리게 실행할 시간(ms)
+  devtools: boolean; // 개발자 도구 열기 여부
 }
+
+/**
+ * 브라우저 매트릭스 타입 정의 (POC 별 사용 브라우저 목록)
+ */
+export type BrowserMatrix = Record<Exclude<POCType, ''>, string[]>;
+
+/**
+ * 테스트 전역(Global)에 등록될 수 있는 변수 타입 정의
+ */
+declare global {
+  namespace NodeJS {
+    interface Global {
+      // CI 환경 여부
+      isCI?: boolean;
+      // 디버깅 모드 활성화 여부
+      isDebugMode?: boolean;
+      // 테스트 대상 플랫폼
+      currentTestPlatform?: string;
+      // 현재 실행 중인 POC
+      currentPOC?: POCType;
+      // 현재 디바이스 이름
+      currentDeviceName?: string;
+      // OS 버전 정보
+      currentOSVersion?: string;
+      // 에뮬레이터 여부
+      isEmulator?: boolean;
+      // 테스트 실행 고유 ID
+      testRunId?: string;
+      // pnpm 워크스페이스 루트
+      pnpmWorkspaceRoot?: string;
+      envConfig?: {
+        // 실행 환경 변수 설정
+        baseUrl: string;
+        apiUrl?: string;
+        headless?: boolean;
+        locale?: string;
+        timezone?: string;
+      };
+    }
+  }
+}
+export {};

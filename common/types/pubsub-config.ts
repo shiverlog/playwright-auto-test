@@ -1,7 +1,7 @@
 /**
  * Description : pubsub-config.ts - 📌 Pub/Sub 관련 설정 타입 정의
  * Author : Shiwoo Min
- * Date : 2025-04-02
+ * Date : 2025-04-03
  */
 
 /**
