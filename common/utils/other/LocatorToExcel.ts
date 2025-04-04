@@ -1,3 +1,8 @@
+/**
+ * Description : LocatorUtils.ts - 📌 로케이터유틸
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
 import * as fs from 'fs';
 import * as path from 'path';
 import { ObjectLiteralExpression, Project, PropertyAssignment, SyntaxKind } from 'ts-morph';

@@ -1,4 +1,4 @@
-import { BaseActionUtils } from '@common/actions/BaseActionUtils';
+import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 
 export class BaseTab extends BaseActionUtils {
   /**

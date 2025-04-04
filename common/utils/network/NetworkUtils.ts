@@ -1,16 +1,29 @@
+/**
+ * Description : NetworkUtils.ts - 📌 네트워크 유틸
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
 import { Logger } from '@common/logger/customLogger';
-import { BrowserContext, Page, Request, Route } from '@playwright/test';
+import type { POCKey } from '@common/types/platform-types';
+import type { BrowserContext, Page, Request, Route } from '@playwright/test';
+import type winston from 'winston';
 
 export class NetworkUtils {
+  private logger: winston.Logger;
+
   constructor(
     private page: Page,
     private context: BrowserContext,
-  ) {}
+    private poc: POCKey, // 모든 POCKey 명시적으로 요구
+  ) {
+    this.logger = Logger.getLogger(poc) as winston.Logger;
+  }
 
   /**
    * 특정 요청을 차단
    */
   public async blockRequest(urlPattern: string): Promise<void> {
+    this.logger.info(`[${this.poc}] [Network] 요청 차단 설정: ${urlPattern}`);
     await this.page.route(urlPattern, route => route.abort());
   }
 
@@ -22,6 +35,7 @@ export class NetworkUtils {
     mockedResponse: object,
     status = 200,
   ): Promise<void> {
+    this.logger.info(`[${this.poc}] [Network] Mock 응답 설정: ${urlPattern} (status: ${status})`);
     await this.page.route(urlPattern, async (route: Route) => {
       await route.fulfill({
         status,
@@ -36,30 +50,34 @@ export class NetworkUtils {
    */
   public async logRequests(): Promise<void> {
     this.page.on('request', (request: Request) => {
-      console.log(`[Request] ${request.method()} ${request.url()}`);
+      this.logger.info(`[${this.poc}] [Request] ${request.method()} ${request.url()}`);
     });
   }
 
   /**
-   * 응답 로그 출력
+   * 응답 로그 출력 활성화
    */
   public async logResponses(): Promise<void> {
     this.page.on('response', response => {
-      console.log(`[Response] ${response.status()} ${response.url()}`);
+      this.logger.info(`[${this.poc}] [Response] ${response.status()} ${response.url()}`);
     });
   }
 
   /**
-   * Playwright: 느린 네트워크 시뮬레이션 (Chromium 전용)
+   * 느린 네트워크 환경 시뮬레이션 (Chromium 전용)
    */
-  public async emulateSlowNetwork(page: Page): Promise<void> {
-    const client = await page.context().newCDPSession(page);
+  public async emulateSlowNetwork(): Promise<void> {
+    this.logger.warn(`[${this.poc}] [Network] 느린 네트워크 시뮬레이션 시작`);
+    const client = await this.page.context().newCDPSession(this.page);
+
     await client.send('Network.enable');
     await client.send('Network.emulateNetworkConditions', {
       offline: false,
-      latency: 200,
-      downloadThroughput: (750 * 1024) / 8,
-      uploadThroughput: (250 * 1024) / 8,
+      latency: 200, // ms
+      downloadThroughput: (750 * 1024) / 8, // 750 kbps
+      uploadThroughput: (250 * 1024) / 8, // 250 kbps
     });
+
+    this.logger.warn(`[${this.poc}] [Network] 느린 네트워크 설정 완료`);
   }
 }

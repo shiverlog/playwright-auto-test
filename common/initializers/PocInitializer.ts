@@ -1,10 +1,8 @@
 /**
  * Description : PocInitializer.ts - 📌 각 POC 테스트 환경 초기화 및 정리 매니저
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-04
  */
-import { ALL_POCS } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
 import {
   cleanupAndroidTestEnv,
   initializeAndroidTestEnv,
@@ -18,31 +16,34 @@ import {
 } from '@common/initializers/mobileWebTestEnv.js';
 import { cleanupPcTestEnv, initializePcTestEnv } from '@common/initializers/pcTestEnv.js';
 import { Logger } from '@common/logger/customLogger';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
+import type winston from 'winston';
 
 type PocHandlers = {
-  setup: (poc: POCType) => Promise<void>;
-  teardown: (poc: POCType) => Promise<void>;
+  setup: (poc: POCKey) => Promise<void>;
+  teardown: (poc: POCKey) => Promise<void>;
 };
 
 // 각 POC 타입에 따라 초기화/정리 핸들러 맵 구성
-const POC_HANDLER_MAP: Record<Exclude<POCType, ''>, PocHandlers> = {
-  pc: {
+const POC_HANDLER_MAP: Record<POCKey, PocHandlers> = {
+  PC: {
     setup: initializePcTestEnv,
     teardown: cleanupPcTestEnv,
   },
-  mw: {
+  MW: {
     setup: initializeMobileWebTestEnv,
     teardown: cleanupMobileWebTestEnv,
   },
-  aos: {
+  AOS: {
     setup: initializeAndroidTestEnv,
     teardown: cleanupAndroidTestEnv,
   },
-  ios: {
+  IOS: {
     setup: initializeIosTestEnv,
     teardown: cleanupIosTestEnv,
   },
-  api: {
+  API: {
     setup: initializeApiTestEnv,
     teardown: cleanupApiTestEnv,
   },
@@ -52,11 +53,11 @@ const POC_HANDLER_MAP: Record<Exclude<POCType, ''>, PocHandlers> = {
 export class PocInitializer {
   // POC별 초기화 작업
   public static async setup(poc: POCType): Promise<void> {
-    const pocList = poc === '' ? ALL_POCS : [poc];
+    const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
 
     await Promise.all(
-      pocList.map(async current => {
-        const logger = Logger.getLogger(current);
+      pocList.map(async (current: POCKey) => {
+        const logger = Logger.getLogger(current) as winston.Logger;
         logger.info(`[SETUP] ${current.toUpperCase()} 시작`);
 
         const handler = POC_HANDLER_MAP[current];
@@ -81,11 +82,11 @@ export class PocInitializer {
 
   // POC별 정리 작업
   public static async teardown(poc: POCType): Promise<void> {
-    const pocList = poc === '' ? ALL_POCS : [poc];
+    const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
 
     await Promise.all(
-      pocList.map(async current => {
-        const logger = Logger.getLogger(current);
+      pocList.map(async (current: POCKey) => {
+        const logger = Logger.getLogger(current) as winston.Logger;
         logger.info(`[TEARDOWN] ${current.toUpperCase()} 시작`);
 
         const handler = POC_HANDLER_MAP[current];

@@ -1,12 +1,18 @@
+/**
+ * Description : SlackHandler.ts - 📌 Slack 메시지 전송 및 파일 업로드를 처리
+ * Author : Shiwoo Min
+ * Date : 2025-04-04
+ */
 import { slackConfig } from '@common/config/BaseConfig';
-import { ALL_POCS } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
 import { NotificationHandler } from '@common/handlers/notificationHandler';
 import { Logger } from '@common/logger/customLogger';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import { WebClient } from '@slack/web-api';
 import fs from 'fs';
 import pRetry from 'p-retry';
 import path from 'path';
+import type winston from 'winston';
 
 // Slack WebClient 인스턴스 생성
 const slackClient = new WebClient(slackConfig.SLACK_TOKEN);
@@ -18,12 +24,16 @@ const slackClient = new WebClient(slackConfig.SLACK_TOKEN);
 export class SlackHandler extends NotificationHandler {
   /**
    * 단일 POC에 Slack 메시지를 전송
-   * @param poc - POC 타입 (예: 'pc-web', 'mobile-web', 'ios' 등)
-   * @param message - 전송할 메시지 내용
-   * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
    */
-  public static async sendSlackMessage(poc: POCType, message: string, isSuccess: boolean = true) {
-    const logger = Logger.getLogger(poc);
+  public static async sendSlackMessage(
+    poc: POCType,
+    message: string,
+    isSuccess: boolean = true,
+  ): Promise<void> {
+    if (poc === 'ALL') return;
+
+    const pocKey = poc as POCKey;
+    const logger = Logger.getLogger(pocKey) as winston.Logger;
 
     if (!slackConfig.SLACK_TOKEN || !slackConfig.SLACK_CHANNEL) {
       logger.warn('Slack 토큰 또는 채널 ID가 설정되지 않았습니다.');
@@ -31,7 +41,9 @@ export class SlackHandler extends NotificationHandler {
     }
 
     try {
-      const formattedMessage = isSuccess ? `[${poc}] ${message} 성공` : `[${poc}] ${message} 실패`;
+      const formattedMessage = isSuccess
+        ? `[${pocKey}] ${message} 성공`
+        : `[${pocKey}] ${message} 실패`;
 
       await slackClient.chat.postMessage({
         channel: slackConfig.SLACK_CHANNEL,
@@ -40,21 +52,19 @@ export class SlackHandler extends NotificationHandler {
 
       logger.info(`Slack 메시지 전송 완료: ${formattedMessage}`);
     } catch (error) {
-      logger.error('Slack 메시지 전송 실패:', error);
+      logger.error(`Slack 메시지 전송 실패: ${(error as Error).message}`);
     }
   }
 
   /**
    * 단일 POC에 Slack 메시지를 재시도 전송
-   * @param poc - POC 타입
-   * @param message - 전송할 메시지
-   * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
    */
   public static async sendSlackMessageWithRetry(
     poc: POCType,
     message: string,
     isSuccess: boolean = true,
-  ) {
+  ): Promise<void> {
+    if (poc === 'ALL') return;
     await pRetry(() => SlackHandler.sendSlackMessage(poc, message, isSuccess), {
       retries: 3,
       factor: 2,
@@ -64,12 +74,16 @@ export class SlackHandler extends NotificationHandler {
 
   /**
    * Slack 에러 메시지 전송 (Stack Trace 포함)
-   * @param poc - POC 타입
-   * @param message - 에러 메시지 내용
-   * @param error - 에러 객체
    */
-  public static async sendSlackErrorMessage(poc: POCType, message: string, error: Error) {
-    const logger = Logger.getLogger(poc);
+  public static async sendSlackErrorMessage(
+    poc: POCType,
+    message: string,
+    error: Error,
+  ): Promise<void> {
+    if (poc === 'ALL') return;
+
+    const pocKey = poc as POCKey;
+    const logger = Logger.getLogger(pocKey) as winston.Logger;
 
     if (!slackConfig.SLACK_TOKEN || !slackConfig.SLACK_CHANNEL) {
       logger.warn('Slack 토큰 또는 채널 ID가 설정되지 않았습니다.');
@@ -78,26 +92,29 @@ export class SlackHandler extends NotificationHandler {
 
     try {
       const stackTrace = error.stack ? `\n\`\`\`${error.stack}\`\`\`` : '';
-
       await slackClient.chat.postMessage({
         channel: slackConfig.SLACK_CHANNEL,
-        text: `*에러 발생 [${poc}]*: ${message}${stackTrace}`,
+        text: `*에러 발생 [${pocKey}]*: ${message}${stackTrace}`,
       });
 
       logger.info('Slack 에러 메시지 전송 완료');
     } catch (err) {
-      logger.error('Slack 에러 메시지 전송 실패:', err);
+      logger.error(`Slack 에러 메시지 전송 실패: ${(err as Error).message}`);
     }
   }
 
   /**
    * Slack에 파일 업로드
-   * @param poc - POC 타입
-   * @param filePath - 업로드할 파일 경로
-   * @param title - 파일 제목
    */
-  public static async uploadSlackFile(poc: POCType, filePath: string, title: string = '첨부 파일') {
-    const logger = Logger.getLogger(poc);
+  public static async uploadSlackFile(
+    poc: POCType,
+    filePath: string,
+    title: string = '첨부 파일',
+  ): Promise<void> {
+    if (poc === 'ALL') return;
+
+    const pocKey = poc as POCKey;
+    const logger = Logger.getLogger(pocKey) as winston.Logger;
 
     if (!slackConfig.SLACK_TOKEN || !slackConfig.SLACK_CHANNEL) {
       logger.warn('Slack 토큰 또는 채널 ID가 설정되지 않았습니다.');
@@ -118,33 +135,29 @@ export class SlackHandler extends NotificationHandler {
 
       logger.info(`Slack 파일 업로드 완료: ${filePath}`);
     } catch (error) {
-      logger.error('Slack 파일 업로드 실패:', error);
+      logger.error(`Slack 파일 업로드 실패: ${(error as Error).message}`);
     }
   }
 
   /**
-   * 전체 POC에 대해 파일 업로드 (병렬 처리)
-   * @param filePath - 업로드할 파일 경로
-   * @param title - 파일 제목
+   * 전체 POC에 대해 Slack 파일 업로드
    */
   public static async uploadSlackFileForAllPOCs(
     filePath: string,
     title: string = '공통 첨부 파일',
-  ) {
-    for (const poc of ALL_POCS) {
-      await SlackHandler.uploadSlackFile(poc, filePath, title);
-    }
+  ): Promise<void> {
+    const uploadTasks = ALL_POCS.map(poc => SlackHandler.uploadSlackFile(poc, filePath, title));
+    await Promise.all(uploadTasks);
   }
 
   /**
-   * 전체 POC에 대해 Slack 메시지 전송 (병렬 처리)
-   * @param message - 전송할 메시지
-   * @param isSuccess - 성공 여부 (true: 성공, false: 실패)
+   * 전체 POC에 대해 Slack 메시지 전송
    */
-  public static async sendSlackMessageForAllPOCs(message: string, isSuccess: boolean = true) {
-    const sendMessages = ALL_POCS.map(poc =>
-      SlackHandler.sendSlackMessage(poc, message, isSuccess),
-    );
-    await Promise.all(sendMessages);
+  public static async sendSlackMessageForAllPOCs(
+    message: string,
+    isSuccess: boolean = true,
+  ): Promise<void> {
+    const sendTasks = ALL_POCS.map(poc => SlackHandler.sendSlackMessage(poc, message, isSuccess));
+    await Promise.all(sendTasks);
   }
 }

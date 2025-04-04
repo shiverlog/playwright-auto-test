@@ -1,25 +1,23 @@
-/**
- * Description : globalSetup.ts - 📌 Playwright 테스트 실행 전 공통 환경 준비
- * Author : Shiwoo Min
- * Date : 2025-04-01
- */
-import { ALL_POCS } from '@common/constants/PathConstants.js';
-import type { POCType } from '@common/constants/PathConstants.js';
 import { PocInitializer } from '@common/initializers/PocInitializer.js';
 import { Logger } from '@common/logger/customLogger.js';
+import type { POCKey, POCType } from '@common/types/platform-types.js';
+import { ALL_POCS } from '@common/types/platform-types.js';
 import dotenv from 'dotenv';
+import type winston from 'winston';
 
 dotenv.config();
 
 async function globalSetup() {
-  // 현재 활성화된 POC (또는 전체 POC)
+  // 환경변수로부터 활성화할 POC를 불러옴
   const activePOC = (process.env.POC || '') as POCType;
-  const pocList = activePOC === '' ? ALL_POCS : [activePOC];
 
-  // 각 POC에 대해 비동기 병렬로 setup 진행
+  // 'ALL' 혹은 공백일 경우 전체 POC 처리
+  const pocList: POCKey[] = activePOC === 'ALL' ? ALL_POCS : [activePOC as POCKey];
+
+  // 병렬로 각 POC에 대해 세팅
   await Promise.all(
     pocList.map(async poc => {
-      const logger = Logger.getLogger(poc);
+      const logger = Logger.getLogger(poc) as winston.Logger;
       logger.info(`[GLOBAL SETUP] [${poc.toUpperCase()}] 테스트 환경 설정 시작`);
 
       try {

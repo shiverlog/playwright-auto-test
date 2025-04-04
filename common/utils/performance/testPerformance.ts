@@ -1,13 +1,21 @@
-import { ALL_POCS } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
+/**
+ * Description : TestPerformance.ts - 📌 테스트 관련 상수 (기본 설정, 예제 데이터 등)
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
 import { Logger } from '@common/logger/customLogger';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import type { Page } from '@playwright/test';
+import type winston from 'winston';
 
 export class TestPerformance {
-  private logger;
+  private logger: winston.Logger;
+  private pocKey: POCKey;
 
   constructor(private poc: Exclude<POCType, ''>) {
-    this.logger = Logger.getLogger(poc);
+    this.pocKey = poc as POCKey;
+    this.logger = Logger.getLogger(this.pocKey) as winston.Logger;
   }
 
   /**
@@ -17,7 +25,7 @@ export class TestPerformance {
     poc: POCType,
     pageFactory: (poc: Exclude<POCType, ''>) => Promise<Page>,
   ) {
-    const pocList = poc === '' ? ALL_POCS : [poc];
+    const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
 
     await Promise.all(
       pocList.map(async pocItem => {

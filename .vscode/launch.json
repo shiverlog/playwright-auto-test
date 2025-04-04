@@ -60,7 +60,7 @@
       "args": ["test", "e2e/pc-mobile-web", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "pc-mw"
+        "POC": "mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -75,7 +75,7 @@
       "args": ["test", "e2e/emulator-mobile-web", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "emulator-mw"
+        "POC": "mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -90,7 +90,7 @@
       "args": ["test", "e2e/android-app", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "android-app"
+        "POC": "PC"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -105,7 +105,7 @@
       "args": ["test", "e2e/ios-app", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "ios-app"
+        "POC": "ios"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -135,7 +135,7 @@
       "args": ["test", "speedtest", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "aos-mw"
+        "POC": "PC"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"

@@ -1,5 +1,13 @@
+/**
+ * Description : ChromeAccessUtils.ts - 📌 Android 기반의 Chrome 브라우저 초기 셋업 자동화 유틸리티
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
+import { Logger } from '@common/logger/customLogger';
+import type { POCKey } from '@common/types/platform-types';
 import { execSync } from 'child_process';
 import type { Browser } from 'webdriverio';
+import type winston from 'winston';
 
 export type ChromeFlavor = 'stable' | 'beta' | 'v125' | 'v130' | 'v135';
 
@@ -8,6 +16,7 @@ interface ChromeAccessConfig {
   stepIds: string[];
 }
 
+// Chrome 버전별 또는 채널별 초기화 단계 ID 구성
 const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
   stable: {
     pkgPrefix: 'com.android.chrome:id',
@@ -62,14 +71,19 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
 };
 
 export class ChromeAccessUtils {
+  private logger: winston.Logger;
+
   constructor(
     private driver: Browser,
     private switchContext: (view: string) => void,
-    private udid: string, // ADB 연결 디바이스 ID
-  ) {}
+    private udid: string,
+    private poc?: POCKey,
+  ) {
+    this.logger = Logger.getLogger(poc || 'AOS') as winston.Logger;
+  }
 
   /**
-   * 지정된 Chrome 버전/채널(flavor)에 따라 초기 설정 팝업을 자동으로 처리
+   * 지정된 Chrome flavor(v125~v135, stable, beta 등)에 따라 초기 설정을 자동으로 처리
    */
   async handleChromeSetup(flavor: ChromeFlavor): Promise<void> {
     const config = CHROME_CONFIGS[flavor];
@@ -80,24 +94,28 @@ export class ChromeAccessUtils {
     for (const id of config.stepIds) {
       const fullId = id.includes(':') ? id : `${config.pkgPrefix}/${id}`;
       const el = await this.findElementIfExists(fullId);
-      if (el) await el.click();
+      if (el) {
+        await el.click();
+        this.logger.info(`[ChromeSetup] 클릭됨: ${fullId}`);
+      }
     }
 
     await this.driver.setTimeout({ implicit: 20000 });
   }
 
   /**
-   * 자동으로 Chrome 버전을 감지해 적절한 flavor로 초기 설정을 수행
+   * Chrome 버전을 자동 감지하여 알맞은 flavor로 초기 설정 수행
    */
   async autoHandleChromeSetup(): Promise<void> {
     const caps = this.driver.capabilities;
     const version = (caps.browserVersion || (caps as any).platformVersion || '0.0') as string;
     const flavor = detectChromeFlavor(version);
+    this.logger.info(`[ChromeSetup] 감지된 버전: ${version} → Flavor: ${flavor}`);
     await this.handleChromeSetup(flavor);
   }
 
   /**
-   * Chrome 앱 데이터 전체 초기화 (ADB: pm clear)
+   * Chrome 앱 데이터 초기화 (ADB shell pm clear)
    */
   clearChromeAppData(): void {
     const packageName = 'com.android.chrome';
@@ -107,19 +125,18 @@ export class ChromeAccessUtils {
       });
 
       if (!result.includes('Success')) {
-        console.warn(`[ADB] Chrome clear 실패: ${result}`);
+        this.logger.warn(`[ADB] Chrome clear 실패: ${result}`);
         throw new Error(`Chrome 데이터 초기화 실패`);
       }
 
-      console.log('[ADB] Chrome 앱 데이터 초기화 완료');
+      this.logger.info('[ADB] Chrome 앱 데이터 초기화 완료');
     } catch (e) {
-      console.error('[ADB] chrome_clear 예외:', e);
+      this.logger.error('[ADB] Chrome 데이터 초기화 중 예외:', e);
     }
   }
 
   /**
-   * Chrome의 특정 초기화 시나리오를 수동 처리 (단순 고정된 ID 클릭)
-   * 기본 버전과는 별개로 강제 클릭 순서를 지정할 때 사용
+   * 단순 고정된 ID 순서에 따른 Chrome 초기화 (버전 무관한 공통 처리)
    */
   async chromeAccessBasic(): Promise<void> {
     this.switchContext('NATIVE_APP');
@@ -127,7 +144,10 @@ export class ChromeAccessUtils {
 
     const tryClick = async (resourceId: string) => {
       const el = await this.findElementIfExists(resourceId);
-      if (el) await el.click();
+      if (el) {
+        await el.click();
+        this.logger.info(`[ChromeBasic] 클릭됨: ${resourceId}`);
+      }
     };
 
     await tryClick('com.android.chrome:id/signin_fre_continue_button');
@@ -145,14 +165,12 @@ export class ChromeAccessUtils {
   }
 
   /**
-   * 해당 리소스 ID에 해당하는 요소가 존재하면 반환, 아니면 null
+   * 주어진 resource-id를 가진 요소가 존재하면 반환
    */
   private async findElementIfExists(resourceId: string) {
     try {
       const el = await this.driver.$(`id=${resourceId}`);
-      if (await el.isDisplayed()) {
-        return el;
-      }
+      if (await el.isDisplayed()) return el;
       return null;
     } catch {
       return null;
@@ -161,7 +179,7 @@ export class ChromeAccessUtils {
 }
 
 /**
- * Chrome 버전 문자열을 받아 적절한 flavor로 매핑
+ * Chrome 버전 문자열을 기반으로 flavor 판단
  */
 export function detectChromeFlavor(version: string): ChromeFlavor {
   const major = parseInt(version.split('.')[0], 10);

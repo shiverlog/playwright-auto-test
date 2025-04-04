@@ -1,22 +1,29 @@
 /**
  * Description : BaseAppFixture.ts - 📌 APP 테스트를 위한 Fixture 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-04
  */
-import type { POCType } from '@common/constants/PathConstants';
+/**
+ * Description : BaseAppFixture.ts - 📌 APP 테스트를 위한 Fixture 클래스
+ * Author : Shiwoo Min
+ * Date : 2025-04-04
+ */
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
 import type { DeviceConfigWithPort, DeviceOptions } from '@common/types/device-config';
-import { AppiumServerUtils } from '@common/utils/appium/appiumServerUtils';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
+import { AppiumServerUtils } from '@common/utils/appium/AppiumServerUtils';
 import { getAvailablePort } from '@common/utils/network/portUtils';
 import { test as base, expect } from '@playwright/test';
 import { remote } from 'webdriverio';
 import type { Browser, DesiredCapabilities, Options } from 'webdriverio';
+import type winston from 'winston';
 
-// Appium 서버 유틸 인스턴스
+// Appium 유틸 인스턴스
 const appiumUtils = new AppiumServerUtils();
 
-// remote wrapper 함수
+// Appium remote wrapper
 const getRemoteDriver = async (options: Options): Promise<Browser> => {
   const remoteFunc = remote as unknown as (options: Options) => Promise<Browser>;
   return await remoteFunc(options);
@@ -55,67 +62,79 @@ async function createAppiumDriver(config: DeviceConfigWithPort): Promise<Browser
     capabilities: [capabilities],
   };
 
-  // 타입문제 우회(Type 'void' is not assignable to type 'Browser')
-  const driver = await getRemoteDriver(options);
-  return driver;
+  return await getRemoteDriver(options);
 }
 
 /**
  * BaseAppFixture - App 테스트 전용 Fixture 클래스
- * Appium 서버 준비, 앱 설치 및 캐시 초기화 등 포함
  */
 class BaseAppFixture extends BasePocFixture {
-  private configMap: Partial<Record<POCType, DeviceConfigWithPort>> = {};
+  private configMap: Partial<Record<POCKey, DeviceConfigWithPort>> = {};
 
-  // 각 POC별 디바이스 설정 저장
-  public setDeviceConfig(poc: POCType, config: DeviceConfigWithPort) {
-    this.configMap[poc] = config;
+  /**
+   * 디바이스 설정 등록
+   */
+  public setDeviceConfig(poc: POCType, config: DeviceConfigWithPort): void {
+    if (poc === 'ALL') return;
+    const pocKey = poc as POCKey;
+    this.configMap[pocKey] = config;
   }
 
-  // 각 POC에 맞는 사전 준비 작업 (외부에서 호출 가능하도록 public으로 변경)
+  /**
+   * 사전 준비 함수 - ALL 또는 개별 POC 모두 지원
+   */
   public async prepare(poc: POCType): Promise<void> {
-    const config = this.configMap[poc];
-    if (!config) throw new Error(`No config found for POC: ${poc}`);
+    const targetPOCs: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
 
-    const opts: DeviceOptions = config.appium?.options || config['appium:options'] || {};
-    const port = config.port || (await getAvailablePort(4723));
-    config.port = port;
+    for (const pocKey of targetPOCs) {
+      const config = this.configMap[pocKey];
+      if (!config) throw new Error(`No config found for POC: ${pocKey}`);
 
-    const logger = Logger.getLogger(poc);
-    logger.info(`[BaseAppFixture] 테스트 준비 시작`);
-    logger.info(`[BaseAppFixture] 플랫폼: ${config.platformName}, UDID: ${opts.udid}`);
-    logger.info(`[BaseAppFixture] Appium 포트: ${port}`);
+      const opts: DeviceOptions = config.appium?.options || config['appium:options'] || {};
+      const port = config.port || (await getAvailablePort(4723));
+      config.port = port;
 
-    // Appium 서버 초기화 및 시작
-    await appiumUtils.checkAndKillPort(port);
-    appiumUtils.startAppiumServer(port);
-    logger.info(`[BaseAppFixture] Appium 서버 시작 완료`);
+      const logger = Logger.getLogger(pocKey) as winston.Logger;
+      logger.info(`[BaseAppFixture] 테스트 준비 시작`);
+      logger.info(`[BaseAppFixture] 플랫폼: ${config.platformName}, UDID: ${opts.udid}`);
+      logger.info(`[BaseAppFixture] Appium 포트: ${port}`);
 
-    // 플랫폼별 캐시 초기화 및 앱 설치
-    if (config.platformName === 'Android') {
-      if (opts.appPackage) await appiumUtils.clearAndroidAppCache(opts.appPackage);
-      if (opts.app) await appiumUtils.installAndroidApp(opts.app);
-    } else {
-      if (opts.bundleId) await appiumUtils.clearIosAppCache(opts.bundleId);
-      if (opts.app) await appiumUtils.installIosApp(opts.app);
+      await appiumUtils.checkAndKillPort(port);
+      appiumUtils.startAppiumServer(port);
+      logger.info(`[BaseAppFixture] Appium 서버 시작 완료`);
+
+      if (config.platformName === 'Android') {
+        if (opts.appPackage) await appiumUtils.clearAndroidAppCache(opts.appPackage);
+        if (opts.app) await appiumUtils.installAndroidApp(opts.app);
+      } else {
+        if (opts.bundleId) await appiumUtils.clearIosAppCache(opts.bundleId);
+        if (opts.app) await appiumUtils.installIosApp(opts.app);
+      }
     }
   }
 }
 
-// BaseAppFixture 인스턴스 생성
+// BaseAppFixture 인스턴스
 const appFixture = new BaseAppFixture();
 
 /**
  * Playwright 테스트 확장 정의
- * - Appium 드라이버 및 디바이스 설정을 fixture context에 주입
  */
 export const test = base.extend<{
   driver: Browser;
   deviceConfig: DeviceConfigWithPort;
 }>({
   driver: async ({ deviceConfig }, use) => {
-    const poc = deviceConfig.platformName as POCType;
-    const logger = Logger.getLogger(poc);
+    // 플랫폼명을 POCKey로 매핑 (ex: iOS → IOS, Android → AOS)
+    const platformName = deviceConfig.platformName.toLowerCase();
+    const poc =
+      platformName === 'ios'
+        ? 'IOS'
+        : platformName === 'android'
+          ? 'AOS'
+          : (platformName.toUpperCase() as POCKey);
+
+    const logger = Logger.getLogger(poc) as winston.Logger;
 
     appFixture.setDeviceConfig(poc, deviceConfig);
     await appFixture.beforeAll(poc);

@@ -1,4 +1,4 @@
-export const urls = {
+export const speedtestUrls = {
   lg: {
     main: 'https://m.lguplus.com/main',
     search: 'https://m.lguplus.com/search/result?searchWord=로밍&category=indv',

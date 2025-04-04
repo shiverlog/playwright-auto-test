@@ -1,15 +1,29 @@
+/**
+ * Description : SafariAccessUtils.ts - 📌 iOS 기반의 Safari 브라우저 및 설정 앱 자동화를 위한 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
+import { Logger } from '@common/logger/customLogger';
+import type { POCKey } from '@common/types/platform-types';
 import type { Browser } from 'webdriverio';
+import type winston from 'winston';
 
 export class SafariAccessUtils {
+  private logger: winston.Logger;
+
   constructor(
     private driver: Browser,
     private switchContext: (view?: string) => void,
-  ) {}
+    private poc: POCKey, // POCKey 명시적 주입
+  ) {
+    this.logger = Logger.getLogger(poc) as winston.Logger;
+  }
 
   /**
    * Safari 실행 후 최초 팝업/권한 등을 자동 처리
    */
   async handleSafariSetup(): Promise<void> {
+    this.logger.info(`[${this.poc}] Safari 초기 팝업/권한 처리 시작`);
     this.switchContext('NATIVE_APP');
     await this.driver.setTimeout({ implicit: 2000 });
 
@@ -17,10 +31,14 @@ export class SafariAccessUtils {
 
     for (const label of stepLabels) {
       const el = await this.findElementByLabel(label);
-      if (el) await el.click();
+      if (el) {
+        this.logger.info(`[${this.poc}] '${label}' 클릭`);
+        await el.click();
+      }
     }
 
     await this.driver.setTimeout({ implicit: 20000 });
+    this.logger.info(`[${this.poc}] Safari 초기 처리 완료`);
   }
 
   /**
@@ -28,6 +46,7 @@ export class SafariAccessUtils {
    * iOS 설정 앱 > Safari > 방문 기록 지우기 흐름 자동화
    */
   async clearSafariCache(): Promise<void> {
+    this.logger.info(`[${this.poc}] Safari 캐시 정리 시작`);
     try {
       this.switchContext('NATIVE_APP');
       await this.driver.activateApp('com.apple.Preferences');
@@ -56,11 +75,13 @@ export class SafariAccessUtils {
       const finalConfirm = await this.findElementByLabel('방문 기록 지우기');
       if (finalConfirm) await finalConfirm.click();
 
-      // 다시 원래 앱으로 복귀
+      this.logger.info(`[${this.poc}] Safari 캐시 정리 완료`);
+
+      // 앱으로 복귀
       await this.driver.activateApp('com.lguplus.mobile.cs');
       this.switchContext();
     } catch (e) {
-      console.error('[SafariAccessUtils] 예외 발생:', e);
+      this.logger.error(`[${this.poc}] Safari 캐시 정리 중 예외 발생: ${e}`);
       await this.driver.activateApp('com.lguplus.mobile.cs');
       this.switchContext();
     }

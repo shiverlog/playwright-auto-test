@@ -1,241 +1,178 @@
+/**
+ * Description : AppiumServerUtils.ts - 📌 Appium 서버 및 앱 관련 제어 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
+import { Logger } from '@common/logger/customLogger';
+import type { POCKey } from '@common/types/platform-types';
 import { exec } from 'child_process';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
 import { platform } from 'os';
 import wd from 'webdriverio';
-import type { Logger as WinstonLogger } from 'winston';
+import type winston from 'winston';
 
 dotenv.config();
 
 /**
- * Appium: 서버 및 앱 관리 유틸리티 클래스
+ * Appium 서버/앱 제어 유틸리티 클래스
  */
 export class AppiumServerUtils {
-  constructor(private logger?: WinstonLogger) {}
+  private logger: winston.Logger;
+
+  constructor(private poc?: POCKey) {
+    this.logger = Logger.getLogger(poc || 'ALL') as winston.Logger;
+  }
 
   /**
-   * Appium: 실행 중인 포트 확인 및 종료 (Windows, Mac, Ubuntu, WSL 전용)
+   * 실행 중인 포트를 찾아 종료 (4723 ~ 4733 범위)
    */
   public async checkAndKillPort(startPort: number): Promise<void> {
-    this.logger?.info(`포트 ${startPort}~${startPort + 10} 확인 중...`);
+    this.logger.info(`포트 ${startPort}~${startPort + 10} 확인 중...`);
 
     const killPortPromises = [];
-
     for (let port = startPort; port <= startPort + 10; port++) {
       killPortPromises.push(
         new Promise<void>((resolve, reject) => {
           if (platform() === 'win32') {
-            // Windows 환경 (netstat + taskkill)
-            exec(`netstat -ano | findstr :${port}`, (error, stdout, stderr) => {
-              if (error) {
-                this.logger?.error(`포트 ${port} 확인 중 오류 발생: ${error.message}`);
-                return reject(error);
-              }
-
-              if (stderr) {
-                this.logger?.error(`포트 ${port} 확인 경고: ${stderr}`);
-              }
-
-              // 포트가 열려있는 경우 종료
-              if (stdout) {
-                const pid = stdout.split(/\s+/)[4]; // PID가 5번째 열에 위치
-                if (pid) {
-                  this.logger?.info(`실행 중인 포트 발견: ${port}, 종료 중...`);
-                  exec(`taskkill /F /PID ${pid}`, (killError, killStdout, killStderr) => {
-                    if (killError) {
-                      this.logger?.error(`포트 ${port} 종료 중 오류 발생: ${killError.message}`);
-                      return reject(killError);
-                    }
-                    if (killStderr) {
-                      this.logger?.error(`포트 ${port} 종료 경고: ${killStderr}`);
-                    }
-                    this.logger?.info(`포트 ${port} 종료 완료: ${killStdout}`);
-                    resolve();
-                  });
-                } else {
-                  resolve(); // PID를 찾을 수 없으면 그냥 종료
-                }
+            exec(`netstat -ano | findstr :${port}`, (error, stdout) => {
+              const pid = stdout.split(/\s+/)[4];
+              if (pid) {
+                exec(`taskkill /F /PID ${pid}`, err => (err ? reject(err) : resolve()));
               } else {
-                resolve(); // 포트가 열려있지 않으면 그냥 종료
+                resolve();
               }
             });
           } else {
-            // Mac 및 Ubuntu 환경 (lsof + kill)
-            exec(`lsof -i :${port}`, (error, stdout, stderr) => {
-              if (error) {
-                this.logger?.error(`포트 ${port} 확인 중 오류 발생: ${error.message}`);
-                return reject(error);
-              }
-
-              if (stderr) {
-                this.logger?.error(`포트 ${port} 확인 경고: ${stderr}`);
-              }
-
-              // 포트가 열려있는 경우 종료
-              if (stdout) {
-                const pid = stdout.split('\n')[1]?.split(/\s+/)[1];
-                if (pid) {
-                  this.logger?.info(`실행 중인 포트 발견: ${port}, 종료 중...`);
-                  exec(`kill -9 ${pid}`, (killError, killStdout, killStderr) => {
-                    if (killError) {
-                      this.logger?.error(`포트 ${port} 종료 중 오류 발생: ${killError.message}`);
-                      return reject(killError);
-                    }
-                    if (killStderr) {
-                      this.logger?.error(`포트 ${port} 종료 경고: ${killStderr}`);
-                    }
-                    this.logger?.info(`포트 ${port} 종료 완료: ${killStdout}`);
-                    resolve();
-                  });
-                } else {
-                  resolve(); // 프로세스 ID를 찾을 수 없으면 그냥 종료
-                }
+            exec(`lsof -i :${port}`, (error, stdout) => {
+              const pid = stdout.split('\n')[1]?.split(/\s+/)[1];
+              if (pid) {
+                exec(`kill -9 ${pid}`, err => (err ? reject(err) : resolve()));
               } else {
-                resolve(); // 포트가 열려있지 않으면 그냥 종료
+                resolve();
               }
             });
           }
         }),
       );
     }
-
     await Promise.all(killPortPromises);
   }
 
   /**
-   * Appium: Appium 서버 시작
+   * Appium 서버 실행
    */
   public startAppiumServer(port: number): void {
-    this.logger?.info(`Appium 서버 시작 중 (포트: ${port})...`);
+    this.logger.info(`Appium 서버 시작 중 (포트: ${port})...`);
 
     const command = `appium --port ${port}`;
     const serverProcess = exec(command);
 
-    serverProcess.stdout?.on('data', data => this.logger?.info(`Appium: ${data.toString()}`));
-    serverProcess.stderr?.on('data', error => this.logger?.error(`오류: ${error.toString()}`));
-
-    serverProcess.on('close', code => this.logger?.info(`Appium 서버 종료 (코드: ${code})`));
-    serverProcess.on('error', err => {
-      this.logger?.error(`Appium 서버 실행 중 오류 발생: ${err.message}`);
-    });
+    serverProcess.stdout?.on('data', data => this.logger.info(`Appium: ${data.toString()}`));
+    serverProcess.stderr?.on('data', error => this.logger.error(`오류: ${error.toString()}`));
+    serverProcess.on('close', code => this.logger.info(`Appium 서버 종료 (코드: ${code})`));
+    serverProcess.on('error', err => this.logger.error(`Appium 서버 실행 오류: ${err.message}`));
   }
 
   /**
-   * Appium: Appium 서버 종료
+   * Appium 서버 종료
    */
   public async stopAppiumServer(port: number): Promise<void> {
-    this.logger?.info(`Appium 서버 종료 중 (포트: ${port})...`);
+    this.logger.info(`Appium 서버 종료 중 (포트: ${port})...`);
     await this.checkAndKillPort(port);
   }
 
   /**
-   * Appium: ADB (Android Debug Bridge) 명령 실행
+   * ADB 명령 실행
    */
   public async runAdbCommand(command: string): Promise<void> {
-    this.logger?.info(`ADB 명령 실행: adb ${command}`);
-
-    return new Promise<void>((resolve, reject) => {
+    this.logger.info(`ADB 명령 실행: adb ${command}`);
+    return new Promise((resolve, reject) => {
       exec(`adb ${command}`, (error, stdout, stderr) => {
-        if (error) {
-          this.logger?.error(`ADB 오류: ${error.message}`);
-          return reject(error);
-        }
-        if (stderr) {
-          this.logger?.error(`ADB 경고: ${stderr}`);
-        }
-        this.logger?.info(`ADB 실행 완료:\n${stdout}`);
+        if (error) return reject(error);
+        if (stderr) this.logger.warn(`ADB 경고: ${stderr}`);
+        this.logger.info(`ADB 결과: ${stdout}`);
         resolve();
       });
     });
   }
 
   /**
-   * Appium: 앱 강제 종료 (Android)
+   * Android 앱 강제 종료
    */
   public async forceStopAndroidApp(packageName: string): Promise<void> {
-    this.logger?.info(`앱 종료 중: ${packageName}`);
+    this.logger.info(`앱 종료 요청: ${packageName}`);
     await this.runAdbCommand(`shell am force-stop ${packageName}`);
   }
 
   /**
-   * Appium: 앱 캐시 삭제 (Android)
+   * Android 앱 캐시 삭제
    */
   public async clearAndroidAppCache(packageName: string): Promise<void> {
-    this.logger?.info(`앱 캐시 삭제: ${packageName}`);
+    this.logger.info(`앱 캐시 삭제 요청: ${packageName}`);
     await this.runAdbCommand(`shell pm clear ${packageName}`);
   }
 
   /**
-   * Appium: 앱 설치 (Android)
+   * Android 앱 설치
    */
   public async installAndroidApp(apkPath: string): Promise<void> {
     if (!fs.existsSync(apkPath)) {
-      this.logger?.error(`APK 파일이 존재하지 않음: ${apkPath}`);
+      this.logger.error(`APK 파일이 존재하지 않음: ${apkPath}`);
       return;
     }
-
-    this.logger?.info(`앱 설치 중: ${apkPath}`);
+    this.logger.info(`앱 설치 중: ${apkPath}`);
     await this.runAdbCommand(`install -r ${apkPath}`);
   }
 
   /**
-   * Appium: iOS 앱 설치 (iOS Simulator)
+   * iOS 앱 설치 (시뮬레이터)
    */
   public async installIosApp(appPath: string): Promise<void> {
     if (!fs.existsSync(appPath)) {
-      this.logger?.error(`iOS 앱 파일이 존재하지 않음: ${appPath}`);
+      this.logger.error(`iOS 앱 파일이 존재하지 않음: ${appPath}`);
       return;
     }
-
-    this.logger?.info(`iOS 앱 설치 중: ${appPath}`);
+    this.logger.info(`iOS 앱 설치 중: ${appPath}`);
     exec(`xcrun simctl install booted ${appPath}`, (error, stdout, stderr) => {
-      if (error) {
-        this.logger?.error(`iOS 앱 설치 오류: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        this.logger?.error(`iOS 앱 설치 경고: ${stderr}`);
-      }
-      this.logger?.info(`iOS 앱 설치 완료:\n${stdout}`);
+      if (error) this.logger.error(`iOS 앱 설치 오류: ${error.message}`);
+      if (stderr) this.logger.warn(`iOS 앱 설치 경고: ${stderr}`);
+      if (stdout)
+        this.logger.info(`iOS 앱 설치 완료:
+${stdout}`);
     });
   }
 
   /**
-   * Appium: iOS 앱 강제 종료 (iOS Simulator)
+   * iOS 앱 강제 종료 (시뮬레이터)
    */
   public async forceStopIosApp(bundleId: string): Promise<void> {
-    this.logger?.info(`iOS 앱 종료 중: ${bundleId}`);
+    this.logger.info(`iOS 앱 종료 요청: ${bundleId}`);
     exec(`xcrun simctl terminate booted ${bundleId}`, (error, stdout, stderr) => {
-      if (error) {
-        this.logger?.error(`iOS 앱 종료 오류: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        this.logger?.error(`iOS 앱 종료 경고: ${stderr}`);
-      }
-      this.logger?.info(`iOS 앱 종료 완료:\n${stdout}`);
+      if (error) this.logger.error(`iOS 앱 종료 오류: ${error.message}`);
+      if (stderr) this.logger.warn(`iOS 앱 종료 경고: ${stderr}`);
+      if (stdout)
+        this.logger.info(`iOS 앱 종료 완료:
+${stdout}`);
     });
   }
 
   /**
-   * Appium: iOS 앱 캐시 삭제 (iOS Simulator)
+   * iOS 앱 캐시 삭제 (시뮬레이터)
    */
   public async clearIosAppCache(bundleId: string): Promise<void> {
-    this.logger?.info(`iOS 앱 캐시 삭제: ${bundleId}`);
+    this.logger.info(`iOS 앱 캐시 삭제 요청: ${bundleId}`);
     exec(`xcrun simctl uninstall booted ${bundleId}`, (error, stdout, stderr) => {
-      if (error) {
-        this.logger?.error(`iOS 앱 캐시 삭제 오류: ${error.message}`);
-        return;
-      }
-      if (stderr) {
-        this.logger?.error(`iOS 앱 캐시 삭제 경고: ${stderr}`);
-      }
-      this.logger?.info(`iOS 앱 캐시 삭제 완료:\n${stdout}`);
+      if (error) this.logger.error(`iOS 앱 캐시 삭제 오류: ${error.message}`);
+      if (stderr) this.logger.warn(`iOS 앱 캐시 삭제 경고: ${stderr}`);
+      if (stdout)
+        this.logger.info(`iOS 앱 캐시 삭제 완료:
+${stdout}`);
     });
   }
 
   /**
-   * Appium: Appium 세션 생성 (Android)
+   * Android Appium 세션 생성
    */
   public async startAndroidSession(): Promise<any> {
     const options: wd.Options = {
@@ -248,12 +185,11 @@ export class AppiumServerUtils {
         },
       ],
     };
-
     return await wd.remote(options);
   }
 
   /**
-   * Appium: Appium 세션 생성 (iOS)
+   * iOS Appium 세션 생성
    */
   public async startIosSession(): Promise<any> {
     const options: wd.Options = {
@@ -266,7 +202,6 @@ export class AppiumServerUtils {
         },
       ],
     };
-
     return await wd.remote(options);
   }
 }

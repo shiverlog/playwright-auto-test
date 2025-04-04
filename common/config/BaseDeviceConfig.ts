@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-03-31
  */
-import type { DeviceConfig, DevicesJson } from '@common/types/device-config';
+import type { DeviceConfig, DevicesJson } from '@common/types/device-config.js';
 import { devices } from '@playwright/test';
 
 // Android 기기

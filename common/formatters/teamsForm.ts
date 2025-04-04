@@ -1,7 +1,7 @@
 /**
  * Description : teamsForm.ts - 📌 공통 팀즈 API을 통한 메시지 형식 파일
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-03-10
  */
 
 // Teams 메시지 전송 폼

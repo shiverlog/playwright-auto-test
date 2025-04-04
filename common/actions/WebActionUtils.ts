@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-01
  */
-import { BaseActionUtils } from '@common/actions/BaseActionUtils';
+import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import type { Locator, Page } from '@playwright/test';
 
 export class WebActionUtils extends BaseActionUtils<undefined> {

@@ -44,6 +44,8 @@
     "module": "NodeNext",
     // 컴파일된 코드의 타겟 ES 버전
     "target": "ES2022",
+    // node 전역 타입(Node.js 전역 변수, 모듈 등)을 사용하기 위해 명시
+    "types": ["node"],
     // TypeScript 타입 선언 파일(.d.ts) 생성
     "declaration": true,
     // 엄격한 타입 검사 모드 활성화 (타입 안정성을 높임)

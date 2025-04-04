@@ -1,8 +1,10 @@
 /**
  * Description : TestConstants.ts - 📌 테스트 관련 상수 (기본 설정, 예제 데이터 등)
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2024-04-03
  */
+import type { TestContext } from '@common/types/test-context';
+
 export default class TestConstants {
   // 웹 브라우저 옵션
   static readonly CHROME = 'chrome';
@@ -47,4 +49,11 @@ export default class TestConstants {
   // 테스트 모드
   static readonly PARALLEL_MODE = 'parallel';
   static readonly SERIAL_MODE = 'serial';
+
+  // 타입 확인용
+  static readonly CONTEXT_EXAMPLE: TestContext = {
+    platform: 'PC_WEB',
+    env: 'development',
+    startTime: new Date().toISOString(),
+  };
 }

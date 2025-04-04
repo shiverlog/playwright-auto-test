@@ -1,116 +1,199 @@
 /**
  * Description : PathConstants.ts - 📌 POC 타입 정의와 경로 매핑, 파일명 관련 로직 정의
  * Author : Shiwoo Min
- * Date : 2025-03-25
+ * Date : 2025-04-04
  */
-import { BASE_PATH } from '@common/config/BaseConfig';
-import { getCurrentTimestamp } from '@common/formatters/formatters';
+import { getCurrentTimestamp } from '@common/formatters/formatters.js';
+import type { POCType } from '@common/types/platform-types.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// POC 키 값 (각 환경별 식별자) '' 는 모든 POC 실행을 의미
-export type POCType = 'pc' | 'mw' | 'aos' | 'ios' | 'api' | '';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// 루트 경로 설정
+export const BASE_PATH = path.resolve(__dirname, '..');
+const POC_ALL: POCType = 'ALL';
 
-// 전체 POC 리스트
-export const ALL_POCS: Exclude<POCType, ''>[] = ['pc', 'mw', 'aos', 'ios', 'api'];
-
-// POC 별 폴더 이름 매핑 함수
-export const POC_FOLDER_MAP: Record<Exclude<POCType, ''>, string | string[]> = {
-  mw: ['pc-mobile-web', 'emulator-mobile-web'],
-  pc: 'pc-web',
-  aos: 'android-app',
-  ios: 'ios-app',
-  api: 'api',
+/**
+ * POC 별 폴더 이름 매핑 함수
+ * - PC -> 'pc-web'
+ * - MW -> ['pc-mobile-web','emulator-mobile-web','device-mobile-web']
+ * - AOS -> 'android-app'
+ * - IOS -> 'ios-app'
+ * - API -> 'api'
+ */
+export const POC_FOLDER_MAP: Record<Exclude<POCType, 'ALL'>, string | string[]> = {
+  PC: 'pc-web',
+  // MW는 PC, Emulator, Device 로 테스트 ( 추후 경로 변경)
+  MW: ['pc-mobile-web', 'emulator-mobile-web', 'device-mobile-web'],
+  AOS: 'android-app',
+  IOS: 'ios-app',
+  API: 'api',
 };
 
+// 테스트 mw 매핑
+export const MW_BROWSER_MAP: Record<string, string> = {
+  'pc-mobile-web': 'pc-chrome',
+  'device-mobile-web': 'ios-device-safari',
+  'emulator-mobile-web': 'android-device-chrome',
+};
 /**
  * POC 별 폴더 경로 반환 함수
+ * - e2e/pc-web
+ * - e2e/pc-mobile-web
+ * - e2e/emulator-mobile-web
+ * - e2e/device-mobile-web
+ * - e2e/android-app
+ * - e2e/ios-app
+ * - e2e/api
+ * - POC_PATH('ALL') -> 모든 POC 경로 배열
  */
-export const POC_PATH = (poc: POCType): string | string[] => {
-  if (poc === '') {
-    // 전체 POC 폴더 경로 배열 반환
-    return Object.values(POC_FOLDER_MAP).map(folder => `${BASE_PATH}/e2e/${folder}`);
+export const POC_PATH = (poc: POCType): string[] => {
+  if (!poc) {
+    throw new Error(`[POC_PATH] 유효하지 않은 poc 값: '${poc}'`);
   }
-  return `${BASE_PATH}/e2e/${POC_FOLDER_MAP[poc]}`;
+  if (poc === POC_ALL) {
+    return Object.values(POC_FOLDER_MAP)
+      .flatMap(folder => (Array.isArray(folder) ? folder : [folder]))
+      .map(folder => `${BASE_PATH}/e2e/${folder}`);
+  }
+
+  const folders = POC_FOLDER_MAP[poc as Exclude<POCType, 'ALL'>];
+  if (!folders) {
+    throw new Error(`[POC_PATH] '${poc}'에 대한 경로가 POC_FOLDER_MAP에 정의되어 있지 않습니다.`);
+  }
+
+  return Array.isArray(folders)
+    ? folders.map(f => `${BASE_PATH}/e2e/${f}`)
+    : [`${BASE_PATH}/e2e/${folders}`];
 };
 
-// 테스트 관련 폴더 경로
-export const PLAYWRIGHT_REPORT_PATH = `${POC_PATH}/playwright-report`;
-export const COVERAGE_PATH = `${POC_PATH}/coverage`;
-export const LOG_PATH = `${POC_PATH}/test-results/logs`;
-export const ALLURE_RESULT_PATH = `${POC_PATH}/test-results/allure-results`;
-export const SCREENSHOT_PATH = `${POC_PATH}/test-results/screenshots`;
-export const VIDEO_PATH = `${POC_PATH}/test-results/videos`;
-export const TRACE_PATH = `${POC_PATH}/test-results/traces`;
+/**
+ * 하위 경로 포함한 POC 경로 생성 (단일 poc만 처리)
+ */
+export const getPOCPathWithSubdir = (poc: POCType, subPath: string): string[] => {
+  return POC_PATH(poc).map(base => `${base}/${subPath}`);
+};
 
 /**
- * 테스트 관련 폴더 경로
+ * 특정 경로 배열에 타임스탬프 포함 파일명을 매핑
  */
-export const POC_RESULT_PATHS = (base: string) => ({
-  playwrightReport: `${base}/playwright-report`,
-  coverage: `${base}/coverage`,
-  log: `${base}/test-results/logs`,
-  allureResult: `${base}/test-results/allure-results`,
-  screenshots: `${base}/test-results/screenshots`,
-  videos: `${base}/test-results/videos`,
-  traces: `${base}/test-results/traces`,
-});
-
-// 코드 관련 폴더 경로
-// export const LOCATOR_PATH = `${BASE_PATH}/common/locators`;
-// export const COMPONENT_PATH = `${POC_PATH}/src/components`;
-// export const CONSTANTS_PATH = `${POC_PATH}/src/constants`;
-// export const FIXTURE_PATH = `${POC_PATH}/src/fixtures`;
-// export const PAGE_PATH = `${POC_PATH}/src/pages`;
-// export const STEP_PATH = `${POC_PATH}/src/steps`;
-// export const TESTS_PATH = `${POC_PATH}/tests`;
-// export const DOCKER_PATH = `${POC_PATH}/src/Dockerfile`;
+const mapToTimestampedPath = (basePaths: string[], fileName: string): string[] =>
+  basePaths.map(p => `${p}/${fileName}`);
 
 /**
- * 코드 관련 폴더 경로
+ * 테스트 관련 폴더 경로 (단일 poc 기준)
+ * - POC_RESULT_PATHS('PC')
+ * - e2e/pc-web/playwright-report
+ * - e2e/pc-web/coverage
+ * - e2e/pc-web/test-results/logs
+ * - e2e/pc-web/test-results/allure-results
+ * - e2e/pc-web/test-results/screenshots
+ * - e2e/pc-web/test-results/videos
+ * - e2e/pc-web/test-results/traces
  */
-export const FOLDER_PATHS = (base: string) => ({
-  locators: `/common/locators`,
-  components: `${base}/src/components`,
-  constants: `${base}/src/constants`,
-  fixtures: `${base}/src/fixtures`,
-  tests: `${POC_PATH}/tests`,
-  pages: `${base}/src/pages`,
-  steps: `${base}/src/steps`,
-  docker: `${base}/src/Dockerfile`,
+export const POC_RESULT_PATHS = (poc: POCType) => ({
+  playwrightReport: getPOCPathWithSubdir(poc, 'playwright-report'),
+  coverage: getPOCPathWithSubdir(poc, 'coverage'),
+  log: getPOCPathWithSubdir(poc, 'test-results/logs'),
+  allureResult: getPOCPathWithSubdir(poc, 'test-results/allure-results'),
+  screenshots: getPOCPathWithSubdir(poc, 'test-results/screenshots'),
+  videos: getPOCPathWithSubdir(poc, 'test-results/videos'),
+  traces: getPOCPathWithSubdir(poc, 'test-results/traces'),
 });
 
 /**
- * 개별 결과 파일 (날짜별 저장)
+ * 코드 관련 폴더 경로 (단일 poc 기준)
+ * - common/locators
+ * - e2e/pc-web/src/pages
+ * - e2e/pc-web/src/steps
+ * - e2e/pc-web/src/Dockerfile
+ * - e2e/pc-web/tests
+ * - e2e/pc-web/test-results/screenshots
+ * - e2e/pc-web/test-results/videos
+ * - e2e/pc-web/test-results/traces
  */
-export const PLAYWRIGHT_REPORT_FILE_NAME = (poc: POCType): string =>
-  `${PLAYWRIGHT_REPORT_PATH}/${poc}_report_${getCurrentTimestamp()}.html`;
-export const LOG_FILE_NAME = (poc: POCType): string =>
-  `${LOG_PATH}/${poc}_${getCurrentTimestamp()}.json`;
-export const ALLURE_RESULT_FILE_NAME = (poc: POCType): string =>
-  `${ALLURE_RESULT_PATH}/${poc}_test-result_${getCurrentTimestamp()}.json`;
-export const SCREENSHOT_FILE_NAME = (poc: POCType): string =>
-  `${SCREENSHOT_PATH}/${poc}_screenshot_${getCurrentTimestamp()}.png`;
-export const VIDEO_FILE_NAME = (poc: POCType): string =>
-  `${VIDEO_PATH}/${poc}_video_${getCurrentTimestamp()}.mp4`;
-export const TRACE_FILE_NAME = (poc: POCType): string =>
-  `${TRACE_PATH}/${poc}_trace_${getCurrentTimestamp()}.zip`;
+export const FOLDER_PATHS = (poc: POCType) => ({
+  locators: '/common/locators',
+  components: getPOCPathWithSubdir(poc, 'src/components'),
+  constants: getPOCPathWithSubdir(poc, 'src/constants'),
+  fixtures: getPOCPathWithSubdir(poc, 'src/fixtures'),
+  tests: getPOCPathWithSubdir(poc, 'tests'),
+  pages: getPOCPathWithSubdir(poc, 'src/pages'),
+  steps: getPOCPathWithSubdir(poc, 'src/steps'),
+  docker: getPOCPathWithSubdir(poc, 'src/Dockerfile'),
+});
 
 /**
- * 테스트 결과 파일명 생성 함수
+ * 개별 결과 파일 (타임스탬프 포함) - 다중 경로 대응
+ */
+// export const PLAYWRIGHT_REPORT_FILE_NAME = (poc: POCType): string[] =>
+//   getPOCPathWithSubdir(poc, 'playwright-report').map(
+//     path => `${path}/${poc}_report_${getCurrentTimestamp()}.html`,
+//   );
+
+// export const LOG_FILE_NAME = (poc: POCType): string[] =>
+//   getPOCPathWithSubdir(poc, 'test-results/logs').map(
+//     path => `${path}/${poc}_${getCurrentTimestamp()}.json`,
+//   );
+
+// export const ALLURE_RESULT_FILE_NAME = (poc: POCType): string[] =>
+//   getPOCPathWithSubdir(poc, 'test-results/allure-results').map(
+//     path => `${path}/${poc}_test-result_${getCurrentTimestamp()}.json`,
+//   );
+
+// export const SCREENSHOT_FILE_NAME = (poc: POCType): string[] =>
+//   getPOCPathWithSubdir(poc, 'test-results/screenshots').map(
+//     path => `${path}/${poc}_screenshot_${getCurrentTimestamp()}.png`,
+//   );
+
+// export const VIDEO_FILE_NAME = (poc: POCType): string[] =>
+//   getPOCPathWithSubdir(poc, 'test-results/videos').map(
+//     path => `${path}/${poc}_video_${getCurrentTimestamp()}.mp4`,
+//   );
+
+// export const TRACE_FILE_NAME = (poc: POCType): string[] =>
+//   getPOCPathWithSubdir(poc, 'test-results/traces').map(
+//     path => `${path}/${poc}_trace_${getCurrentTimestamp()}.zip`,
+//   );
+
+/**
+ * 테스트 결과 파일명 생성 함수 (병렬 저장용)
+ * - TEST_RESULT_FILE_NAME('MW') →
+ * {
+ *   playwrightReport: [
+ *     '/e2e/pc-mobile-web/playwright-report/MW_report_20240404T142200.html',
+ *     '/e2e/emulator-mobile-web/playwright-report/MW_report_20240404T142200.html',
+ *     '/e2e/device-mobile-web/playwright-report/MW_report_20240404T142200.html'
+ *   ],
+ *   log: [
+ *     '/e2e/pc-mobile-web/test-results/logs/MW_20240404T142200.json',
+ *     '/e2e/emulator-mobile-web/test-results/logs/MW_20240404T142200.json',
+ *     '/e2e/device-mobile-web/test-results/logs/MW_20240404T142200.json'
+ *   ],
+ *   allureResult: [...],
+ *   screenshots: [...],
+ *   videos: [...],
+ *   traces: [...],
+ *   coverage: [...]
+ * }
  */
 export const TEST_RESULT_FILE_NAME = (
-  base: string,
   poc: POCType,
-): Record<keyof ReturnType<typeof POC_RESULT_PATHS>, string> => {
-  const paths = POC_RESULT_PATHS(base);
+): Record<keyof ReturnType<typeof POC_RESULT_PATHS>, string[]> => {
   const timestamp = getCurrentTimestamp();
+  const paths = POC_RESULT_PATHS(poc);
 
   return {
-    playwrightReport: `${paths.playwrightReport}/${poc}_report_${timestamp}.html`,
-    log: `${paths.log}/${poc}_${timestamp}.json`,
-    allureResult: `${paths.allureResult}/${poc}_test-result_${timestamp}.json`,
-    screenshots: `${paths.screenshots}/${poc}_screenshot_${timestamp}.png`,
-    videos: `${paths.videos}/${poc}_video_${timestamp}.mp4`,
-    traces: `${paths.traces}/${poc}_trace_${timestamp}.zip`,
-    coverage: `${paths.coverage}/${poc}_coverage_${timestamp}.json`,
+    playwrightReport: mapToTimestampedPath(
+      paths.playwrightReport,
+      `${poc}_report_${timestamp}.html`,
+    ),
+    log: mapToTimestampedPath(paths.log, `${poc}_${timestamp}.json`),
+    allureResult: mapToTimestampedPath(paths.allureResult, `${poc}_test-result_${timestamp}.json`),
+    screenshots: mapToTimestampedPath(paths.screenshots, `${poc}_screenshot_${timestamp}.png`),
+    videos: mapToTimestampedPath(paths.videos, `${poc}_video_${timestamp}.mp4`),
+    traces: mapToTimestampedPath(paths.traces, `${poc}_trace_${timestamp}.zip`),
+    coverage: mapToTimestampedPath(paths.coverage, `${poc}_coverage_${timestamp}.json`),
   };
 };

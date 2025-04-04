@@ -8,9 +8,11 @@
 │   │   ├── JsForceActions.ts
 │   │   ├── MobileActionUtils.ts
 │   │   ├── WebActionUtils.ts
-│   │   └── dsl
-│   │       ├── ElementActions.ts
-│   │       └── IElementActions.ts
+│   │   ├── dsl
+│   │   │   ├── ElementActions.ts
+│   │   │   └── IElementActions.ts
+│   │   └── elements
+│   │       └── AppElement.ts
 │   ├── components
 │   │   ├── BaseCart.ts
 │   │   ├── BaseCheckbox.ts
@@ -27,22 +29,13 @@
 │   │   └── BaseDeviceConfig.ts
 │   ├── constants
 │   │   ├── ActionConstants.ts
-│   │   ├── ContextConstants.ts
 │   │   ├── DBConstants.ts
 │   │   ├── HTMLConstants.ts
 │   │   ├── PathConstants.ts
+│   │   ├── PlatformConstants.ts
 │   │   ├── TestConstants.ts
 │   │   ├── TextConstants.ts
 │   │   └── UIConstants.ts
-│   ├── controllers
-│   │   ├── AndroidController.ts
-│   │   ├── ApiController.ts
-│   │   ├── IosController.ts
-│   │   ├── MobileWebController.ts
-│   │   ├── PcController.ts
-│   │   └── PocSetupController.ts
-│   ├── elements
-│   │   └── AppElement.ts
 │   ├── fixtures
 │   │   ├── BaseAppFixture.ts
 │   │   ├── BaseFixture.ts
@@ -53,10 +46,17 @@
 │   │   ├── slackForm.ts
 │   │   └── teamsForm.ts
 │   ├── handlers
-│   │   ├── cleanupHandler.ts
 │   │   ├── errorHandler.ts
 │   │   ├── notificationHandler.ts
 │   │   └── resultHandler.ts
+│   ├── initializers
+│   │   ├── PocInitializer.ts
+│   │   ├── androidTestEnv.ts
+│   │   ├── apiTestEnv.ts
+│   │   ├── cleanupOldFiles.ts
+│   │   ├── iosTestEnv.ts
+│   │   ├── mobileWebTestEnv.ts
+│   │   └── pcTestEnv.ts
 │   ├── locators
 │   │   ├── authLocator.ts
 │   │   ├── benefit.ts
@@ -88,6 +88,7 @@
 │   │   ├── import-meta-env.d.ts
 │   │   ├── node-global.d.ts
 │   │   ├── notification-config.ts
+│   │   ├── platform-types.ts
 │   │   ├── playwright-config.ts
 │   │   ├── pubsub-config.ts
 │   │   └── test-context.d.ts
@@ -183,6 +184,32 @@
 │   │   │   │   └── trace.xyz
 │   │   │   └── videos
 │   │   │       └── video.mp4
+│   │   └── tsconfig.json
+│   ├── device-mobile-web
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   │   └── index.html
+│   │   ├── playwright.config.ts
+│   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
+│   │   │   ├── screenshots
+│   │   │   │   └── screenshot.png
+│   │   │   ├── traces
+│   │   │   │   └── trace.xyz
+│   │   │   └── videos
+│   │   │       └── video.mp4
+│   │   ├── tests
+│   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
 │   ├── emulator-mobile-web
 │   │   ├── Dockerfile
@@ -724,8 +751,6 @@
 │   ├── util.h
 │   └── varstr.h
 ├── package.json
-├── playwright-report
-│   └── index.html
 ├── playwright.config.local.ts
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
@@ -768,9 +793,8 @@
 │   │   └── redirect.spec.ts
 │   └── tsconfig.json
 ├── structure.txt
-├── test-results
 ├── tsconfig.json
 ├── turbo.json
 └── vite.config.ts
 
-136 directories, 637 files
+146 directories, 651 files

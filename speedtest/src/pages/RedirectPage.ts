@@ -1,5 +1,4 @@
 import { Page } from '@playwright/test';
-import { Decimal } from 'decimal.js';
 
 export class RedirectPage {
   private page: Page;

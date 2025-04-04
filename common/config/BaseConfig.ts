@@ -1,11 +1,11 @@
 /**
  * Description : config.ts - 📌 환경설정 및 경로 관련 기본 세팅을 관리
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-04-04
  */
-import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig';
-import { getCurrentTimestamp } from '@common/formatters/formatters';
-import type { DeviceConfig } from '@common/types/device-config';
+import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig.js';
+import { getCurrentTimestamp } from '@common/formatters/formatters.js';
+import type { DeviceConfig } from '@common/types/device-config.js';
 import chromedriver from 'chromedriver';
 import dotenv from 'dotenv';
 import * as fs from 'fs';

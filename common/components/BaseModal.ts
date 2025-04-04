@@ -3,11 +3,11 @@
  * Author : Shiwoo Min
  * Date : 2025-04-02
  */
-import { BaseActionUtils } from '@common/actions/BaseActionUtils';
-import { MobileActionUtils } from '@common/actions/MobileActionUtils';
-import { WebActionUtils } from '@common/actions/WebActionUtils';
-import { mobileMenuLocator, overlayLocator } from '@common/locators/uiLocator';
-import { urlLocator } from '@common/locators/urlLocator';
+import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
+import { MobileActionUtils } from '@common/actions/MobileActionUtils.js';
+import { WebActionUtils } from '@common/actions/WebActionUtils.js';
+import { mobileMenuLocator, overlayLocator } from '@common/locators/uiLocator.js';
+import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';
 import type { BrowserContext, Page } from '@playwright/test';
 import type { Browser } from 'webdriverio';

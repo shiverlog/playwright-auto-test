@@ -139,6 +139,13 @@
     "networkidle",
     "xcrun",
     "ideviceinstaller",
-    "KHTML"
+    "KHTML",
+    "sbrowser",
+    "domcontentloaded",
+    "findstr",
+    "simctl",
+    "kbps",
+    "permissioncontroller",
+    "Interactable"
   ]
 }

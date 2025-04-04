@@ -1,26 +1,31 @@
-import { ALL_POCS, FOLDER_PATHS } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
+/**
+ * Description : LocatorUtils.ts - 📌 로케이터유틸
+ * Author : Shiwoo Min
+ * Date : 2024-04-04
+ */
+import { FOLDER_PATHS } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import path from 'path';
-import {
-  NumericLiteral,
-  ObjectLiteralExpression,
-  Project,
-  PropertyAssignment,
-  StringLiteral,
-  SyntaxKind,
-} from 'ts-morph';
+import { NumericLiteral, ObjectLiteralExpression, Project, PropertyAssignment, StringLiteral, SyntaxKind } from 'ts-morph';
+import type winston from 'winston';
+
+
+
+
 
 export class LocatorUtils {
-  private static BASE_LOCATOR_DIR = FOLDER_PATHS('common').locators;
+  // 해당 로케이터는 공통함수 부분이므로 타입 경고를 무시하고 사용
+  private static BASE_LOCATOR_DIR = (FOLDER_PATHS as any)('common').locators;
   private static project = new Project({ tsConfigFilePath: 'tsconfig.json' });
 
   /**
    * 로케이터 파일 로드 (common/locators + section 단위, TypeScript 기반)
    */
-  static loadLocators(poc: Exclude<POCType, ''>, section: string): Record<string, any> {
-    const logger = Logger.getLogger(poc);
-    const filePath = path.join(this.BASE_LOCATOR_DIR, poc, `${section}.ts`); // locators 경로만 사용
+  static loadLocators(poc: POCKey, section: string): Record<string, any> {
+    const logger = Logger.getLogger(poc) as winston.Logger;
+    const filePath = path.join(this.BASE_LOCATOR_DIR, poc, `${section}.ts`);
 
     try {
       const sourceFile = this.project.addSourceFileAtPathIfExists(filePath);
@@ -38,7 +43,6 @@ export class LocatorUtils {
         if (PropertyAssignment.isPropertyAssignment(prop)) {
           const key = prop.getName().replace(/['"]/g, '');
           const valueNode = prop.getInitializer();
-
           if (!valueNode) return;
 
           switch (valueNode.getKind()) {
@@ -111,9 +115,9 @@ export class LocatorUtils {
     return result;
   }
 
-  static getLocator(poc: Exclude<POCType, ''>, section: string, key: string): string | null {
+  static getLocator(poc: POCKey, section: string, key: string): string | null {
     const locators = this.loadLocators(poc, section);
-    const logger = Logger.getLogger(poc);
+    const logger = Logger.getLogger(poc) as winston.Logger;
 
     if (locators && key in locators) {
       return locators[key];
@@ -123,8 +127,8 @@ export class LocatorUtils {
     }
   }
 
-  static preloadAllPOCLocators(section: string): Record<Exclude<POCType, ''>, Record<string, any>> {
-    const result: Record<Exclude<POCType, ''>, Record<string, any>> = {} as any;
+  static preloadAllPOCLocators(section: string): Record<POCKey, Record<string, any>> {
+    const result: Record<POCKey, Record<string, any>> = {} as any;
 
     for (const poc of ALL_POCS) {
       result[poc] = this.loadLocators(poc, section);

@@ -3,27 +3,32 @@
  * Author : Shiwoo Min
  * Date : 2025-03-30
  */
-import { ALL_POCS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
+import { TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
 import { errorHandler } from '@common/handlers/errorHandler';
 import { Logger } from '@common/logger/customLogger';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import * as fs from 'fs/promises';
 import type { BrowserContext, Page } from 'playwright';
+import type winston from 'winston';
 
+/**
+ * 테스트 결과 저장 핸들러 - 성공/실패 여부에 따라 파일 저장 또는 에러 핸들링
+ */
 export async function resultHandler(
   poc: POCType,
   status: 'PASS' | 'FAIL',
   details?: string,
   page?: Page,
 ): Promise<void> {
-  const pocList = poc === '' ? ALL_POCS : [poc];
+  const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
   const timestamp = new Date().toISOString();
   const logData = `[${timestamp}] [${status}] ${details || ''}\n`;
 
   await Promise.all(
-    pocList.map(async currentPOC => {
-      const logger = Logger.getLogger(currentPOC);
-      const results = TEST_RESULT_FILE_NAME(process.cwd(), currentPOC);
+    pocList.map(async (currentPOC: POCKey) => {
+      const logger = Logger.getLogger(currentPOC) as winston.Logger;
+      const results = TEST_RESULT_FILE_NAME(currentPOC);
 
       const testResultData = {
         timestamp,
@@ -32,18 +37,24 @@ export async function resultHandler(
       };
 
       try {
-        if (status === 'PASS') {
-          // 성공한 경우 결과 저장
-          await fs.writeFile(results.playwrightReport, JSON.stringify(testResultData, null, 2));
-          logger.info(`테스트 결과 저장됨: ${results.playwrightReport}`);
+        // 모든 경로 순회하여 결과 저장
+        for (const path of results.playwrightReport) {
+          await fs.writeFile(path, JSON.stringify(testResultData, null, 2));
+          logger.info(`테스트 결과 저장됨: ${path}`);
+        }
 
-          await fs.appendFile(results.log, logData);
-          logger.info(`로그 저장됨: ${results.log}`);
+        for (const path of results.log) {
+          await fs.appendFile(path, logData);
+          logger.info(`로그 저장됨: ${path}`);
+        }
 
-          await fs.writeFile(results.allureResult, JSON.stringify(testResultData, null, 2));
-          logger.info(`Allure 결과 저장됨: ${results.allureResult}`);
-        } else {
-          // 실패한 경우 errorHandler 호출
+        for (const path of results.allureResult) {
+          await fs.writeFile(path, JSON.stringify(testResultData, null, 2));
+          logger.info(`Allure 결과 저장됨: ${path}`);
+        }
+
+        // 실패한 경우만 errorHandler 호출
+        if (status === 'FAIL') {
           await errorHandler(page!, currentPOC, new Error(details || 'Test failed'), '테스트 실패');
         }
       } catch (err) {

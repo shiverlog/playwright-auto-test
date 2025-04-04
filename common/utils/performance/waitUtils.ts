@@ -1,9 +1,10 @@
+/**
+ * Description : WaitUtils.ts - 📌 정적 대기 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2024-04-03
+ */
 import { Locator, Page } from '@playwright/test';
 
-/**
- * WaitUtils: 정적 대기 유틸리티 클래스
- * (Playwright 또는 Appium 등 환경에 구애받지 않음)
- */
 export class WaitUtils {
   /**
    * 특정 시간(ms) 동안 대기

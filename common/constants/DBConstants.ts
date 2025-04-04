@@ -1,7 +1,7 @@
 /**
  * Description : config.ts - 📌 Mosaic DB 관련 상수 정의
  * Author : Shiwoo Min
- * Date : 2024-03-10
+ * Date : 2025-04-02
  */
 export default class DBConstants {
   // Mosaic DB에 연결

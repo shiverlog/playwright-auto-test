@@ -1,10 +1,11 @@
 /**
  * Description : customLogger.ts - 📌 공통 Logger 적용
  * Author : Shiwoo Min
- * Date : 2025-03-10
+ * Date : 2025-04-04
  */
-import { ALL_POCS, POC_RESULT_PATHS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
+import { POC_RESULT_PATHS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import fs from 'fs';
 import path from 'path';
 import winston from 'winston';
@@ -47,69 +48,94 @@ const ensureDirectoryExists = (filePath: string) => {
       fs.mkdirSync(dir, { recursive: true });
     }
   } catch (error) {
-    console.error(`디렉토리 생성 실패: ${dir}`, error);
-    throw new Error(`디렉토리 생성 실패: ${dir}`);
+    console.error(`로그 디렉토리 생성 실패: ${dir}`, error);
+    throw new Error(`로그 디렉토리 생성 실패: ${dir}`);
   }
 };
 
 // 로거 클래스 정의 (POC별 로거 인스턴스를 싱글턴으로 관리)
 class Logger {
-  private static instances: Map<POCType, winston.Logger> = new Map();
+  // 각 POC별 Logger 인스턴스
+  private static instances: Map<POCKey, winston.Logger> = new Map();
 
   private constructor() {}
-
-  public static getLogger(poc: POCType = ''): winston.Logger {
-    if (poc === '') {
-      throw new Error(
-        'POCType가 지정되지 않았습니다. 전체 실행에서는 각 POC별로 getLogger를 호출하세요.',
-      );
+  // POC별 로거 인스턴스 반환
+  public static getLogger(poc: POCType | POCKey): winston.Logger | Record<POCKey, winston.Logger> {
+    if (!poc) {
+      throw new Error(`[Logger] poc 값이 누락되었습니다.`);
     }
-
-    if (!Logger.instances.has(poc)) {
-      const basePath = path.resolve(process.cwd());
-      const resultPaths = POC_RESULT_PATHS(basePath);
-      const resultFiles = TEST_RESULT_FILE_NAME(basePath, poc);
-
-      // 로그 디렉토리 존재 확인 및 생성
-      Object.values(resultPaths).forEach(ensureDirectoryExists);
-
-      // winston 로거 인스턴스 생성
-      const loggerInstance = winston.createLogger({
-        level: LOG_LEVEL,
-        levels: Object.fromEntries(LOG_LEVELS.map(({ level, priority }) => [level, priority])),
-        format: winston.format.combine(
-          winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-          jsonFormatter,
-        ),
-        transports: ENABLE_LOGS
-          ? [
-              new winston.transports.Console({
-                format: winston.format.combine(winston.format.colorize(), coloredFormatter),
-              }),
-              // 파일 출력 설정 (POC별 로그 파일)
-              ...Object.entries(resultFiles).map(
-                ([_, filePath]) =>
-                  new winston.transports.File({
-                    filename: filePath,
-                    format: winston.format.combine(
-                      winston.format.timestamp(),
-                      winston.format.json(),
-                    ),
-                  }),
-              ),
-            ]
-          : [],
-      });
-      // 생성된 로거 저장
-      Logger.instances.set(poc, loggerInstance);
+    // ALL일 경우 전체 POC 로거 인스턴스를 반환
+    if (poc === 'ALL') {
+      const allLoggers: Record<POCKey, winston.Logger> = {} as Record<POCKey, winston.Logger>;
+      for (const key of ALL_POCS) {
+        allLoggers[key] = Logger.getLogger(key) as winston.Logger;
+      }
+      return allLoggers;
     }
-    return Logger.instances.get(poc)!;
+    const validPOC = poc as POCKey;
+    // 이미 생성된 로거가 있으면 반환
+    if (Logger.instances.has(validPOC)) {
+      return Logger.instances.get(validPOC)!;
+    }
+    // POC_RESULT_PATHS와 TEST_RESULT_FILE_NAME 내부적으로 basePath를 처리
+    // const basePath = process.cwd();
+    const resultPaths = POC_RESULT_PATHS(validPOC);
+    const resultFiles = TEST_RESULT_FILE_NAME(validPOC);
+
+    // 로그 디렉토리 생성
+    const allDirs = Object.values(resultPaths).flat();
+    allDirs.forEach(dirPath => ensureDirectoryExists(dirPath));
+    // 파일 출력용 transport 구성
+    const fileTransports: winston.transport[] = [];
+
+    Object.values(resultFiles).forEach(filePath => {
+      if (typeof filePath === 'string') {
+        fileTransports.push(
+          new winston.transports.File({
+            filename: filePath,
+            format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+          }),
+        );
+      } else {
+        filePath.forEach(fp => {
+          fileTransports.push(
+            new winston.transports.File({
+              filename: fp,
+              format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
+            }),
+          );
+        });
+      }
+    });
+    // 전체 transports 구성 (콘솔 + 파일)
+    const transports: winston.transport[] = ENABLE_LOGS
+      ? [
+          new winston.transports.Console({
+            format: winston.format.combine(winston.format.colorize(), coloredFormatter),
+          }),
+          ...fileTransports,
+        ]
+      : [];
+    // 로거 생성 및 설정
+    const logger = winston.createLogger({
+      level: LOG_LEVEL,
+      levels: Object.fromEntries(LOG_LEVELS.map(({ level, priority }) => [level, priority])),
+      format: winston.format.combine(
+        winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+        jsonFormatter,
+      ),
+      transports,
+    });
+
+    Logger.instances.set(validPOC, logger);
+    return logger;
   }
-  // 전체 POC에 대해 로거 미리 초기화 (getLogger를 호출)
+  // 전체 POC별 로거 초기화
   public static initAllLoggers(): void {
-    for (const poc of ALL_POCS) {
+    ALL_POCS.forEach(poc => {
       Logger.getLogger(poc);
-    }
+    });
   }
 }
+
 export { Logger };

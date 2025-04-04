@@ -5,8 +5,9 @@
  */
 import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
 import { BASE_DEVICES } from '@common/config/BaseDeviceConfig.js';
-import { ALL_POCS, POC_PATH, POC_RESULT_PATHS } from '@common/constants/PathConstants.js';
-import type { POCType } from '@common/constants/PathConstants.js';
+import { MW_BROWSER_MAP } from '@common/constants/PathConstants.js';
+import type { POCKey, POCType } from '@common/types/platform-types.js';
+import { ALL_POCS } from '@common/types/platform-types.js';
 import { defineConfig, devices, type Project } from '@playwright/test';
 /**
  * Read environment variables from file.
@@ -17,43 +18,66 @@ import os from 'os';
 import path from 'path';
 import { dirname } from 'path';
 import 'tsconfig-paths/register.js';
-// 환경 변수 로드
 import { fileURLToPath } from 'url';
 
 // ESM 환경 경로 설정
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// .env 파일 로드
 dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 // 현재 실행 중인 POC 지정
 const ACTIVE_POC = (process.env.POC as POCType) || '';
 
 // 단일 or 전체 POC 기준으로 경로 가져오기
-const pocList = ACTIVE_POC === '' ? ALL_POCS : [ACTIVE_POC];
+const pocList: POCKey[] = ACTIVE_POC === 'ALL' ? ALL_POCS : [ACTIVE_POC as POCKey];
 
 // 브라우저 조합 동적 생성
-// pc: ['chrome', 'firefox', 'safari', 'edge']
 const browserMatrix: Record<Exclude<POCType, ''>, string[]> = {
-  // pc-web
-  pc: ['pc-chrome'],
-  // pc-mobile-web, device-mobile-web
-  mw: ['pc-chrome', 'android-device-chrome', 'ios-device-safari'],
+  // pc-web: ['chrome', 'firefox', 'safari', 'edge']
+  PC: ['pc-chrome'],
+  // pc-mobile-web, device-mobile-web, emulate-mobile-web: ['chrome', 'safari']
+  MW: Object.values(MW_BROWSER_MAP),
   // android-app
-  aos: ['android-app'],
+  AOS: ['android-app'],
   // ios-app
-  ios: ['ios-app'],
-  api: [],
+  IOS: ['ios-app'],
+  API: [],
+  ALL: [],
 };
 
-// POC별 프로젝트 동적 생성
-const pocProjects = pocList.flatMap(poc => {
-  const basePath = POC_PATH(poc) as string;
-  const resultPaths = POC_RESULT_PATHS(basePath);
-  const deviceInfo = BASE_DEVICES[poc as Exclude<POCType, ''>];
-  // 'device' 속성이 없는 경우 스킵
+// ALL에 나머지 POC의 모든 브라우저/디바이스를 병합해서 넣기
+browserMatrix.ALL = [
+  ...new Set(
+    Object.entries(browserMatrix)
+      .filter(([key]) => key !== 'ALL')
+      .flatMap(([, value]) => value),
+  ),
+];
+
+// POC별 테스트 프로젝트 동적 생성
+const pocProjects = pocList.flatMap((poc: POCKey) => {
+  const matrixKey = poc;
+  const basePath = `e2e/${poc}`;
+  const resultPaths = {
+    log: `logs/${poc}`,
+    playwrightReport: `playwright-report/${poc}`,
+    allureResult: `allure-results/${poc}`,
+  };
+
+  const deviceInfo = BASE_DEVICES[poc as keyof typeof BASE_DEVICES];
   if (!deviceInfo || !('device' in deviceInfo)) return [];
-  return browserMatrix[poc as Exclude<POCType, ''>].map(browser => {
+
+  const browserList = browserMatrix[matrixKey];
+  if (!browserList) {
+    console.warn(`browserMatrix에 '${matrixKey}'가 정의되어 있지 않음`);
+    return [];
+  }
+
+  return browserMatrix[matrixKey].map(browser => {
     const browserLabel = browser.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
     // 기본 환경 설정 (Global Configuration)
     const useOptions: any = {
@@ -129,7 +153,7 @@ const pocProjects = pocList.flatMap(poc => {
     }
 
     return {
-      name: `POC - ${poc.toUpperCase()} - ${browserLabel}`,
+      name: `POC - ${poc} - ${browserLabel}`,
       testMatch: [`**/${basePath.split('/').pop()}/src/steps/**/*.spec.ts`],
       /* Reporter to use. See https://playwright.dev/docs/test-reporters */
       // 테스트 리포트 설정 (Reporter Configuration)
@@ -222,6 +246,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
   },
 ];
 
+// 정적 E2E 테스트 대상 변환 함수
 function generateE2EProjects(): Project[] {
   return E2E_CONFIGS.filter(config => {
     return !config.platform || config.platform.includes(process.platform);

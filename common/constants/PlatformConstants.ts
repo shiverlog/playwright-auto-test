@@ -3,7 +3,8 @@
  * Author : Shiwoo Min
  * Date : 2025-04-03
  */
-import { Platform, POCType, UIType } from '@common/types/platform-types';
+import type { POCType } from '@common/types/platform-types.js';
+import { Platform, UIType } from '@common/types/platform-types.js';
 
 // POC -> Platform 매핑
 export const POC_TO_PLATFORM_MAP: Partial<Record<Exclude<POCType, 'EMPTY'>, Platform>> = {

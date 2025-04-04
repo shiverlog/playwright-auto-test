@@ -1,13 +1,14 @@
 /**
  * Description : BaseWebFixture.ts - 📌 Web 테스트를 위한 Fixture 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-04
  */
-import { ALL_POCS } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
+import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import { test as base, expect } from '@playwright/test';
+import type winston from 'winston';
 
 class BaseWebFixture extends BasePocFixture {
   // POC별 baseURL 매핑 저장
@@ -15,34 +16,41 @@ class BaseWebFixture extends BasePocFixture {
 
   // baseURL 저장
   public setBaseURL(poc: POCType, url: string) {
-    this.configMap[poc] = url;
+    if (poc === 'ALL') return;
+    const pocKey = poc as POCKey;
+    this.configMap[pocKey] = url;
   }
 
   // baseURL 조회 (기본값 제공)
   public getBaseURL(poc: POCType): string {
-    return this.configMap[poc] || 'https://www.lguplus.com';
+    if (poc === 'ALL') return 'https://www.lguplus.com';
+    const pocKey = poc as POCKey;
+    return this.configMap[pocKey] || 'https://www.lguplus.com';
   }
 
   // 각 POC에 대한 테스트 사전 준비
   public async setupForPoc(poc: POCType): Promise<string> {
-    const logger = Logger.getLogger(poc);
-    logger.info(`[WebFixture] ${poc} 환경 준비 시작`);
+    if (poc === 'ALL') return 'https://www.lguplus.com';
+    const pocKey = poc as POCKey;
+    const logger = Logger.getLogger(pocKey) as winston.Logger;
+    logger.info(`[WebFixture] ${pocKey} 환경 준비 시작`);
 
-    // 공통 디렉토리 생성 등 처리
-    await this.beforeAll(poc);
+    await this.beforeAll(pocKey);
 
-    // BASE_URL 환경변수 또는 기본값 설정
     const baseURL = process.env.BASE_URL || 'https://www.lguplus.com';
-    this.setBaseURL(poc, baseURL);
+    this.setBaseURL(pocKey, baseURL);
 
     return baseURL;
   }
 
   // 각 POC에 대한 테스트 후처리
   public async teardownForPoc(poc: POCType): Promise<void> {
-    const logger = Logger.getLogger(poc);
-    await this.afterAll(poc);
-    logger.info(`[WebFixture] ${poc} 환경 정리 완료`);
+    if (poc === 'ALL') return;
+    const pocKey = poc as POCKey;
+    const logger = Logger.getLogger(pocKey) as winston.Logger;
+
+    await this.afterAll(pocKey);
+    logger.info(`[WebFixture] ${pocKey} 환경 정리 완료`);
   }
 
   // 추상 클래스에서 요구하는 필수 구현 메서드
@@ -58,26 +66,25 @@ export const test = base.extend<{
   poc: POCType;
   baseURL: string;
 }>({
+  // 외부에서 입력된 POC
   poc: [(process.env.POC as POCType) || '', { option: true }],
 
   // baseURL 설정 및 POC 실행 흐름 구성
   baseURL: async ({ poc }, use) => {
     // POC가 없으면 전체 실행, 있으면 단일 POC 실행
-    const targetPOCs: Exclude<POCType, ''>[] =
-      poc === '' ? ALL_POCS : [poc as Exclude<POCType, ''>];
+    const targetPOCs: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
 
-    for (const target of targetPOCs) {
-      const logger = Logger.getLogger(target);
-      logger.info(`[Test] Web 테스트 시작 - POC: ${target}`);
+    for (const pocKey of targetPOCs) {
+      const logger = Logger.getLogger(pocKey) as winston.Logger;
+      logger.info(`[Test] Web 테스트 시작 - POC: ${pocKey}`);
 
       // Web 테스트용 baseURL 준비 및 주입
-      const baseURL = await webFixture.setupForPoc(target);
+      const baseURL = await webFixture.setupForPoc(pocKey);
       await use(baseURL);
 
       // 후처리
-      await webFixture.teardownForPoc(target);
-
-      logger.info(`[Test] Web 테스트 종료 - POC: ${target}`);
+      await webFixture.teardownForPoc(pocKey);
+      logger.info(`[Test] Web 테스트 종료 - POC: ${pocKey}`);
     }
   },
 });

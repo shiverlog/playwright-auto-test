@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-import { urls } from '../config/url';
+import { speedtestUrls } from '../config/speedtestUrls';
 import { RedirectPage } from '../src/pages/RedirectPage';
 import { saveResults } from '../src/saveLogs';
 import { RedirectSteps } from '../src/steps/RedirectSteps';
@@ -11,9 +11,9 @@ test('3사 속도측정', async ({ page }) => {
 
   // 각 통신사별 URL을 배열로 지정
   const carrierUrls = [
-    ...Object.values(urls.lg),
-    ...Object.values(urls.skt),
-    ...Object.values(urls.kt),
+    ...Object.values(speedtestUrls.lg),
+    ...Object.values(speedtestUrls.skt),
+    ...Object.values(speedtestUrls.kt),
   ];
 
   const performanceResults = [];
@@ -36,6 +36,4 @@ test('3사 속도측정', async ({ page }) => {
 
     console.log(`URL: ${url} - DCL: ${dclTime}s, LCP: ${lcpTime}s, Load Time: ${loadTime}s`);
   }
-  // 결과를 JSON 파일로 저장
-  saveResults(performanceResults, './output/performanceResults.json');
 });
