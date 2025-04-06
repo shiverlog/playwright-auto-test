@@ -37,6 +37,23 @@ export class JsForceActions {
   }
 
   /**
+   * JavaScript 기반 강제 타이핑 - 천천히 한 글자씩 입력 (랜덤 딜레이)
+   */
+  public async forceTypeSlowly(selector: string, value: string, baseDelayMs = 100): Promise<void> {
+    const el = await this.page.$(selector);
+    if (!el) throw new Error(`Selector not found: ${selector}`);
+
+    await el.click();
+    await el.fill('');
+
+    for (const char of value) {
+      // 70% ~ 130%의 랜덤 딜레이
+      const randomDelay = baseDelayMs * (0.7 + Math.random() * 0.6);
+      await this.page.keyboard.type(char, { delay: randomDelay });
+    }
+  }
+
+  /**
    * JavaScript로 input 값 초기화
    */
   public async forceClearInput(selector: string): Promise<void> {

@@ -12,7 +12,7 @@ import type { Browser, Element } from 'webdriverio';
 
 const DEFAULT_RETRY = 5;
 export class MobileActionUtils extends BaseActionUtils<Browser> {
-  declare protected driver: Browser;
+  protected driver!: Browser;
   private platform: 'android' | 'ios';
 
   constructor(page: Page, driver: Browser) {

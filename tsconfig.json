@@ -3,6 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-01
  */
+// npx tsc --project tsconfig.json --showConfig
 {
   "name": "playwright-auto-test",
   "version": "1.0.0",
@@ -27,8 +28,8 @@
       "@e2e/api/src/*": ["e2e/api/src/*"],
       "@e2e/ios/*": ["e2e/ios-app/*"],
       "@e2e/ios/src/*": ["e2e/ios-app/src/*"],
-      "@e2e/mw/*": ["e2e/device-mobile-web/*"],
-      "@e2e/mw/src/*": ["e2e/device-mobile-web/src/*"],
+      "@e2e/pc-mobile-web/*": ["e2e/pc-mobile-web/*"],
+      "@e2e/pc-mobile-web/src/*": ["e2e/pc-mobile-web/src/*"],
       "@e2e/pc/*": ["e2e/pc-web/*"],
       "@e2e/pc/src/*": ["e2e/pc-web/src/*"],
       "@pubsub/*": ["pubsub/*"],

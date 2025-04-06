@@ -15,7 +15,7 @@
       "args": ["test", "e2e/**", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": ""
+        "POC": "ALL"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -30,7 +30,7 @@
       "args": ["test", "e2e/**", "--headed", "--debug", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": ""
+        "POC": "ALL"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -42,10 +42,10 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/pc-web", "--reporter=html"],
+      "args": ["test", "e2e/pc-web", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "pc"
+        "POC": "PC"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -57,10 +57,10 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/pc-mobile-web", "--reporter=html"],
+      "args": ["test", "e2e/pc-mobile-web", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "mw"
+        "POC": "MW"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -72,10 +72,10 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/emulator-mobile-web", "--reporter=html"],
+      "args": ["test", "e2e/emulator-mobile-web", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "mw"
+        "POC": "MW"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -87,7 +87,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/android-app", "--reporter=html"],
+      "args": ["test", "e2e/android-app", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": "PC"
@@ -102,10 +102,10 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/ios-app", "--reporter=html"],
+      "args": ["test", "e2e/ios-app", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "ios"
+        "POC": "IOS"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -117,10 +117,10 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "e2e/api", "--reporter=html"],
+      "args": ["test", "e2e/api", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "api"
+        "POC": "API"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -132,7 +132,7 @@
       "type": "node",
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
-      "args": ["test", "speedtest", "--reporter=html"],
+      "args": ["test", "speedtest", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": "PC"
@@ -150,7 +150,7 @@
       "args": ["test", "--ui"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": ""
+        "POC": "ALL"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"

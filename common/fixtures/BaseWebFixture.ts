@@ -7,7 +7,10 @@ import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';
 import { ALL_POCS } from '@common/types/platform-types';
+import { createStealthContext, launchStealthBrowser } from '@common/utils/browser/stealthContext';
 import { test as base, expect } from '@playwright/test';
+import type { BrowserContext, Page } from '@playwright/test';
+import { spawn } from 'child_process';
 import type winston from 'winston';
 
 class BaseWebFixture extends BasePocFixture {
@@ -33,13 +36,12 @@ class BaseWebFixture extends BasePocFixture {
     if (poc === 'ALL') return 'https://www.lguplus.com';
     const pocKey = poc as POCKey;
     const logger = Logger.getLogger(pocKey) as winston.Logger;
-    logger.info(`[WebFixture] ${pocKey} 환경 준비 시작`);
 
+    logger.info(`[WebFixture] ${pocKey} 환경 준비 시작`);
     await this.beforeAll(pocKey);
 
     const baseURL = process.env.BASE_URL || 'https://www.lguplus.com';
     this.setBaseURL(pocKey, baseURL);
-
     return baseURL;
   }
 
@@ -53,41 +55,106 @@ class BaseWebFixture extends BasePocFixture {
     logger.info(`[WebFixture] ${pocKey} 환경 정리 완료`);
   }
 
-  // 추상 클래스에서 요구하는 필수 구현 메서드
-  // Web에서는 별도 준비 작업이 필요 없으므로 비워둠
+  // 추상클래스에서 요구하는 필수 구현 메서드
+  // Web에서는 별도 준비 작업이 필요 없으므로 빈 메서드로 구현
   protected async prepare(poc: POCType): Promise<void> {}
-}
 
-// WebFixture 인스턴스 생성
-const webFixture = new BaseWebFixture();
-
-// Playwright 테스트 확장 정의
-export const test = base.extend<{
-  poc: POCType;
-  baseURL: string;
-}>({
-  // 외부에서 입력된 POC
-  poc: [(process.env.POC as POCType) || '', { option: true }],
-
-  // baseURL 설정 및 POC 실행 흐름 구성
-  baseURL: async ({ poc }, use) => {
-    // POC가 없으면 전체 실행, 있으면 단일 POC 실행
-    const targetPOCs: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
-
-    for (const pocKey of targetPOCs) {
-      const logger = Logger.getLogger(pocKey) as winston.Logger;
-      logger.info(`[Test] Web 테스트 시작 - POC: ${pocKey}`);
-
-      // Web 테스트용 baseURL 준비 및 주입
-      const baseURL = await webFixture.setupForPoc(pocKey);
-      await use(baseURL);
-
-      // 후처리
-      await webFixture.teardownForPoc(pocKey);
-      logger.info(`[Test] Web 테스트 종료 - POC: ${pocKey}`);
+  // CDP 기반 최대화 유틸 함수
+  private async maximizeWindowIfChromium(page: Page): Promise<void> {
+    try {
+      const browserName = page.context().browser()?.browserType().name();
+      if (browserName === 'chromium') {
+        const session = await page.context().newCDPSession(page);
+        const { windowId } = await session.send('Browser.getWindowForTarget');
+        await session.send('Browser.setWindowBounds', {
+          windowId,
+          bounds: { windowState: 'maximized' },
+        });
+        console.log('[CDP] 브라우저 최대화 완료');
+      } else {
+        console.log(`[CDP] 최대화 생략 - browser=${browserName}`);
+      }
+    } catch (err) {
+      console.warn('[CDP] 최대화 실패:', err);
     }
-  },
-});
+  }
 
-// expect는 그대로 export
+  /**
+   * POC=ALL일 때 병렬 실행 유틸
+   */
+  public async runAllPOCsInParallel(): Promise<void> {
+    console.log('[WebFixture] POC=ALL -> 전체 병렬 실행 시작');
+
+    const processes = ALL_POCS.map(pocKey => {
+      return new Promise<void>((resolve, reject) => {
+        const child = spawn('npx', ['playwright', 'test', `--project=${pocKey}`], {
+          stdio: 'inherit',
+          env: { ...process.env, POC: pocKey },
+          shell: true,
+        });
+
+        child.on('close', code => {
+          if (code === 0) {
+            resolve();
+          } else {
+            reject(new Error(`[${pocKey}] 테스트 실패 (exit code: ${code})`));
+          }
+        });
+      });
+    });
+
+    await Promise.all(processes);
+    console.log('[WebFixture] 전체 POC 병렬 실행 완료');
+  }
+  /**
+   * Playwright 테스트 확장 정의
+   */
+  public getTestExtend() {
+    return base.extend<{
+      poc: POCType;
+      baseURL: string;
+      context: BrowserContext;
+      page: Page;
+    }>({
+      poc: [(process.env.POC as POCType) || '', { option: true }],
+
+      context: async ({}, use) => {
+        const browser = await launchStealthBrowser({ headless: false });
+        const context = await createStealthContext(browser);
+        await use(context);
+        await context.close();
+      },
+
+      page: async ({ context }, use) => {
+        const page = await context.newPage();
+        // 브라우저 최대화
+        await this.maximizeWindowIfChromium(page);
+        await use(page);
+        await page.close();
+      },
+
+      baseURL: async ({ poc }, use) => {
+        if (poc === 'ALL') {
+          throw new Error(
+            '[baseURL Fixture] POC가 ALL로 설정된 경우, 전체 POC 병렬 실행은 pubsubRunner.ts 에서 처리합니다.',
+          );
+        }
+
+        const pocKey = poc as POCKey;
+        const logger = Logger.getLogger(pocKey) as winston.Logger;
+
+        logger.info(`[Test] Web 테스트 시작 - POC: ${pocKey}`);
+        const baseURL = await this.setupForPoc(pocKey);
+        await use(baseURL);
+        await this.teardownForPoc(pocKey);
+        logger.info(`[Test] Web 테스트 종료 - POC: ${pocKey}`);
+      },
+    });
+  }
+}
+// WebFixture 인스턴스 생성
+export const webFixture = new BaseWebFixture();
+// Playwright 테스트 확장 정의
+export const test = webFixture.getTestExtend();
+
 export { expect };

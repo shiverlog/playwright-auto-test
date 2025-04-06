@@ -17,23 +17,29 @@ export const authLocator = {
     APP: '',
   },
   login_box: {
-    APP: 'div.loginBox',
     PC: '',
     MOBILE: '',
+    APP: 'div.loginBox',
   },
   // 메인 로그인 버튼(모바일은 햄버거 버튼 클릭 후 로그인 링크)
   mainLoginButton: {
     PC: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
-    MOBILE: '//a[normalize-space(text())="로그인"]',
+    MOBILE: '//a[@data-gtm-click-text="로그인"]',
     APP: '',
   },
-  login_btn: {
-    PC: '.loginList > li:nth-of-type(1) > a',
-    APP: '.nm-app-login-way li:nth-of-type(1)',
-    MOBILE: '',
+  // 로그인 페이지
+  loginTitle: {
+    PC: '//h2[contains(text(), "로그인")]',
+    MOBILE: '//h2[contains(@class, "header-title") and contains(., "로그인")]',
+    APP: '//h2[contains(@class, "header-title") and contains(normalize-space(.), "로그인")]',
+  },
+  // u+ 로그인 페이지
+  uplusLoginTitle: {
+    PC: '//h2[contains(normalize-space(), "U+ID 로그인")]',
+    MOBILE: '//h2[contains(normalize-space(), "U+ ID 로그인")]',
+    APP: '//h2[contains(normalize-space(), "U+ ID 로그인")]',
   },
 
-  // 공통 단일 셀렉터
   logoutButton: '.loginList > li:nth-of-type(2) > a',
   socialKakaoImg: "img[alt*='카카오']",
   socialNaverImg: "img[alt*='네이버']",
@@ -41,15 +47,15 @@ export const authLocator = {
   uplusImg: "img[alt*='u+ID']",
   mylgImg: "img[alt*='myLGID']",
   socialAppleImg: "img[alt*='애플']",
+  idTooltip: '.c-tooltip',
 
-  // 로그인 버튼
+  // uplus 로그인 버튼
   uplusLoginButton: 'button:has(img[alt="u+ID"])',
-
   uplusIdInput: "input[type='text']",
   uplusPwInput: "input[type='password']",
   uplusLoginSubmitButton: 'button.nm-login-btn',
-  uplusClearButton: "button[title='입력한 문자 삭제']",
-  uplus_save_btn: '.c-btn-rect-1',
+  uplusClearButton: 'button[title="입력한 문자 삭제"]',
+  uplusSaveButton: '//label[contains(., "ID 저장")]',
 
   // kakao 로그인
   kakao_id_input: '#loginId--1',

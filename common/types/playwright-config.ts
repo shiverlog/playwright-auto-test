@@ -4,6 +4,7 @@
  * Date : 2025-04-03
  */
 import type { POCKey, POCType } from '@common/types/platform-types';
+import type { BrowserContextOptions, LaunchOptions } from '@playwright/test';
 
 // 전체 POC 배열 타입
 export type AllPOCs = POCKey[];
@@ -22,10 +23,11 @@ export type E2EProjectConfig = {
   // Playwright 제공 디바이스 키
   device: keyof typeof import('@playwright/test').devices;
   // 뷰포트 크기
-  viewport?: {
-    width: number;
-    height: number;
-  };
+  viewport?: { width: number; height: number } | null;
+  // 브라우저 실행 옵션
+  launchOptions?: LaunchOptions;
+  // contextOptions 추가 설정
+  contextOptions?: BrowserContextOptions;
   // 사용자 에이전트 설정
   userAgent?: string;
   // 플랫폼 제약 조건
@@ -35,14 +37,16 @@ export type E2EProjectConfig = {
 };
 
 /**
- * 런치 옵션 타입 정의
+ * LaunchOptions  커스텀 -> @playwright/test 사용
  */
-export interface LaunchOptions {
-  // 동작을 느리게 실행할 시간(ms)
-  slowMo: number;
-  // 개발자 도구 열기 여부
-  devtools: boolean;
-}
+// export interface LaunchOptions {
+//   // 동작을 느리게 실행할 시간(ms)
+//   slowMo: number;
+//   // 개발자 도구 열기 여부
+//   devtools: boolean;
+//   // 최대화면 크기 설정
+//   args: string[];
+// }
 
 /**
  * 브라우저 매트릭스 타입 정의 (POC 별 사용 브라우저 목록)

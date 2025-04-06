@@ -1,9 +1,10 @@
 {
-  "name": "@your-org/android",
+  "name": "@your-org/android-app",
   "version": "1.0.0",
   "private": false,
-  "description": "E2E Android testing module",
+  "description": "E2E Android-App testing module",
   "main": "index.js",
+  "type": "module",
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",

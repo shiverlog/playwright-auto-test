@@ -3,7 +3,6 @@
  * Author : Shiwoo Min
  * Date : 2025-04-03
  */
-import type { DesiredCapabilities } from 'webdriverio';
 
 /**
  * Appium 포트와 함께 확장된 단일 디바이스 구성 타입
@@ -21,7 +20,7 @@ export type IOSDeviceConfig = DeviceConfigWithPort & {
 };
 
 /**
- * WebDriverIO의 remote()에 사용되는 수동 옵션 타입
+ * WebDriverIO의 RemoteOptions 적접 정의
  * - Playwright + Appium 연동 시 필요한 구조
  */
 export type RemoteOptions = {
@@ -29,8 +28,24 @@ export type RemoteOptions = {
   hostname: string;
   port: number;
   path: string;
-  capabilities: DesiredCapabilities | DesiredCapabilities[];
+  capabilities: DesiredCapabilities;
 };
+
+/**
+ * WebDriverIO의 DesiredCapabilities 직접 정의
+ */
+export interface DesiredCapabilities {
+  platformName?: string;
+  deviceName?: string;
+  browserName?: string;
+  automationName?: string;
+  appPackage?: string;
+  appActivity?: string;
+  udid?: string;
+  noReset?: boolean;
+  autoGrantPermissions?: boolean;
+  [key: string]: any;
+}
 
 /**
  * 기기 설정에서 사용 ( Android/iOS/Emulation )

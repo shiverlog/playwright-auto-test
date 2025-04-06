@@ -1,8 +1,10 @@
 {
-  "name": "@your-org/e2e-ios",
+  "name": "@your-org/ios-app",
   "version": "1.0.0",
-  "description": "iOS E2E testing module",
+  "private": false,
+  "description": "E2E iOS-App testing module",
   "main": "index.js",
+  "type": "module",
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
@@ -13,7 +15,7 @@
     "@your-org/common": "file:../../common"
   },
   "devDependencies": {
-    "playwright": "^1.39.0",
-    "typescript": "^5.0.0"
+    "playwright": "^1.51.0",
+    "typescript": "^5.8.2"
   }
 }

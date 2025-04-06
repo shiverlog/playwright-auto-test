@@ -6,7 +6,7 @@ export type Platform = (typeof PLATFORM)[keyof typeof PLATFORM];
 // 모든 Platform 키를 포함한 baseUrls
 export const baseUrls: Record<Platform, string> = {
   [PLATFORM.PC_WEB]: 'https://www.lguplus.com',
-  [PLATFORM.MOBILE_WEB]: 'https://m.lguplus.com',
+  [PLATFORM.MOBILE_WEB]: 'https://m.lguplus.com/main',
   [PLATFORM.NATIVE_APP]: 'https://app.lguplus.com/apcm/main',
   [PLATFORM.ANDROID_APP]: 'https://app.lguplus.com/apcm/main',
   [PLATFORM.IOS_APP]: 'https://app.lguplus.com/apcm/main',

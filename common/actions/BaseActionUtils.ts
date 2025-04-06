@@ -124,6 +124,66 @@ export class BaseActionUtils<TDriver = unknown> {
     await this.getLocator(selector).waitFor({ state: 'hidden', timeout });
   }
 
+  /**
+   * 사람처럼 자연스럽게 마우스를 locator 중심으로 이동시키는 함수
+   */
+  public async humanLikeMouseMoveToLocator(
+    page: Page,
+    locator: Locator,
+    steps = 20,
+    baseDelay = 10,
+  ): Promise<void> {
+    const box = await locator.boundingBox();
+    if (!box) {
+      throw new Error('Locator bounding box not found (element may be detached or invisible)');
+    }
+
+    const targetX = box.x + box.width / 2;
+    const targetY = box.y + box.height / 2;
+
+    let currentX = 0;
+    let currentY = 0;
+
+    const xStep = (targetX - currentX) / steps;
+    const yStep = (targetY - currentY) / steps;
+
+    for (let i = 0; i < steps; i++) {
+      currentX += xStep;
+      currentY += yStep;
+      await page.mouse.move(currentX, currentY);
+      const delay = baseDelay + Math.floor(Math.random() * 20);
+      await page.waitForTimeout(delay);
+    }
+
+    // 마지막 정확한 위치로 이동
+    await page.mouse.move(targetX, targetY);
+  }
+
+  /**
+   * selector(string) 기반으로 마우스를 사람처럼 자연스럽게 이동시키는 함수
+   */
+  public async humanLikeMouseMove(selector: string, steps = 20, baseDelay = 10): Promise<void> {
+    const locator = this.page.locator(selector);
+    await this.humanLikeMouseMoveToLocator(this.page, locator, steps, baseDelay);
+  }
+
+  /**
+   * 사람처럼 마우스를 이동하고 자연스럽게 클릭까지 수행하는 함수
+   */
+  public async humanLikeMoveAndClick(selector: string, steps = 20, baseDelay = 10): Promise<void> {
+    const locator = this.page.locator(selector);
+    const box = await locator.boundingBox();
+    if (!box) {
+      throw new Error('Locator bounding box not found (element may be detached or invisible)');
+    }
+
+    const targetX = box.x + box.width / 2;
+    const targetY = box.y + box.height / 2;
+
+    await this.humanLikeMouseMoveToLocator(this.page, locator, steps, baseDelay);
+    await this.page.mouse.click(targetX, targetY); // 좌표 지정 필수
+  }
+
   // TODO: findElement에서 getLocator로 수정
   /**
    *  Playwright: 요소 클릭
@@ -144,6 +204,27 @@ export class BaseActionUtils<TDriver = unknown> {
    */
   public async typeText(selector: string, text: string): Promise<void> {
     await this.getLocator(selector).fill(text);
+  }
+
+  /**
+   * Playwright: 텍스트 입력 - 한 글자씩 (랜덤 delay)
+   */
+  public async typeTextSlowly(
+    selector: string,
+    text: string,
+    baseDelayMs = 100,
+    randomize = true,
+  ): Promise<void> {
+    const locator = this.page.locator(selector);
+
+    await locator.click();
+    await locator.fill('');
+
+    for (const char of text) {
+      await this.page.keyboard.press(char);
+      const delay = randomize ? baseDelayMs + Math.floor(Math.random() * 100) : baseDelayMs;
+      await this.page.waitForTimeout(delay);
+    }
   }
 
   /**

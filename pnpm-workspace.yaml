@@ -1,0 +1,6 @@
+packages:
+  - 'common'
+  - 'e2e/*'
+  - 'speedtest'
+  - 'pubsub'
+  - 'mosaic-db'

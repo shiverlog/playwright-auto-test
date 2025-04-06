@@ -1,4 +1,4 @@
-import { AuthPage } from '@e2e/pc/src/pages/AuthPage';
+import { AuthPage } from '@e2e/pc-mobile-web/src/pages/AuthPage.js';
 import type { Page } from '@playwright/test';
 
 export class AuthSteps {

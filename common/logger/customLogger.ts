@@ -108,14 +108,19 @@ class Logger {
       }
     });
     // 전체 transports 구성 (콘솔 + 파일)
-    const transports: winston.transport[] = ENABLE_LOGS
-      ? [
-          new winston.transports.Console({
-            format: winston.format.combine(winston.format.colorize(), coloredFormatter),
-          }),
-          ...fileTransports,
-        ]
-      : [];
+    const transports: winston.transport[] =
+      ENABLE_LOGS || process.env.NODE_ENV === 'development'
+        ? [
+            new winston.transports.Console({
+              format: winston.format.combine(winston.format.colorize(), coloredFormatter),
+            }),
+            ...fileTransports,
+          ]
+        : [
+            new winston.transports.Console({
+              format: winston.format.simple(),
+            }),
+          ];
     // 로거 생성 및 설정
     const logger = winston.createLogger({
       level: LOG_LEVEL,

@@ -8,8 +8,6 @@ import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 
 export class AuthPage extends WebActionUtils {
-  declare protected page: Page;
-  declare protected js: JsForceActions;
   protected modal: BaseModal;
   protected platform: Platform;
   protected uiType: UIType;

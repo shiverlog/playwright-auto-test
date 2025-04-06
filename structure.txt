@@ -1,4 +1,4 @@
-// tree -I "node_modules|dist|coverage|.git|output" -L 5 > structure.txt
+// tree -L 5 -I "node_modules|dist|coverage|.git|output" > structure.txt
 .
 ├── CODEOWNERS
 ├── common
@@ -36,9 +36,40 @@
 │   │   ├── TestConstants.ts
 │   │   ├── TextConstants.ts
 │   │   └── UIConstants.ts
+│   ├── e2e
+│   │   ├── device-mobile-web
+│   │   │   ├── playwright-report
+│   │   │   │   ├── MW_report_2025-04-06_15-31-38.html
+│   │   │   │   └── MW_report_2025-04-06_15-31-44.html
+│   │   │   └── test-results
+│   │   │       ├── allure-results
+│   │   │       ├── logs
+│   │   │       ├── screenshots
+│   │   │       ├── traces
+│   │   │       └── videos
+│   │   ├── emulator-mobile-web
+│   │   │   ├── playwright-report
+│   │   │   │   ├── MW_report_2025-04-06_15-31-38.html
+│   │   │   │   └── MW_report_2025-04-06_15-31-44.html
+│   │   │   └── test-results
+│   │   │       ├── allure-results
+│   │   │       ├── logs
+│   │   │       ├── screenshots
+│   │   │       ├── traces
+│   │   │       └── videos
+│   │   └── pc-mobile-web
+│   │       ├── playwright-report
+│   │       │   ├── MW_report_2025-04-06_15-31-38.html
+│   │       │   └── MW_report_2025-04-06_15-31-44.html
+│   │       └── test-results
+│   │           ├── allure-results
+│   │           ├── logs
+│   │           ├── screenshots
+│   │           ├── traces
+│   │           └── videos
 │   ├── fixtures
 │   │   ├── BaseAppFixture.ts
-│   │   ├── BaseFixture.ts
+│   │   ├── BaseMobileWebFixture.ts
 │   │   ├── BasePocFixture.ts
 │   │   └── BaseWebFixture.ts
 │   ├── formatters
@@ -59,14 +90,6 @@
 │   │   └── pcTestEnv.ts
 │   ├── locators
 │   │   ├── authLocator.ts
-│   │   ├── benefit.ts
-│   │   ├── direct.ts
-│   │   ├── internet-iptv.ts
-│   │   ├── mainLocator.ts
-│   │   ├── mobile.ts
-│   │   ├── mypage.ts
-│   │   ├── searchLocator.ts
-│   │   ├── support.ts
 │   │   ├── uiLocator.ts
 │   │   └── urlLocator.ts
 │   ├── logger
@@ -94,11 +117,14 @@
 │   │   └── test-context.d.ts
 │   └── utils
 │       ├── appium
-│       │   ├── AppPermissionsUtils.ts
+│       │   ├── AndPermissionsUtils.ts
+│       │   ├── BasePermissionsUtils.ts
+│       │   ├── IOSPermissionsUtils.ts
 │       │   └── appiumServerUtils.ts
 │       ├── browser
 │       │   ├── ChromeAccessUtils.ts
-│       │   └── SafariAccessUtils.ts
+│       │   ├── SafariAccessUtils.ts
+│       │   └── stealthContext.ts
 │       ├── context
 │       │   └── contextUtils.ts
 │       ├── network
@@ -150,7 +176,6 @@
 │   │   ├── package.json
 │   │   ├── playwright-report
 │   │   │   └── index.html
-│   │   ├── playwright.config.ts
 │   │   ├── src
 │   │   │   ├── pages
 │   │   │   │   ├── AuthPage.ts
@@ -200,8 +225,6 @@
 │   │   ├── test-results
 │   │   │   ├── allure-results
 │   │   │   │   └── history.json
-│   │   │   ├── logs
-│   │   │   │   └── playwright_pc_250307.log
 │   │   │   ├── screenshots
 │   │   │   │   └── screenshot.png
 │   │   │   ├── traces
@@ -226,8 +249,6 @@
 │   │   ├── test-results
 │   │   │   ├── allure-results
 │   │   │   │   └── history.json
-│   │   │   ├── logs
-│   │   │   │   └── playwright_pc_250307.log
 │   │   │   ├── screenshots
 │   │   │   │   └── screenshot.png
 │   │   │   ├── traces
@@ -252,8 +273,6 @@
 │   │   ├── test-results
 │   │   │   ├── allure-results
 │   │   │   │   └── history.json
-│   │   │   ├── logs
-│   │   │   │   └── playwright_pc_250307.log
 │   │   │   ├── screenshots
 │   │   │   │   └── screenshot.png
 │   │   │   ├── traces
@@ -269,18 +288,14 @@
 │   │   ├── package.json
 │   │   ├── playwright-report
 │   │   │   └── index.html
-│   │   ├── playwright.config.ts
 │   │   ├── src
 │   │   │   ├── pages
-│   │   │   │   ├── AuthPage.ts
-│   │   │   │   └── login.py
+│   │   │   │   └── AuthPage.ts
 │   │   │   └── steps
 │   │   │       └── AuthSteps.ts
 │   │   ├── test-results
 │   │   │   ├── allure-results
 │   │   │   │   └── history.json
-│   │   │   ├── logs
-│   │   │   │   └── playwright_pc_250307.log
 │   │   │   ├── screenshots
 │   │   │   │   └── screenshot.png
 │   │   │   ├── traces
@@ -319,6 +334,7 @@
 ├── globalSetup.ts
 ├── globalTeardown.ts
 ├── index.html
+├── logs
 ├── mosaic-db
 │   ├── CMakeLists.txt
 │   ├── Dockerfile
@@ -751,9 +767,12 @@
 │   ├── util.h
 │   └── varstr.h
 ├── package.json
+├── playwright-report
+│   └── index.html
 ├── playwright.config.local.ts
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
+├── pnpm-workspace.yaml
 ├── pubsub
 │   ├── Dockerfile
 │   ├── gc-automation-test-f2.json
@@ -764,16 +783,18 @@
 │   ├── pubsubRunner.ts
 │   ├── pubsubsubscriber.ts
 │   └── service-account-punsub-key.json
+├── screenshots
 ├── speedtest
 │   ├── Dockerfile
 │   ├── config
 │   │   ├── carrierPages.ts
 │   │   ├── performanceTestPages.ts
-│   │   └── url.ts
+│   │   └── speedtestUrls.ts
 │   ├── package.json
 │   ├── playwright-report
 │   │   └── report.html
 │   ├── playwright.config.ts
+│   ├── pnpm-lock.yaml
 │   ├── src
 │   │   ├── pages
 │   │   │   └── RedirectPage.ts
@@ -793,8 +814,9 @@
 │   │   └── redirect.spec.ts
 │   └── tsconfig.json
 ├── structure.txt
+├── test-results
 ├── tsconfig.json
 ├── turbo.json
 └── vite.config.ts
 
-146 directories, 651 files
+170 directories, 648 files

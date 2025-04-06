@@ -1,5 +1,5 @@
 /**
- * Description : BasePocFixture.ts - 📌 BaseWebFixture, BaseAppFixture 확장을 위한 추상 클래스
+ * Description : BasePocFixture.ts - 📌 BaseWebFixture, BaseAppFixture 확장을 위한 추사 클래스
  * Author : Shiwoo Min
  * Date : 2025-04-03
  */
@@ -14,32 +14,11 @@ import { promisify } from 'util';
 import type winston from 'winston';
 
 const execAsync = promisify(exec);
+
 export abstract class BasePocFixture {
-  constructor() {
-    this.loadEnvForAllPOCs();
-  }
 
   /**
-   * .env 환경변수 로딩 (프로젝트 루트 기준) + 모든 POC 로거에 메시지 출력
-   */
-  protected loadEnvForAllPOCs(): void {
-    const envPath = path.resolve(process.cwd(), '.env');
-    const message = fs.existsSync(envPath)
-      ? '.env 환경변수 로딩 완료'
-      : '.env 파일이 존재하지 않습니다. 기본값으로 진행합니다.';
-
-    if (fs.existsSync(envPath)) {
-      dotenv.config({ path: envPath });
-    }
-
-    ALL_POCS.forEach((poc: POCKey) => {
-      const logger = Logger.getLogger(poc) as winston.Logger;
-      logger.info(`[BasePocFixture] ${message}`);
-    });
-  }
-
-  /**
-   * 테스트 실행 전 공통 작업 (로그/스크린샷 디렉토리 생성)
+   * 테스트 실행 전 공통 작업
    */
   public async beforeAll(poc: POCType): Promise<void> {
     if (poc === 'ALL') return;
@@ -51,9 +30,6 @@ export abstract class BasePocFixture {
     await this.createFolderIfNotExists('screenshots', pocKey);
   }
 
-  /**
-   * 테스트 실행 후 공통 정리 작업
-   */
   /**
    * 테스트 실행 후 공통 정리 작업
    */
@@ -77,7 +53,7 @@ export abstract class BasePocFixture {
   }
 
   /**
-   * 외부 명령어 실행 유틸 (로깅 포함)
+   * 외부 명령어 실행 유틸 (stdout, stderr 로그)
    */
   protected async runCommand(command: string, poc: POCKey): Promise<void> {
     const logger = Logger.getLogger(poc) as winston.Logger;
@@ -101,7 +77,7 @@ export abstract class BasePocFixture {
   }
 
   /**
-   * 단일 POC 실행 흐름
+   * 단일 POC 실행 환경 구성
    */
   private async runSingleTest(poc: POCKey): Promise<void> {
     const logger = Logger.getLogger(poc) as winston.Logger;

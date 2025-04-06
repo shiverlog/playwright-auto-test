@@ -4,10 +4,11 @@
  * Date : 2025-04-03
  */
 import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
-import { BASE_DEVICES } from '@common/config/BaseDeviceConfig.js';
+import { ANDROID_DEVICES, BASE_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig.js';
 import { MW_BROWSER_MAP } from '@common/constants/PathConstants.js';
 import type { POCKey, POCType } from '@common/types/platform-types.js';
 import { ALL_POCS } from '@common/types/platform-types.js';
+import type { E2EProjectConfig } from '@common/types/playwright-config.js';
 import { defineConfig, devices, type Project } from '@playwright/test';
 /**
  * Read environment variables from file.
@@ -172,78 +173,97 @@ const pocProjects = pocList.flatMap((poc: POCKey) => {
   });
 });
 
-type E2EProjectConfig = {
-  name: string;
-  path: string;
-  device: keyof typeof devices;
-  viewport?: { width: number; height: number };
-  userAgent?: string;
-  platform?: NodeJS.Platform[];
-  outputKey: string;
-};
-
-const realDeviceProjects: Project[] = ALL_DEVICES.slice(0, MAX_REAL_DEVICES).map(
-  ({ name, platform, config }) => ({
-    name: `Real Device - ${platform.toUpperCase()} - ${name}`,
-    testMatch: [`e2e/${platform}/**/*.spec.ts`],
+const realDeviceProjects: Project[] = [...BASE_DEVICES.aos, ...BASE_DEVICES.ios].map(
+  ({ name, device, config }) => ({
+    name: `Real Device - ${config.platformName.toUpperCase()} - ${name}`,
+    testMatch: [`e2e/${config.platformName.toLowerCase()}-app/**/*.spec.ts`],
     use: {
+      // Playwright용 디바이스
+      ...device,
       headless: false,
-      viewport: { width: 390, height: 844 },
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
-      deviceConfig: config, // Appium 연동 대비
+      viewport: device.viewport || { width: 390, height: 844 },
+      // Appium 연결을 위한 config
+      deviceConfig: config,
     },
     reporter: [
       ['list'],
-      ['json', { outputFile: `logs/${platform}-${name}.json` }],
-      ['allure-playwright', { outputFolder: `allure-results/${platform}-${name}` }],
+      ['json', { outputFile: `logs/${config.platformName}-${name}.json` }],
+      ['allure-playwright', { outputFolder: `allure-results/${config.platformName}-${name}` }],
     ],
   }),
 );
 
 const E2E_CONFIGS: E2EProjectConfig[] = [
+  // PC Web - Chrome
   {
     name: 'PC Web - Chrome',
     path: 'e2e/pc-web',
     device: 'Desktop Chrome',
-    viewport: { width: 1920, height: 1080 },
     outputKey: 'pc-web',
+    // 운영 체제 브라우저 창크기로 설정
+    viewport: null,
+    launchOptions: {
+      slowMo: 100,
+      devtools: true,
+      args: ['--start-maximized'],
+    },
   },
+  // PC Mobile Web - Chrome
   {
     name: 'Mobile Web - PC Chrome (Responsive)',
-    path: 'e2e/mobile-web',
+    path: 'e2e/pc-mobile-web',
     device: 'Desktop Chrome',
-    viewport: { width: 390, height: 844 },
-    userAgent:
-      'Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1',
-    outputKey: 'mobile-web-pc',
-  },
-  {
-    name: 'Mobile Web - Android (Chrome)',
-    path: 'e2e/mobile-web',
-    device: 'Pixel 5',
+    // 브라우저 창크기 설정(Galaxy S20 Ultra)
     viewport: { width: 412, height: 915 },
-    outputKey: 'mobile-web-android',
+    userAgent:
+      'Mozilla/5.0 (Linux; Android 13; SM-G981B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
+    launchOptions: {
+      args: ['--start-maximized'],
+      slowMo: 100,
+      devtools: true,
+    },
+    contextOptions: {
+      isMobile: true,
+      hasTouch: true,
+      deviceScaleFactor: 3.5,
+    },
+    outputKey: 'pc-mobile-web',
   },
-  {
-    name: 'Mobile Web - iOS (Safari)',
-    path: 'e2e/mobile-web',
-    device: 'iPhone 12',
-    viewport: { width: 390, height: 844 },
-    outputKey: 'mobile-web-ios',
-  },
-  {
-    name: 'Android App',
-    path: 'e2e/android',
-    device: 'Pixel 5',
-    outputKey: 'android',
-  },
-  {
-    name: 'iOS App',
-    path: 'e2e/ios',
-    device: 'iPhone 12',
+  // // 테스트 중
+  // {
+  //   name: 'Mobile Web - Android (Chrome)',
+  //   path: 'e2e/mobile-web',
+  //   device: 'Pixel 5',
+  //   viewport: { width: 412, height: 915 },
+  //   outputKey: 'mobile-web-android',
+  // },
+  // // 테스트 중
+  // {
+  //   name: 'Mobile Web - iOS (Safari)',
+  //   path: 'e2e/mobile-web',
+  //   device: 'iPhone 12',
+  //   viewport: { width: 390, height: 844 },
+  //   outputKey: 'mobile-web-ios',
+  // },
+  // Android App - LGUPLUS
+  ...Object.entries(ANDROID_DEVICES).map(([name, config]) => ({
+    name: `Android App - ${name}`,
+    path: 'e2e/android-app',
+    device: name,
+    deviceConfig: config,
+    outputKey: `android-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
+  })),
+
+  // iOS App - LGUPLUS
+  ...Object.entries(IOS_DEVICES).map(([name, config]) => ({
+    name: `iOS App - ${name}`,
+    path: 'e2e/ios-app',
     platform: ['darwin'],
-    outputKey: 'ios',
-  },
+    device: name,
+    deviceConfig: config,
+    outputKey: `ios-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
+  })),
 ];
 
 // 정적 E2E 테스트 대상 변환 함수
@@ -259,6 +279,9 @@ function generateE2EProjects(): Project[] {
       baseURL: process.env.BASE_URL || 'http://localhost:3000',
       viewport: config.viewport,
       userAgent: config.userAgent,
+      slowMo: config.launchOptions?.slowMo,
+      devtools: config.launchOptions?.devtools,
+      args: config.launchOptions?.args,
       screenshot: 'only-on-failure',
       video: 'retain-on-failure',
       trace: 'on-first-retry',
@@ -301,22 +324,9 @@ export default defineConfig({
 
   // 타임아웃 설정 (Timeouts)
   timeout: 30 * 1000,
-
   /* Configure projects for major browsers */
   // 테스트 프로젝트별 설정 (Test Project Configuration)
-  projects: [
-    {
-      name: 'Common Tests',
-      testMatch: ['*.spec.ts', 'src/steps/**/*.spec.ts', 'tests-examples/**/*.spec.ts'],
-      use: {
-        ...devices['Desktop Chrome'],
-        headless: process.env.HEADLESS !== 'false',
-      },
-    },
-    ...e2eProjects,
-    ...(pocProjects.length ? pocProjects : []),
-    ...realDeviceProjects,
-  ],
+  projects: [...e2eProjects, ...(pocProjects.length ? pocProjects : []), ...realDeviceProjects],
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run start',

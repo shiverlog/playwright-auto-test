@@ -6,7 +6,7 @@
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { MobileActionUtils } from '@common/actions/MobileActionUtils.js';
 import { WebActionUtils } from '@common/actions/WebActionUtils.js';
-import { mobileMenuLocator, overlayLocator } from '@common/locators/uiLocator.js';
+import { uiLocator } from '@common/locators/uiLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';
 import type { BrowserContext, Page } from '@playwright/test';
@@ -86,7 +86,7 @@ export class BaseModal {
   // 현재 활성화된 모달 타입을 판단하여 적절한 처리 함수 호출
   async determineModalType(): Promise<void> {
     try {
-      const { modalContent, modalHeader } = overlayLocator;
+      const { modalContent, modalHeader } = uiLocator;
 
       // 모달 감지 대기
       await this.page.waitForSelector(modalContent, { timeout: 5000 });
@@ -107,13 +107,13 @@ export class BaseModal {
 
   // 메인 공지 모달 닫기 버튼 클릭 후 모달이 닫힐 때까지 대기
   async noticeModalHandler(): Promise<void> {
-    const { modalTodayOnlyOnceButton, modalFooterClose } = overlayLocator;
+    const { modalTodayOnlyOnceButton, modalFooterClose } = uiLocator;
 
     // "오늘 하루 보지 않기" 버튼이 보이면 클릭
     const todayOnlyOnceBtn = this.page.locator(`xpath=${modalTodayOnlyOnceButton}`);
     if (await todayOnlyOnceBtn.isVisible()) {
       await todayOnlyOnceBtn.click();
-      await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+      await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
       return;
     }
 
@@ -121,43 +121,43 @@ export class BaseModal {
     const closeBtn = this.page.locator(`xpath=${modalFooterClose}`);
     if (await closeBtn.isVisible()) {
       await closeBtn.click();
-      await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+      await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
     }
   }
 
   // 이벤트 모달 닫기
   async eventModalHandler(): Promise<void> {
-    const closeButton = this.page.locator(`xpath=${overlayLocator.modalFooterClose}`);
+    const closeButton = this.page.locator(`xpath=${uiLocator.modalFooterClose}`);
     if (await closeButton.isVisible()) {
       await closeButton.click();
-      await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+      await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
     }
   }
 
   // 인터스티셜 모달 닫기
   async interstitialModalHandler(): Promise<void> {
-    const closeButton = this.page.locator(`xpath=${overlayLocator.modalFooterClose}`);
+    const closeButton = this.page.locator(`xpath=${uiLocator.modalFooterClose}`);
     if (await closeButton.isVisible()) {
       await closeButton.click();
-      await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+      await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
     }
   }
 
   // 확인 모달 닫기 (확인 버튼 클릭으로 처리)
   async confirmModalHandler(): Promise<void> {
-    const confirmButton = this.page.locator(`xpath=${overlayLocator.modalConfirm}`);
+    const confirmButton = this.page.locator(`xpath=${uiLocator.modalConfirm}`);
     if (await confirmButton.isVisible()) {
       await confirmButton.click();
-      await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+      await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
     }
   }
 
   // 마켓 팝업 모달 닫기
   async marketPopupModalHandler(): Promise<void> {
-    const closeButton = this.page.locator(`xpath=${overlayLocator.modalFooterClose}`);
+    const closeButton = this.page.locator(`xpath=${uiLocator.modalFooterClose}`);
     if (await closeButton.isVisible()) {
       await closeButton.click();
-      await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+      await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
     }
   }
 
@@ -178,10 +178,10 @@ export class BaseModal {
    */
   async checkCommonModals(): Promise<void> {
     try {
-      const closeBtn = this.page.locator(`xpath=${overlayLocator.modalFooterClose}`);
+      const closeBtn = this.page.locator(`xpath=${uiLocator.modalFooterClose}`);
       if (await closeBtn.isVisible()) {
         await closeBtn.click();
-        await this.page.waitForSelector(overlayLocator.modalContent, { state: 'hidden' });
+        await this.page.waitForSelector(uiLocator.modalContent, { state: 'hidden' });
       }
     } catch {
       await this.page.waitForTimeout(500);
@@ -209,7 +209,7 @@ export class BaseModal {
    */
   async clickUntilModalDisplayed(
     triggerSelector: string,
-    modalSelector: string = overlayLocator.modalContent,
+    modalSelector: string = uiLocator.modalContent,
   ): Promise<void> {
     try {
       await this.baseActions.click(triggerSelector);
