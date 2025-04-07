@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-04
  */
-import { teamsConfig } from '@common/config/BaseConfig';
+import { teamsConfig } from '@common/config/notificationConfig';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';
 import { ALL_POCS } from '@common/types/platform-types';

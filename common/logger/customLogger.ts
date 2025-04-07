@@ -119,8 +119,10 @@ class Logger {
       ENABLE_LOGS || process.env.NODE_ENV === 'development'
         ? [
             new winston.transports.Console({
-              // format: winston.format.combine(winston.format.colorize(), coloredFormatter), // ❌ colorize 사용 안함
-              format: winston.format.combine(winston.format.timestamp(), simpleFormatter), // ✅ 에러 방지용 대체 포맷
+              // colorize 사용 안함
+              // format: winston.format.combine(winston.format.colorize(), coloredFormatter),
+              // 에러 방지용 대체 포맷
+              format: winston.format.combine(winston.format.timestamp(), simpleFormatter),
             }),
             ...fileTransports,
           ]

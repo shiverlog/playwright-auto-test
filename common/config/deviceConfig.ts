@@ -188,3 +188,15 @@ export const BASE_DEVICES = {
     name: 'API Only',
   },
 } as const;
+
+// 현재 실행 디바이스 정보 (환경변수 기반)
+export const ANDROID_DEVICE = process.env.ANDROID_DEVICE || 'Galaxy Note20 Ultra';
+export const IOS_DEVICE = process.env.IOS_DEVICE || 'iPhone 15 Plus';
+
+export const CURRENT_ANDROID_CONFIG: DeviceConfig =
+  ANDROID_DEVICES[ANDROID_DEVICE] || ANDROID_DEVICES['Galaxy Note20 Ultra'];
+export const CURRENT_IOS_CONFIG: DeviceConfig =
+  IOS_DEVICES[IOS_DEVICE] || IOS_DEVICES['iPhone 15 Plus'];
+
+// 실제 테스트 연결 기기 최대 수
+export const MAX_REAL_DEVICES = parseInt(process.env.MAX_REAL_DEVICES || '2', 10);

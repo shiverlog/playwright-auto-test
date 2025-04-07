@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-03-30
  */
-import { FILE_RETENTION_DAYS } from '@common/config/BaseConfig';
+import { FILE_RETENTION_DAYS } from '@common/config/baseConfig';
 import { POC_RESULT_PATHS } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';

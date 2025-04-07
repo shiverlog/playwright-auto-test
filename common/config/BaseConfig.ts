@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-04
  */
-import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig.js';
+import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/deviceConfig.js';
 import { getCurrentTimestamp } from '@common/formatters/formatters.js';
 import type { DeviceConfig } from '@common/types/device-config.js';
 import chromedriver from 'chromedriver';
@@ -65,21 +65,6 @@ export const ALL_DEVICES = [...ALL_ANDROID_DEVICES, ...ALL_IOS_DEVICES];
 
 // Chromedriver Path (npm chromedriver 자동 관리)
 export const CHROMEDRIVER_PATH = chromedriver;
-
-/**
- * e2e 전용 기기
- */
-export const ANDROID_DEVICE = process.env.ANDROID_DEVICE || 'Galaxy Note20 Ultra';
-export const IOS_DEVICE = process.env.IOS_DEVICE || 'iPhone 15 Plus';
-
-// android 기기 셋팅
-export const CURRENT_ANDROID_CONFIG: DeviceConfig =
-  ANDROID_DEVICES[ANDROID_DEVICE] || ANDROID_DEVICES['Galaxy Note20 Ultra'];
-// ios 기기 셋팅
-export const CURRENT_IOS_CONFIG: DeviceConfig =
-  IOS_DEVICES[IOS_DEVICE] || IOS_DEVICES['iPhone 15 Plus'];
-// MAX 기기 테스트 연결 갯수 셋팅
-export const MAX_REAL_DEVICES = parseInt(process.env.MAX_REAL_DEVICES || '2', 10);
 
 /**
  * Playwright 환경 설정
@@ -150,50 +135,6 @@ export const DEVICE_SETTINGS = IS_MOBILE
       viewport: IS_MOBILE ? { width: 375, height: 667 } : { width: 1280, height: 720 },
     }
   : {};
-
-/**
- * Slack 설정
- */
-export const slackConfig = {
-  SLACK_TOKEN: process.env.SLACK_BOT_TOKEN || '',
-  SLACK_CHANNEL: process.env.SLACK_CHANNEL_ID || '',
-  SLACK_MENTION_ID: process.env.SLACK_MENTION_ID || '',
-  SLACK_MENTION_CHANNEL: process.env.SLACK_MENTION_CHANNEL || '',
-};
-
-/**
- * Slack Webhook URL (옵션)
- */
-export const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL || '';
-export const SLACK_FILES_UPLOAD_URL = 'https://lgdigitalcommerce.slack.com/api/files.upload';
-
-/**
- * Teams 전송 환경 설정
- */
-export const teamsConfig = {
-  TEAMS_WEBHOOK_URL: process.env.TEAMS_WEBHOOK_URL || '',
-};
-
-/**
- * Email 전송 환경 설정
- */
-export const emailConfig = {
-  SMTP_HOST: process.env.SMTP_HOST || '',
-  SMTP_PORT: Number(process.env.SMTP_PORT) || 587,
-  SMTP_USER: process.env.SMTP_USER || '',
-  SMTP_PASS: process.env.SMTP_PASS || '',
-  EMAIL_FROM: process.env.EMAIL_FROM || process.env.SMTP_USER || '',
-  EMAIL_TO: process.env.EMAIL_TO || '',
-};
-
-/**
- * PubSub 설정
- */
-export const PUBSUB = {
-  PROJECT_ID: 'gcp-dev-uhdc-id',
-  TOPIC_ID: 'qa-test',
-  PUBLISHER_AUDIENCE: 'https://pubsub.googleapis.com/google.pubsub.v1.Publisher',
-};
 
 /**
  * 유틸: 현재 환경 확인

@@ -16,6 +16,10 @@ export interface SlackConfig {
   SLACK_MENTION_ID?: string;
   // 슬랙에서 멘션할 채널 ID (옵션)
   SLACK_MENTION_CHANNEL?: string;
+  // 슬랙 Webhook URL (기본 메시지 전송용)
+  SLACK_WEBHOOK_URL?: string;
+  // 슬랙 파일 업로드 API URL (고정된 Slack 엔드포인트)
+  SLACK_FILES_UPLOAD_URL?: string;
 }
 
 /**

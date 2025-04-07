@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-04
  */
-import { emailConfig } from '@common/config/BaseConfig';
+import { emailConfig } from '@common/config/notificationConfig';
 import { NotificationHandler } from '@common/handlers/notificationHandler';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';

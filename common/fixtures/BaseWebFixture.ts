@@ -1,7 +1,7 @@
 /**
  * Description : BaseWebFixture.ts - 📌 Web 테스트를 위한 Fixture 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-04
+ * Date : 2025-04-06
  */
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
@@ -59,7 +59,7 @@ class BaseWebFixture extends BasePocFixture {
   // Web에서는 별도 준비 작업이 필요 없으므로 빈 메서드로 구현
   protected async prepare(poc: POCType): Promise<void> {}
 
-  // CDP 기반 최대화 유틸 함수
+  // CDP 기반 최대화 유틸 함수 - 굳이 사용하지 않아도 될 듯
   private async maximizeWindowIfChromium(page: Page): Promise<void> {
     try {
       const browserName = page.context().browser()?.browserType().name();

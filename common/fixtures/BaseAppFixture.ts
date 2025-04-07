@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-06
  */
-import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig';
+import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/deviceConfig';
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
 import type { AppiumRemoteOptions, DeviceConfig } from '@common/types/device-config';
@@ -38,24 +38,42 @@ class BaseAppFixture extends BasePocFixture {
   private appiumPorts: Map<POCKey, number> = new Map();
 
   /**
+   * POC 테스트 시작 전 세팅 (디버이스 초기화, 로그 디렉토리 생성 등)
+   */
+  public async setupForPoc(poc: POCKey): Promise<Browser> {
+    const logger = Logger.getLogger(poc) as winston.Logger;
+    logger.info(`[BaseAppFixture] ${poc} 환경 준비 시작`);
+    // 테스트 실행 전 공통 작업 실행
+    await this.beforeAll(poc);
+    const driver = await this.initializeAppDriver(poc);
+    return driver;
+  }
+
+  /**
    * Appium 드라이버 초기화 + Appium 서버 시작
    */
   public async initializeAppDriver(poc: POCKey): Promise<Browser> {
     const logger = Logger.getLogger(poc) as winston.Logger;
     logger.info(`[BaseAppFixture] ${poc} 디바이스 초기화 중...`);
-
+    // 지정된 기기 정보 가져오기
     const deviceConfig = getDeviceConfigByPoc(poc);
+    // 포트값 가져오기
     const port = await getAvailablePort();
+    // 기기 및 포트 세팅
     this.appiumPorts.set(poc, port);
-
+    // Appium 서버 유틸 사용
     const appiumServer = new AppiumServerUtils(poc);
+    // 기기 및 서버 세팅
     this.appiumServers.set(poc, appiumServer);
+    // Appium 서버 유틸 사용 (포트 종료)
     await appiumServer.stopAppiumServer(port);
+    // Appium 서버 유틸 사용 (포트 시작)
     appiumServer.startAppiumServer(port);
     await waitOn({
       resources: [`http://127.0.0.1:${port}/status`],
       timeout: 10000,
     });
+
     // 런타임 검증
     if (!deviceConfig.udid || !deviceConfig.platformVersion) {
       throw new Error(`[BaseAppFixture] '${poc}' 디바이스에 udid 또는 platformVersion이 없습니다.`);
@@ -79,7 +97,7 @@ class BaseAppFixture extends BasePocFixture {
       app: deviceConfig.app,
     };
 
-    // platformName에 따라 capabilities 분기
+    // platformName (Android/iOS) 에 따라 capabilities 분기
     const remoteOptions: AppiumRemoteOptions = {
       protocol: 'http',
       hostname: '127.0.0.1',
@@ -147,23 +165,12 @@ class BaseAppFixture extends BasePocFixture {
   }
 
   /**
-   * 테스트 준비 단계 - BasePocFixture 추사 메서드 구현
+   * 테스트 준비 단계 - BasePocFixture 추상 메서드 구현
    */
   public async prepare(poc: POCType): Promise<void> {
     if (poc === 'ALL') return;
     const pocKey = poc as POCKey;
     await this.initializeAppDriver(pocKey);
-  }
-
-  /**
-   * POC 테스트 시작 전 세팅 (디버이스 초기화, 로그 디렉토리 생성 등)
-   */
-  public async setupForPoc(poc: POCKey): Promise<Browser> {
-    const logger = Logger.getLogger(poc) as winston.Logger;
-    logger.info(`[BaseAppFixture] ${poc} 환경 준비 시작`);
-    await this.beforeAll(poc);
-    const driver = await this.initializeAppDriver(poc);
-    return driver;
   }
 
   /**

@@ -25,18 +25,30 @@ const POC_ALL: POCType = 'ALL';
 export const POC_FOLDER_MAP: Record<Exclude<POCType, 'ALL'>, string | string[]> = {
   PC: 'pc-web',
   // MW는 PC, Emulator, Device 로 테스트 ( 추후 경로 변경)
-  MW: ['pc-mobile-web', 'emulator-mobile-web', 'device-mobile-web'],
-  AOS: 'android-app',
-  IOS: 'ios-app',
+  MW: ['pc-mobile-web'],
+  AOS: ['android-app'],
+  IOS: ['ios-app'],
   API: 'api',
 };
 
 // 테스트 mw 매핑
 export const MW_BROWSER_MAP: Record<string, string> = {
-  'pc-mobile-web': 'pc-chrome',
-  'device-mobile-web': 'ios-device-safari',
-  'emulator-mobile-web': 'android-device-chrome',
+  'pc-mobile-web': 'pc-mobile-chrome',
+  'android-mobile-web': 'android-mobile-chrome',
+  'ios-mobile-web': 'ios-mobile-safari',
 };
+
+// 테스트 and 매핑
+export const AND_BROWSER_MAP: Record<string, string> = {
+  'android-app': 'android-app',
+  'android-emulator-app': 'android-emulator-app',
+};
+// 테스트 ios 매핑
+export const IOS_BROWSER_MAP: Record<string, string> = {
+  'ios-app': 'ios-app',
+  'ios-emulator-app': 'ios-emulator-app',
+};
+
 /**
  * POC 별 폴더 경로 반환 함수
  * - e2e/pc-web
@@ -123,39 +135,6 @@ export const FOLDER_PATHS = (poc: POCType) => ({
   steps: getPOCPathWithSubdir(poc, 'src/steps'),
   docker: getPOCPathWithSubdir(poc, 'src/Dockerfile'),
 });
-
-/**
- * 개별 결과 파일 (타임스탬프 포함) - 다중 경로 대응
- */
-// export const PLAYWRIGHT_REPORT_FILE_NAME = (poc: POCType): string[] =>
-//   getPOCPathWithSubdir(poc, 'playwright-report').map(
-//     path => `${path}/${poc}_report_${getCurrentTimestamp()}.html`,
-//   );
-
-// export const LOG_FILE_NAME = (poc: POCType): string[] =>
-//   getPOCPathWithSubdir(poc, 'test-results/logs').map(
-//     path => `${path}/${poc}_${getCurrentTimestamp()}.json`,
-//   );
-
-// export const ALLURE_RESULT_FILE_NAME = (poc: POCType): string[] =>
-//   getPOCPathWithSubdir(poc, 'test-results/allure-results').map(
-//     path => `${path}/${poc}_test-result_${getCurrentTimestamp()}.json`,
-//   );
-
-// export const SCREENSHOT_FILE_NAME = (poc: POCType): string[] =>
-//   getPOCPathWithSubdir(poc, 'test-results/screenshots').map(
-//     path => `${path}/${poc}_screenshot_${getCurrentTimestamp()}.png`,
-//   );
-
-// export const VIDEO_FILE_NAME = (poc: POCType): string[] =>
-//   getPOCPathWithSubdir(poc, 'test-results/videos').map(
-//     path => `${path}/${poc}_video_${getCurrentTimestamp()}.mp4`,
-//   );
-
-// export const TRACE_FILE_NAME = (poc: POCType): string[] =>
-//   getPOCPathWithSubdir(poc, 'test-results/traces').map(
-//     path => `${path}/${poc}_trace_${getCurrentTimestamp()}.zip`,
-//   );
 
 /**
  * 테스트 결과 파일명 생성 함수 (병렬 저장용)

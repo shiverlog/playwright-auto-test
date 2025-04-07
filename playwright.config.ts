@@ -1,11 +1,15 @@
 /**
  * Description : playwright.config.ts - 📌 Playwright Config 테스트 실행 환경 정의 파일
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-07
  */
-import { ALL_DEVICES, MAX_REAL_DEVICES } from '@common/config/BaseConfig.js';
-import { ANDROID_DEVICES, BASE_DEVICES, IOS_DEVICES } from '@common/config/BaseDeviceConfig.js';
-import { MW_BROWSER_MAP } from '@common/constants/PathConstants.js';
+import { ANDROID_DEVICES, BASE_DEVICES, IOS_DEVICES } from '@common/config/deviceConfig.js';
+import {
+  AND_BROWSER_MAP,
+  IOS_BROWSER_MAP,
+  MW_BROWSER_MAP,
+  TEST_RESULT_FILE_NAME,
+} from '@common/constants/PathConstants.js';
 import type { POCKey, POCType } from '@common/types/platform-types.js';
 import { ALL_POCS } from '@common/types/platform-types.js';
 import type { E2EProjectConfig } from '@common/types/playwright-config.js';
@@ -41,9 +45,9 @@ const browserMatrix: Record<Exclude<POCType, ''>, string[]> = {
   // pc-mobile-web, device-mobile-web, emulate-mobile-web: ['chrome', 'safari']
   MW: Object.values(MW_BROWSER_MAP),
   // android-app
-  AOS: ['android-app'],
+  AOS: Object.values(AND_BROWSER_MAP),
   // ios-app
-  IOS: ['ios-app'],
+  IOS: Object.values(IOS_BROWSER_MAP),
   API: [],
   ALL: [],
 };
@@ -59,24 +63,21 @@ browserMatrix.ALL = [
 
 // POC별 테스트 프로젝트 동적 생성
 const pocProjects = pocList.flatMap((poc: POCKey) => {
-  const matrixKey = poc;
-  const basePath = `e2e/${poc}`;
-  const resultPaths = {
-    log: `logs/${poc}`,
-    playwrightReport: `playwright-report/${poc}`,
-    allureResult: `allure-results/${poc}`,
-  };
-
+  // 테스트 소스 경로
+  // const sourceDirPaths = FOLDER_PATHS(poc);
+  // 테스트 결과 디렉토리 경로 (폴더 기준)
+  // const resultDirPaths = POC_RESULT_PATHS(poc);
+  // 테스트 결과 파일 경로 (파일명 포함)
+  const resultFilePaths = TEST_RESULT_FILE_NAME(poc);
+  // POC에 해당하는 디바이스 정보 조회
   const deviceInfo = BASE_DEVICES[poc as keyof typeof BASE_DEVICES];
   if (!deviceInfo || !('device' in deviceInfo)) return [];
-
-  const browserList = browserMatrix[matrixKey];
+  const browserList = browserMatrix[poc];
   if (!browserList) {
-    console.warn(`browserMatrix에 '${matrixKey}'가 정의되어 있지 않음`);
+    console.warn(`browserMatrix에 '${poc}'가 정의되어 있지 않음`);
     return [];
   }
-
-  return browserMatrix[matrixKey].map(browser => {
+  return browserList.map(browser => {
     const browserLabel = browser.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
 
     /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -120,7 +121,7 @@ const pocProjects = pocList.flatMap((poc: POCKey) => {
       },
     };
 
-    // Edge일 경우 실행 파일과 args 지정
+    // Window Edge일 경우 실행 파일과 args 하드코딩으로 지정
     if (browser === 'edge') {
       useOptions.browserName = 'chromium';
       useOptions.executablePath = 'C:\\CustomBrowsers\\chromium-playwright.exe';
@@ -152,46 +153,25 @@ const pocProjects = pocList.flatMap((poc: POCKey) => {
         '--disable-blink-features=AutomationControlled',
       ];
     }
-
     return {
       name: `POC - ${poc} - ${browserLabel}`,
-      testMatch: [`**/${basePath.split('/').pop()}/src/steps/**/*.spec.ts`],
+      testMatch: [`**/${browser}/src/steps/**/*.spec.ts`],
       /* Reporter to use. See https://playwright.dev/docs/test-reporters */
       // 테스트 리포트 설정 (Reporter Configuration)
       reporter: [
         // 기본 콘솔 출력
         ['list'],
         // HTML 리포트 생성
-        ['html', { outputFolder: resultPaths.playwrightReport, open: 'never' }],
+        ['html', { outputFolder: resultFilePaths.playwrightReport[0], open: 'never' }],
         // JSON 리포트 생성
-        ['json', { outputFile: `${resultPaths.log}/${poc}_result.json` }],
+        ['json', { outputFile: resultFilePaths.log[0] }],
         // allure 리포트 생성
-        ['allure-playwright', { outputFolder: resultPaths.allureResult }],
+        ['allure-playwright', { outputFolder: resultFilePaths.allureResult[0] }],
       ],
       use: useOptions,
     };
   });
 });
-
-// const realDeviceProjects: Project[] = [...BASE_DEVICES.aos, ...BASE_DEVICES.ios].map(
-//   ({ name, device, config }) => ({
-//     name: `Real Device - ${config.platformName.toUpperCase()} - ${name}`,
-//     testMatch: [`e2e/${config.platformName.toLowerCase()}-app/**/*.spec.ts`],
-//     use: {
-//       ...(device || {}), // device가 undefined일 수 있으니 기본 빈 객체로 보완
-//       headless: false,
-//       baseURL: process.env.BASE_URL || 'http://localhost:3000',
-//       viewport: device?.viewport ?? { width: 390, height: 844 }, // 옵셔널 체이닝으로 보호
-//       // Appium 연결을 위한 config
-//       deviceConfig: config,
-//     },
-//     reporter: [
-//       ['list'],
-//       ['json', { outputFile: `logs/${config.platformName}-${name}.json` }],
-//       ['allure-playwright', { outputFolder: `allure-results/${config.platformName}-${name}` }],
-//     ],
-//   }),
-// );
 
 const E2E_CONFIGS: E2EProjectConfig[] = [
   // PC Web - Chrome
@@ -272,34 +252,39 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
 ];
 
 // 정적 E2E 테스트 대상 변환 함수
+// 정적 E2E 테스트 대상 변환 함수
 function generateE2EProjects(): Project[] {
   return E2E_CONFIGS.filter(config => {
     return !config.platform || config.platform.includes(process.platform);
-  }).map(config => ({
-    name: `E2E - ${config.name}`,
-    testMatch: [`**/${config.path}/**/*.spec.ts`],
-    use: {
-      ...devices[config.device],
-      headless: process.env.HEADLESS !== 'false',
-      baseURL: process.env.BASE_URL || 'http://localhost:3000',
-      viewport: config.viewport,
-      userAgent: config.userAgent,
-      slowMo: config.launchOptions?.slowMo,
-      devtools: config.launchOptions?.devtools,
-      args: config.launchOptions?.args,
-      screenshot: 'only-on-failure',
-      video: 'retain-on-failure',
-      trace: 'on-first-retry',
-    },
-    reporter: [
-      ['list'],
-      ['html', { outputFolder: `playwright-report/${config.outputKey}`, open: 'never' }],
-      ['json', { outputFile: `logs/${config.outputKey}.json` }],
-      ['allure-playwright', { outputFolder: `allure-results/${config.outputKey}` }],
-    ],
-  }));
-}
+  }).map(config => {
+    // 테스트 결과 파일 경로 매핑 (파일명 포함)
+    const resultPaths = TEST_RESULT_FILE_NAME(config.outputKey as POCType);
 
+    return {
+      name: `E2E - ${config.name}`,
+      testMatch: [`**/${config.path}/**/*.spec.ts`],
+      use: {
+        ...devices[config.device],
+        headless: process.env.HEADLESS !== 'false',
+        baseURL: process.env.BASE_URL || 'http://localhost:3000',
+        viewport: config.viewport,
+        userAgent: config.userAgent,
+        slowMo: config.launchOptions?.slowMo,
+        devtools: config.launchOptions?.devtools,
+        args: config.launchOptions?.args,
+        screenshot: 'only-on-failure',
+        video: 'retain-on-failure',
+        trace: 'on-first-retry',
+      },
+      reporter: [
+        ['list'],
+        ['html', { outputFolder: resultPaths.playwrightReport[0], open: 'never' }],
+        ['json', { outputFile: resultPaths.log[0] }],
+        ['allure-playwright', { outputFolder: resultPaths.allureResult[0] }],
+      ],
+    };
+  });
+}
 const e2eProjects = generateE2EProjects();
 
 /**

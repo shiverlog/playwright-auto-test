@@ -1,7 +1,7 @@
 /**
- * Description : BasePocFixture.ts - 📌 BaseWebFixture, BaseAppFixture 확장을 위한 추사 클래스
+ * Description : BasePocFixture.ts - 📌 BaseWebFixture, BaseAppFixture 확장을 위한 추상화 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-06
  */
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';
@@ -16,7 +16,6 @@ import type winston from 'winston';
 const execAsync = promisify(exec);
 
 export abstract class BasePocFixture {
-
   /**
    * 테스트 실행 전 공통 작업
    */

@@ -102,7 +102,7 @@
     "common",
     "e2e",
     "e2e/pc-web",
-    "e2e/device-mobile-web",
+    "e2e/android-mobile-web",
     "e2e/android-app",
     "e2e/ios-app",
     "e2e/api",
