@@ -84,7 +84,7 @@
     "@types/react-dom": "^19.0.4",
     "@types/wait-on": "^5.3.4",
     "@types/webdriverio": "^4.13.3",
-    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/eslint-plugin": "^8.29.0",
     "@typescript-eslint/parser": "^8.26.1",
     "@wdio/types": "^9.12.2",
     "allure-playwright": "^3.2.0",
