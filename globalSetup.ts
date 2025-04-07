@@ -1,3 +1,8 @@
+/**
+ * Description : globalSetup.ts - 📌 Playwright 테스트 실행 초기화 작업
+ * Author : Shiwoo Min
+ * Date : 2025-04-02
+ */
 import { PocInitializer } from '@common/initializers/PocInitializer.js';
 import { Logger } from '@common/logger/customLogger.js';
 import type { POCKey, POCType } from '@common/types/platform-types.js';

@@ -146,6 +146,10 @@
     "simctl",
     "kbps",
     "permissioncontroller",
-    "Interactable"
+    "Interactable",
+    "shiverlog",
+    "CODEOWNERS",
+    "Appium",
+    "Selenium"
   ]
 }

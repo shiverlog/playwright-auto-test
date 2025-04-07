@@ -5,6 +5,13 @@
  */
 import type { DeviceConfig, DevicesJson } from '@common/types/device-config.js';
 import { devices } from '@playwright/test';
+import path from 'path';
+
+// 자사 App APK 경로
+const apkPath = path.resolve(
+  process.cwd(),
+  'common/assets/mobileCS_release_v7.0.4(352)_20250320_1207.apk',
+);
 
 // Android 기기
 export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
@@ -12,14 +19,21 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
   'Galaxy Note20 Ultra': {
     platformName: 'Android',
     deviceName: 'Galaxy Note20 Ultra',
+    udid: 'R3CN70CT69N',
+    platformVersion: '13',
+    appPackage: 'com.lguplus.mobile.cs',
+    appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
+    app: apkPath,
+
     appium: {
       options: {
         udid: 'R3CN70CT69N',
         platformVersion: '13',
         appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
         appPackage: 'com.lguplus.mobile.cs',
-        app: '/path/to/android/app.apk',
         automationName: 'UiAutomator2',
+        noReset: true,
+        app: apkPath,
       },
     },
   },
@@ -27,6 +41,10 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
   'Galaxy ZFilp4': {
     platformName: 'Android',
     deviceName: 'Galaxy ZFilp4',
+    udid: 'R3CTA081TAW',
+    platformVersion: '14',
+    appPackage: 'com.lguplus.mobile.cs',
+    appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
     appium: {
       options: {
         udid: 'R3CTA081TAW',
@@ -41,6 +59,10 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
   'Galaxy S24 PLUS': {
     platformName: 'Android',
     deviceName: 'Galaxy S24 PLUS',
+    udid: 'R3CX20M45VH',
+    platformVersion: '14',
+    appActivity: 'com.sec.android.app.sbrowser.SBrowserMainActivity',
+    appPackage: 'com.sec.android.app.sbrowser.beta',
     appium: {
       options: {
         udid: 'R3CX20M45VH',
@@ -59,6 +81,9 @@ export const IOS_DEVICES: Record<string, DeviceConfig> = {
   'iPhone 15 Plus': {
     platformName: 'iOS',
     deviceName: 'iPhone 15 Plus',
+    udid: '00008120-000834603AE2201E',
+    platformVersion: '17.0.3',
+    bundleId: 'com.lguplus.mobile.cs',
     appium: {
       options: {
         udid: '00008120-000834603AE2201E',

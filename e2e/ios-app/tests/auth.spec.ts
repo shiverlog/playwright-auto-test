@@ -1,11 +1,12 @@
-import { AuthSteps } from '@e2e/pc/src/steps/AuthStep';
-import { test } from '@playwright/test';
+import { expect, test } from '@common/fixtures/BaseAppFixture.js';
+import { AuthSteps } from '@e2e/ios/src/steps/AuthSteps.js';
 
-test.describe('로그인 테스트', () => {
-  test('로그인 & 로그아웃 시나리오', async ({ page }) => {
-    const auth = new AuthSteps(page);
+test.describe('인증 테스트', () => {
+  test('로그인 & 로그아웃 시나리오', async ({ page, appDriver }) => {
+    const auth = new AuthSteps(page, appDriver);
+    const id = process.env.UPLUS_ID!;
+    const pw = process.env.UPLUS_PW!;
 
-    await auth.loginWithValidCredentials('test-id', 'test-password');
-    // await auth.logout();
+    await auth.loginWithValidCredentials(id, pw);
   });
 });

@@ -1,5 +1,4 @@
 import { WebActionUtils } from '@common/actions/WebActionUtils.js';
-import { BaseHeader } from '@common/components/BaseHeader.js';
 import { BaseModal } from '@common/components/BaseModal.js';
 import { authLocator } from '@common/locators/authLocator.js';
 import { uiLocator } from '@common/locators/uiLocator.js';
@@ -10,7 +9,6 @@ import { expect } from '@playwright/test';
 
 export class AuthPage extends WebActionUtils {
   protected modal: BaseModal;
-  protected hamburger: BaseHeader;
   protected platform: Platform;
   protected uiType: UIType;
 
@@ -38,7 +36,7 @@ export class AuthPage extends WebActionUtils {
 
   // 로그아웃 페이지로 이동
   async gotoLogoutPage() {
-    await this.page.click(authLocator.mainLoginButton[this.uiType]);
+    await this.click(authLocator.mainLoginButton[this.uiType]);
     await this.js.forceClick(authLocator.main_logout_btn);
     await this.page.waitForLoadState('networkidle');
   }

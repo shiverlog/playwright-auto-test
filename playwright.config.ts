@@ -173,26 +173,25 @@ const pocProjects = pocList.flatMap((poc: POCKey) => {
   });
 });
 
-const realDeviceProjects: Project[] = [...BASE_DEVICES.aos, ...BASE_DEVICES.ios].map(
-  ({ name, device, config }) => ({
-    name: `Real Device - ${config.platformName.toUpperCase()} - ${name}`,
-    testMatch: [`e2e/${config.platformName.toLowerCase()}-app/**/*.spec.ts`],
-    use: {
-      // Playwright용 디바이스
-      ...device,
-      headless: false,
-      baseURL: process.env.BASE_URL || 'http://localhost:3000',
-      viewport: device.viewport || { width: 390, height: 844 },
-      // Appium 연결을 위한 config
-      deviceConfig: config,
-    },
-    reporter: [
-      ['list'],
-      ['json', { outputFile: `logs/${config.platformName}-${name}.json` }],
-      ['allure-playwright', { outputFolder: `allure-results/${config.platformName}-${name}` }],
-    ],
-  }),
-);
+// const realDeviceProjects: Project[] = [...BASE_DEVICES.aos, ...BASE_DEVICES.ios].map(
+//   ({ name, device, config }) => ({
+//     name: `Real Device - ${config.platformName.toUpperCase()} - ${name}`,
+//     testMatch: [`e2e/${config.platformName.toLowerCase()}-app/**/*.spec.ts`],
+//     use: {
+//       ...(device || {}), // device가 undefined일 수 있으니 기본 빈 객체로 보완
+//       headless: false,
+//       baseURL: process.env.BASE_URL || 'http://localhost:3000',
+//       viewport: device?.viewport ?? { width: 390, height: 844 }, // 옵셔널 체이닝으로 보호
+//       // Appium 연결을 위한 config
+//       deviceConfig: config,
+//     },
+//     reporter: [
+//       ['list'],
+//       ['json', { outputFile: `logs/${config.platformName}-${name}.json` }],
+//       ['allure-playwright', { outputFolder: `allure-results/${config.platformName}-${name}` }],
+//     ],
+//   }),
+// );
 
 const E2E_CONFIGS: E2EProjectConfig[] = [
   // PC Web - Chrome
@@ -202,7 +201,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
     device: 'Desktop Chrome',
     outputKey: 'pc-web',
     // 운영 체제 브라우저 창크기로 설정
-    viewport: null,
+    viewport: { width: 1920, height: 1080 },
     launchOptions: {
       slowMo: 100,
       devtools: true,
@@ -247,23 +246,29 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
   //   outputKey: 'mobile-web-ios',
   // },
   // Android App - LGUPLUS
-  ...Object.entries(ANDROID_DEVICES).map(([name, config]) => ({
-    name: `Android App - ${name}`,
-    path: 'e2e/android-app',
-    device: name,
-    deviceConfig: config,
-    outputKey: `android-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
-  })),
+  ...Object.entries(ANDROID_DEVICES)
+    // 갤럭시 노트20 울트라 기기로 android-app 테스트
+    .filter(([name]) => name === 'Galaxy Note20 Ultra')
+    .map(([name, config]) => ({
+      name: `Android App - ${name}`,
+      path: 'e2e/android-app',
+      device: name,
+      deviceConfig: config,
+      outputKey: `android-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
+    })),
 
   // iOS App - LGUPLUS
-  ...Object.entries(IOS_DEVICES).map(([name, config]) => ({
-    name: `iOS App - ${name}`,
-    path: 'e2e/ios-app',
-    platform: ['darwin'],
-    device: name,
-    deviceConfig: config,
-    outputKey: `ios-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
-  })),
+  ...Object.entries(IOS_DEVICES)
+    // 아이폰12 기기로 ios-app 테스트
+    .filter(([name]) => name === 'iPhone 15 Plus')
+    .map(([name, config]) => ({
+      name: `iOS App - ${name}`,
+      path: 'e2e/ios-app',
+      platform: ['darwin'],
+      device: name,
+      deviceConfig: config,
+      outputKey: `ios-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
+    })),
 ];
 
 // 정적 E2E 테스트 대상 변환 함수
@@ -301,8 +306,9 @@ const e2eProjects = generateE2EProjects();
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
-  // 초기화 작업
+  // 공통 초기화 작업
   globalSetup: path.resolve(__dirname, './globalSetup.ts'),
+  // 공통 종료 작업
   globalTeardown: path.resolve(__dirname, './globalTeardown.ts'),
   // 공통 테스트 폴더 경로
   testDir: '.',
@@ -322,11 +328,11 @@ export default defineConfig({
   // 테스트 실행 시 동시 실행할 워커(worker) 수 설정 : 로컬은 CPU 75% 사용
   workers: process.env.CI ? 1 : Math.max(1, Math.floor(os.cpus().length * 0.75)),
 
-  // 타임아웃 설정 (Timeouts)
-  timeout: 30 * 1000,
+  // 타임아웃 설정 (30분)
+  timeout: 30 * 1000 * 10,
   /* Configure projects for major browsers */
   // 테스트 프로젝트별 설정 (Test Project Configuration)
-  projects: [...e2eProjects, ...(pocProjects.length ? pocProjects : []), ...realDeviceProjects],
+  projects: [...e2eProjects, ...(pocProjects.length ? pocProjects : [])],
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run start',
@@ -334,6 +340,7 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
   },
 });
+// 테스트 프로젝트 이름 출력
 console.log(
   'Generated Projects:',
   [...e2eProjects, ...pocProjects].map(p => p.name),

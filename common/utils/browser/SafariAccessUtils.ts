@@ -10,12 +10,18 @@ import type winston from 'winston';
 
 export class SafariAccessUtils {
   private logger: winston.Logger;
+  private driver: Browser;
+  private switchContext: (view: string) => Promise<void>;
+  private poc: POCKey;
 
   constructor(
-    private driver: Browser,
-    private switchContext: (view?: string) => void,
-    private poc: POCKey, // POCKey 명시적 주입
+    driver: Browser,
+    switchContext: (view: string) => Promise<void>,
+    poc: POCKey, // POCKey 명시적 주입
   ) {
+    this.driver = driver;
+    this.switchContext = switchContext;
+    this.poc = poc;
     this.logger = Logger.getLogger(poc) as winston.Logger;
   }
 
@@ -24,7 +30,7 @@ export class SafariAccessUtils {
    */
   async handleSafariSetup(): Promise<void> {
     this.logger.info(`[${this.poc}] Safari 초기 팝업/권한 처리 시작`);
-    this.switchContext('NATIVE_APP');
+    await this.switchContext('NATIVE_APP');
     await this.driver.setTimeout({ implicit: 2000 });
 
     const stepLabels = ['Continue', 'Allow', 'Not Now', 'Done'];
@@ -48,7 +54,7 @@ export class SafariAccessUtils {
   async clearSafariCache(): Promise<void> {
     this.logger.info(`[${this.poc}] Safari 캐시 정리 시작`);
     try {
-      this.switchContext('NATIVE_APP');
+      await this.switchContext('NATIVE_APP');
       await this.driver.activateApp('com.apple.Preferences');
       await this.pause(1500);
 
@@ -79,11 +85,11 @@ export class SafariAccessUtils {
 
       // 앱으로 복귀
       await this.driver.activateApp('com.lguplus.mobile.cs');
-      this.switchContext();
+      await this.switchContext('WEBVIEW_com.lguplus.mobile.cs');
     } catch (e) {
       this.logger.error(`[${this.poc}] Safari 캐시 정리 중 예외 발생: ${e}`);
       await this.driver.activateApp('com.lguplus.mobile.cs');
-      this.switchContext();
+      await this.switchContext('WEBVIEW_com.lguplus.mobile.cs');
     }
   }
 

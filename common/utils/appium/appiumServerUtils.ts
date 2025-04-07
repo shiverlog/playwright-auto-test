@@ -4,12 +4,14 @@
  * Date : 2024-04-04
  */
 import { Logger } from '@common/logger/customLogger';
+import type { AppiumRemoteOptions } from '@common/types/device-config';
 import type { POCKey } from '@common/types/platform-types';
 import { exec } from 'child_process';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
 import { platform } from 'os';
-import wd from 'webdriverio';
+import { remote } from 'webdriverio';
+import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 dotenv.config();
@@ -19,8 +21,10 @@ dotenv.config();
  */
 export class AppiumServerUtils {
   private logger: winston.Logger;
+  private poc?: POCKey;
 
-  constructor(private poc?: POCKey) {
+  constructor(poc?: POCKey) {
+    this.poc = poc;
     this.logger = Logger.getLogger(poc || 'ALL') as winston.Logger;
   }
 
@@ -137,9 +141,7 @@ export class AppiumServerUtils {
     exec(`xcrun simctl install booted ${appPath}`, (error, stdout, stderr) => {
       if (error) this.logger.error(`iOS 앱 설치 오류: ${error.message}`);
       if (stderr) this.logger.warn(`iOS 앱 설치 경고: ${stderr}`);
-      if (stdout)
-        this.logger.info(`iOS 앱 설치 완료:
-${stdout}`);
+      if (stdout) this.logger.info(`iOS 앱 설치 완료:\n${stdout}`);
     });
   }
 
@@ -151,9 +153,7 @@ ${stdout}`);
     exec(`xcrun simctl terminate booted ${bundleId}`, (error, stdout, stderr) => {
       if (error) this.logger.error(`iOS 앱 종료 오류: ${error.message}`);
       if (stderr) this.logger.warn(`iOS 앱 종료 경고: ${stderr}`);
-      if (stdout)
-        this.logger.info(`iOS 앱 종료 완료:
-${stdout}`);
+      if (stdout) this.logger.info(`iOS 앱 종료 완료:\n${stdout}`);
     });
   }
 
@@ -165,43 +165,59 @@ ${stdout}`);
     exec(`xcrun simctl uninstall booted ${bundleId}`, (error, stdout, stderr) => {
       if (error) this.logger.error(`iOS 앱 캐시 삭제 오류: ${error.message}`);
       if (stderr) this.logger.warn(`iOS 앱 캐시 삭제 경고: ${stderr}`);
-      if (stdout)
-        this.logger.info(`iOS 앱 캐시 삭제 완료:
-${stdout}`);
+      if (stdout) this.logger.info(`iOS 앱 캐시 삭제 완료:\n${stdout}`);
     });
   }
 
   /**
    * Android Appium 세션 생성
    */
-  public async startAndroidSession(): Promise<any> {
-    const options: wd.Options = {
-      capabilities: [
-        {
-          platformName: 'Android',
+  // TODO: Android Appium 기기값 넣기
+  public async startAndroidSession(): Promise<Browser> {
+    const options: AppiumRemoteOptions = {
+      protocol: 'http',
+      hostname: '127.0.0.1',
+      port: 4723,
+      path: '/',
+      capabilities: {
+        platformName: 'Android',
+        'appium:options': {
           deviceName: 'emulator-5554',
+          udid: 'emulator-5554',
+          platformVersion: '11.0',
+          appPackage: 'com.example.app',
+          appActivity: '.MainActivity',
           app: '/path/to/your/app.apk',
           automationName: 'UiAutomator2',
+          noReset: false,
         },
-      ],
+      },
     };
-    return await wd.remote(options);
+    return await remote(options);
   }
 
   /**
    * iOS Appium 세션 생성
    */
-  public async startIosSession(): Promise<any> {
-    const options: wd.Options = {
-      capabilities: [
-        {
-          platformName: 'iOS',
+  public async startIosSession(): Promise<Browser> {
+    const options: AppiumRemoteOptions = {
+      protocol: 'http',
+      hostname: '127.0.0.1',
+      port: 4723,
+      path: '/',
+      capabilities: {
+        platformName: 'iOS',
+        'appium:options': {
           deviceName: 'iPhone 14 Pro Max',
+          udid: '00008030-xxxxxx',
+          platformVersion: '16.4',
+          bundleId: 'com.example.iosapp',
           app: '/path/to/your/app.app',
           automationName: 'XCUITest',
+          noReset: false,
         },
-      ],
+      },
     };
-    return await wd.remote(options);
+    return await remote(options);
   }
 }

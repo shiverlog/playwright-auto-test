@@ -30,9 +30,14 @@ const ENABLE_LOGS = process.env.ENABLE_LOGS === 'true';
 const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 
 // 콘솔 출력용 색상 포매터 정의
-const colorizer = winston.format.colorize();
-const coloredFormatter = winston.format.printf(({ level, message, timestamp }) => {
-  return colorizer.colorize(level, `${timestamp} - ${level.toUpperCase()}: ${message}`);
+// const colorizer = winston.format.colorize();
+// const coloredFormatter = winston.format.printf(({ level, message, timestamp }) => {
+//   return colorizer.colorize(level, `${timestamp} - ${level.toUpperCase()}: ${message}`);
+// });
+
+// 색상 없이 콘솔 출력용 포맷터
+const simpleFormatter = winston.format.printf(({ level, message, timestamp }) => {
+  return `${timestamp} - ${level.toUpperCase()}: ${message}`;
 });
 
 // 파일 출력용 JSON 포맷 정의
@@ -59,11 +64,13 @@ class Logger {
   private static instances: Map<POCKey, winston.Logger> = new Map();
 
   private constructor() {}
+
   // POC별 로거 인스턴스 반환
   public static getLogger(poc: POCType | POCKey): winston.Logger | Record<POCKey, winston.Logger> {
     if (!poc) {
       throw new Error(`[Logger] poc 값이 누락되었습니다.`);
     }
+
     // ALL일 경우 전체 POC 로거 인스턴스를 반환
     if (poc === 'ALL') {
       const allLoggers: Record<POCKey, winston.Logger> = {} as Record<POCKey, winston.Logger>;
@@ -72,20 +79,19 @@ class Logger {
       }
       return allLoggers;
     }
+
     const validPOC = poc as POCKey;
-    // 이미 생성된 로거가 있으면 반환
+
     if (Logger.instances.has(validPOC)) {
       return Logger.instances.get(validPOC)!;
     }
-    // POC_RESULT_PATHS와 TEST_RESULT_FILE_NAME 내부적으로 basePath를 처리
-    // const basePath = process.cwd();
+
     const resultPaths = POC_RESULT_PATHS(validPOC);
     const resultFiles = TEST_RESULT_FILE_NAME(validPOC);
 
-    // 로그 디렉토리 생성
     const allDirs = Object.values(resultPaths).flat();
     allDirs.forEach(dirPath => ensureDirectoryExists(dirPath));
-    // 파일 출력용 transport 구성
+
     const fileTransports: winston.transport[] = [];
 
     Object.values(resultFiles).forEach(filePath => {
@@ -107,12 +113,14 @@ class Logger {
         });
       }
     });
+
     // 전체 transports 구성 (콘솔 + 파일)
     const transports: winston.transport[] =
       ENABLE_LOGS || process.env.NODE_ENV === 'development'
         ? [
             new winston.transports.Console({
-              format: winston.format.combine(winston.format.colorize(), coloredFormatter),
+              // format: winston.format.combine(winston.format.colorize(), coloredFormatter), // ❌ colorize 사용 안함
+              format: winston.format.combine(winston.format.timestamp(), simpleFormatter), // ✅ 에러 방지용 대체 포맷
             }),
             ...fileTransports,
           ]
@@ -121,7 +129,7 @@ class Logger {
               format: winston.format.simple(),
             }),
           ];
-    // 로거 생성 및 설정
+
     const logger = winston.createLogger({
       level: LOG_LEVEL,
       levels: Object.fromEntries(LOG_LEVELS.map(({ level, priority }) => [level, priority])),
@@ -135,6 +143,7 @@ class Logger {
     Logger.instances.set(validPOC, logger);
     return logger;
   }
+
   // 전체 POC별 로거 초기화
   public static initAllLoggers(): void {
     ALL_POCS.forEach(poc => {

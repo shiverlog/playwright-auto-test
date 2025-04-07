@@ -1,19 +1,20 @@
-import type { JsForceActions } from '@common/actions/JsForceActions.js';
-import { WebActionUtils } from '@common/actions/WebActionUtils.js';
+import { MobileActionUtils } from '@common/actions/MobileActionUtils.js';
 import { BaseModal } from '@common/components/BaseModal.js';
 import { authLocator } from '@common/locators/authLocator.js';
+import { uiLocator } from '@common/locators/uiLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';
 import type { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
+import type { Browser } from 'webdriverio';
 
-export class AuthPage extends WebActionUtils {
+export class AuthPage extends MobileActionUtils {
   protected modal: BaseModal;
   protected platform: Platform;
   protected uiType: UIType;
 
-  constructor(page: Page) {
-    super(page);
+  constructor(page: Page, driver: Browser) {
+    super(page, driver);
     this.modal = new BaseModal(page, undefined);
     this.platform = 'IOS_APP';
     this.uiType = 'APP';
@@ -22,64 +23,64 @@ export class AuthPage extends WebActionUtils {
   // 홈페이지 이동
   async gotoHomePage() {
     await this.page.goto(urlLocator.main[this.platform]);
-    await this.page.waitForLoadState('networkidle');
     await this.modal.checkCommonModals();
   }
 
   // 로그인 페이지로 이동
   async gotoLoginPage() {
-    await this.page.click(authLocator.myinfo_icon[this.uiType]);
-    await this.js.forceClick(authLocator.main_login_btn[this.uiType]);
-    await this.page.waitForLoadState('networkidle');
+    await this.click(uiLocator.hamburger[this.uiType]);
+    await this.click(authLocator.mainLoginButton[this.uiType]);
+    await this.page.waitForSelector(authLocator.loginTitle[this.uiType], {
+      timeout: 5000,
+    });
   }
 
   // 로그아웃 페이지로 이동
   async gotoLogoutPage() {
-    await this.page.click(authLocator.myinfo_icon[this.uiType]);
+    await this.page.click(authLocator.mainLoginButton[this.uiType]);
     await this.js.forceClick(authLocator.main_logout_btn);
     await this.page.waitForLoadState('networkidle');
   }
 
-  // 로그인 시나리오 실행
+  // lguplus 로그인 시나리오 실행
   async doUplusLogin(id: string, pw: string): Promise<boolean> {
     try {
       await this.gotoHomePage();
       await this.gotoLoginPage();
-      await this.js.forceClick(authLocator.uplus_login_btn);
-      await this.page.waitForLoadState('networkidle');
-      await this.js.forceClick(authLocator.uplus_clear_btn);
-      await this.js.forceType(authLocator.uplus_id_input, id);
-
-      for (let i = 0; i < 3; i++) {
-        const tooltip = this.page.locator('.c-tooltip');
-        if ((await tooltip.count()) === 0) break;
-        await this.page.click('.c-ttp-inner .item:nth-of-type(1) .nm-tooltip-button');
+      // uplus 로그인 버튼 클릭
+      await this.click(authLocator.uplusLoginButton);
+      // uplus 타이틀 대기
+      await this.page.waitForSelector(authLocator.uplusLoginTitle[this.uiType], {
+        timeout: 5000,
+      });
+      // uplus 로그인 아이디 클리어 버튼 클릭
+      await this.js.forceClick(authLocator.uplusClearButton);
+      // uplus 로그인 아이디 입력
+      await this.typeTextSlowly(authLocator.uplusIdInput, id);
+      // uplus 로그인 아이디 툴팁 처리
+      if (await this.page.locator(authLocator.idTooltip).isVisible()) {
+        // 툴팁이 보일 경우, uplus 로그인 저장 버튼 클릭
+        await this.page.click(authLocator.uplusSaveButton);
       }
-
-      await this.js.forceType(authLocator.uplus_pw_input, pw);
-      await this.js.forceClick(authLocator.uplus_login_submit_btn);
-      await this.page.waitForLoadState('networkidle');
-
+      // uplus 로그인 비밀번호 입력
+      await this.typeTextSlowly(authLocator.uplusPwInput, pw);
+      // 강제 대기 2초
+      await this.page.waitForTimeout(2000);
+      // uplus 로그인 submit 버튼 클릭
+      //await this.humanLikeMoveAndClick(authLocator.uplusLoginSubmitButton);
+      await this.click(authLocator.uplusLoginSubmitButton);
+      try {
+        await this.page.waitForURL(urlLocator.main[this.platform], { timeout: 10000 });
+        await expect(this.page).toHaveURL(urlLocator.main[this.platform]);
+      } catch (urlError) {
+        console.warn('[Login Error] URL 변경 감지 실패', urlError);
+        return false;
+      }
+      await this.page.waitForTimeout(2000);
       return true;
     } catch (err) {
       console.error('[Login Failed]', err);
       return false;
     }
   }
-
-  // 로그아웃 시나리오 실행 (선택적으로 사용)
-  // async logout(): Promise<boolean> {
-  //   try {
-  //     await this.gotoHomePage();
-  //     await this.gotoLogoutPage();
-  //     await this.page.goto(urlLocator.main[this.platform]);
-  //     await this.click(authLocator.logout_btn);
-  //     await this.page.waitForLoadState('networkidle');
-  //     await expect(this.page.locator(authLocator.login_btn[this.uiType])).toHaveText(/로그인/);
-  //     return true;
-  //   } catch (err) {
-  //     console.error('[Logout Failed]', err);
-  //     return false;
-  //   }
-  // }
 }

@@ -1,7 +1,7 @@
 /**
  * Description : ChromeAccessUtils.ts - 📌 Android 기반의 Chrome 브라우저 초기 셋업 자동화 유틸리티
  * Author : Shiwoo Min
- * Date : 2024-04-04
+ * Date : 2024-04-06
  */
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey } from '@common/types/platform-types';
@@ -72,13 +72,21 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
 
 export class ChromeAccessUtils {
   private logger: winston.Logger;
+  private driver: Browser;
+  private switchContext: (view: string) => Promise<void>;
+  private udid: string;
+  private poc?: POCKey;
 
   constructor(
-    private driver: Browser,
-    private switchContext: (view: string) => void,
-    private udid: string,
-    private poc?: POCKey,
+    driver: Browser,
+    switchContext: (view: string) => Promise<void>,
+    udid: string,
+    poc?: POCKey,
   ) {
+    this.driver = driver;
+    this.switchContext = switchContext;
+    this.udid = udid;
+    this.poc = poc;
     this.logger = Logger.getLogger(poc || 'AOS') as winston.Logger;
   }
 

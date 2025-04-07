@@ -4,7 +4,7 @@
  * Date : 2025-04-01
  */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
-import { MobileActionUtils } from '@common/actions/MobileActionUtils.js';
+import { MobileActionUtils } from '@common/actions/MobileActionUtils2.js';
 import { WebActionUtils } from '@common/actions/WebActionUtils';
 import { overlayLocator } from '@common/locators/uiLocator.js';
 import { mobileMenuLocator } from '@common/locators/uiLocator.js';

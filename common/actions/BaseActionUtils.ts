@@ -12,7 +12,7 @@ import type { Locator, Page } from '@playwright/test';
 export class BaseActionUtils<TDriver = unknown> {
   protected page: Page;
   protected js: JsForceActions;
-
+  // driver?: TDriver; // Appium 드라이버 객체 (MobileActionUtils에서만 사용)
   constructor(page: Page, driver?: TDriver) {
     this.page = page;
     this.js = new JsForceActions(page);
@@ -189,7 +189,15 @@ export class BaseActionUtils<TDriver = unknown> {
    *  Playwright: 요소 클릭
    */
   public async click(selector: string): Promise<void> {
-    await this.getLocator(selector).click();
+    const locator = this.getLocator(selector);
+    // 부드러운 스크롤 (evaluate로 DOM에 직접 접근)
+    await locator.evaluate((el: Element) => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+    });
+    // 스크롤 애니메이션을 기다릴 시간
+    await this.page.waitForTimeout(500);
+    // 클릭 실행
+    await locator.click();
   }
 
   /**

@@ -234,6 +234,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.4
         version: 19.0.4(@types/react@19.0.12)
+      '@types/wait-on':
+        specifier: ^5.3.4
+        version: 5.3.4
       '@types/webdriverio':
         specifier: ^4.13.3
         version: 4.13.3
@@ -357,6 +360,9 @@ importers:
       vite:
         specifier: ^6.2.2
         version: 6.2.3(@types/node@22.13.14)(jiti@2.4.2)(yaml@2.7.0)
+      wait-on:
+        specifier: ^8.0.3
+        version: 8.0.3(debug@4.4.0)
       webdriverio:
         specifier: ^9.12.2
         version: 9.12.2
@@ -459,7 +465,13 @@ importers:
       '@your-org/common':
         specifier: file:../common
         version: link:../common
+      webdriverio:
+        specifier: '9'
+        version: 9.12.2
     devDependencies:
+      '@types/wait-on':
+        specifier: ^5.3.4
+        version: 5.3.4
       eslint:
         specifier: ^8.0.0
         version: 8.57.1
@@ -469,6 +481,9 @@ importers:
       typescript:
         specifier: ^5.0.0
         version: 5.8.2
+      wait-on:
+        specifier: ^8.0.3
+        version: 8.0.3(debug@4.4.0)
 
 packages:
 
@@ -1931,6 +1946,9 @@ packages:
 
   '@types/uuid@9.0.8':
     resolution: {integrity: sha512-jg+97EGIcY9AGHJJRaaPVgetKDsrTgbRjQ5Msgjh/DQKEFl0DtyRr/VCOyD1T2R1MNeWPK/u7JoGhlDZnKBAfA==}
+
+  '@types/wait-on@5.3.4':
+    resolution: {integrity: sha512-EBsPjFMrFlMbbUFf9D1Fp+PAB2TwmUn7a3YtHyD9RLuTIk1jDd8SxXVAoez2Ciy+8Jsceo2MYEYZzJ/DvorOKw==}
 
   '@types/webdriverio@4.13.3':
     resolution: {integrity: sha512-AfSQM1xTO9Ax+u9uSQPDuw69DQ0qA2RMoKHn86jCgWNcwKVUjGMSP4sfSl3JOfcZN8X/gWvn7znVPp2/g9zcJA==}
@@ -8887,6 +8905,10 @@ snapshots:
   '@types/uuid@10.0.0': {}
 
   '@types/uuid@9.0.8': {}
+
+  '@types/wait-on@5.3.4':
+    dependencies:
+      '@types/node': 22.13.14
 
   '@types/webdriverio@4.13.3':
     dependencies:

@@ -16,11 +16,14 @@
     "opencvBinDir": "C:\\tools\\opencv\\build\\x64\\vc16\\bin"
   },
   "dependencies": {
-    "@your-org/common": "file:../common"
+    "@your-org/common": "file:../common",
+    "webdriverio": "9"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
+    "@types/wait-on": "^5.3.4",
+    "eslint": "^8.0.0",
     "opencv4nodejs": "^5.6.0",
-    "eslint": "^8.0.0"
+    "typescript": "^5.0.0",
+    "wait-on": "^8.0.3"
   }
 }

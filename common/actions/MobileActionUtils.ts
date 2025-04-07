@@ -6,21 +6,22 @@
  */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { ActionConstants } from '@common/constants/ActionConstants.js';
-import type { Locator, Page } from '@playwright/test';
+import type { Platform } from '@common/types/platform-types.js';
+import type { Page } from '@playwright/test';
 import { execSync } from 'child_process';
-import type { Browser, Element } from 'webdriverio';
+import type { Browser } from 'webdriverio';
 
 const DEFAULT_RETRY = 5;
+
 export class MobileActionUtils extends BaseActionUtils<Browser> {
-  protected driver!: Browser;
-  private platform: 'android' | 'ios';
+  protected driver: Browser;
+  protected platform: Platform;
 
   constructor(page: Page, driver: Browser) {
     super(page, driver);
-
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();
-    if (platformName?.includes('android')) this.platform = 'android';
-    else if (platformName?.includes('ios')) this.platform = 'ios';
+    if (platformName?.includes('android')) this.platform = 'ANDROID_APP';
+    else if (platformName?.includes('ios')) this.platform = 'IOS_APP';
     else throw new Error(`Unsupported platform: ${platformName}`);
   }
 
@@ -28,16 +29,22 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    * 현재 플랫폼이 Android인지 확인
    */
   public isAndroid(): boolean {
-    return this.platform === 'android';
+    return this.platform === 'ANDROID_APP';
   }
 
   /**
    * 현재 플랫폼이 iOS인지 확인
    */
   public isIOS(): boolean {
-    return this.platform === 'ios';
+    return this.platform === 'IOS_APP';
   }
 
+  /**
+   * 현재 플랫폼 확인
+   */
+  public getMobileOsType(): 'android' | 'ios' {
+    return this.platform === 'ANDROID_APP' ? 'android' : 'ios';
+  }
   // ========== Playwright 전용 ==========
   /**
    * Playwright: 웹 요소 탭 (터치)
@@ -120,77 +127,20 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   // ========== Appium 전용 ==========
 
   /**
-   * Appium: 주어진 컨텍스트 이름을 기준으로 여러 번 재시도 후 컨텍스트 전환
+   * Appium: 요소 찾기
    */
-  private async switchToContextSafe(contextName: string, retry = DEFAULT_RETRY): Promise<void> {
-    for (let i = 0; i < retry; i++) {
-      const contexts = await this.driver?.getContexts();
-      const validContext = contexts?.find(ctx => ctx === contextName);
-      if (validContext) {
-        // 'Browser' 타입으로 컨텍스트 전환
-        await (this.driver as Browser).switchContext(validContext);
-        return;
-      }
-      await this.driver?.pause(1000);
-    }
-    throw new Error(`Context '${contextName}' not found after ${retry} retries.`);
-  }
-
-  /**
-   * Appium: 기본 WebView 컨텍스트 반환
-   */
-  public async getDefaultWebView(): Promise<string | null> {
-    const contexts = (await this.driver?.getContexts()) as string[];
-    return contexts?.find(ctx => ctx.includes('WEBVIEW')) ?? null;
-  }
-
-  /**
-   * Appium: WebView Context로 전환
-   */
-  public async switchToWebviewContext(): Promise<void> {
-    const webview = await this.getDefaultWebView();
-    if (webview) await this.switchToContextSafe(webview);
-  }
-
-  /**
-   * Appium: Native Context로 전환
-   */
-  public async switchToNativeContext(): Promise<void> {
-    await this.switchToContextSafe('NATIVE_APP');
-  }
-
-  /**
-   * Appium: 컨텍스트 전환
-   */
-  public async switchView(context: string = 'default', maxRetry = DEFAULT_RETRY): Promise<void> {
-    let targetContext = context;
-    if (context === 'default') {
-      targetContext = (await this.getDefaultWebView()) ?? 'NATIVE_APP';
-    }
-    await this.switchToContextSafe(targetContext, maxRetry);
-  }
-
-  /**
-   *  Appium: Chrome 초기화
-   */
-  public clearChromeData(version: string = 'stable'): void {
-    const packageName = version === 'beta' ? 'com.chrome.beta' : 'com.android.chrome';
-    const udid = (this.driver?.capabilities as any).udid;
-    if (!udid) throw new Error('UDID not found in driver capabilities.');
-
-    const cmd = `adb -s ${udid} shell pm clear ${packageName}`;
+  public async findAppiumElement(selector: string) {
     try {
-      const result = execSync(cmd, { encoding: 'utf-8' });
-      if (!result.includes('Success')) throw new Error(`Chrome clear failed: ${result}`);
-    } catch (e) {
-      throw new Error(`clearChromeData failed: ${(e as Error).message}`);
+      return await this.driver?.$(selector);
+    } catch {
+      return undefined;
     }
   }
 
   /**
    * Appium: 요소 재정의 (StaleElement 대응)
    */
-  public async redefineElement(original: Element): Promise<Element | undefined> {
+  public async redefineElement(original: any) {
     try {
       if (!original) return undefined;
       const tag = await original.getTagName();
@@ -199,7 +149,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
       if (id) candidates.push(`${tag}#${id}`);
       for (const selector of candidates) {
         const found = await this.driver?.$$(selector);
-        if (Array.isArray(found) && found.length === 1) return found[0] as Element;
+        if (Array.isArray(found) && found.length === 1) return found[0];
       }
       return await this.driver?.execute('return arguments[0];', original);
     } catch {
@@ -208,240 +158,10 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   *  Appium: URL 이동
-   */
-  public async navigateToUrl(url: string, baseUrl: string): Promise<void> {
-    const goto = url.startsWith('https')
-      ? url
-      : url.startsWith('/')
-        ? `${baseUrl}${url}`
-        : `${baseUrl}/${url}`;
-    await this.driver?.url(goto);
-    await this.driver?.pause(1000);
-  }
-
-  /**
-   *  Appium: 권한 허용 팝업 처리
-   */
-  public async handlePermissions(commonEl: Record<string, string>): Promise<void> {
-    const { driver } = this;
-    const clickSequence = [
-      '다음버튼',
-      '앱_사용중에만_허용',
-      '허용_버튼',
-      '허용_버튼',
-      '허용_버튼',
-      '모두허용_버튼',
-      '동의_버튼',
-      '로그인하지_않고_입장할게요',
-      '로그인없이_입장하기',
-    ];
-
-    for (const key of clickSequence) {
-      const resourceId = commonEl[key];
-      if (!resourceId) continue;
-      try {
-        const target = await driver?.$(`id=${resourceId}`);
-        if (target && (await target.isDisplayed())) await target.click();
-      } catch {}
-    }
-  }
-
-  /**
-   * Appium: 앱 실행 후 초기 설정 및 홈 이동 처리
-   */
-  public async initAppSession(commonEl: Record<string, string>, baseUrl: string): Promise<void> {
-    await this.driver?.pause(1500);
-
-    const contexts = await this.driver?.getContexts();
-    if (contexts && contexts.length > 1) {
-      await this.driver?.switchContext(contexts[1]);
-    }
-
-    await this.handlePermissions(commonEl);
-    await this.navigateToUrl('/', baseUrl);
-  }
-
-  /**
-   * Appium: 컨텍스트 전환
-   */
-  public async switchToContext(contextName: string): Promise<void> {
-    const contexts = (await this.driver?.getContexts()) as string[];
-    if (contexts?.includes(contextName)) {
-      await this.driver?.switchContext(contextName);
-      return;
-    }
-    await this.driver?.pause(500);
-  }
-
-  /**
-   * Appium: Native 요소 스크롤 후 재정의
-   */
-  public async scrollToElementAndRedefine(
-    selector: string,
-  ): Promise<WebdriverIO.Element | undefined> {
-    try {
-      const chainableElement = this.driver?.$(selector);
-      if (!chainableElement) return undefined;
-
-      const element = (await chainableElement) as unknown as WebdriverIO.Element;
-
-      await this.driver?.execute('arguments[0].scrollIntoView(true);', element);
-      return await this.redefineElement(element);
-    } catch {
-      return undefined;
-    }
-  }
-
-  /**
-   * Appium: 임의 위치 스와이프
-   */
-  public async swipe(fromX: number, fromY: number, toX: number, toY: number): Promise<void> {
-    await this.driver?.touchAction([
-      { action: 'press', x: fromX, y: fromY },
-      { action: 'wait', ms: 300 },
-      { action: 'moveTo', x: toX, y: toY },
-      'release',
-    ]);
-  }
-
-  /**
-   * Appium: 위/아래로 지정 횟수 스크롤
-   */
-  public async scrollByDirection(direction: 'up' | 'down', count = 3): Promise<void> {
-    for (let i = 0; i < count; i++) {
-      await this.driver?.execute('mobile: swipe', { direction });
-      await this.driver?.pause(500);
-    }
-  }
-
-  /**
-   * Appium: 요소 클릭 후 페이지 변경 대기
-   */
-  public async clickUntilPageChange(element: Element, timeout = 5000): Promise<void> {
-    const oldUrl = await this.driver?.getUrl();
-    await element.click();
-    await this.driver?.pause(1000);
-    const newUrl = await this.driver?.getUrl();
-    if (newUrl !== oldUrl) return;
-    throw new Error('Page did not change after clicking element.');
-  }
-
-  /**
-   * Appium: 요소 찾기
-   */
-  public async findAppiumElement(selector: string): Promise<Element | undefined> {
-    if (!this.driver) return;
-    const el = await this.driver.$(selector);
-    return el as unknown as Element;
-  }
-
-  /**
-   * Appium: 요소 클릭
-   */
-  public async click(selector: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.click();
-  }
-
-  /**
-   * Appium: 더블 클릭
-   */
-  public async doubleClick(selector: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.click();
-    await this.driver?.pause(100);
-    await element?.click();
-  }
-
-  /**
-   * Appium: 텍스트 입력
-   */
-  public async type(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.setValue(text);
-  }
-
-  /**
-   * Appium: 텍스트 초기화 후 입력
-   */
-  public async clearAndType(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.clearValue();
-    await element?.setValue(text);
-  }
-
-  /**
-   * Appium: 텍스트 가져오기
-   */
-  public async getText(selector: string): Promise<string | undefined> {
-    const element = await this.findAppiumElement(selector);
-    return await element?.getText();
-  }
-
-  /**
-   *  Appium: 입력값 가져오기
-   */
-  public async getValue(selector: string): Promise<string | undefined> {
-    const element = await this.findAppiumElement(selector);
-    return await element?.getValue();
-  }
-
-  /**
-   * Appium: 활성화 여부
-   */
-  public async isEnabled(selector: string): Promise<boolean> {
-    const element = await this.findAppiumElement(selector);
-    return (await element?.isEnabled()) ?? false;
-  }
-
-  /**
-   * Appium: 표시 여부
-   */
-  public async isDisplayed(selector: string): Promise<boolean> {
-    const element = await this.findAppiumElement(selector);
-    return (await element?.isDisplayed()) ?? false;
-  }
-
-  /**
-   * Appium: 토스트 존재 여부
-   */
-  public async isToastVisible(text: string): Promise<boolean> {
-    if (this.isAndroid()) {
-      const el = await this.driver?.$(`//android.widget.Toast[@text='${text}']`);
-      return (await el?.isDisplayed()) ?? false;
-    } else {
-      const el = await this.findAppiumElement(`//*[@name='${text}']`);
-      return (await el?.isDisplayed()) ?? false;
-    }
-  }
-
-  /**
-   * Appium: 키보드 숨기기
-   */
-  public async hideKeyboard(): Promise<void> {
-    try {
-      await this.driver?.hideKeyboard();
-    } catch (_) {}
-  }
-
-  /**
    * Appium: 탭
    */
   public async tap(x: number, y: number): Promise<void> {
     await this.driver?.touchAction({ action: 'tap', x, y });
-  }
-
-  /**
-   * Appium: 스크롤 후 요소 찾기
-   */
-  public async scrollAndFind(selector: string, maxScroll = 5): Promise<Element | undefined> {
-    for (let i = 0; i < maxScroll; i++) {
-      const el = await this.findAppiumElement(selector);
-      if (el && (await el.isDisplayed())) return el;
-      await this.swipeUp();
-    }
-    return undefined;
   }
 
   /**
@@ -483,17 +203,23 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    */
   public async scrollByOffset(yOffset: number): Promise<void> {
     const windowSize = await this.driver?.getWindowSize();
-
-    // X는 화면 중앙 (없을 경우 기본값)
     const x = windowSize ? windowSize.width / 2 : ActionConstants.touchTapX;
 
-    // 시작 Y좌표: 화면 중앙 (없을 경우 기본값)
-    const startY = windowSize ? windowSize.height / 2 : ActionConstants.touchStartY[this.platform];
+    // 플랫폼에 따라 startY 계산
+    let startY: number;
+    switch (this.platform) {
+      case 'ANDROID_APP':
+        startY = windowSize ? windowSize.height / 2 : ActionConstants.touchStartY.android;
+        break;
+      case 'IOS_APP':
+        startY = windowSize ? windowSize.height / 2 : ActionConstants.touchStartY.ios;
+        break;
+      default:
+        throw new Error(`Unsupported platform for scrollByOffset: ${this.platform}`);
+    }
 
-    // 종료 Y좌표: 시작점에서 yOffset만큼 위로 이동
     const endY = startY - yOffset;
 
-    // 실제 스크롤 액션 실행
     await this.driver?.touchAction([
       { action: 'press', x, y: startY },
       { action: 'wait', ms: ActionConstants.swipeWaitMs },
@@ -503,74 +229,81 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   * Appium: select 옵션
+   * Appium: 주어진 컨텍스트 이름을 기준으로 여러 번 재시도 후 컨텍스트 전환
    */
-  public async selectOption(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.selectByVisibleText(text);
-  }
-
-  /**
-   * Appium: 상단으로 스크롤
-   */
-  public async scrollToTop(): Promise<void> {
-    await this.driver?.execute('mobile: scroll', { direction: 'up' });
-  }
-
-  /**
-   * Appium: 하단으로 스크롤
-   */
-  public async scrollDown(): Promise<void> {
-    await this.driver?.execute('mobile: scroll', { direction: 'down' });
-  }
-
-  /**
-   * Appium: 보일 때까지 클릭 시도
-   */
-  public async clickUntilVisible(
-    selector: string,
-    retryCount: number = ActionConstants.maxScrollAttempts,
-  ): Promise<void> {
-    for (let i = 0; i < retryCount; i++) {
-      const el = await this.findAppiumElement(selector);
-      if (el && (await el.isDisplayed())) {
-        await el.click();
+  public async switchToContextSafe(contextName: string, retry = DEFAULT_RETRY): Promise<void> {
+    for (let i = 0; i < retry; i++) {
+      const contexts = await this.driver?.getContexts();
+      const found = contexts?.find(ctx => ctx === contextName);
+      if (found) {
+        await this.driver?.switchContext(found);
         return;
       }
-      await this.swipeUp();
+      await this.driver?.pause(1000);
     }
-    throw new Error(`Element not visible after ${retryCount} tries: ${selector}`);
+    throw new Error(`Context '${contextName}' not found after ${retry} retries.`);
   }
 
   /**
-   * Appium: 모달 닫기 (있는 경우)
+   * Appium: 기본 WebView 컨텍스트 반환
    */
-  public async closeModalIfPresent(selector: string): Promise<void> {
-    const modal = await this.findAppiumElement(selector);
-    if (modal && (await modal.isDisplayed())) {
-      await modal.click();
-    }
+  public async getDefaultWebView(): Promise<string | null> {
+    const contexts = (await this.driver?.getContexts()) as string[];
+    return contexts?.find(ctx => ctx.includes('WEBVIEW')) ?? null;
   }
 
   /**
-   * Appium: 요소 중심 터치
+   * Appium: WebView Context로 전환
    */
-  public async tapWebviewElementByCenter(selector: string): Promise<void> {
-    const el = await this.findAppiumElement(selector);
-    if (!el) return;
+  public async switchToWebviewContext(): Promise<void> {
+    const webview = await this.getDefaultWebView();
+    if (webview) await this.switchToContextSafe(webview);
+  }
 
-    const rect = await (el as any).getRect();
-    const x = rect.x + rect.width / 2;
-    const y = rect.y + rect.height / 2;
+  /**
+   * Appium: Native Context로 전환
+   */
+  public async switchToNativeContext(): Promise<void> {
+    await this.switchToContextSafe('NATIVE_APP');
+  }
 
-    await this.tap(x, y);
+  /**
+   * Appium: 키보드 숨기기
+   */
+  public async hideKeyboard(): Promise<void> {
+    try {
+      await this.driver?.hideKeyboard();
+    } catch (_) {}
+  }
+
+  /**
+   * Appium: 토스트 존재 여부
+   */
+  public async isToastVisible(text: string): Promise<boolean> {
+    if (this.isAndroid()) {
+      const el = await this.driver?.$(`//android.widget.Toast[@text='${text}']`);
+      return (await el?.isDisplayed()) ?? false;
+    } else {
+      const el = await this.findAppiumElement(`//*[@name='${text}']`);
+      return (await el?.isDisplayed()) ?? false;
+    }
   }
 
   /**
    *  Appium: 요소 클릭
    */
-  public async clickAppium(selector: string): Promise<void> {
+  public async click(selector: string): Promise<void> {
     const element = await this.findAppiumElement(selector);
+    await element?.click();
+  }
+
+  /**
+   * Appium: 더블 클릭
+   */
+  public async doubleClick(selector: string): Promise<void> {
+    const element = await this.findAppiumElement(selector);
+    await element?.click();
+    await this.driver?.pause(100);
     await element?.click();
   }
 
@@ -582,6 +315,19 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
     await element?.click();
     await this.driver?.pause(100);
     await element?.click();
+  }
+
+  /**
+   * Appium: 요소 클릭 후 페이지 변경 대기
+   */
+  public async clickUntilPageChange(element: WebdriverIO.Element): Promise<void> {
+    const oldUrl = await this.driver.getUrl();
+    await element.click();
+    await this.driver.pause(1000);
+    const newUrl = await this.driver.getUrl();
+
+    if (newUrl !== oldUrl) return;
+    throw new Error('Page did not change after clicking element.');
   }
 
   /**
@@ -632,56 +378,151 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
     const element = await this.findAppiumElement(selector);
     return (await element?.isDisplayed()) ?? false;
   }
+  /**
+   * Appium: 텍스트 입력
+   */
+  public async type(selector: string, text: string): Promise<void> {
+    const element = await this.findAppiumElement(selector);
+    await element?.setValue(text);
+  }
 
   /**
-   * Appium: 요소로 스크롤 이동
+   * Appium: 텍스트 초기화 후 입력
    */
-  public async scrollToAppium(selector: string): Promise<void> {
+  public async clearAndType(selector: string, text: string): Promise<void> {
     const element = await this.findAppiumElement(selector);
-    if (element) {
-      await this.driver?.execute('mobile: scroll', { element: element.elementId, toVisible: true });
+    await element?.clearValue();
+    await element?.setValue(text);
+  }
+
+  /**
+   * Appium: 텍스트 가져오기
+   */
+  public async getText(selector: string): Promise<string | undefined> {
+    const element = await this.findAppiumElement(selector);
+    return await element?.getText();
+  }
+
+  /**
+   * Appium: 활성화 여부
+   */
+  public async isEnabled(selector: string): Promise<boolean> {
+    const element = await this.findAppiumElement(selector);
+    return (await element?.isEnabled()) ?? false;
+  }
+
+  /**
+   * Appium: 표시 여부
+   */
+  public async isDisplayed(selector: string): Promise<boolean> {
+    const element = await this.findAppiumElement(selector);
+    return (await element?.isDisplayed()) ?? false;
+  }
+
+  /**
+   * Appium: 상태바 높이 가져오기
+   */
+  public async getStatusBarHeight(): Promise<number | undefined> {
+    try {
+      if (this.isIOS()) {
+        await this.switchToNativeContext();
+        const statusBar = await this.driver?.$('**/XCUIElementTypeStatusBar');
+        const heightAttr = await statusBar?.getAttribute('height');
+        const height = parseInt(heightAttr ?? '0');
+        await this.switchToWebviewContext();
+        return height;
+      } else if (this.isAndroid()) {
+        const windowSize = await this.driver?.getWindowSize();
+        const screenHeight = await this.driver?.execute(() => screen.height);
+        if (windowSize && screenHeight) {
+          const height = Math.abs(screenHeight - windowSize.height);
+          return height > 0 ? height : undefined;
+        }
+      }
+    } catch (e) {
+      console.warn('getStatusBarHeight() error:', e);
+    }
+    return undefined;
+  }
+
+  /**
+   * Appium: 요소가 사라질 때 클릭 시도
+   */
+  public async clickUntilVisible(
+    selector: string,
+    retryCount = ActionConstants.maxScrollAttempts,
+  ): Promise<void> {
+    for (let i = 0; i < retryCount; i++) {
+      const el = await this.findAppiumElement(selector);
+      if (el && (await el.isDisplayed())) {
+        await el.click();
+        return;
+      }
+      await this.swipeUp();
+    }
+    throw new Error(`Element not visible after ${retryCount} tries: ${selector}`);
+  }
+
+  public async clickUntilInvisible(selector: string): Promise<void> {
+    const el = await this.findAppiumElement(selector);
+    if (!el || !(await el.isDisplayed())) return;
+
+    await el.click();
+    await this.driver?.pause(1000);
+
+    const isVisible = await el.isDisplayed().catch(() => false);
+    if (isVisible) {
+      console.warn(`Element still visible after click: ${selector}`);
     }
   }
 
   /**
-   * Appium: 드롭다운 옵션 선택
+   * Appium: 스크롤 후 요소 찾기
    */
-  public async selectAppiumOption(selector: string, text: string): Promise<void> {
-    const element = await this.findAppiumElement(selector);
-    await element?.selectByVisibleText(text);
+  public async scrollAndFind(selector: string, maxScroll = 5) {
+    for (let i = 0; i < maxScroll; i++) {
+      const el = await this.findAppiumElement(selector);
+      if (el && (await el.isDisplayed())) return el;
+      await this.swipeUp();
+    }
+    return undefined;
   }
 
   /**
-   * Appium: 키 입력
+   * Appium: 요소 위치로 스크롤 이동
    */
-  public async pressKeyAppium(key: string): Promise<void> {
-    await this.driver?.keys(key);
+  public async scrollToVisibleElement(selector: string): Promise<void> {
+    try {
+      for (let i = 0; i < 5; i++) {
+        const el = await this.findAppiumElement(selector);
+        if (el && (await el.isDisplayed())) return;
+        await this.driver?.execute('mobile: swipe', { direction: 'down' });
+      }
+    } catch (e) {
+      console.warn('scrollToVisibleElement() error:', e);
+    }
   }
 
   /**
    * Appium: 요소까지 슬라이드
    */
-  public async slideToElement(el: Element): Promise<void> {
+  public async slideToElement(el: any): Promise<void> {
     const location = await el.getLocation();
     const x = location.x;
     const y = location.y;
 
     const width = await this.driver.execute(() => window.innerWidth);
-    const height = await this.driver.execute(() => window.innerHeight);
-
     const startX = x + width * 0.1;
     const endX = x - width * 0.15;
 
-    console.debug(`[${this.platform}] Sliding from (${startX}, ${y}) to (${endX}, ${y})`);
-
-    if (this.platform === 'android') {
+    if (this.platform === 'ANDROID_APP') {
       await this.driver.touchAction([
         { action: 'press', x: startX, y },
         { action: 'wait', ms: 100 },
         { action: 'moveTo', x: endX, y },
         { action: 'release' },
       ]);
-    } else if (this.platform === 'ios') {
+    } else if (this.platform === 'IOS_APP') {
       await this.driver.performActions([
         {
           type: 'pointer',
@@ -701,48 +542,72 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   * Appium: 상태바 높이 가져오기
+   *  Appium: 권한 허용 팝업 처리
    */
-  public async getStatusBarHeight(): Promise<number | undefined> {
-    try {
-      if (this.isIOS()) {
-        await this.switchToNativeContext();
-        const statusBar = await this.driver?.$(
-          `-ios class chain:**/XCUIElementTypeWindow[7]/XCUIElementTypeStatusBar`,
-        );
-        const heightAttr = await statusBar?.getAttribute('height');
-        const height = parseInt(heightAttr ?? '0');
-        await this.switchToWebviewContext();
-        return height;
-      } else if (this.isAndroid()) {
-        const windowSize = await this.driver?.getWindowSize();
-        const screenHeight = await this.driver?.execute(() => screen.height);
+  public async handlePermissions(commonEl: Record<string, string>): Promise<void> {
+    const { driver } = this;
+    const clickSequence = [
+      '다음버튼',
+      '앱_사용중에만_허용',
+      '허용_버튼',
+      '허용_버튼',
+      '허용_버튼',
+      '모두허용_버튼',
+      '동의_버튼',
+      '로그인하지_않고_입장할게요',
+      '로그인없이_입장하기',
+    ];
 
-        if (windowSize && screenHeight) {
-          const height = Math.abs(screenHeight - windowSize.height);
-          return height > 0 ? height : undefined;
-        }
-        return undefined;
-      }
-    } catch (e) {
-      return undefined;
+    for (const key of clickSequence) {
+      const resourceId = commonEl[key];
+      if (!resourceId) continue;
+      try {
+        const target = await driver?.$(`id=${resourceId}`);
+        if (target && (await target.isDisplayed())) await target.click();
+      } catch {}
     }
   }
 
   /**
-   * Appium: 요소가 사라질 때 클릭 시도
+   * Appium: 앱 실행 후 초기 설정 및 홈 이동 처리
    */
-  public async clickUntilInvisible(selector: string): Promise<void> {
-    const el = await this.findAppiumElement(selector);
-    if (!el || !(await el.isDisplayed())) return;
+  public async initAppSession(commonEl: Record<string, string>, baseUrl: string): Promise<void> {
+    await this.driver?.pause(1500);
 
-    await el.click();
-    await this.driver?.pause(1000);
-
-    const isVisible = await el.isDisplayed().catch(() => false);
-    if (isVisible) {
-      console.warn(`Element still visible after click: ${selector}`);
+    const contexts = await this.driver?.getContexts();
+    if (contexts && contexts.length > 1) {
+      await this.driver?.switchContext(contexts[1]);
     }
+    await this.handlePermissions(commonEl);
+    await this.navigateToUrl('/', baseUrl);
+  }
+
+  /**
+   *  Appium: URL 이동
+   */
+  public async navigateToUrl(url: string, baseUrl: string): Promise<void> {
+    const goto = url.startsWith('https')
+      ? url
+      : url.startsWith('/')
+        ? `${baseUrl}${url}`
+        : `${baseUrl}/${url}`;
+    await this.driver?.url(goto);
+    await this.driver?.pause(1000);
+  }
+
+  /**
+   * Appium: 키 입력
+   */
+  public async pressKeyAppium(key: string): Promise<void> {
+    await this.driver?.keys(key);
+  }
+
+  /**
+   * Appium: 드롭다운 옵션 선택
+   */
+  public async selectAppiumOption(selector: string, text: string): Promise<void> {
+    const element = await this.findAppiumElement(selector);
+    await element?.selectByVisibleText(text);
   }
 
   /**
@@ -752,7 +617,6 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
     try {
       const windowSize = await this.driver?.getWindowSize();
       const windowRect = await this.driver?.getWindowRect?.();
-      const currentUrl = await this.driver?.getUrl();
       const contexts = await this.driver?.getContexts();
 
       console.log('get_window_size =>', windowSize);
@@ -771,7 +635,6 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
       }
       console.log('----------------------------------------------------');
 
-      // 홈으로 이동 처리 (사용자 정의 메서드)
       if (typeof (this as any).gotoHome === 'function') {
         await (this as any).gotoHome();
       }
@@ -779,58 +642,10 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
       console.warn('preScript() error:', e);
     }
   }
-
-  /**
-   * Appium: 요소를 가로 방향으로 슬라이드
-   */
-  public async slideElementHorizontally(el: Element): Promise<void> {
-    try {
-      const location = await el.getLocation();
-      const x = location.x;
-      const y = location.y;
-      console.log(`x => ${x}, y => ${y}`);
-
-      const width = await this.driver.execute(() => window.innerWidth);
-      const height = await this.driver.execute(() => window.innerHeight);
-      console.log(`width => ${width}, height => ${height}`);
-
-      const startX = x + width * 0.1;
-      const endX = x - width * 0.15;
-
-      await this.driver.touchAction([
-        { action: 'press', x: startX, y },
-        { action: 'wait', ms: 200 },
-        { action: 'moveTo', x: endX, y },
-        { action: 'release' },
-      ]);
-    } catch (e) {
-      console.warn('slideElementHorizontally() error:', e);
-    }
-  }
-
-  /**
-   * Appium: 요소 위치로 스크롤 이동
-   */
-  public async scrollToVisibleElement(selector: string): Promise<void> {
-    try {
-      for (let i = 0; i < 5; i++) {
-        const el = await this.findAppiumElement(selector);
-        if (el && (await el.isDisplayed())) return;
-        await this.driver?.execute('mobile: swipe', { direction: 'down' });
-      }
-    } catch (e) {
-      console.warn('scrollToVisibleElement() error:', e);
-    }
-  }
-
-  /**
-   * Appium: 요소를 화면 중앙으로 스크롤
-   */
   public async scrollElementToCenter(selector: string): Promise<void> {
     try {
       const el = await this.findAppiumElement(selector);
       if (!el) return;
-
       await this.driver?.execute('arguments[0].scrollIntoViewIfNeeded()', el);
     } catch (e) {
       console.warn('scrollElementToCenter() error:', e);
@@ -881,7 +696,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   /**
    * Appium: Native 요소 재정의
    */
-  public async redefineElementByAttributes(original: Element): Promise<Element | undefined> {
+  public async redefineElementByAttributes(original: any): Promise<any | undefined> {
     try {
       if (!original) throw new Error('Element is undefined');
 
@@ -891,7 +706,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
       const role = await original.getAttribute('role');
       const className = await original.getAttribute('class');
 
-      const attributeSelectors: { attr: string; value: string | null }[] = [
+      const attributeSelectors = [
         { attr: 'id', value: id },
         { attr: 'title', value: title },
         { attr: 'role', value: role },
@@ -906,7 +721,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
 
       for (const selector of candidates) {
         const found = await this.driver?.$$(selector);
-        if (Array.isArray(found) && found.length === 1) return found[0] as Element;
+        if (Array.isArray(found) && found.length === 1) return found[0];
       }
 
       return await this.driver?.execute('return arguments[0];', original);
@@ -923,7 +738,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
     selector: string,
     strategy: 'id' | 'ios_chain',
     maxRetry: number = DEFAULT_RETRY,
-  ): Promise<Element | undefined> {
+  ): Promise<any | undefined> {
     const locatorPrefix = strategy === 'id' ? 'id=' : '-ios class chain:';
     const locator = `${locatorPrefix}${selector}`;
 
@@ -931,10 +746,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
     while (attempt < maxRetry) {
       try {
         const el = await this.driver?.$(locator);
-        const element = el as unknown as Element;
-        if (element && (await element.isDisplayed())) {
-          return element;
-        }
+        if (el && (await el.isDisplayed())) return el;
       } catch (error) {
         console.error('Error while waiting for native element:', error);
       }
@@ -948,12 +760,159 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   /**
    * Appium: Native 드래그 동작
    */
-  public async dragAndDropX(el: Element, offsetX: number = -200): Promise<void> {
+  public async dragAndDropX(el: any, offsetX: number = -200): Promise<void> {
     await this.driver?.touchAction([
       { action: 'press', element: el },
       { action: 'wait', ms: 200 },
       { action: 'moveTo', x: offsetX, y: 0 },
       'release',
     ]);
+  }
+
+  /**
+   * Appium: 모달이 있으면 닫기
+   */
+  public async closeModalIfPresent(selector: string): Promise<void> {
+    const modal = await this.findAppiumElement(selector);
+    if (modal && (await modal.isDisplayed())) {
+      await modal.click();
+    }
+  }
+
+  /**
+   * Appium: 요소 중심을 터치 (WebView 요소)
+   */
+  public async tapWebviewElementByCenter(selector: string): Promise<void> {
+    const el = await this.findAppiumElement(selector);
+    if (!el) return;
+
+    const elementId = await el.elementId;
+    const rect = await this.driver.getElementRect(elementId);
+
+    const x = rect.x + rect.width / 2;
+    const y = rect.y + rect.height / 2;
+
+    await this.tap(x, y);
+  }
+
+  /**
+   * Appium: 요소로 스크롤 이동 (native 방식)
+   */
+  public async scrollToAppium(selector: string): Promise<void> {
+    const el = await this.findAppiumElement(selector);
+    if (el) {
+      await this.driver?.execute('mobile: scroll', { element: el.elementId, toVisible: true });
+    }
+  }
+
+  /**
+   * Appium: select 드롭다운 옵션 선택 (WebView일 수도 있음)
+   */
+  public async selectOption(selector: string, text: string): Promise<void> {
+    const el = await this.findAppiumElement(selector);
+    await el?.selectByVisibleText(text);
+  }
+
+  /**
+   * Appium: 컨텍스트 전환
+   */
+  public async switchView(context: string = 'default', maxRetry = DEFAULT_RETRY): Promise<void> {
+    let targetContext = context;
+    if (context === 'default') {
+      targetContext = (await this.getDefaultWebView()) ?? 'NATIVE_APP';
+    }
+    await this.switchToContextSafe(targetContext, maxRetry);
+  }
+
+  /**
+   *  Appium: Chrome 초기화
+   */
+  public clearChromeData(version: string = 'stable'): void {
+    const packageName = version === 'beta' ? 'com.chrome.beta' : 'com.android.chrome';
+    const udid = (this.driver?.capabilities as any).udid;
+    if (!udid) throw new Error('UDID not found in driver capabilities.');
+
+    const cmd = `adb -s ${udid} shell pm clear ${packageName}`;
+    try {
+      const result = execSync(cmd, { encoding: 'utf-8' });
+      if (!result.includes('Success')) throw new Error(`Chrome clear failed: ${result}`);
+    } catch (e) {
+      throw new Error(`clearChromeData failed: ${(e as Error).message}`);
+    }
+  }
+
+  /**
+   * Appium: 컨텍스트 전환
+   */
+  public async switchToContext(contextName: string): Promise<void> {
+    const contexts = (await this.driver?.getContexts()) as string[];
+    if (contexts?.includes(contextName)) {
+      await this.driver?.switchContext(contextName);
+      return;
+    }
+    await this.driver?.pause(500);
+  }
+
+  /**
+   * Appium: Native 요소 스크롤 후 재정의
+   */
+  public async scrollToElementAndRedefine(
+    selector: string,
+  ): Promise<WebdriverIO.Element | undefined> {
+    try {
+      const chainableElement = this.driver?.$(selector);
+      if (!chainableElement) return undefined;
+
+      const element = (await chainableElement) as unknown as WebdriverIO.Element;
+
+      await this.driver?.execute('arguments[0].scrollIntoView(true);', element);
+      return await this.redefineElement(element);
+    } catch {
+      return undefined;
+    }
+  }
+
+  /**
+   * Appium: 임의 위치 스와이프
+   */
+  public async swipe(fromX: number, fromY: number, toX: number, toY: number): Promise<void> {
+    await this.driver?.touchAction([
+      { action: 'press', x: fromX, y: fromY },
+      { action: 'wait', ms: 300 },
+      { action: 'moveTo', x: toX, y: toY },
+      'release',
+    ]);
+  }
+
+  /**
+   *  Appium: 입력값 가져오기
+   */
+  public async getValue(selector: string): Promise<string | undefined> {
+    const element = await this.findAppiumElement(selector);
+    return await element?.getValue();
+  }
+
+  /**
+   * Appium: 상단으로 스크롤
+   */
+  public async scrollToTop(): Promise<void> {
+    await this.driver?.execute('mobile: scroll', { direction: 'up' });
+  }
+
+  /**
+   * Appium: 하단으로 스크롤
+   */
+  public async scrollDown(): Promise<void> {
+    await this.driver?.execute('mobile: scroll', { direction: 'down' });
+  }
+
+  /**
+   * Appium: 위/아래로 지정 횟수 스크롤
+   */
+  public async scrollByDirection(direction: 'up' | 'down', count = 3): Promise<void> {
+    for (let i = 0; i < count; i++) {
+      await this.driver?.execute('mobile: swipe', { direction });
+      await this.driver?.pause(500);
+    }
   }
 }
