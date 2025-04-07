@@ -1,3 +1,8 @@
+/**
+ * Description : AssertUtils.ts - 📌 테스트 검증 로직을 모듈화한 유틸리티 클래스
+ * Author : Shiwoo Min
+ * Date : 2024-04-07
+ */
 import { expect, test } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
 
@@ -274,7 +279,9 @@ export class AssertUtils {
   public async assertTextAmong(locator: Locator, expectedTextList: string[]): Promise<void> {
     const text = await locator.innerText();
     if (!expectedTextList.some(expected => text.includes(expected))) {
-      throw new Error(`텍스트 '${text}'가 기대값 ${expectedTextList.join(', ')} 중 어떤 것도 포함하지 않음`);
+      throw new Error(
+        `텍스트 '${text}'가 기대값 ${expectedTextList.join(', ')} 중 어떤 것도 포함하지 않음`,
+      );
     }
   }
 }

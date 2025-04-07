@@ -1,138 +1,99 @@
 /**
- * Description : LocatorUtils.ts - 📌 로케이터유틸
+ * Description : LocatorLoader.ts - 📌 동적으로 로케이터 파일을 로드
  * Author : Shiwoo Min
- * Date : 2024-04-04
+ * Date : 2024-04-08
  */
-import { FOLDER_PATHS } from '@common/constants/PathConstants';
-import { Logger } from '@common/logger/customLogger';
-import type { POCKey, POCType } from '@common/types/platform-types';
-import { ALL_POCS } from '@common/types/platform-types';
+import type { POCKey } from '@common/types/platform-types';
+import fs from 'fs';
 import path from 'path';
-import { NumericLiteral, ObjectLiteralExpression, Project, PropertyAssignment, StringLiteral, SyntaxKind } from 'ts-morph';
-import type winston from 'winston';
+import {
+  ObjectLiteralExpression,
+  Project,
+  PropertyAssignment,
+  StringLiteral,
+  SyntaxKind,
+} from 'ts-morph';
 
+export class LocatorLoader {
+  private static readonly project = new Project({ tsConfigFilePath: 'tsconfig.json' });
 
-
-
-
-export class LocatorUtils {
-  // 해당 로케이터는 공통함수 부분이므로 타입 경고를 무시하고 사용
-  private static BASE_LOCATOR_DIR = (FOLDER_PATHS as any)('common').locators;
-  private static project = new Project({ tsConfigFilePath: 'tsconfig.json' });
-
-  /**
-   * 로케이터 파일 로드 (common/locators + section 단위, TypeScript 기반)
-   */
-  static loadLocators(poc: POCKey, section: string): Record<string, any> {
-    const logger = Logger.getLogger(poc) as winston.Logger;
-    const filePath = path.join(this.BASE_LOCATOR_DIR, poc, `${section}.ts`);
-
-    try {
-      const sourceFile = this.project.addSourceFileAtPathIfExists(filePath);
-      if (!sourceFile) {
-        throw new Error(`Locator file not found: ${filePath}`);
-      }
-
-      const exportConst = sourceFile.getVariableDeclarations()[0];
-      const initializer = exportConst?.getInitializerIfKindOrThrow(
-        SyntaxKind.ObjectLiteralExpression,
-      );
-      const locators: Record<string, any> = {};
-
-      initializer?.getProperties().forEach(prop => {
-        if (PropertyAssignment.isPropertyAssignment(prop)) {
-          const key = prop.getName().replace(/['"]/g, '');
-          const valueNode = prop.getInitializer();
-          if (!valueNode) return;
-
-          switch (valueNode.getKind()) {
-            case SyntaxKind.StringLiteral:
-              locators[key] = (valueNode as StringLiteral).getLiteralValue();
-              break;
-            case SyntaxKind.NumericLiteral:
-              locators[key] = Number((valueNode as NumericLiteral).getLiteralValue());
-              break;
-            case SyntaxKind.TrueKeyword:
-              locators[key] = true;
-              break;
-            case SyntaxKind.FalseKeyword:
-              locators[key] = false;
-              break;
-            case SyntaxKind.ObjectLiteralExpression:
-              locators[key] = LocatorUtils.convertObjectLiteral(
-                valueNode as ObjectLiteralExpression,
-              );
-              break;
-            default:
-              locators[key] = valueNode.getText();
-          }
-        }
-      });
-
-      logger.info(`[Locator] ${filePath} 로드 완료`);
-      return locators;
-    } catch (error: any) {
-      logger.error(`[Locator] ${filePath} 로드 실패 - ${error.message || error}`);
-      return {};
-    }
+  // Locator 경로 (예: common/locators/pc/authLocator.ts)
+  private static getLocatorFilePath(poc: POCKey, section: string): string {
+    return path.resolve(__dirname, '../../common/locators', poc, `${section}.ts`);
   }
 
   /**
-   * ObjectLiteralExpression → JS 객체로 변환
+   * 특정 POC + 섹션 파일에서 로케이터 객체 전체 로드
    */
-  private static convertObjectLiteral(obj: ObjectLiteralExpression): Record<string, any> {
+  public static load(poc: POCKey, section: string): Record<string, any> {
+    const filePath = this.getLocatorFilePath(poc, section);
+
+    if (!fs.existsSync(filePath)) {
+      throw new Error(`Locator file not found: ${filePath}`);
+    }
+
+    const sourceFile = this.project.addSourceFileAtPath(filePath);
+    const exportVar = sourceFile.getVariableDeclarations()[0];
+    const initializer = exportVar?.getInitializerIfKind(SyntaxKind.ObjectLiteralExpression);
+
     const result: Record<string, any> = {};
+    initializer?.getProperties().forEach(prop => {
+      if (!PropertyAssignment.isPropertyAssignment(prop)) return;
 
-    obj.getProperties().forEach(p => {
-      if (PropertyAssignment.isPropertyAssignment(p)) {
-        const key = p.getName().replace(/['"]/g, '');
-        const val = p.getInitializer();
+      const key = prop.getName().replace(/['"]/g, '');
+      const val = prop.getInitializer();
 
-        if (!val) return;
+      if (!val) return;
 
-        switch (val.getKind()) {
-          case SyntaxKind.StringLiteral:
-            result[key] = (val as StringLiteral).getLiteralValue();
-            break;
-          case SyntaxKind.NumericLiteral:
-            result[key] = Number((val as NumericLiteral).getLiteralValue());
-            break;
-          case SyntaxKind.TrueKeyword:
-            result[key] = true;
-            break;
-          case SyntaxKind.FalseKeyword:
-            result[key] = false;
-            break;
-          case SyntaxKind.ObjectLiteralExpression:
-            result[key] = this.convertObjectLiteral(val as ObjectLiteralExpression);
-            break;
-          default:
-            result[key] = val.getText();
-        }
+      if (val.getKind() === SyntaxKind.ObjectLiteralExpression) {
+        result[key] = this.convertObjectLiteral(val as ObjectLiteralExpression);
+      } else if (val.getKind() === SyntaxKind.StringLiteral) {
+        result[key] = (val as StringLiteral).getLiteralValue();
+      } else {
+        result[key] = val.getText(); // fallback
       }
     });
 
     return result;
   }
 
-  static getLocator(poc: POCKey, section: string, key: string): string | null {
-    const locators = this.loadLocators(poc, section);
-    const logger = Logger.getLogger(poc) as winston.Logger;
-
-    if (locators && key in locators) {
-      return locators[key];
-    } else {
-      logger.warn(`[Locator] ${section}.ts 에 '${key}' 없음`);
+  /**
+   * 특정 키의 로케이터만 반환
+   */
+  public static get(poc: POCKey, section: string, key: string): string | null {
+    try {
+      const locators = this.load(poc, section);
+      return locators[key] ?? null;
+    } catch {
       return null;
     }
   }
 
-  static preloadAllPOCLocators(section: string): Record<POCKey, Record<string, any>> {
-    const result: Record<POCKey, Record<string, any>> = {} as any;
+  /**
+   * 중첩 객체를 JS 객체로 변환
+   */
+  private static convertObjectLiteral(obj: ObjectLiteralExpression): Record<string, any> {
+    const result: Record<string, any> = {};
 
-    for (const poc of ALL_POCS) {
-      result[poc] = this.loadLocators(poc, section);
-    }
+    obj.getProperties().forEach(p => {
+      if (!PropertyAssignment.isPropertyAssignment(p)) return;
+
+      const key = p.getName().replace(/['"]/g, '');
+      const val = p.getInitializer();
+
+      if (!val) return;
+
+      switch (val.getKind()) {
+        case SyntaxKind.StringLiteral:
+          result[key] = (val as StringLiteral).getLiteralValue();
+          break;
+        case SyntaxKind.ObjectLiteralExpression:
+          result[key] = this.convertObjectLiteral(val as ObjectLiteralExpression);
+          break;
+        default:
+          result[key] = val.getText();
+      }
+    });
 
     return result;
   }

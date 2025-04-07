@@ -179,7 +179,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
     name: 'PC Web - Chrome',
     path: 'e2e/pc-web',
     device: 'Desktop Chrome',
-    outputKey: 'pc-web',
+    outputKey: 'PC',
     // 운영 체제 브라우저 창크기로 설정
     viewport: { width: 1920, height: 1080 },
     launchOptions: {
@@ -207,7 +207,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       hasTouch: true,
       deviceScaleFactor: 3.5,
     },
-    outputKey: 'pc-mobile-web',
+    outputKey: 'MW',
   },
   // // 테스트 중
   // {
@@ -215,7 +215,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
   //   path: 'e2e/mobile-web',
   //   device: 'Pixel 5',
   //   viewport: { width: 412, height: 915 },
-  //   outputKey: 'mobile-web-android',
+  //   outputKey: 'MW',
   // },
   // // 테스트 중
   // {
@@ -223,7 +223,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
   //   path: 'e2e/mobile-web',
   //   device: 'iPhone 12',
   //   viewport: { width: 390, height: 844 },
-  //   outputKey: 'mobile-web-ios',
+  //   outputKey: 'MW',
   // },
   // Android App - LGUPLUS
   ...Object.entries(ANDROID_DEVICES)
@@ -234,7 +234,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       path: 'e2e/android-app',
       device: name,
       deviceConfig: config,
-      outputKey: `android-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
+      outputKey: 'AOS',
     })),
 
   // iOS App - LGUPLUS
@@ -247,11 +247,10 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       platform: ['darwin'],
       device: name,
       deviceConfig: config,
-      outputKey: `ios-app-${name.replace(/\s+/g, '-').toLowerCase()}`,
+      outputKey: 'IOS',
     })),
 ];
 
-// 정적 E2E 테스트 대상 변환 함수
 // 정적 E2E 테스트 대상 변환 함수
 function generateE2EProjects(): Project[] {
   return E2E_CONFIGS.filter(config => {

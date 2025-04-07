@@ -14,7 +14,7 @@ export class NetworkUtils {
   constructor(
     private page: Page,
     private context: BrowserContext,
-    private poc: POCKey, // 모든 POCKey 명시적으로 요구
+    private poc: POCKey,
   ) {
     this.logger = Logger.getLogger(poc) as winston.Logger;
   }

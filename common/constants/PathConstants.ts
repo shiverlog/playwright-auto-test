@@ -24,10 +24,13 @@ const POC_ALL: POCType = 'ALL';
  */
 export const POC_FOLDER_MAP: Record<Exclude<POCType, 'ALL'>, string | string[]> = {
   PC: 'pc-web',
-  // MW는 PC, Emulator, Device 로 테스트 ( 추후 경로 변경)
+  // MW는 PC, Emulator, Device 로 테스트
   MW: ['pc-mobile-web'],
+  // AOS는 Android App으로 테스트
   AOS: ['android-app'],
+  // IOS는 IOS App으로 테스트
   IOS: ['ios-app'],
+  // API 미정
   API: 'api',
 };
 

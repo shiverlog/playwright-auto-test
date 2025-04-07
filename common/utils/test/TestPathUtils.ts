@@ -1,6 +1,11 @@
+/**
+ * Description : TestPathUtils.ts - 📌 테스트 경로 및 파일 위치를 관리하는 유틸리티
+ * Author : Shiwoo Min
+ * Date : 2024-04-07
+ */
 import { TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
-import type { POCType } from '@common/constants/PathConstants';
 import { getCurrentTimestamp } from '@common/formatters/formatters';
+import type { POCKey, POCType } from '@common/types/platform-types';
 import path from 'path';
 
 export class TestPathUtils {
@@ -31,19 +36,17 @@ export class TestPathUtils {
   }
 
   /**
-   * 테스트 실행 중 유니크한 테스트 결과 경로 반환
-   * (PathConstants의 TEST_RESULT_FILE_NAME을 기반으로 하되, 유니크화)
+   * 유니크한 테스트 결과 경로 반환
    */
   public static generateTestResultPaths(
-    base: string,
-    poc: POCType,
+    // 'ALL'은 제외된 유효 POC만 허용
+    poc: POCKey,
     testName: string,
     testId: string,
     workerIndex: number,
   ): Record<string, string> {
-    // 반환 타입을 좀 더 일반화
-    const resultPaths = TEST_RESULT_FILE_NAME(base, poc);
-    const extensionMap: Record<string, string> = {
+    const resultPaths = TEST_RESULT_FILE_NAME(poc);
+    const extensionMap = {
       playwrightReport: 'html',
       log: 'json',
       allureResult: 'json',
@@ -51,26 +54,26 @@ export class TestPathUtils {
       videos: 'mp4',
       traces: 'zip',
       coverage: 'json',
-    };
+    } as const;
 
     const customPaths: Record<string, string> = {};
 
-    // resultPaths 객체의 키들에 대해 반복
-    for (const key in resultPaths) {
-      if (resultPaths.hasOwnProperty(key)) {
-        // key를 keyof typeof resultPaths로 명확하게 지정
-        const ext = extensionMap[key as keyof typeof resultPaths]; // 확장자 가져오기
-        const dir = path.dirname(resultPaths[key as keyof typeof resultPaths]); // 디렉토리 부분 추출
-        customPaths[key] = this.generateUniqueFileName(
-          dir,
-          poc,
-          testName,
-          testId,
-          workerIndex,
-          ext,
-        );
-      }
-    }
-    return customPaths;
+    (Object.keys(resultPaths) as Array<keyof typeof extensionMap>).forEach(key => {
+      const ext = extensionMap[key];
+      const paths = resultPaths[key];
+
+      const targetDir = Array.isArray(paths) ? path.dirname(paths[0]) : path.dirname(paths);
+
+      customPaths[key] = this.generateUniqueFileName(
+        targetDir,
+        poc,
+        testName,
+        testId,
+        workerIndex,
+        ext,
+      );
+    });
+
+    return customPaths as Record<keyof typeof extensionMap, string>;
   }
 }

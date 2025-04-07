@@ -14,7 +14,7 @@ export const Platform = {
 } as const;
 
 export type Platform = keyof typeof Platform;
-export type PlatformValue = (typeof Platform)[Platform];
+// export type PlatformValue = (typeof Platform)[Platform];
 
 // UI 타입 구분
 export const UIType = {
@@ -25,7 +25,7 @@ export const UIType = {
 
 export type UIType = keyof typeof UIType;
 
-// 플랫폼 → UI 타입 매핑
+// 플랫폼 -> UI 타입 매핑
 export const PlatformToUIType: Record<Platform, UIType> = {
   PC_WEB: 'PC',
   MOBILE_WEB: 'MOBILE',
@@ -41,6 +41,7 @@ export const POC = {
   AOS: 'aos',
   IOS: 'ios',
   API: 'api',
+  // 전 POC 병렬
   ALL: '',
 } as const;
 
@@ -50,6 +51,7 @@ export type POCType = keyof typeof POC;
 export type POCValue = (typeof POC)[POCType];
 // ''을 제외한 유효한 POC value 타입
 export type ValidPOCValue = Exclude<POCValue, 'ALL'>;
-// 병렬 실행 등에서 순회 가능한 POC 목록 상수 (ALL 제외)
+// 병렬 실행 등에서 사용할 수 있는 POC 목록
 export const ALL_POCS: POCKey[] = ['PC', 'MW', 'AOS', 'IOS', 'API'];
+// 실제 실행 가능한 POC key
 export type POCKey = Exclude<POCType, 'ALL'>;
