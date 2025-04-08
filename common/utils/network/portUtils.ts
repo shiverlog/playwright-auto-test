@@ -10,7 +10,11 @@ import * as net from 'net';
  * @param startPort - 시작 포트 번호 (기본값: 4723)
  * @param maxPort - 최대 포트 번호 (기본값: 4800)
  */
-export async function getAvailablePort(startPort = 4723, maxPort = 4800): Promise<number> {
+export async function getAvailablePort(
+  startPort = 4723,
+  maxPort = 4800,
+  usedPorts: Set<number> = new Set(),
+): Promise<number> {
   // 개별 포트가 사용 가능한지 확인
   function checkPort(port: number): Promise<boolean> {
     return new Promise(resolve => {
@@ -26,6 +30,7 @@ export async function getAvailablePort(startPort = 4723, maxPort = 4800): Promis
   }
 
   for (let port = startPort; port <= maxPort; port++) {
+    if (usedPorts.has(port)) continue;
     const isAvailable = await checkPort(port);
     if (isAvailable) return port;
   }

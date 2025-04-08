@@ -25,8 +25,8 @@ export abstract class BasePocFixture {
     const logger = Logger.getLogger(pocKey) as winston.Logger;
     logger.info('[BasePocFixture] 테스트 환경 초기화 시작');
 
-    await this.createFolderIfNotExists('logs', pocKey);
-    await this.createFolderIfNotExists('screenshots', pocKey);
+    // await this.createFolderIfNotExists('logs', pocKey);
+    // await this.createFolderIfNotExists('screenshots', pocKey);
   }
 
   /**

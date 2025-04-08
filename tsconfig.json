@@ -21,19 +21,40 @@
     // 모듈화를 위한 Path 설정
     "paths": {
       "@common/*": ["common/*"],
+      // 전체 e2e 테스트
       "@e2e/*": ["e2e/*"],
+      // android app 테스트
       "@e2e/aos/*": ["e2e/android-app/*"],
       "@e2e/aos/src/*": ["e2e/android-app/src/*"],
+      // android 에뮬레이션 app 테스트
+      "@e2e/aos-emu/*": ["e2e/android-emulator-app/*"],
+      "@e2e/aos-emu/src/*": ["e2e/android-emulator-app/src/*"],
+      // api 테스트
       "@e2e/api/*": ["e2e/api/*"],
       "@e2e/api/src/*": ["e2e/api/src/*"],
+      // ios 에뮬레이션 app 테스트
+      "@e2e/ios-emu/*": ["e2e/ios-emulator-app/*"],
+      "@e2e/ios-emu/src/*": ["e2e/ios-emulator-app/src/*"],
+      // ios app 테스트
       "@e2e/ios/*": ["e2e/ios-app/*"],
       "@e2e/ios/src/*": ["e2e/ios-app/src/*"],
+      // mobile web pc 테스트
       "@e2e/pc-mobile-web/*": ["e2e/pc-mobile-web/*"],
       "@e2e/pc-mobile-web/src/*": ["e2e/pc-mobile-web/src/*"],
+      // mobile web android 테스트
+      "@e2e/android-mobile-web/*": ["e2e/android-mobile-web/*"],
+      "@e2e/android-mobile-web/src/*": ["e2e/android-mobile-web/src/*"],
+      // mobile web ios 테스트
+      "@e2e/ios-mobile-web/*": ["e2e/ios-mobile-web/*"],
+      "@e2e/ios-mobile-web/src/*": ["e2e/ios-mobile-web/src/*"],
+      // pc web 테스트
       "@e2e/pc/*": ["e2e/pc-web/*"],
       "@e2e/pc/src/*": ["e2e/pc-web/src/*"],
+      // pubsub
       "@pubsub/*": ["pubsub/*"],
+      // mosaic
       "@mosaic-db/*": ["mosaic-db/*"],
+      // speedtest mobile web android 테스트
       "@speedtest/*": ["speedtest/*"],
       "@speedtest/src/*": ["speedtest/src/*"]
     },
@@ -100,20 +121,31 @@
   // TypeScript 컴파일 대상
   "include": [
     "common",
+    // ALL
     "e2e",
+    // PC
     "e2e/pc-web",
+    // MW
+    "e2e/pc-mobile-web",
     "e2e/android-mobile-web",
+    "e2e/ios-mobile-web",
+    // ANDROID
     "e2e/android-app",
+    "e2e/android-emulator-app",
+    // IOS
     "e2e/ios-app",
+    "e2e/ios-emulator-app",
+    // API
     "e2e/api",
+    // MW
     "speedtest",
     "batch",
     "pubsub",
     "mosaic-db",
-    "speedtest",
     "tests",
     "tests-examples",
     "playwright.config.ts",
+    // 초기화/종료
     "globalSetup.ts",
     "globalTeardown.ts",
     "common/utils/test/scriptRunner.ts"

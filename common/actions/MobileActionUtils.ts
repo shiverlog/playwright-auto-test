@@ -17,6 +17,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   protected driver: Browser;
   protected platform: Platform;
 
+  // Android/iOS 공통처리
   constructor(page: Page, driver: Browser) {
     super(page, driver);
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();

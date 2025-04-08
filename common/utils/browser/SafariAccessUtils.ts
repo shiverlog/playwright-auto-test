@@ -14,11 +14,7 @@ export class SafariAccessUtils {
   private switchContext: (view: string) => Promise<void>;
   private poc: POCKey;
 
-  constructor(
-    driver: Browser,
-    switchContext: (view: string) => Promise<void>,
-    poc: POCKey, // POCKey 명시적 주입
-  ) {
+  constructor(driver: Browser, switchContext: (view: string) => Promise<void>, poc: POCKey) {
     this.driver = driver;
     this.switchContext = switchContext;
     this.poc = poc;

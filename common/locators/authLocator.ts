@@ -16,10 +16,17 @@ export const authLocator = {
     MOBILE: '',
     APP: '',
   },
-  login_box: {
+  // APP 스플래쉬 버튼
+  guestButton: {
     PC: '',
     MOBILE: '',
-    APP: 'div.loginBox',
+    APP: '//button[text()="로그인하지 않고 입장할게요"]',
+  },
+  //button[text()='로그인하지 않고 입장할게요']
+  myLoginWay: {
+    PC: '',
+    MOBILE: '',
+    APP: '//ul[@class="nm-app-login-way"]//button[text()="ID 로그인"]',
   },
   // 메인 로그인 버튼(모바일은 햄버거 버튼 클릭 후 로그인 링크)
   mainLoginButton: {

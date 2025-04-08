@@ -9,7 +9,7 @@ import { execSync } from 'child_process';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
-export type ChromeFlavor = 'stable' | 'beta' | 'v125' | 'v130' | 'v135';
+export type ChromeFlavor = 'stable' | 'beta' | 'v130' | 'v135';
 
 interface ChromeAccessConfig {
   pkgPrefix: string;
@@ -30,16 +30,6 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
   },
   beta: {
     pkgPrefix: 'com.chrome.beta:id',
-    stepIds: [
-      'signin_fre_continue_button',
-      'button_primary',
-      'terms_accept',
-      'positive_button',
-      'com.android.permissioncontroller:id/permission_allow_button',
-    ],
-  },
-  v125: {
-    pkgPrefix: 'com.android.chrome:id',
     stepIds: [
       'signin_fre_continue_button',
       'button_primary',
@@ -71,11 +61,11 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
 };
 
 export class ChromeAccessUtils {
-  private logger: winston.Logger;
   private driver: Browser;
   private switchContext: (view: string) => Promise<void>;
   private udid: string;
   private poc?: POCKey;
+  private logger: winston.Logger;
 
   constructor(
     driver: Browser,
@@ -107,7 +97,6 @@ export class ChromeAccessUtils {
         this.logger.info(`[ChromeSetup] 클릭됨: ${fullId}`);
       }
     }
-
     await this.driver.setTimeout({ implicit: 20000 });
   }
 
@@ -144,9 +133,29 @@ export class ChromeAccessUtils {
   }
 
   /**
+   * Chrome 앱이 포그라운드에 없을 경우 강제로 앞으로 가져오기
+   */
+  async bringToFrontIfNotVisible(): Promise<void> {
+    try {
+      const currentPackage = await this.driver.getCurrentPackage?.();
+
+      if (currentPackage !== 'com.android.chrome') {
+        this.logger.info(`[ChromeAccess] 현재 앱이 Chrome이 아님 (${currentPackage}) -> 강제 전환`);
+        await this.driver.activateApp('com.android.chrome');
+        await this.driver.pause(2000);
+      } else {
+        this.logger.info(`[ChromeAccess] Chrome이 이미 포그라운드에 있음`);
+      }
+    } catch (e) {
+      this.logger.error('[ChromeAccess] 포그라운드 앱 전환 실패:', e);
+    }
+  }
+
+  /**
    * 단순 고정된 ID 순서에 따른 Chrome 초기화 (버전 무관한 공통 처리)
    */
   async chromeAccessBasic(): Promise<void> {
+    await this.bringToFrontIfNotVisible();
     this.switchContext('NATIVE_APP');
     await this.driver.setTimeout({ implicit: 2000 });
 
@@ -195,7 +204,6 @@ export function detectChromeFlavor(version: string): ChromeFlavor {
   if (isNaN(major)) return 'stable';
   if (major >= 135) return 'v135';
   if (major >= 130) return 'v130';
-  if (major >= 125) return 'v125';
 
   return 'stable';
 }

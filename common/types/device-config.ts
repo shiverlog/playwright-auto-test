@@ -120,6 +120,18 @@ export interface DeviceOptions {
   snapshotMaxDepth?: number;
   // 소프트 키보드 강제 표시 여부
   forceSimulatorSoftwareKeyboardPresence?: boolean;
+  // 앱 자동 실행 여부
+  autoLaunch?: boolean;
+  // 앱을 세션 재시작 시 끄지 않고 유지
+  dontStopAppOnReset?: boolean;
+  // 앱 시작 시 대기 시간 (ms)
+  appWaitDuration?: number;
+  // 잠금 해제 동작 여부
+  skipUnlock?: boolean;
+  // 화면 잠금 해제 타입
+  unlockType?: 'pin' | 'pattern' | 'password';
+  // 잠금 해제 키 값
+  unlockKey?: string;
 }
 
 /**
@@ -218,6 +230,16 @@ export interface AppiumCapabilities {
     noReset?: boolean;
     // Appium 자동화 엔진 이름
     automationName: 'UiAutomator2' | 'XCUITest';
+    // 앱 자동 실행
+    autoLaunch?: boolean;
+    // 앱 유지
+    dontStopAppOnReset?: boolean;
+    // 앱 대기 시간
+    appWaitDuration?: number;
+    // 잠금 해제 관련
+    skipUnlock?: boolean;
+    unlockType?: 'pin' | 'pattern' | 'password';
+    unlockKey?: string;
     // 기타 Appium 옵션을 확장 가능하게 허용
     [key: string]: any;
   };

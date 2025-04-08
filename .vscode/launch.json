@@ -88,7 +88,6 @@
       "request": "launch",
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/android-app", "--headed", "--reporter=html"],
-      "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
         "POC": "AOS"
       },

@@ -19,7 +19,13 @@ export class BaseActionUtils<TDriver = unknown> {
   }
 
   // ========== Common ==========
-
+  /**
+   * Playwright Page 객체를 런타임에 설정 (웹뷰 전환 시 사용)
+   */
+  public setPlaywrightPage(page: Page): void {
+    this.page = page;
+    this.js = new JsForceActions(page);
+  }
   /**
    *  Common: 현재 페이지 URL 반환
    */

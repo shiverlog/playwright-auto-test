@@ -1,8 +1,10 @@
 {
-  "name": "@your-org/e2e-mw",
+  "name": "@your-org/android-mobile-web",
   "version": "1.0.0",
-  "description": "Middleware E2E testing module",
+  "private": false,
+  "description": "[E2E Mobile-Web Android] testing module",
   "main": "index.js",
+  "type": "module",
   "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
@@ -13,7 +15,7 @@
     "@your-org/common": "file:../../common"
   },
   "devDependencies": {
-    "playwright": "^1.39.0",
-    "typescript": "^5.0.0"
+    "playwright": "^1.51.0",
+    "typescript": "^5.8.2"
   }
 }

@@ -258,6 +258,9 @@ importers:
       appium-uiautomator2-driver:
         specifier: ^4.1.0
         version: 4.1.5(appium@2.17.1(debug@4.4.0))(debug@4.4.0)
+      appium-wait-plugin:
+        specifier: ^3.0.2
+        version: 3.0.2(appium@2.17.1(debug@4.4.0))(debug@4.4.0)
       appium-xcuitest-driver:
         specifier: ^4.4.6
         version: 4.35.0(appium@2.17.1(debug@4.4.0))(debug@4.4.0)
@@ -392,10 +395,10 @@ importers:
         version: link:../../common
     devDependencies:
       playwright:
-        specifier: ^1.39.0
+        specifier: ^1.51.0
         version: 1.51.1
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.8.2
         version: 5.8.2
 
   e2e/android-mobile-web:
@@ -405,10 +408,10 @@ importers:
         version: link:../../common
     devDependencies:
       playwright:
-        specifier: ^1.39.0
+        specifier: ^1.51.0
         version: 1.51.1
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.8.2
         version: 5.8.2
 
   e2e/api:
@@ -444,10 +447,10 @@ importers:
         version: link:../../common
     devDependencies:
       playwright:
-        specifier: ^1.39.0
+        specifier: ^1.51.0
         version: 1.51.1
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.8.2
         version: 5.8.2
 
   e2e/ios-mobile-web:
@@ -457,10 +460,10 @@ importers:
         version: link:../../common
     devDependencies:
       playwright:
-        specifier: ^1.39.0
+        specifier: ^1.51.0
         version: 1.51.1
       typescript:
-        specifier: ^5.0.0
+        specifier: ^5.8.2
         version: 5.8.2
 
   e2e/pc-mobile-web:
@@ -2268,6 +2271,12 @@ packages:
     resolution: {integrity: sha512-ta5S6OptBDC6fyK2lXNLzFxX1srVC6Gwn+i1s4H4BP8iIjBDpEPrRhMLmvRxzmJ+5UAlKgJLUmnj8V++GwnytA==}
     engines: {node: '>=14', npm: '>=8'}
 
+  appium-wait-plugin@3.0.2:
+    resolution: {integrity: sha512-oMNI8Ug2wjJvB1Oa8cCpHguDNjTTLYdchk4cgVJZzlwswcTYcVvf6CUhY5NSbPBIH6HxTK1r1uKbIA7Ps7vXAg==}
+    engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0, npm: '>=8'}
+    peerDependencies:
+      appium: ^2.4.1
+
   appium-webdriveragent@5.15.9:
     resolution: {integrity: sha512-03brYer2B68V+Jqjy8VVYNEeDftSzizZaXGazZsAq1ENDhvXgzIErKWjFAswTQWu/ciDmXASt8I96K6ks+Gy0A==}
     engines: {node: '>=14', npm: '>=8'}
@@ -2397,6 +2406,10 @@ packages:
   async-lock@1.4.1:
     resolution: {integrity: sha512-Az2ZTpuytrtqENulXwO3GGv1Bztugx6TT37NIo7imr/Qo0gsYiGtSdBa2B6fsXhTpVZDNfu1Qn3pk531e3q+nQ==}
 
+  async-wait-until@2.0.27:
+    resolution: {integrity: sha512-2l7YlsHXxjmq4o3nSpvH4eav21+ZlUYOflj9TQsPBtzt99v+1Xsy8RvU5+x/OdkFTej40ws3AaKMgT/Ssj+LhQ==}
+    engines: {node: '>= 0.14.0', npm: '>= 1.0.0'}
+
   async@0.1.22:
     resolution: {integrity: sha512-2tEzliJmf5fHNafNwQLJXUasGzQCVctvsNkXmnlELHwypU0p08/rHohYvkqKIjyXpx+0rkrYv6QbhJ+UF4QkBg==}
 
@@ -2442,6 +2455,9 @@ packages:
   axe-core@4.10.3:
     resolution: {integrity: sha512-Xm7bpRXnDSX2YE2YFfBk2FnF0ep6tmG7xPh8iHee8MIcrgq762Nkce856dYtJYLkuIoYZvGfTs/PbZhideTcEg==}
     engines: {node: '>=4'}
+
+  axios@0.27.2:
+    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
 
   axios@1.7.2:
     resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
@@ -9392,6 +9408,17 @@ snapshots:
 
   appium-uiautomator2-server@7.3.1: {}
 
+  appium-wait-plugin@3.0.2(appium@2.17.1(debug@4.4.0))(debug@4.4.0):
+    dependencies:
+      '@appium/base-plugin': 2.3.5(debug@4.4.0)
+      appium: 2.17.1(debug@4.4.0)
+      async-wait-until: 2.0.27
+      axios: 0.27.2(debug@4.4.0)
+      ora: 5.4.1
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   appium-webdriveragent@5.15.9(debug@4.4.0):
     dependencies:
       '@appium/base-driver': 9.16.4(debug@4.4.0)
@@ -9616,6 +9643,8 @@ snapshots:
 
   async-lock@1.4.1: {}
 
+  async-wait-until@2.0.27: {}
+
   async@0.1.22: {}
 
   async@0.2.10: {}
@@ -9655,6 +9684,13 @@ snapshots:
       possible-typed-array-names: 1.1.0
 
   axe-core@4.10.3: {}
+
+  axios@0.27.2(debug@4.4.0):
+    dependencies:
+      follow-redirects: 1.15.9(debug@4.4.0)
+      form-data: 4.0.2
+    transitivePeerDependencies:
+      - debug
 
   axios@1.7.2(debug@4.4.0):
     dependencies:

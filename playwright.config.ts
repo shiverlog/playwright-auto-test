@@ -322,6 +322,8 @@ export default defineConfig({
     command: 'npm run start',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
+    // HTML 파일 entry 오류 방지를 위해 추
+    ignoreHTTPSErrors: true,
   },
 });
 // 테스트 프로젝트 이름 출력

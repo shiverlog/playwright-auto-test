@@ -46,40 +46,43 @@ class BaseAppFixture extends BasePocFixture {
     // 테스트 실행 전 공통 작업 실행
     await this.beforeAll(poc);
     const driver = await this.initializeAppDriver(poc);
+    // appDrivers에 드라이버를 클래스 멤버로 저장
+    this.appDrivers.set(poc, driver);
     return driver;
   }
 
   /**
-   * Appium 드라이버 초기화 + Appium 서버 시작
+   * Appium 드라이버 초기화 + Appium 서버 시작 (동시 실행 대응)
    */
   public async initializeAppDriver(poc: POCKey): Promise<Browser> {
     const logger = Logger.getLogger(poc) as winston.Logger;
     logger.info(`[BaseAppFixture] ${poc} 디바이스 초기화 중...`);
-    // 지정된 기기 정보 가져오기
-    const deviceConfig = getDeviceConfigByPoc(poc);
-    // 포트값 가져오기
-    const port = await getAvailablePort();
-    // 기기 및 포트 세팅
-    this.appiumPorts.set(poc, port);
-    // Appium 서버 유틸 사용
-    const appiumServer = new AppiumServerUtils(poc);
-    // 기기 및 서버 세팅
-    this.appiumServers.set(poc, appiumServer);
-    // Appium 서버 유틸 사용 (포트 종료)
-    await appiumServer.stopAppiumServer(port);
-    // Appium 서버 유틸 사용 (포트 시작)
-    appiumServer.startAppiumServer(port);
-    await waitOn({
-      resources: [`http://127.0.0.1:${port}/status`],
-      timeout: 10000,
-    });
 
-    // 런타임 검증
+    // 디바이스 설정 가져오기
+    const deviceConfig = getDeviceConfigByPoc(poc);
+
+    // 이미 포트가 할당되어 있는지 확인 (중복 포트 방지용)
+    let port = this.appiumPorts.get(poc);
+    if (!port) {
+      // 포트 동적 할당
+      port = await getAvailablePort();
+      this.appiumPorts.set(poc, port);
+    }
+
+    // Appium 서버 유틸 인스턴스 생성 및 저장
+    let appiumServer = this.appiumServers.get(poc);
+    if (!appiumServer) {
+      appiumServer = new AppiumServerUtils(poc);
+      this.appiumServers.set(poc, appiumServer);
+    }
+
+    appiumServer.startAppiumServer(port);
+    await waitOn({ resources: [`http://127.0.0.1:${port}/status`], timeout: 10000 });
+
     if (!deviceConfig.udid || !deviceConfig.platformVersion) {
       throw new Error(`[BaseAppFixture] '${poc}' 디바이스에 udid 또는 platformVersion이 없습니다.`);
     }
 
-    // 플랫폼 구분
     const platformName = deviceConfig.platformName;
     const isAndroid = platformName.toUpperCase() === 'ANDROID';
     const isIOS = platformName.toUpperCase() === 'IOS';
@@ -88,16 +91,59 @@ class BaseAppFixture extends BasePocFixture {
       throw new Error(`[BaseAppFixture] 지원하지 않는 플랫폼입니다: ${platformName}`);
     }
 
-    // 공통 옵션
-    const commonOptions = {
+    // const appiumOptions = isAndroid
+    //   ? {
+    //       automationName: 'UiAutomator2' as const,
+    //       appPackage: deviceConfig['appium:options']?.appPackage,
+    //       appActivity: deviceConfig['appium:options']?.appActivity,
+    //     }
+    //   : {
+    //       automationName: 'XCUITest' as const,
+    //       bundleId: deviceConfig['appium:options']?.bundleId,
+    //       useNewWDA: true,
+    //       autoAcceptAlerts: true,
+    //       safariInitialUrl: deviceConfig['appium:options']?.safariInitialUrl,
+    //     };
+
+    // const remoteOptions: AppiumRemoteOptions = {
+    //   protocol: 'http',
+    //   hostname: '127.0.0.1',
+    //   port,
+    //   path: '/',
+    //   capabilities: {
+    //     platformName: platformName as 'Android' | 'iOS',
+    //     'appium:options': {
+    //       deviceName: deviceConfig.deviceName,
+    //       udid: deviceConfig.udid,
+    //       platformVersion: deviceConfig.platformVersion,
+    //       noReset: true,
+    //       app: deviceConfig.app,
+    //       ...appiumOptions,
+    //     },
+    //   },
+    // };
+
+    const appiumOptions: AppiumRemoteOptions['capabilities']['appium:options'] = {
       deviceName: deviceConfig.deviceName,
       udid: deviceConfig.udid,
       platformVersion: deviceConfig.platformVersion,
-      noReset: true,
       app: deviceConfig.app,
+      noReset: true,
+      automationName: isAndroid ? 'UiAutomator2' : 'XCUITest',
+      // 실행 앱을 지정
+      ...(isAndroid
+        ? {
+            appPackage: deviceConfig['appium:options']?.appPackage,
+            appActivity: deviceConfig['appium:options']?.appActivity,
+          }
+        : {
+            bundleId: deviceConfig['appium:options']?.bundleId,
+            useNewWDA: true,
+            autoAcceptAlerts: true,
+            safariInitialUrl: deviceConfig['appium:options']?.safariInitialUrl,
+          }),
     };
 
-    // platformName (Android/iOS) 에 따라 capabilities 분기
     const remoteOptions: AppiumRemoteOptions = {
       protocol: 'http',
       hostname: '127.0.0.1',
@@ -105,36 +151,21 @@ class BaseAppFixture extends BasePocFixture {
       path: '/',
       capabilities: {
         platformName: platformName as 'Android' | 'iOS',
-        'appium:options': isAndroid
-          ? {
-              ...commonOptions,
-              automationName: 'UiAutomator2',
-              appPackage: deviceConfig['appium:options']?.appPackage,
-              appActivity: deviceConfig['appium:options']?.appActivity,
-            }
-          : {
-              ...commonOptions,
-              automationName: 'XCUITest',
-              bundleId: deviceConfig['appium:options']?.bundleId,
-              useNewWDA: true,
-              autoAcceptAlerts: true,
-              safariInitialUrl: deviceConfig['appium:options']?.safariInitialUrl,
-            },
+        'appium:options': appiumOptions,
       },
     };
 
     const driver = await remote(remoteOptions);
     this.appDrivers.set(poc, driver);
-
     logger.info(`[BaseAppFixture] ${poc} 드라이버 초기화 완료`);
 
-    // 컨텍스트 전환 핸들러
     const switchContext = async (ctx: string) => await driver.switchContext(ctx);
 
-    // 플랫폼별 브라우저 초기화 유틸 실행
+    // Chrome 및 iOS 초기화 작업
     if (isAndroid) {
       const chromeUtil = new ChromeAccessUtils(driver, switchContext, deviceConfig.udid, poc);
-      chromeUtil.clearChromeAppData();
+      // Android 크롬 초기화
+      await chromeUtil.clearChromeAppData();
       await chromeUtil.autoHandleChromeSetup();
     } else if (isIOS) {
       const safariUtil = new SafariAccessUtils(driver, switchContext, poc);

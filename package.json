@@ -90,6 +90,7 @@
     "allure-playwright": "^3.2.0",
     "appium": "^2.0.1",
     "appium-uiautomator2-driver": "^4.1.0",
+    "appium-wait-plugin": "^3.0.2",
     "appium-xcuitest-driver": "^4.4.6",
     "casual": "^1.6.2",
     "chromedriver": "^134.0.5",

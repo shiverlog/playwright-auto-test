@@ -13,6 +13,8 @@
 │   │   │   └── IElementActions.ts
 │   │   └── elements
 │   │       └── AppElement.ts
+│   ├── assets
+│   │   └── mobileCS_release_v7.0.4(352)_20250320_1207.apk
 │   ├── components
 │   │   ├── BaseCart.ts
 │   │   ├── BaseCheckbox.ts
@@ -26,7 +28,8 @@
 │   │   └── BaseTab.ts
 │   ├── config
 │   │   ├── BaseConfig.ts
-│   │   └── BaseDeviceConfig.ts
+│   │   ├── deviceConfig.ts
+│   │   └── notificationConfig.ts
 │   ├── constants
 │   │   ├── ActionConstants.ts
 │   │   ├── DBConstants.ts
@@ -36,37 +39,6 @@
 │   │   ├── TestConstants.ts
 │   │   ├── TextConstants.ts
 │   │   └── UIConstants.ts
-│   ├── e2e
-│   │   ├── device-mobile-web
-│   │   │   ├── playwright-report
-│   │   │   │   ├── MW_report_2025-04-06_15-31-38.html
-│   │   │   │   └── MW_report_2025-04-06_15-31-44.html
-│   │   │   └── test-results
-│   │   │       ├── allure-results
-│   │   │       ├── logs
-│   │   │       ├── screenshots
-│   │   │       ├── traces
-│   │   │       └── videos
-│   │   ├── emulator-mobile-web
-│   │   │   ├── playwright-report
-│   │   │   │   ├── MW_report_2025-04-06_15-31-38.html
-│   │   │   │   └── MW_report_2025-04-06_15-31-44.html
-│   │   │   └── test-results
-│   │   │       ├── allure-results
-│   │   │       ├── logs
-│   │   │       ├── screenshots
-│   │   │       ├── traces
-│   │   │       └── videos
-│   │   └── pc-mobile-web
-│   │       ├── playwright-report
-│   │       │   ├── MW_report_2025-04-06_15-31-38.html
-│   │       │   └── MW_report_2025-04-06_15-31-44.html
-│   │       └── test-results
-│   │           ├── allure-results
-│   │           ├── logs
-│   │           ├── screenshots
-│   │           ├── traces
-│   │           └── videos
 │   ├── fixtures
 │   │   ├── BaseAppFixture.ts
 │   │   ├── BaseMobileWebFixture.ts
@@ -118,9 +90,9 @@
 │   └── utils
 │       ├── appium
 │       │   ├── AndPermissionsUtils.ts
+│       │   ├── AppiumServerUtils.ts
 │       │   ├── BasePermissionsUtils.ts
-│       │   ├── IOSPermissionsUtils.ts
-│       │   └── appiumServerUtils.ts
+│       │   └── IosPermissionsUtils.ts
 │       ├── browser
 │       │   ├── ChromeAccessUtils.ts
 │       │   ├── SafariAccessUtils.ts
@@ -132,6 +104,7 @@
 │       │   └── portUtils.ts
 │       ├── other
 │       │   ├── LocatorToExcel.ts
+│       │   ├── locator-map.xlsx
 │       │   └── locatorUtils.ts
 │       ├── performance
 │       │   ├── testPerformance.ts
@@ -175,16 +148,59 @@
 │   │   ├── Dockerfile
 │   │   ├── package.json
 │   │   ├── playwright-report
-│   │   │   └── index.html
+│   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   └── AuthPage.ts
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   ├── logs
+│   │   │   ├── screenshots
+│   │   │   ├── traces
+│   │   │   └── videos
+│   │   ├── tests
+│   │   │   └── auth.spec.ts
+│   │   └── tsconfig.json
+│   ├── android-emulator-app
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
 │   │   ├── src
 │   │   │   ├── pages
 │   │   │   │   ├── AuthPage.ts
 │   │   │   │   └── login.py
 │   │   │   └── steps
 │   │   │       └── AuthSteps.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   ├── logs
+│   │   │   ├── screenshots
+│   │   │   ├── traces
+│   │   │   └── videos
 │   │   ├── tests
-│   │   │   ├── auth.spec.ts
-│   │   │   └── testSuite.spec.ts
+│   │   │   └── auth.spec.ts
+│   │   └── tsconfig.json
+│   ├── android-mobile-web
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
+│   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   ├── logs
+│   │   │   ├── screenshots
+│   │   │   ├── traces
+│   │   │   └── videos
+│   │   ├── tests
+│   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
 │   ├── api
 │   │   ├── Dockerfile
@@ -195,9 +211,46 @@
 │   │   │   └── AccountLogoutRequest.xml
 │   │   ├── package.json
 │   │   ├── playwright-report
-│   │   │   └── report.html
 │   │   ├── playwright.config.ts
 │   │   ├── swagger.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   ├── logs
+│   │   │   ├── screenshots
+│   │   │   ├── traces
+│   │   │   └── videos
+│   │   └── tsconfig.json
+│   ├── ios-app
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   ├── playwright.config.ts
+│   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   └── AuthPage.ts
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
+│   │   ├── test-results
+│   │   │   ├── allure-results
+│   │   │   ├── logs
+│   │   │   ├── screenshots
+│   │   │   ├── traces
+│   │   │   └── videos
+│   │   ├── tests
+│   │   │   └── auth.spec.ts
+│   │   └── tsconfig.json
+│   ├── ios-emulator-app
+│   │   ├── Dockerfile
+│   │   ├── package.json
+│   │   ├── playwright-report
+│   │   │   └── index.html
+│   │   ├── playwright.config.ts
+│   │   ├── src
+│   │   │   ├── pages
+│   │   │   │   ├── AuthPage.ts
+│   │   │   │   └── login.py
+│   │   │   └── steps
+│   │   │       └── AuthSteps.ts
 │   │   ├── test-results
 │   │   │   ├── allure-results
 │   │   │   │   └── history.json
@@ -209,8 +262,10 @@
 │   │   │   │   └── trace.xyz
 │   │   │   └── videos
 │   │   │       └── video.mp4
+│   │   ├── tests
+│   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
-│   ├── device-mobile-web
+│   ├── ios-mobile-web
 │   │   ├── Dockerfile
 │   │   ├── package.json
 │   │   ├── playwright-report
@@ -225,6 +280,8 @@
 │   │   ├── test-results
 │   │   │   ├── allure-results
 │   │   │   │   └── history.json
+│   │   │   ├── logs
+│   │   │   │   └── playwright_pc_250307.log
 │   │   │   ├── screenshots
 │   │   │   │   └── screenshot.png
 │   │   │   ├── traces
@@ -233,61 +290,11 @@
 │   │   │       └── video.mp4
 │   │   ├── tests
 │   │   │   └── auth.spec.ts
-│   │   └── tsconfig.json
-│   ├── emulator-mobile-web
-│   │   ├── Dockerfile
-│   │   ├── package.json
-│   │   ├── playwright-report
-│   │   │   └── index.html
-│   │   ├── playwright.config.ts
-│   │   ├── src
-│   │   │   ├── pages
-│   │   │   │   ├── AuthPage.ts
-│   │   │   │   └── login.py
-│   │   │   └── steps
-│   │   │       └── AuthSteps.ts
-│   │   ├── test-results
-│   │   │   ├── allure-results
-│   │   │   │   └── history.json
-│   │   │   ├── screenshots
-│   │   │   │   └── screenshot.png
-│   │   │   ├── traces
-│   │   │   │   └── trace.xyz
-│   │   │   └── videos
-│   │   │       └── video.mp4
-│   │   ├── tests
-│   │   │   └── auth.spec.ts
-│   │   └── tsconfig.json
-│   ├── ios-app
-│   │   ├── Dockerfile
-│   │   ├── package.json
-│   │   ├── playwright-report
-│   │   │   └── index.html
-│   │   ├── playwright.config.ts
-│   │   ├── src
-│   │   │   ├── pages
-│   │   │   │   ├── AuthPage.ts
-│   │   │   │   └── login.py
-│   │   │   └── steps
-│   │   │       └── AuthSteps.ts
-│   │   ├── test-results
-│   │   │   ├── allure-results
-│   │   │   │   └── history.json
-│   │   │   ├── screenshots
-│   │   │   │   └── screenshot.png
-│   │   │   ├── traces
-│   │   │   │   └── trace.xyz
-│   │   │   └── videos
-│   │   │       └── video.mp4
-│   │   ├── tests
-│   │   │   ├── auth.spec.ts
-│   │   │   └── testSuite.spec.ts
 │   │   └── tsconfig.json
 │   ├── pc-mobile-web
 │   │   ├── Dockerfile
 │   │   ├── package.json
 │   │   ├── playwright-report
-│   │   │   └── index.html
 │   │   ├── src
 │   │   │   ├── pages
 │   │   │   │   └── AuthPage.ts
@@ -295,13 +302,10 @@
 │   │   │       └── AuthSteps.ts
 │   │   ├── test-results
 │   │   │   ├── allure-results
-│   │   │   │   └── history.json
+│   │   │   ├── logs
 │   │   │   ├── screenshots
-│   │   │   │   └── screenshot.png
 │   │   │   ├── traces
-│   │   │   │   └── trace.xyz
 │   │   │   └── videos
-│   │   │       └── video.mp4
 │   │   ├── tests
 │   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
@@ -309,7 +313,6 @@
 │   │   ├── Dockerfile
 │   │   ├── package.json
 │   │   ├── playwright-report
-│   │   │   └── index.html
 │   │   ├── src
 │   │   │   ├── pages
 │   │   │   │   └── AuthPage.ts
@@ -317,15 +320,12 @@
 │   │   │       └── AuthStep.ts
 │   │   ├── test-results
 │   │   │   ├── allure-results
-│   │   │   │   └── history.json
 │   │   │   ├── logs
-│   │   │   │   └── playwright_pc_250307.log
 │   │   │   ├── screenshots
-│   │   │   │   └── screenshot.png
 │   │   │   ├── traces
-│   │   │   │   └── trace.xyz
 │   │   │   └── videos
-│   │   │       └── video.mp4
+│   │   │       ├── PC_video_2025-04-07_15-38-53.mp4
+│   │   │       └── PC_video_2025-04-07_15-38-55.mp4
 │   │   ├── tests
 │   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
@@ -334,7 +334,6 @@
 ├── globalSetup.ts
 ├── globalTeardown.ts
 ├── index.html
-├── logs
 ├── mosaic-db
 │   ├── CMakeLists.txt
 │   ├── Dockerfile
@@ -767,8 +766,6 @@
 │   ├── util.h
 │   └── varstr.h
 ├── package.json
-├── playwright-report
-│   └── index.html
 ├── playwright.config.local.ts
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
@@ -783,7 +780,6 @@
 │   ├── pubsubRunner.ts
 │   ├── pubsubsubscriber.ts
 │   └── service-account-punsub-key.json
-├── screenshots
 ├── speedtest
 │   ├── Dockerfile
 │   ├── config
@@ -792,7 +788,6 @@
 │   │   └── speedtestUrls.ts
 │   ├── package.json
 │   ├── playwright-report
-│   │   └── report.html
 │   ├── playwright.config.ts
 │   ├── pnpm-lock.yaml
 │   ├── src
@@ -814,9 +809,8 @@
 │   │   └── redirect.spec.ts
 │   └── tsconfig.json
 ├── structure.txt
-├── test-results
 ├── tsconfig.json
 ├── turbo.json
 └── vite.config.ts
 
-170 directories, 648 files
+177 directories, 636 files

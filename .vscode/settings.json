@@ -150,6 +150,7 @@
     "shiverlog",
     "CODEOWNERS",
     "Appium",
-    "Selenium"
+    "Selenium",
+    "dont"
   ]
 }

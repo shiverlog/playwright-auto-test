@@ -9,6 +9,7 @@ import path from 'path';
 
 // 자사 App APK 경로
 const apkPath = path.resolve(
+  // aapt dump badging "./common/assets/mobileCS_release_v7.0.4(352)_20250320_1207.apk"
   process.cwd(),
   'common/assets/mobileCS_release_v7.0.4(352)_20250320_1207.apk',
 );
@@ -24,7 +25,6 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
     appPackage: 'com.lguplus.mobile.cs',
     appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
     app: apkPath,
-
     appium: {
       options: {
         udid: 'R3CN70CT69N',
@@ -34,6 +34,12 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
         automationName: 'UiAutomator2',
         noReset: true,
         app: apkPath,
+        autoLaunch: true,
+        dontStopAppOnReset: true,
+        appWaitDuration: 30000,
+        skipUnlock: false,
+        unlockType: 'pin',
+        unlockKey: '3152',
       },
     },
   },
@@ -52,6 +58,9 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
         appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
         appPackage: 'com.lguplus.mobile.cs',
         automationName: 'UiAutomator2',
+        autoLaunch: true,
+        dontStopAppOnReset: true,
+        appWaitDuration: 30000,
       },
     },
   },
@@ -70,6 +79,9 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
         appActivity: 'com.sec.android.app.sbrowser.SBrowserMainActivity',
         appPackage: 'com.sec.android.app.sbrowser.beta',
         automationName: 'UiAutomator2',
+        autoLaunch: true,
+        dontStopAppOnReset: true,
+        appWaitDuration: 30000,
       },
     },
   },
@@ -91,6 +103,10 @@ export const IOS_DEVICES: Record<string, DeviceConfig> = {
         bundleId: 'com.lguplus.mobile.cs',
         safariInitialUrl: 'https://m.lguplus.com/',
         automationName: 'XCUITest',
+        autoLaunch: true,
+        dontStopAppOnReset: true,
+        appWaitDuration: 30000,
+        skipUnlock: false,
       },
     },
   },
@@ -104,6 +120,10 @@ export const IOS_DEVICES: Record<string, DeviceConfig> = {
         platformVersion: '18.1.1',
         bundleId: 'com.lguplus.mobile.cs',
         automationName: 'XCUITest',
+        autoLaunch: true,
+        dontStopAppOnReset: true,
+        appWaitDuration: 30000,
+        skipUnlock: false,
       },
     },
   },
@@ -125,6 +145,8 @@ export const BASE_EMULATOR_DEVICES = {
           appPackage: 'com.lguplus.mobile.cs',
           app: process.env.ANDROID_EMULATOR_APP_PATH ?? '/path/to/android/emulator/app.apk',
           automationName: 'UiAutomator2',
+          autoLaunch: true,
+          dontStopAppOnReset: true,
         },
       },
     },
@@ -144,6 +166,8 @@ export const BASE_EMULATOR_DEVICES = {
           safariInitialUrl: 'https://m.lguplus.com/',
           app: process.env.IOS_SIMULATOR_APP_PATH ?? '/path/to/ios/simulator/app.app',
           automationName: 'XCUITest',
+          autoLaunch: true,
+          dontStopAppOnReset: true,
         },
       },
     },

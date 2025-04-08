@@ -2,7 +2,7 @@
   "name": "@your-org/ios-app",
   "version": "1.0.0",
   "private": false,
-  "description": "E2E iOS-App testing module",
+  "description": "[E2E iOS App] testing module",
   "main": "index.js",
   "type": "module",
   "types": "index.d.ts",
