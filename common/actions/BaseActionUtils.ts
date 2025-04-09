@@ -10,12 +10,16 @@ import { JsForceActions } from '@common/actions/JsForceActions.js';
 import type { Locator, Page } from '@playwright/test';
 
 export class BaseActionUtils<TDriver = unknown> {
-  protected page: Page;
-  protected js: JsForceActions;
-  // driver?: TDriver; // Appium 드라이버 객체 (MobileActionUtils에서만 사용)
-  constructor(page: Page, driver?: TDriver) {
-    this.page = page;
-    this.js = new JsForceActions(page);
+  // Mobile 처리를 위해 일단은 부분적으로 page 를 받도록 처리
+  public page?: Page;
+  public js?: JsForceActions;
+  // driver?: TDriver; // Appium 드라이버 객체
+  // driver는 Mobile 에서만 필요하므로 MobileActionUtils 에서 처리하도록 함
+  constructor(page?: Page, driver?: TDriver) {
+    if (page) {
+      this.page = page;
+      this.js = new JsForceActions(page);
+    }
   }
 
   // ========== Common ==========
@@ -26,18 +30,35 @@ export class BaseActionUtils<TDriver = unknown> {
     this.page = page;
     this.js = new JsForceActions(page);
   }
+
   /**
-   *  Common: 현재 페이지 URL 반환
+   *  Common: 페이지 설정
+   */
+  protected ensurePage(): Page {
+    if (!this.page) throw new Error('[BaseActionUtils] page가 설정되지 않았습니다.');
+    return this.page;
+  }
+
+  /**
+   *  Common: 자바스크립트 Action Utils 설정
+   */
+  protected ensureJs(): JsForceActions {
+    if (!this.js) throw new Error('[BaseActionUtils] js가 설정되지 않았습니다.');
+    return this.js;
+  }
+
+  /**
+   *  Common: 현재 페이지
    */
   public getCurrentUrl(): string {
-    return this.page.url();
+    return this.ensurePage().url();
   }
 
   /**
    *  Common: 새 탭 열기
    */
   public async openNewTab(url?: string): Promise<Page> {
-    const newPage = await this.page.context().newPage();
+    const newPage = await this.ensurePage().context().newPage();
     if (url) await newPage.goto(url);
     return newPage;
   }
@@ -46,28 +67,28 @@ export class BaseActionUtils<TDriver = unknown> {
    *  Common: 키보드 키 입력
    */
   public async pressKey(key: string): Promise<void> {
-    await this.page.keyboard.press(key);
+    await this.ensurePage().keyboard.press(key);
   }
 
   /**
    *  Common: 페이지 뒤로가기
    */
   public async goBack(): Promise<void> {
-    await this.page.goBack();
+    await this.ensurePage().goBack();
   }
 
   /**
    *  Common: 페이지 앞으로가기
    */
   public async goForward(): Promise<void> {
-    await this.page.goForward();
+    await this.ensurePage().goForward();
   }
 
   /**
    *  Common: 페이지 새로고침
    */
   public async refresh(): Promise<void> {
-    await this.page.reload();
+    await this.ensurePage().reload();
   }
 
   /**
@@ -76,7 +97,7 @@ export class BaseActionUtils<TDriver = unknown> {
   public async waitForLoadState(
     state: 'load' | 'domcontentloaded' | 'networkidle' = 'load',
   ): Promise<void> {
-    await this.page.waitForLoadState(state);
+    await this.ensurePage().waitForLoadState(state);
   }
 
   /**
@@ -86,14 +107,17 @@ export class BaseActionUtils<TDriver = unknown> {
     selector: string,
     waitUntil: 'load' | 'domcontentloaded' | 'networkidle' = 'load',
   ): Promise<void> {
-    await Promise.all([this.page.waitForLoadState(waitUntil), this.getLocator(selector).click()]);
+    await Promise.all([
+      this.ensurePage().waitForLoadState(waitUntil),
+      this.getLocator(selector).click(),
+    ]);
   }
 
   /**
    *  Common: 스크린샷 저장
    */
   public async takeScreenshot(filename: string): Promise<void> {
-    await this.page.screenshot({ path: filename, fullPage: true });
+    await this.ensurePage().screenshot({ path: filename, fullPage: true });
   }
 
   // ========== Playwright 전용 ==========
@@ -102,17 +126,14 @@ export class BaseActionUtils<TDriver = unknown> {
    * Playwright에서 요소를 찾는 안전한 헬퍼 함수
    */
   protected getLocator(selector: string): Locator {
-    if (!this.page) {
-      throw new Error(`[Playwright] page 객체가 정의되지 않았습니다. selector: ${selector}`);
-    }
-    return this.page.locator(selector);
+    return this.ensurePage().locator(selector);
   }
 
   /**
    *  Playwright: 요소 찾기
    */
   public findElement(selector: string): Locator {
-    return this.page.locator(selector);
+    return this.ensurePage().locator(selector);
   }
 
   // TODO: waitForSelector()에서 getLocator().waitFor()로 수정
@@ -169,25 +190,23 @@ export class BaseActionUtils<TDriver = unknown> {
    * selector(string) 기반으로 마우스를 사람처럼 자연스럽게 이동시키는 함수
    */
   public async humanLikeMouseMove(selector: string, steps = 20, baseDelay = 10): Promise<void> {
-    const locator = this.page.locator(selector);
-    await this.humanLikeMouseMoveToLocator(this.page, locator, steps, baseDelay);
+    const locator = this.getLocator(selector);
+    await this.humanLikeMouseMoveToLocator(this.ensurePage(), locator, steps, baseDelay);
   }
 
   /**
    * 사람처럼 마우스를 이동하고 자연스럽게 클릭까지 수행하는 함수
    */
   public async humanLikeMoveAndClick(selector: string, steps = 20, baseDelay = 10): Promise<void> {
-    const locator = this.page.locator(selector);
+    const locator = this.getLocator(selector);
     const box = await locator.boundingBox();
-    if (!box) {
-      throw new Error('Locator bounding box not found (element may be detached or invisible)');
-    }
+    if (!box) throw new Error('Locator bounding box not found');
 
     const targetX = box.x + box.width / 2;
     const targetY = box.y + box.height / 2;
 
-    await this.humanLikeMouseMoveToLocator(this.page, locator, steps, baseDelay);
-    await this.page.mouse.click(targetX, targetY); // 좌표 지정 필수
+    await this.humanLikeMouseMoveToLocator(this.ensurePage(), locator, steps, baseDelay);
+    await this.ensurePage().mouse.click(targetX, targetY);
   }
 
   // TODO: findElement에서 getLocator로 수정
@@ -196,13 +215,10 @@ export class BaseActionUtils<TDriver = unknown> {
    */
   public async click(selector: string): Promise<void> {
     const locator = this.getLocator(selector);
-    // 부드러운 스크롤 (evaluate로 DOM에 직접 접근)
     await locator.evaluate((el: Element) => {
       el.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
     });
-    // 스크롤 애니메이션을 기다릴 시간
-    await this.page.waitForTimeout(500);
-    // 클릭 실행
+    await this.ensurePage().waitForTimeout(500);
     await locator.click();
   }
 
@@ -229,15 +245,14 @@ export class BaseActionUtils<TDriver = unknown> {
     baseDelayMs = 100,
     randomize = true,
   ): Promise<void> {
-    const locator = this.page.locator(selector);
-
+    const locator = this.getLocator(selector);
     await locator.click();
     await locator.fill('');
 
     for (const char of text) {
-      await this.page.keyboard.press(char);
+      await this.ensurePage().keyboard.press(char);
       const delay = randomize ? baseDelayMs + Math.floor(Math.random() * 100) : baseDelayMs;
-      await this.page.waitForTimeout(delay);
+      await this.ensurePage().waitForTimeout(delay);
     }
   }
 
@@ -276,7 +291,7 @@ export class BaseActionUtils<TDriver = unknown> {
    *  Playwright: 텍스트 포함된 요소 찾기
    */
   public async findElementWithText(selector: string, text: string): Promise<Locator> {
-    return this.page.locator(selector, { hasText: text });
+    return this.ensurePage().locator(selector, { hasText: text });
   }
 
   /**
@@ -333,7 +348,7 @@ export class BaseActionUtils<TDriver = unknown> {
    */
   public async downloadFile(selector: string): Promise<string | undefined> {
     const [download] = await Promise.all([
-      this.page.waitForEvent('download'),
+      this.ensurePage().waitForEvent('download'),
       this.getLocator(selector).click(),
     ]);
     return download.suggestedFilename();
@@ -344,7 +359,7 @@ export class BaseActionUtils<TDriver = unknown> {
    */
   public async acceptAlert(): Promise<string | undefined> {
     return new Promise(resolve => {
-      this.page.once('dialog', async dialog => {
+      this.ensurePage().once('dialog', async dialog => {
         const message = dialog.message();
         await dialog.accept();
         resolve(message);
@@ -392,7 +407,7 @@ export class BaseActionUtils<TDriver = unknown> {
    * Playwright: 요소가 존재하면 클릭
    */
   public async clickIfExists(selector: string): Promise<void> {
-    const element = this.page.locator(selector);
+    const element = this.ensurePage().locator(selector);
     if (await element.count()) {
       await element.click();
     }
@@ -402,7 +417,7 @@ export class BaseActionUtils<TDriver = unknown> {
    * Playwright: 요소를 화면 중앙으로 스크롤
    */
   public async scrollToCenter(selector: string): Promise<void> {
-    await this.page.evaluate(sel => {
+    await this.ensurePage().evaluate(sel => {
       const el = document.querySelector(sel);
       if (el) el.scrollIntoView({ block: 'center', behavior: 'auto' });
     }, selector);
@@ -412,7 +427,7 @@ export class BaseActionUtils<TDriver = unknown> {
    * Playwright: 페이지를 지정된 Y 높이까지 스크롤
    */
   public async scrollToY(height: number): Promise<void> {
-    await this.page.evaluate(async targetY => {
+    await this.ensurePage().evaluate(async targetY => {
       const scrollStep = 50;
       const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
@@ -430,7 +445,7 @@ export class BaseActionUtils<TDriver = unknown> {
     target: string | Locator,
     alignToTop: boolean = true,
   ): Promise<void> {
-    const locator = typeof target === 'string' ? this.page.locator(target) : target;
+    const locator = typeof target === 'string' ? this.ensurePage().locator(target) : target;
     const handle = await locator.elementHandle();
 
     if (handle) {
@@ -447,7 +462,7 @@ export class BaseActionUtils<TDriver = unknown> {
     parentSelector: string,
     expectedTexts: string[],
   ): Promise<boolean> {
-    const locator = this.page.locator(parentSelector);
+    const locator = this.ensurePage().locator(parentSelector);
 
     try {
       await locator.scrollIntoViewIfNeeded();

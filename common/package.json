@@ -1,28 +1,32 @@
 {
   "name": "@myorg/common",
   "version": "1.0.0",
-  "main": "dist/index.ts",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
   "description": "Common Utilities For The Auto Test Project",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
     "prepublishOnly": "npm run build"
   },
   "files": [
     "dist",
     "actions",
+    "assets",
     "components",
     "config",
     "constants",
-    "controllers",
+    "e2e",
     "fixtures",
     "formatters",
     "handlers",
+    "initializers",
     "locators",
     "logger",
     "notifications",
+    "types",
     "utils"
   ],
   "keywords": [

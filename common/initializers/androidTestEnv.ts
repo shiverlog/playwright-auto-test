@@ -4,16 +4,11 @@
  * Date : 2025-04-06
  */
 import { appFixture } from '@common/fixtures/BaseAppFixture';
-import { browserInitializer } from '@common/initializers/browserInitializer';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey } from '@common/types/platform-types';
-import { switchToNativeContext } from '@common/utils/context/contextUtils';
+import { ContextUtils } from '@common/utils/context/ContextUtils';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
-
-
-
-
 
 /**
  * Android 테스트 환경 설정
@@ -25,14 +20,25 @@ export async function initializeAndroidTestEnv(poc: POCKey): Promise<void> {
     logger.info(`[${poc}] Android 테스트 환경 설정 시작`);
 
     // driver 명시적 반환 및 초기화 처리
-    const driver: Browser = await appFixture.setupForPoc(poc);
+    const { driver, port }: { driver: Browser; port: number } = await appFixture.setupForPoc(poc);
 
-    // 반환된 driver 직접 사용
+    // 반환된 driver 직접 사용하여, 네이티브 컨텍스트로 전환
     if (driver) {
-      await switchToNativeContext(driver, poc);
-      logger.info(`[${poc}] 네이티브 앱 컨텍스트로 전환 완료`);
+      // 먼저 WebView 존재 여부 확인
+      const isWebview = await ContextUtils.isInWebviewContext(driver, poc);
+      if (isWebview) {
+        logger.info(`[${poc}] 현재 WebView 컨텍스트 상태`);
+      } else {
+        logger.info(`[${poc}] WebView가 아닌 상태, Native 컨텍스트인지 확인 중`);
+        const isNative = await ContextUtils.isInNativeContext(driver, poc);
+        if (isNative) {
+          logger.info(`[${poc}] 현재 Native 컨텍스트 상태`);
+        } else {
+          logger.warn(`[${poc}] WebView도 Native도 아닌 상태`);
+        }
+      }
     } else {
-      logger.warn(`[${poc}] 드라이버가 초기화되지 않아 Native 컨텍스트로 전환 실패`);
+      logger.warn(`[${poc}] 드라이버가 초기화되지 않아 컨텍스트 확인 실패`);
     }
 
     logger.info(`[${poc}] Android 테스트 환경 설정 완료`);

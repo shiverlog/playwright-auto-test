@@ -1,7 +1,7 @@
 /**
- * Description : browserInitializer.ts - 📌 Android Chrome 또는 iOS Safari 초기 세팅 핸들러
+ * Description : browserInitializer.ts - 📌 Android Chrome 또는 iOS Safari 초기 세팅 핸들러 - 기능 분리시 사용
  * Author : Shiwoo Min
- * Date : 2025-03-30
+ * Date : 2025-04-30
  */
 import type { DeviceConfig } from '@common/types/device-config';
 import type { POCKey } from '@common/types/platform-types';

@@ -21,7 +21,7 @@ export class AuthPage extends WebActionUtils {
 
   // 홈페이지 이동
   async gotoHomePage() {
-    await this.page.goto(urlLocator.main[this.platform]);
+    await this.ensurePage().goto(urlLocator.main[this.platform]);
     await this.modal.checkCommonModals();
   }
 
@@ -29,7 +29,7 @@ export class AuthPage extends WebActionUtils {
   async gotoLoginPage() {
     await this.click(uiLocator.hamburger[this.uiType]);
     await this.click(authLocator.mainLoginButton[this.uiType]);
-    await this.page.waitForSelector(authLocator.loginTitle[this.uiType], {
+    await this.ensurePage().waitForSelector(authLocator.loginTitle[this.uiType], {
       timeout: 5000,
     });
   }
@@ -37,8 +37,8 @@ export class AuthPage extends WebActionUtils {
   // 로그아웃 페이지로 이동
   async gotoLogoutPage() {
     await this.click(authLocator.mainLoginButton[this.uiType]);
-    await this.js.forceClick(authLocator.main_logout_btn);
-    await this.page.waitForLoadState('networkidle');
+    await this.ensureJs().forceClick(authLocator.main_logout_btn);
+    await this.ensurePage().waitForLoadState('networkidle');
   }
 
   // lguplus 로그인 시나리오 실행
@@ -49,33 +49,33 @@ export class AuthPage extends WebActionUtils {
       // uplus 로그인 버튼 클릭
       await this.click(authLocator.uplusLoginButton);
       // uplus 타이틀 대기
-      await this.page.waitForSelector(authLocator.uplusLoginTitle[this.uiType], {
+      await this.ensurePage().waitForSelector(authLocator.uplusLoginTitle[this.uiType], {
         timeout: 5000,
       });
       // uplus 로그인 아이디 클리어 버튼 클릭
-      await this.js.forceClick(authLocator.uplusClearButton);
+      await this.ensureJs().forceClick(authLocator.uplusClearButton);
       // uplus 로그인 아이디 입력
       await this.typeTextSlowly(authLocator.uplusIdInput, id);
       // uplus 로그인 아이디 툴팁 처리
-      if (await this.page.locator(authLocator.idTooltip).isVisible()) {
+      if (await this.ensurePage().locator(authLocator.idTooltip).isVisible()) {
         // 툴팁이 보일 경우, uplus 로그인 저장 버튼 클릭
-        await this.page.click(authLocator.uplusSaveButton);
+        await this.ensurePage().click(authLocator.uplusSaveButton);
       }
       // uplus 로그인 비밀번호 입력
       await this.typeTextSlowly(authLocator.uplusPwInput, pw);
       // 강제 대기 2초
-      await this.page.waitForTimeout(2000);
+      await this.ensurePage().waitForTimeout(2000);
       // uplus 로그인 submit 버튼 클릭
       //await this.humanLikeMoveAndClick(authLocator.uplusLoginSubmitButton);
       await this.click(authLocator.uplusLoginSubmitButton);
       try {
-        await this.page.waitForURL(urlLocator.main[this.platform], { timeout: 10000 });
-        await expect(this.page).toHaveURL(urlLocator.main[this.platform]);
+        await this.ensurePage().waitForURL(urlLocator.main[this.platform], { timeout: 10000 });
+        await expect(this.ensurePage()).toHaveURL(urlLocator.main[this.platform]);
       } catch (urlError) {
         console.warn('[Login Error] URL 변경 감지 실패', urlError);
         return false;
       }
-      await this.page.waitForTimeout(2000);
+      await this.ensurePage().waitForTimeout(2000);
       return true;
     } catch (err) {
       console.error('[Login Failed]', err);

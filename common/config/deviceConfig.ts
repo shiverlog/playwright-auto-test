@@ -25,6 +25,7 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
     appPackage: 'com.lguplus.mobile.cs',
     appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
     app: apkPath,
+    chromedriver_autodownload: true,
     appium: {
       options: {
         udid: 'R3CN70CT69N',
@@ -32,6 +33,7 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
         appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
         appPackage: 'com.lguplus.mobile.cs',
         automationName: 'UiAutomator2',
+        chromedriver_autodownload: true,
         noReset: true,
         app: apkPath,
         autoLaunch: true,

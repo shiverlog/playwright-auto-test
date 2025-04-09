@@ -1,7 +1,7 @@
 /**
  * Description : device-config.ts - 📌 Appium 옵션 상세 설정을 정의하는 인터페이스
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-09
  */
 
 // Appium 포트와 함께 확장된 단일 디바이스 구성 타입
@@ -47,7 +47,7 @@ export interface DesiredCapabilities {
   // 브라우저 이름
   browserName?: string;
   // Appium 자동화 엔진
-  automationName?: string;
+  automationName?: 'UiAutomator2' | 'XCUITest' | string;
   // Android 앱 패키지명
   appPackage?: string;
   // Android 앱 시작 액티비티
@@ -66,8 +66,8 @@ export interface DesiredCapabilities {
  * 디바이스 옵션 정의 (Android/iOS 공통)
  */
 export interface DeviceOptions {
-  // Appium 자동화 엔진 (UiAutomator2, XCUITest)
-  automationName?: string;
+  // Appium 자동화 엔진
+  automationName?: 'UiAutomator2' | 'XCUITest' | string;
   // 디바이스 고유 식별자 (UDID)
   udid?: string;
   // iOS 앱 번들 ID
@@ -100,6 +100,8 @@ export interface DeviceOptions {
   xcodeSigningId?: string;
   // WebView 자동 전환 여부
   autoWebview?: boolean;
+  // chromedriver 버젼 다운로드
+  chromedriver_autodownload?: boolean;
   // 테스트 종료 시 앱 종료 여부
   shouldTerminateApp?: boolean;
   // 앱 강제 실행 여부
@@ -132,6 +134,7 @@ export interface DeviceOptions {
   unlockType?: 'pin' | 'pattern' | 'password';
   // 잠금 해제 키 값
   unlockKey?: string;
+  [key: string]: any;
 }
 
 /**
@@ -145,6 +148,8 @@ export interface DeviceConfig {
   deviceName: string;
   // 브라우저 이름 (옵션)
   browserName?: string;
+  // chrome driver
+  chromedriver_autodownload?: boolean;
   // Appium W3C 표준 vendor prefix 옵션
   ['appium:options']?: DeviceOptions;
   // 레거시 구조 지원
@@ -229,7 +234,7 @@ export interface AppiumCapabilities {
     // 앱 캐시 초기화 여부 (true: 유지, false: 초기화)
     noReset?: boolean;
     // Appium 자동화 엔진 이름
-    automationName: 'UiAutomator2' | 'XCUITest';
+    automationName: 'UiAutomator2' | 'XCUITest' | string;
     // 앱 자동 실행
     autoLaunch?: boolean;
     // 앱 유지

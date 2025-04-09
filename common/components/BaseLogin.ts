@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-01
  */
-import { Page } from '@playwright/test';
+import type { Page } from '@playwright/test';
 
 type SelectorConfig = {
   menu: string;

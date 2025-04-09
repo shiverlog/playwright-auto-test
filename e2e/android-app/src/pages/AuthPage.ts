@@ -12,14 +12,19 @@ export class AuthPage extends MobileActionUtils {
   protected uiType: UIType;
 
   constructor(page: Page | undefined, driver: Browser) {
-    // 로그인 2.0 Playwright page webview에 활용 예정
-    super(page!, driver);
-    this.modal = new BaseModal(page!, undefined);
+    // page가 option이라 뒤로 위치
+    super(driver, page);
+
     this.platform = 'ANDROID_APP';
     this.uiType = 'APP';
-    // Playwright WebView 도입
+
+    // page가 존재할 때에만 BaseModal, WebView 설정 적용
     if (page) {
+      this.modal = new BaseModal(page);
       this.setPlaywrightPage(page);
+    } else {
+      // page가 없을 경우에도 modal을 생성하되 page 없이 생성 가능하게 처리
+      this.modal = new BaseModal(undefined);
     }
   }
 
@@ -33,7 +38,7 @@ export class AuthPage extends MobileActionUtils {
   // 로그인 버튼 → ID 로그인
   async gotoLoginPage(): Promise<void> {
     await this.click(authLocator.mainLoginButton[this.uiType]);
-    // WebView가 도입되면 아래 대기 로직 추가 예정
+    // WebView 사용 시 아래 로직 활성화 예정
     // await this.waitForVisibleWeb(authLocator.loginTitle[this.uiType]);
   }
 

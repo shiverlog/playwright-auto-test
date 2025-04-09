@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2024-04-03
  */
-import { Locator, Page } from '@playwright/test';
+import { Locator, type Page } from '@playwright/test';
 
 export class WaitUtils {
   /**

@@ -1,14 +1,15 @@
 /**
  * Description : MobileActions.ts - 📌 Appium + Playwright: 모바일 전용 액션 유틸리티 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-01
+ * Date : 2025-04-08
  * - Playwright와 Appium을 기반으로 다양한 모바일 테스트 액션을 제공하며, 플랫폼(Android/iOS)에 따라 서로 다른 로직을 처리
  */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { ActionConstants } from '@common/constants/ActionConstants.js';
 import type { Platform } from '@common/types/platform-types.js';
-import type { Page } from '@playwright/test';
+import { chromium, type Page } from '@playwright/test';
 import { execSync } from 'child_process';
+import type { CDPSession } from 'playwright-core';
 import type { Browser } from 'webdriverio';
 
 const DEFAULT_RETRY = 5;
@@ -18,8 +19,12 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   protected platform: Platform;
 
   // Android/iOS 공통처리
-  constructor(page: Page, driver: Browser) {
+  // page - webview
+  // driver - native
+  constructor(driver: Browser, page?: Page | undefined) {
     super(page, driver);
+    this.driver = driver;
+
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();
     if (platformName?.includes('android')) this.platform = 'ANDROID_APP';
     else if (platformName?.includes('ios')) this.platform = 'IOS_APP';
@@ -46,33 +51,34 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   public getMobileOsType(): 'android' | 'ios' {
     return this.platform === 'ANDROID_APP' ? 'android' : 'ios';
   }
+
   // ========== Playwright 전용 ==========
   /**
    * Playwright: 웹 요소 탭 (터치)
    */
   public async tapWebElement(selector: string): Promise<void> {
-    await this.page.locator(selector).tap();
+    await this.ensurePage().locator(selector).tap();
   }
 
   /**
    * Playwright: 웹 요소 텍스트 가져오기
    */
   public async getWebText(selector: string): Promise<string> {
-    return (await this.page.locator(selector).innerText()) ?? '';
+    return (await this.ensurePage().locator(selector).innerText()) ?? '';
   }
 
   /**
    * Playwright: 웹 요소로 스크롤
    */
   public async scrollWebToElement(selector: string): Promise<void> {
-    await this.page.locator(selector).scrollIntoViewIfNeeded();
+    await this.ensurePage().locator(selector).scrollIntoViewIfNeeded();
   }
 
   /**
    * Playwright: 모바일 뷰포트에서 키보드 입력
    */
   public async typeWebText(selector: string, text: string): Promise<void> {
-    const locator = this.page.locator(selector);
+    const locator = this.ensurePage().locator(selector);
     await locator?.fill('');
     await locator?.type(text);
   }
@@ -81,28 +87,28 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    * Playwright: 웹 요소가 보일 때까지 대기
    */
   public async waitForVisibleWeb(selector: string, timeout = 5000): Promise<void> {
-    await this.page.locator(selector).waitFor({ state: 'visible', timeout });
+    await this.ensurePage().locator(selector).waitFor({ state: 'visible', timeout });
   }
 
   /**
    * Playwright: 웹 요소가 사라질 때까지 대기
    */
   public async waitForHiddenWeb(selector: string, timeout = 5000): Promise<void> {
-    await this.page.locator(selector).waitFor({ state: 'hidden', timeout });
+    await this.ensurePage().locator(selector).waitFor({ state: 'hidden', timeout });
   }
 
   /**
    * Playwright: 웹 요소의 속성값 가져오기
    */
   public async getAttributeWeb(selector: string, attr: string): Promise<string | null> {
-    return (await this.page.locator(selector).getAttribute(attr)) ?? null;
+    return (await this.ensurePage().locator(selector).getAttribute(attr)) ?? null;
   }
 
   /**
    * Playwright: 웹 요소 존재 여부 확인
    */
   public async isElementPresentWeb(selector: string): Promise<boolean> {
-    const count = await this.page.locator(selector).count();
+    const count = await this.ensurePage().locator(selector).count();
     return (count ?? 0) > 0;
   }
 
@@ -110,7 +116,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    * Playwright: 웹 요소를 JS로 강제 클릭
    */
   public async forceClickWeb(selector: string): Promise<void> {
-    await this.page.evaluate(sel => {
+    await this.ensurePage().evaluate(sel => {
       const el = document.querySelector(sel) as HTMLElement;
       if (el) el.click();
     }, selector);
@@ -120,7 +126,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    * Playwright: 뷰포트 스크롤 (Y 오프셋 기준)
    */
   public async scrollWebByOffset(y: number): Promise<void> {
-    await this.page.evaluate(offsetY => {
+    await this.ensurePage().evaluate(offsetY => {
       window.scrollBy(0, offsetY);
     }, y);
   }
@@ -464,6 +470,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
     throw new Error(`Element not visible after ${retryCount} tries: ${selector}`);
   }
 
+  // 아마 필요 없을 듯...
   public async clickUntilInvisible(selector: string): Promise<void> {
     const el = await this.findAppiumElement(selector);
     if (!el || !(await el.isDisplayed())) return;
@@ -643,6 +650,8 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
       console.warn('preScript() error:', e);
     }
   }
+
+  // 이것도 필요 없을 듯 나중에 정리
   public async scrollElementToCenter(selector: string): Promise<void> {
     try {
       const el = await this.findAppiumElement(selector);

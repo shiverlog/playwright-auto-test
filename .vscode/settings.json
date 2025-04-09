@@ -151,6 +151,8 @@
     "CODEOWNERS",
     "Appium",
     "Selenium",
-    "dont"
+    "dont",
+    "aapt",
+    "mobilesafari"
   ]
 }
