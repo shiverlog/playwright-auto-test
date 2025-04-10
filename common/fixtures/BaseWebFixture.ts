@@ -7,7 +7,7 @@ import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';
 import { ALL_POCS } from '@common/types/platform-types';
-import { createStealthContext, launchStealthBrowser } from '@common/utils/browser/stealthContext';
+import { createStealthContext, launchStealthBrowser } from '@common/utils/browser/StealthContext';
 import { test as base, expect } from '@playwright/test';
 import type { BrowserContext, Page } from '@playwright/test';
 import { spawn } from 'child_process';

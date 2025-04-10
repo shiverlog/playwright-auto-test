@@ -1,7 +1,7 @@
 /**
  * Description : uiLocator.ts - 📌  UI 처리를 위한 Locator 정의
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-10
  */
 import { UIType } from '@common/types/platform-types';
 
@@ -15,30 +15,35 @@ export const uiLocator = {
     MOBILE: '//a[span[contains(@class, "is-blind") and normalize-space(text())="LG U+"]]',
     APP: '',
   },
+
   // 햄버거
   hamburger: {
     PC: '//a[img[@alt="전체메뉴"]]',
     MOBILE: '//button[.//span[contains(text(), "전체메뉴")]]',
     APP: '//button[.//span[contains(text(), "전체메뉴")]]',
   },
+
   // (Web) GNB 스토어 가이드
   storeGuideIcon: {
     PC: '//a[img[@alt="스토어 가이드"]]',
     MOBILE: '',
     APP: '',
   },
+
   // GNB 서치
   searchGNB: {
     PC: '//a[img[@alt="검색"]]',
     MOBILE: '//button[span[contains(@class, "is-blind") and normalize-space(text())="검색하기"]]',
     APP: '',
   },
+
   // GNB 장바구니
   cartGNB: {
     PC: '//a[img[@alt="장바구니"]]',
     MOBILE: '//button[span[contains(@class, "is-blind") and normalize-space(text())="장바구니"]]',
     APP: '',
   },
+
   // (Web) GNB 나의 정보
   myInfoIcon: {
     PC: '//a[span[contains(@class, "is-blind") and normalize-space(text())="내정보 메뉴 펼치기"]]',
@@ -53,6 +58,7 @@ export const uiLocator = {
       '//button[span[contains(@class, "is-blind") and normalize-space(text())="홈 바로가기"]]',
     APP: '',
   },
+
   // 햄버거 > Global 바로가기
   globalShortcutGNB: {
     PC: '',
@@ -60,48 +66,57 @@ export const uiLocator = {
       '//button[span[contains(@class, "is-blind") and normalize-space(text())="글로벌 바로가기"]]',
     APP: '',
   },
+
   // GNB, 햄버거 > 모바일
   mobileMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "모바일")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "모바일")]',
     APP: '//button[.//span[contains(text(), "전체메뉴")]]',
   },
+
   // GNB, 햄버거 > 인터넷/IPTV
   internetMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "인터넷/IPTV")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "인터넷/IPTV")]',
     APP: '',
   },
+
   // GNB, 햄버거 > 마이페이지
   mypageMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "마이페이지")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "마이페이지")]',
     APP: '',
   },
+
   // GNB, 햄버거 > 혜택/멤버십
   benefitMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "혜택/멤버십")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "혜택/멤버십")]',
     APP: '',
   },
+
   // GNB, 햄버거 > 고객지원
   supportMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "고객지원")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "고객지원")]',
     APP: '',
   },
+
   // GNB, 햄버거 > 다이렉트샵
   directMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "다이렉트샵")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "다이렉트샵")]',
     APP: '',
   },
+
   // GNB, 햄버거 > 유독
   udocMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "유독")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "유독")]',
     APP: '',
   },
+
+  // 공통 부분은 json 처럼 기재하면 됨
   // 전역적인 오버레이
   body: "html[lang='ko']>body",
   // 전체 모달 컨텐츠

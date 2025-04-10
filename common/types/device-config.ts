@@ -269,3 +269,13 @@ export interface ChromedriverMeta {
   // chromedriver 다운로드 URL
   url: string;
 }
+
+/**
+ * Chrome 접근 제어용 구성 객체 타입
+ */
+export interface ChromeAccessConfig {
+  /** 구성용 패키지 접두사 (예: com.android.chrome) */
+  pkgPrefix: string;
+  /** 접근 허용을 위한 자동화 스텝 ID 목록 */
+  stepIds: string[];
+}

@@ -3,13 +3,25 @@
  * Author : Shiwoo Min
  * Date : 2024-04-03
  */
-import { Locator, type Page } from '@playwright/test';
+import { Logger } from '@common/logger/customLogger';
+import { POCEnv } from '@common/utils/env/POCEnv';
+import type { Locator, Page } from '@playwright/test';
+import type winston from 'winston';
 
 export class WaitUtils {
+  // 현재 POC 타입
+  private static readonly poc = POCEnv.getType();
+  // 해당 테스트의 로거
+  private static readonly logger = Logger.getLogger(this.poc) as winston.Logger;
+
   /**
    * 특정 시간(ms) 동안 대기
    */
   public static async wait(milliseconds: number): Promise<void> {
+    const poc = POCEnv.getType();
+    if (process.env.DEBUG_WAIT === 'true') {
+      this.logger.debug(`[WaitUtils][${poc}] ${milliseconds}ms 동안 대기`);
+    }
     return new Promise(resolve => setTimeout(resolve, milliseconds));
   }
 
@@ -22,11 +34,24 @@ export class WaitUtils {
     interval: number = 500,
   ): Promise<void> {
     const start = Date.now();
+    const poc = POCEnv.getType();
+
     while (Date.now() - start < timeout) {
-      if (await condition()) return;
+      if (await condition()) {
+        if (process.env.DEBUG_WAIT === 'true') {
+          this.logger.debug(`[WaitUtils][${poc}] 조건이 만족됨`);
+        }
+        return;
+      }
+
+      if (process.env.DEBUG_WAIT === 'true') {
+        this.logger.debug(`[WaitUtils][${poc}] 조건 미충족, ${interval}ms 후 재시도`);
+      }
+
       await this.wait(interval);
     }
-    throw new Error('Timeout: condition was not met within the given time.');
+
+    throw new Error(`[WaitUtils][${poc}] Timeout: 조건이 ${timeout}ms 내에 만족되지 않음`);
   }
 
   /**
@@ -38,21 +63,29 @@ export class WaitUtils {
     interval: number = 500,
   ): Promise<void> {
     const start = Date.now();
+    const poc = POCEnv.getType();
+
     while (Date.now() - start < timeout) {
-      if (!(await condition())) return;
+      if (!(await condition())) {
+        if (process.env.DEBUG_WAIT === 'true') {
+          this.logger.debug(`[WaitUtils][${poc}] 조건이 해제됨`);
+        }
+        return;
+      }
+
+      if (process.env.DEBUG_WAIT === 'true') {
+        this.logger.debug(`[WaitUtils][${poc}] 조건 유지 중, ${interval}ms 후 재시도`);
+      }
+
       await this.wait(interval);
     }
-    throw new Error('Timeout: condition still true after given time.');
+
+    throw new Error(`[WaitUtils][${poc}] Timeout: 조건이 ${timeout}ms 동안 계속 true`);
   }
 
   /**
    * 특정 부모 아래 지정된 태그들의 innerText가 모두 정상 출력될 때까지 대기
    * - 공백, 빈 문자열은 실패로 간주
-   * @param page - Playwright Page 객체
-   * @param parentSelector - 부모 요소 셀렉터
-   * @param tagNames - 자식 태그 이름 목록 (예: ['.item', 'span'])
-   * @param timeout - 최대 대기 시간
-   * @param interval - 확인 주기
    */
   public static async waitForDataRendered(
     page: Page,
@@ -63,6 +96,7 @@ export class WaitUtils {
     throwOnTimeout = true,
   ): Promise<boolean> {
     const endTime = Date.now() + timeout;
+    const poc = POCEnv.getType();
 
     const isElementValid = async (el: Locator): Promise<boolean> => {
       const text = (await el.innerText()).trim();
@@ -80,14 +114,23 @@ export class WaitUtils {
         }),
       );
 
-      if (allValid.every(Boolean)) return true;
+      if (allValid.every(Boolean)) {
+        if (process.env.DEBUG_WAIT === 'true') {
+          this.logger.debug(`[WaitUtils][${poc}] 모든 태그(${tagNames.join(', ')}) 렌더링 완료`);
+        }
+        return true;
+      }
+
+      if (process.env.DEBUG_WAIT === 'true') {
+        this.logger.debug(`[WaitUtils][${poc}] 렌더링 대기 중...`);
+      }
 
       await this.wait(interval);
     }
 
     if (throwOnTimeout) {
       throw new Error(
-        `Timeout: 태그(${tagNames.join(', ')})들의 innerText가 ${timeout}ms 내에 정상 출력되지 않았습니다.`,
+        `[WaitUtils][${poc}] Timeout: 태그(${tagNames.join(', ')})의 innerText가 ${timeout}ms 내에 렌더링되지 않음`,
       );
     }
 

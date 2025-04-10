@@ -1,3 +1,8 @@
+/**
+ * Description : authLocator.ts - 📌  로그인/로그아웃/인증 관련 Locator 정의
+ * Author : Shiwoo Min
+ * Date : 2025-04-10
+ */
 import { UIType } from '@common/types/platform-types';
 
 /**
@@ -10,36 +15,42 @@ export const authLocator = {
     MOBILE: '',
     APP: '',
   },
-  //
+
+  // 나의 정보 아이콘 드롭다운
   myinfoTop: {
     PC: 'div.myInfo-list div.myInfo-top',
     MOBILE: '',
     APP: '',
   },
+
   // APP 스플래쉬 버튼
   guestButton: {
     PC: '',
     MOBILE: '',
     APP: '//button[text()="로그인하지 않고 입장할게요"]',
   },
-  //button[text()='로그인하지 않고 입장할게요']
+
+  // 로그인 수단 확인
   myLoginWay: {
     PC: '',
     MOBILE: '',
     APP: '//ul[@class="nm-app-login-way"]//button[text()="ID 로그인"]',
   },
+
   // 메인 로그인 버튼(모바일은 햄버거 버튼 클릭 후 로그인 링크)
   mainLoginButton: {
     PC: 'div.myInfo-list.is-show a.c-btn-solid-1-m',
     MOBILE: '//a[@data-gtm-click-text="로그인"]',
     APP: '',
   },
+
   // 로그인 페이지
   loginTitle: {
     PC: '//h2[contains(text(), "로그인")]',
     MOBILE: '//h2[contains(@class, "header-title") and contains(., "로그인")]',
     APP: '//h2[contains(@class, "header-title") and contains(normalize-space(.), "로그인")]',
   },
+
   // u+ 로그인 페이지
   uplusLoginTitle: {
     PC: '//h2[contains(normalize-space(), "U+ID 로그인")]',
@@ -47,6 +58,7 @@ export const authLocator = {
     APP: '//h2[contains(normalize-space(), "U+ ID 로그인")]',
   },
 
+  // 공통 부분은 json 처럼 기재하면 됨
   logoutButton: '.loginList > li:nth-of-type(2) > a',
   socialKakaoImg: "img[alt*='카카오']",
   socialNaverImg: "img[alt*='네이버']",

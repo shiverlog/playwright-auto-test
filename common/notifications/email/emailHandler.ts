@@ -1,17 +1,17 @@
 /**
- * Description : EmailHandler.ts - 📌 NotificationHandler 클래스를 상속받아 기본 메시지 전송 로직을 확장
+ * Description : EmailHandler.ts - 📌 NotificationHandler 클래스를 사용하여 기본 메시지 전송 로직을 확장
  * Author : Shiwoo Min
- * Date : 2025-04-04
+ * Date : 2025-04-10
  */
 import { emailConfig } from '@common/config/notificationConfig';
-import { NotificationHandler } from '@common/handlers/notificationHandler';
 import { Logger } from '@common/logger/customLogger';
-import type { POCKey, POCType } from '@common/types/platform-types';
-import { ALL_POCS } from '@common/types/platform-types';
+import { NotificationHandler } from '@common/notifications/notificationHandler';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import nodemailer from 'nodemailer';
 import type winston from 'winston';
 
 export class EmailHandler extends NotificationHandler {
+  // nodemailer 트랜스포터 싱글턴 인스턴스
   private static transporter: nodemailer.Transporter;
 
   /**
@@ -32,25 +32,20 @@ export class EmailHandler extends NotificationHandler {
   }
 
   /**
-   * 이메일 메시지 전송
+   * 이메일 메시지 전송 (현재 POC 기준)
    */
-  public static async sendEmailMessage(
-    poc: POCType,
-    message: string,
-    isSuccess: boolean = true,
-  ): Promise<void> {
-    // 전체 전송은 별도 함수에서 처리
-    if (poc === 'ALL') return;
-
-    const pocKey = poc as POCKey;
+  public static async sendEmailMessage(message: string, isSuccess: boolean = true): Promise<void> {
+    const pocKey = POCEnv.getType();
     const logger = Logger.getLogger(pocKey) as winston.Logger;
+
+    if (pocKey === 'ALL') return;
 
     if (!emailConfig.SMTP_USER || !emailConfig.SMTP_PASS) {
       logger.warn('이메일 사용자 또는 비밀번호가 설정되지 않았습니다.');
       return;
     }
 
-    const transporter = EmailHandler.createTransporter();
+    const transporter = this.createTransporter();
     const formattedMessage = isSuccess
       ? `[${pocKey}] ${message} 성공`
       : `[${pocKey}] ${message} 실패`;
@@ -77,9 +72,34 @@ export class EmailHandler extends NotificationHandler {
     message: string,
     isSuccess: boolean = true,
   ): Promise<void> {
-    const sendTasks = ALL_POCS.map(async (poc: POCKey) => {
-      await EmailHandler.sendEmailMessage(poc, message, isSuccess);
+    const pocList = POCEnv.getList();
+
+    const sendTasks = pocList.map(async poc => {
+      const logger = Logger.getLogger(poc) as winston.Logger;
+
+      if (!emailConfig.SMTP_USER || !emailConfig.SMTP_PASS) {
+        logger.warn(`[${poc}] 이메일 사용자 또는 비밀번호가 설정되지 않음`);
+        return;
+      }
+
+      const transporter = this.createTransporter();
+      const formattedMessage = isSuccess ? `[${poc}] ${message} 성공` : `[${poc}] ${message} 실패`;
+
+      const mailOptions = {
+        from: emailConfig.EMAIL_FROM,
+        to: emailConfig.EMAIL_TO,
+        subject: `[POC] ${poc} - 테스트 결과`,
+        text: formattedMessage,
+      };
+
+      try {
+        await transporter.sendMail(mailOptions);
+        logger.info(`[${poc}] 이메일 전송 완료`);
+      } catch (error) {
+        logger.error(`[${poc}] 이메일 전송 실패: ${(error as Error).message}`);
+      }
     });
+
     await Promise.all(sendTasks);
   }
 }

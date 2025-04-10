@@ -25,7 +25,7 @@ export const slackForm = (poc: string) => ({
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `POC : \`${poc} (Selenium)\``,
+        text: `POC : \`${poc} Playwright Test Start\``,
       },
     },
     {

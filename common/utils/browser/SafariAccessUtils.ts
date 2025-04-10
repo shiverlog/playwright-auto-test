@@ -4,28 +4,32 @@
  * Date : 2024-04-04
  */
 import { Logger } from '@common/logger/customLogger';
-import type { POCKey } from '@common/types/platform-types';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 export class SafariAccessUtils {
-  private logger: winston.Logger;
-  private driver: Browser;
-  private switchContext: (view: string) => Promise<void>;
-  private poc: POCKey;
+  // 현재 POC 키
+  private readonly poc = POCEnv.getType();
+  // 로깅 인스턴스
+  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
+  // WebDriverIO 기반 iOS 드라이버 인스턴스
+  private readonly driver: Browser;
+  // Appium 콘텍스트 전환 함수 (NATIVE_APP, WEBVIEW 등 전환용)
+  private readonly switchContext: (view: string) => Promise<void>;
 
-  constructor(driver: Browser, switchContext: (view: string) => Promise<void>, poc: POCKey) {
+  constructor(driver: Browser, switchContext: (view: string) => Promise<void>) {
     this.driver = driver;
     this.switchContext = switchContext;
-    this.poc = poc;
-    this.logger = Logger.getLogger(poc) as winston.Logger;
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc) as winston.Logger;
   }
 
   /**
    * Safari 실행 후 최초 팝업/권한 등을 자동 처리
    */
   async handleSafariSetup(): Promise<void> {
-    this.logger.info(`[${this.poc}] Safari 초기 팝업/권한 처리 시작`);
+    this.logger.info(`[${this.poc}] Safari 처음 팝업/권한 처리 시작`);
     await this.switchContext('NATIVE_APP');
     await this.driver.setTimeout({ implicit: 2000 });
 
@@ -40,7 +44,7 @@ export class SafariAccessUtils {
     }
 
     await this.driver.setTimeout({ implicit: 20000 });
-    this.logger.info(`[${this.poc}] Safari 초기 처리 완료`);
+    this.logger.info(`[${this.poc}] Safari 처음 처리 완료`);
   }
 
   /**
@@ -79,7 +83,6 @@ export class SafariAccessUtils {
 
       this.logger.info(`[${this.poc}] Safari 캐시 정리 완료`);
 
-      // 앱으로 복귀
       await this.driver.activateApp('com.lguplus.mobile.cs');
       await this.switchContext('WEBVIEW_com.lguplus.mobile.cs');
     } catch (e) {

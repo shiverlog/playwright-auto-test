@@ -7,7 +7,6 @@ import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';
 import { ALL_POCS } from '@common/types/platform-types';
 import { exec } from 'child_process';
-import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';

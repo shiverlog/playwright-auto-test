@@ -1,36 +1,29 @@
 /**
  * Description : TestPerformance.ts - 📌 테스트 관련 상수 (기본 설정, 예제 데이터 등)
  * Author : Shiwoo Min
- * Date : 2024-04-04
+ * Date : 2024-04-10
  */
 import { Logger } from '@common/logger/customLogger';
-import type { POCKey, POCType } from '@common/types/platform-types';
-import { ALL_POCS } from '@common/types/platform-types';
-import type { Page } from '@playwright/test';
+import { POCEnv } from '@common/utils/env/POCEnv';
+import type { Locator, Page } from '@playwright/test';
 import type winston from 'winston';
 
 export class TestPerformance {
-  private logger: winston.Logger;
-  private pocKey: POCKey;
-
-  constructor(private poc: Exclude<POCType, ''>) {
-    this.pocKey = poc as POCKey;
-    this.logger = Logger.getLogger(this.pocKey) as winston.Logger;
-  }
+  // 현재 POC 타입
+  private readonly poc = POCEnv.getType();
+  // 해당 테스트의 로거
+  private readonly logger = Logger.getLogger(this.poc) as winston.Logger;
 
   /**
    * 공통 진입점: 단일 또는 전체 POC 실행
    */
-  public static async runAll(
-    poc: POCType,
-    pageFactory: (poc: Exclude<POCType, ''>) => Promise<Page>,
-  ) {
-    const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
+  public static async runAll(pageFactory: (poc: string) => Promise<Page>): Promise<void> {
+    const pocList = POCEnv.getList();
 
     await Promise.all(
-      pocList.map(async pocItem => {
-        const page = await pageFactory(pocItem);
-        const perf = new TestPerformance(pocItem);
+      pocList.map(async poc => {
+        const page = await pageFactory(poc);
+        const perf = new TestPerformance();
         await perf.runAllMeasurements(page);
       }),
     );
@@ -148,7 +141,7 @@ export class TestPerformance {
       return navEntry ? navEntry.loadEventEnd - navEntry.startTime : 0;
     });
 
-    this.logger.info(`전체 페이지 로드 시간: ${fullLoadTime / 1000} 초`);
+    this.logger.info(`전체 페이지 로드 시간: ${(fullLoadTime / 1000).toFixed(2)} 초`);
     return fullLoadTime;
   }
 

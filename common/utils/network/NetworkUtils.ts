@@ -4,19 +4,21 @@
  * Date : 2024-04-04
  */
 import { Logger } from '@common/logger/customLogger';
-import type { POCKey } from '@common/types/platform-types';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import type { BrowserContext, Page, Request, Route } from '@playwright/test';
 import type winston from 'winston';
 
 export class NetworkUtils {
-  private logger: winston.Logger;
+  // 현재 POC 키
+  private readonly poc = POCEnv.getType();
+  // 로깅 인스턴스
+  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
 
   constructor(
     private page: Page,
     private context: BrowserContext,
-    private poc: POCKey,
   ) {
-    this.logger = Logger.getLogger(poc) as winston.Logger;
+    this.logger = Logger.getLogger(this.poc) as winston.Logger;
   }
 
   /**

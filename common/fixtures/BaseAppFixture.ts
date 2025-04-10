@@ -8,10 +8,11 @@ import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { Logger } from '@common/logger/customLogger';
 import type { AppiumRemoteOptions, DeviceConfig, DeviceOptions } from '@common/types/device-config';
 import type { POCKey, POCType } from '@common/types/platform-types';
+import { ALL_POCS } from '@common/types/platform-types';
 import { AppiumServerUtils } from '@common/utils/appium/AppiumServerUtils';
 import { ChromeAccessUtils } from '@common/utils/browser/ChromeAccessUtils';
 import { SafariAccessUtils } from '@common/utils/browser/SafariAccessUtils';
-import { getAvailablePort } from '@common/utils/network/portUtils';
+import { getAvailablePort } from '@common/utils/network/PortUtils';
 import { test as base, expect } from '@playwright/test';
 import { execSync } from 'child_process';
 import waitOn from 'wait-on';
@@ -120,7 +121,7 @@ class BaseAppFixture extends BasePocFixture {
       },
     };
 
-    // 테스트 대상을 제외한 나머지 백그라운드 정리
+    // TODO 테스트 대상을 제외한 나머지 백그라운드 정리
     if (isAndroid) {
       const allowedApps = [
         deviceConfig['appium:options']?.appPackage,
@@ -189,14 +190,17 @@ class BaseAppFixture extends BasePocFixture {
     this.appDrivers.set(poc, driver);
     logger.info(`[BaseAppFixture] ${poc} 드라이버 초기화 완료`);
 
+    // 자사 앱 실행
     const switchContext = async (ctx: string) => await driver.switchContext(ctx);
 
     // Chrome 및 iOS 초기화 작업
     if (isAndroid) {
       const chromeUtil = new ChromeAccessUtils(driver, switchContext, deviceConfig.udid, poc);
       // Android 크롬 초기화
+      await chromeUtil.bringToFrontIfNotVisible();
       await chromeUtil.clearChromeAppData();
-      await chromeUtil.autoHandleChromeSetup();
+      // await chromeUtil.chromeAccessBasic();
+      // await chromeUtil.autoHandleChromeSetup();
     } else if (isIOS) {
       const safariUtil = new SafariAccessUtils(driver, switchContext, poc);
       await safariUtil.handleSafariSetup();

@@ -1,89 +1,101 @@
 /**
- * Description : stealthContext.ts - Playwright용 자동화 감지 우회 유틸리티
+ * Description : StealthContext.ts - 📌 Playwright용 자동화 감지 우회 유틸리티 (클래스 기반)
  * Author : 자동화 탐지 회피용 유틸
  * Date : 2025-04-05
  */
-import { type Browser, type BrowserContext, chromium, type LaunchOptions } from '@playwright/test';
+import { Logger } from '@common/logger/customLogger';
+import type { StealthContextOptions } from '@common/types/stealth-context';
+import { POCEnv } from '@common/utils/env/POCEnv';
+import {
+  type Browser,
+  type BrowserContext,
+  chromium,
+  type LaunchOptions,
+  type Page,
+} from '@playwright/test';
+import type winston from 'winston';
 
-interface StealthContextOptions {
-  headless?: boolean;
-  locale?: string;
-  timezoneId?: string;
-  userAgent?: string;
-  viewport?: { width: number; height: number };
-  storageStatePath?: string;
-}
+export class StealthContext {
+  // 현재 POC 키
+  private readonly poc = POCEnv.getType();
+  // 로깅 인스턴스
+  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
 
-export async function launchStealthBrowser(options: StealthContextOptions = {}): Promise<Browser> {
-  const browser = await chromium.launch({
-    headless: options.headless ?? false,
-    slowMo: 50, // 사람 같은 속도
-  });
-  return browser;
-}
+  constructor(private readonly options: StealthContextOptions = {}) {}
 
-export async function createStealthContext(
-  browser: Browser,
-  options: StealthContextOptions = {},
-): Promise<BrowserContext> {
-  const context = await browser.newContext({
-    locale: options.locale ?? 'ko-KR',
-    timezoneId: options.timezoneId ?? 'Asia/Seoul',
-    userAgent:
-      options.userAgent ??
-      'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-    viewport: options.viewport ?? { width: 1366, height: 768 },
-    storageState: options.storageStatePath ? options.storageStatePath : undefined,
-  });
+  /**
+   * Stealth 모드의 Chromium 브라우저를 실행
+   */
+  public async launchBrowser(): Promise<Browser> {
+    this.logger.info(`[StealthContext][${this.poc}] Chromium 브라우저 실행 (Stealth 모드)`);
+    return await chromium.launch({
+      headless: this.options.headless ?? false,
+      slowMo: 50,
+    });
+  }
 
-  // Stealth 우회 스크립트 삽입
-  await context.addInitScript(() => {
-    Object.defineProperty(navigator, 'webdriver', { get: () => false });
-    Object.defineProperty(navigator, 'languages', { get: () => ['ko-KR', 'ko'] });
-    Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
-    Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 8 });
-    Object.defineProperty(navigator, 'deviceMemory', { get: () => 8 });
+  /**
+   * Stealth 우회 설정이 적용된 Context 생성
+   */
+  public async createContext(browser: Browser): Promise<BrowserContext> {
+    this.logger.info(`[StealthContext][${this.poc}] Stealth Context 생성 시작`);
 
-    if (!('chrome' in window)) {
-      // @ts-ignore
-      window.chrome = { runtime: {} };
-    }
-
-    Object.defineProperty(navigator, 'connection', {
-      get: () => ({
-        rtt: 50,
-        downlink: 10,
-        effectiveType: '4g',
-      }),
+    const context = await browser.newContext({
+      locale: this.options.locale ?? 'ko-KR',
+      timezoneId: this.options.timezoneId ?? 'Asia/Seoul',
+      userAgent:
+        this.options.userAgent ??
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+      viewport: this.options.viewport ?? { width: 1366, height: 768 },
+      storageState: this.options.storageStatePath ?? undefined,
     });
 
-    Object.defineProperty(window.screen, 'width', { get: () => 1366 });
-    Object.defineProperty(window.screen, 'height', { get: () => 768 });
+    await context.addInitScript(() => {
+      Object.defineProperty(navigator, 'webdriver', { get: () => false });
+      Object.defineProperty(navigator, 'languages', { get: () => ['ko-KR', 'ko'] });
+      Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
+      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 8 });
+      Object.defineProperty(navigator, 'deviceMemory', { get: () => 8 });
 
-    Object.defineProperty(document, 'visibilityState', {
-      get: () => 'visible',
-    });
-
-    const originalQuery = window.navigator.permissions.query;
-    window.navigator.permissions.query = parameters => {
-      if (parameters.name === 'notifications') {
-        const permission = Notification.permission;
-        const mappedState = permission === 'default' ? 'prompt' : permission;
-
-        return Promise.resolve({
-          state: mappedState,
-          name: 'notifications',
-          onchange: null,
-          addEventListener() {},
-          removeEventListener() {},
-          dispatchEvent() {
-            return false;
-          },
-        } as PermissionStatus);
+      if (!('chrome' in window)) {
+        // @ts-ignore
+        window.chrome = { runtime: {} };
       }
-      return originalQuery(parameters);
-    };
-  });
 
-  return context;
+      Object.defineProperty(navigator, 'connection', {
+        get: () => ({
+          rtt: 50,
+          downlink: 10,
+          effectiveType: '4g',
+        }),
+      });
+
+      Object.defineProperty(window.screen, 'width', { get: () => 1366 });
+      Object.defineProperty(window.screen, 'height', { get: () => 768 });
+      Object.defineProperty(document, 'visibilityState', { get: () => 'visible' });
+
+      const originalQuery = window.navigator.permissions.query;
+      window.navigator.permissions.query = parameters => {
+        if (parameters.name === 'notifications') {
+          const permission = Notification.permission;
+          const mappedState = permission === 'default' ? 'prompt' : permission;
+
+          return Promise.resolve({
+            state: mappedState,
+            name: 'notifications',
+            onchange: null,
+            addEventListener() {},
+            removeEventListener() {},
+            dispatchEvent() {
+              return false;
+            },
+          } as PermissionStatus);
+        }
+        return originalQuery(parameters);
+      };
+    });
+
+    this.logger.info(`[StealthContext][${this.poc}] Stealth Context 생성 완료`);
+    return context;
+  }
 }

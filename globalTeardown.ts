@@ -1,39 +1,54 @@
 /**
- * Description : globalTeardown.ts - 📌 Playwright 테스트 실행 후 정리 작업
+ * Description : GlobalTeardown.ts - 📌 Playwright 테스트 실행 후 정리 작업
  * Author : Shiwoo Min
- * Date : 2025-04-02
+ * Date : 2025-04-10
  */
+import { resultHandler } from '@common/logger/ResultHandler.js';
 import { PocInitializer } from '@common/initializers/PocInitializer.js';
 import { Logger } from '@common/logger/customLogger.js';
-import type { POCKey, POCType } from '@common/types/platform-types.js';
-import { ALL_POCS } from '@common/types/platform-types.js';
+import { POCEnv } from '@common/utils/env/POCEnv.js';
 import dotenv from 'dotenv';
 import type winston from 'winston';
 
 dotenv.config();
 
-async function globalTeardown() {
-  // 환경변수로부터 활성화할 POCType을 가져옴
-  const activePOC = (process.env.POC || '') as POCType;
+class GlobalTeardownHandler {
+  // poc 단일 실행
+  private readonly poc: string;
+  // 전체 poc 목록
+  private readonly pocList: string[];
+  // 전역 로거 인스턴스
+  private readonly logger: winston.Logger;
 
-  // 'ALL'일 경우 전체 POCKey 대상으로 실행
-  const pocList: POCKey[] = activePOC === 'ALL' ? ALL_POCS : [activePOC as POCKey];
+  constructor() {
+    this.poc = POCEnv.getType();
+    this.pocList = POCEnv.getList();
+    this.logger = Logger.getLogger('GLOBAL') as winston.Logger;
+  }
 
-  // 각 POC에 대해 teardown 병렬 실행
-  await Promise.all(
-    pocList.map(async poc => {
-      const logger = Logger.getLogger(poc) as winston.Logger;
-      logger.info(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 테스트 종료 처리 시작`);
+  public async run(): Promise<void> {
+    await Promise.all(this.pocList.map(poc => this.teardownPOC(poc)));
+  }
 
-      try {
-        await PocInitializer.teardown(poc);
-        logger.info(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 종료 처리 완료`);
-      } catch (err) {
-        logger.error(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 종료 처리 실패: ${err}`);
-        throw err;
-      }
-    }),
-  );
+  private async teardownPOC(poc: string): Promise<void> {
+    this.logger.info(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 테스트 종료 처리 시작`);
+
+    try {
+      await PocInitializer.teardown(poc);
+      this.logger.info(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 종료 처리 완료`);
+
+      await resultHandler(poc, 'PASS', '[GLOBAL TEARDOWN] 테스트 정상 종료');
+    } catch (err: unknown) {
+      const errorMessage = err instanceof Error ? err.message : String(err);
+      this.logger.error(`[GLOBAL TEARDOWN] [${poc.toUpperCase()}] 종료 처리 실패: ${errorMessage}`);
+
+      await resultHandler(poc, 'FAIL', `[GLOBAL TEARDOWN] 오류: ${errorMessage}`);
+      throw err;
+    }
+  }
 }
 
-export default globalTeardown;
+export default async function globalTeardown(): Promise<void> {
+  const handler = new GlobalTeardownHandler();
+  await handler.run();
+}

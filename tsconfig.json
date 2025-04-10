@@ -146,9 +146,9 @@
     "tests-examples",
     "playwright.config.ts",
     // 초기화/종료
-    "globalSetup.ts",
-    "globalTeardown.ts",
-    "common/utils/test/scriptRunner.ts"
+    "GlobalSetup.ts",
+    "GlobalTeardown.ts",
+    "common/utils/test/ScriptRunner.ts"
   ],
   // TypeScript 컴파일 대상에서 제외
   "exclude": ["node_modules", "dist", "example"]

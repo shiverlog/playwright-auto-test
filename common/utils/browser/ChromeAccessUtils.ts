@@ -1,20 +1,16 @@
 /**
  * Description : ChromeAccessUtils.ts - 📌 Android 기반의 Chrome 브라우저 초기 셋업 자동화 유틸리티
  * Author : Shiwoo Min
- * Date : 2024-04-06
+ * Date : 2024-04-10
  */
 import { Logger } from '@common/logger/customLogger';
-import type { POCKey } from '@common/types/platform-types';
+import type { ChromeAccessConfig } from '@common/types/device-config';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import { execSync } from 'child_process';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
-export type ChromeFlavor = 'stable' | 'beta' | 'v130' | 'v135';
-
-interface ChromeAccessConfig {
-  pkgPrefix: string;
-  stepIds: string[];
-}
+export type ChromeFlavor = 'stable' | 'beta' | 'v135plus';
 
 // Chrome 버전별 또는 채널별 초기화 단계 ID 구성
 const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
@@ -38,17 +34,7 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
       'com.android.permissioncontroller:id/permission_allow_button',
     ],
   },
-  v130: {
-    pkgPrefix: 'com.android.chrome:id',
-    stepIds: [
-      'button_primary',
-      'signin_fre_continue_button',
-      'terms_accept',
-      'positive_button',
-      'com.android.permissioncontroller:id/permission_allow_button',
-    ],
-  },
-  v135: {
+  v135plus: {
     pkgPrefix: 'com.android.chrome:id',
     stepIds: [
       'button_primary',
@@ -61,27 +47,27 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
 };
 
 export class ChromeAccessUtils {
-  private driver: Browser;
-  private switchContext: (view: string) => Promise<void>;
-  private udid: string;
-  private poc?: POCKey;
-  private logger: winston.Logger;
+  // Appium 드라이버
+  private readonly driver: Browser;
+  // 콘텍스트 전환 함수
+  private readonly switchContext: (view: string) => Promise<void>;
+  // 디바이스 UDID
+  private readonly udid: string;
+  // 현재 POC 키
+  private readonly poc = POCEnv.getType();
+  // 로깅 인스턴스
+  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
 
-  constructor(
-    driver: Browser,
-    switchContext: (view: string) => Promise<void>,
-    udid: string,
-    poc?: POCKey,
-  ) {
+  constructor(driver: Browser, switchContext: (view: string) => Promise<void>, udid: string) {
     this.driver = driver;
     this.switchContext = switchContext;
     this.udid = udid;
-    this.poc = poc;
-    this.logger = Logger.getLogger(poc || 'AOS') as winston.Logger;
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc) as winston.Logger;
   }
 
   /**
-   * 지정된 Chrome flavor(v125~v135, stable, beta 등)에 따라 초기 설정을 자동으로 처리
+   * 지정된 Chrome flavor에 따라 초기 설정을 자동으로 처리
    */
   async handleChromeSetup(flavor: ChromeFlavor): Promise<void> {
     const config = CHROME_CONFIGS[flavor];
@@ -202,8 +188,7 @@ export function detectChromeFlavor(version: string): ChromeFlavor {
   const major = parseInt(version.split('.')[0], 10);
 
   if (isNaN(major)) return 'stable';
-  if (major >= 135) return 'v135';
-  if (major >= 130) return 'v130';
+  if (major >= 135) return 'v135plus';
 
   return 'stable';
 }

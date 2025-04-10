@@ -1,32 +1,25 @@
 /**
- * Description : AppiumServerUtils.ts - 📌 Appium 서버 및 앱 관련 제어 유틸리티 클래스
+ * Description : AppiumServerUtils.ts - 📌 Appium 서버/앱 제어 유틸리티 클래스
  * Author : Shiwoo Min
- * Date : 2024-04-04
+ * Date : 2024-04-10
  */
 import { Logger } from '@common/logger/customLogger';
-import type { AppiumRemoteOptions } from '@common/types/device-config';
-import type { POCKey } from '@common/types/platform-types';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import { type ChildProcess, exec, spawn } from 'child_process';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
 import { platform } from 'os';
-import { remote } from 'webdriverio';
-import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 dotenv.config();
 
-/**
- * Appium 서버/앱 제어 유틸리티 클래스
- */
 export class AppiumServerUtils {
-  private logger: winston.Logger;
-  private poc?: POCKey;
+  // 현재 POC 키
+  private readonly poc = POCEnv.getType();
+  // 로깅 인스턴스
+  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
+  // 포트별 Appium 서버 프로세스 맵
   private serverProcessMap = new Map<number, ChildProcess>();
-  constructor(poc?: POCKey) {
-    this.poc = poc;
-    this.logger = Logger.getLogger(poc || 'ALL') as winston.Logger;
-  }
 
   /**
    * 실행 중인 포트를 찾아 종료 (4723 - 4733 범위)
@@ -44,7 +37,7 @@ export class AppiumServerUtils {
               this.logger.debug(`[WIN] netstat stdout (${port}): ${stdout}`);
               if (error) {
                 this.logger.warn(`[WIN] netstat error (${port}): ${error.message}`);
-                return resolve(); // 에러 무시하고 다음으로 진행
+                return resolve();
               }
               const pid = stdout?.trim().split(/\s+/)[4];
               if (pid) {
@@ -60,7 +53,7 @@ export class AppiumServerUtils {
               this.logger.debug(`[UNIX] lsof stdout (${port}):\n${stdout}`);
               if (error && !stdout) {
                 this.logger.warn(`[UNIX] lsof error (${port}): ${error.message}`);
-                return resolve(); // 에러 무시하고 다음으로 진행
+                return resolve();
               }
               const line = stdout.split('\n')[1];
               const pid = line?.split(/\s+/)[1];
@@ -76,6 +69,7 @@ export class AppiumServerUtils {
         }),
       );
     }
+
     try {
       await Promise.all(killPortPromises);
       this.logger.info(`포트 종료 작업 완료`);
@@ -95,7 +89,9 @@ export class AppiumServerUtils {
       stdio: 'pipe',
       shell: true,
     });
+
     this.serverProcessMap.set(port, appiumProcess);
+
     appiumProcess.stdout?.on('data', data =>
       this.logger.info(`[Appium ${port}] ${data.toString()}`),
     );

@@ -6,7 +6,9 @@
  */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { ActionConstants } from '@common/constants/ActionConstants.js';
+import type { POCKey } from '@common/types/platform-types';
 import type { Platform } from '@common/types/platform-types.js';
+import { ContextUtils } from '@common/utils/context/ContextUtils.js';
 import { chromium, type Page } from '@playwright/test';
 import { execSync } from 'child_process';
 import type { CDPSession } from 'playwright-core';
@@ -16,19 +18,74 @@ const DEFAULT_RETRY = 5;
 
 export class MobileActionUtils extends BaseActionUtils<Browser> {
   protected driver: Browser;
-  protected platform: Platform;
+  protected platform?: Platform;
 
   // Android/iOS 공통처리
-  // page - webview
-  // driver - native
+  // page - webview / driver - native
   constructor(driver: Browser, page?: Page | undefined) {
-    super(page, driver);
+    // page는 WebView 연결 이후에만 세팅
+    super(undefined, driver);
     this.driver = driver;
 
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();
     if (platformName?.includes('android')) this.platform = 'ANDROID_APP';
     else if (platformName?.includes('ios')) this.platform = 'IOS_APP';
     else throw new Error(`Unsupported platform: ${platformName}`);
+  }
+
+  /**
+   * Page 세팅
+   */
+  public setPage(page: Page): void {
+    this.page = page;
+  }
+
+  /**
+   * WebView 연결 후 ContextUtils에서 page 주입
+   */
+  public setPageFromContext(): void {
+    const page = ContextUtils.getPageIfAvailable(poc);
+    if (!page) {
+      throw new Error(`[MobileActionUtils] WebView page가 아직 설정되지 않았습니다. (POC: ${poc})`);
+    }
+    this.setPage(page); // BaseActionUtils의 setPage 사용
+  }
+
+  /**
+   * WebView가 연결됐는지 여부
+   */
+  public hasWebView(): boolean {
+    return !!this.page;
+  }
+
+  /**
+   * WebView page가 설정돼 있지 않으면 예외 발생
+   */
+  private getPageOrThrow(): Page {
+    if (!this.page) {
+      throw new Error(
+        '[MobileActionUtils] WebView가 연결되지 않았습니다. page가 설정되지 않았습니다.',
+      );
+    }
+    return this.page;
+  }
+
+  /**
+   * WebView에서만 동작해야 하는 예시 메서드
+   */
+  public async clickInWebView(selector: string): Promise<void> {
+    const page = this.getPageOrThrow();
+    await page.locator(selector).click();
+  }
+
+  public async fillInWebView(selector: string, value: string): Promise<void> {
+    const page = this.getPageOrThrow();
+    await page.locator(selector).fill(value);
+  }
+
+  public async getTextInWebView(selector: string): Promise<string> {
+    const page = this.getPageOrThrow();
+    return await page.locator(selector).innerText();
   }
 
   /**

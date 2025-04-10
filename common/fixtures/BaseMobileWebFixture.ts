@@ -4,10 +4,10 @@
  * Date : 2025-04-06
  */
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
-import '@common/initializers/mobileWebTestEnv';
+import '@common/initializers/MobileWebTestEnv';
 import { Logger } from '@common/logger/customLogger';
 import type { POCKey, POCType } from '@common/types/platform-types';
-import { createStealthContext, launchStealthBrowser } from '@common/utils/browser/stealthContext';
+import { createStealthContext, launchStealthBrowser } from '@common/utils/browser/StealthContext';
 import { test as base, expect } from '@playwright/test';
 import type { BrowserContext, Page } from '@playwright/test';
 import type winston from 'winston';

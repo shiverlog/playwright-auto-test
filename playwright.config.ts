@@ -291,9 +291,9 @@ const e2eProjects = generateE2EProjects();
  */
 export default defineConfig({
   // 공통 초기화 작업
-  globalSetup: path.resolve(__dirname, './globalSetup.ts'),
+  globalSetup: path.resolve(__dirname, './GlobalSetup.ts'),
   // 공통 종료 작업
-  globalTeardown: path.resolve(__dirname, './globalTeardown.ts'),
+  globalTeardown: path.resolve(__dirname, './GlobalTeardown.ts'),
   // 공통 테스트 폴더 경로
   testDir: '.',
   testMatch: [

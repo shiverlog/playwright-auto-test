@@ -1,105 +1,92 @@
 /**
- * Description : PocInitializer.ts - 📌 각 POC 테스트 환경 초기화 및 정리 매니저
+ * Description : PocInitializer.ts - 📌 각 POC 테스트 환경 초기화 및 정리 매니저 (POCEnv 기반)
  * Author : Shiwoo Min
- * Date : 2025-04-04
+ * Date : 2025-04-10
  */
-import {
-  cleanupAndroidTestEnv,
-  initializeAndroidTestEnv,
-} from '@common/initializers/androidTestEnv.js';
-import { cleanupApiTestEnv, initializeApiTestEnv } from '@common/initializers/apiTestEnv.js';
-import { cleanupOldFiles } from '@common/initializers/cleanupOldFiles';
-import { cleanupIosTestEnv, initializeIosTestEnv } from '@common/initializers/iosTestEnv.js';
-import {
-  cleanupMobileWebTestEnv,
-  initializeMobileWebTestEnv,
-} from '@common/initializers/mobileWebTestEnv.js';
-import { cleanupPcTestEnv, initializePcTestEnv } from '@common/initializers/pcTestEnv.js';
+import { AndroidTestEnv } from '@common/initializers/AndroidTestEnv.js';
+import { ApiTestEnv } from '@common/initializers/ApiTestEnv.js';
+import { CleanupInitializer } from '@common/initializers/CleanupInitializer';
+import { IosTestEnv } from '@common/initializers/IosTestEnv.js';
+import { MobileWebTestEnv } from '@common/initializers/MobileWebTestEnv.js';
+import { PcTestEnv } from '@common/initializers/PcTestEnv.js';
 import { Logger } from '@common/logger/customLogger';
-import type { POCKey, POCType } from '@common/types/platform-types';
-import { ALL_POCS } from '@common/types/platform-types';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import type winston from 'winston';
 
-type PocHandlers = {
-  setup: (poc: POCKey) => Promise<void>;
-  teardown: (poc: POCKey) => Promise<void>;
-};
+const POC_CLASS_MAP = {
+  PC: new PcTestEnv(),
+  MW: new MobileWebTestEnv(),
+  AOS: new AndroidTestEnv(),
+  IOS: new IosTestEnv(),
+  API: new ApiTestEnv(),
+} as const;
 
-// 각 POC 타입에 따라 초기화/정리 핸들러 맵 구성
-const POC_HANDLER_MAP: Record<POCKey, PocHandlers> = {
-  PC: {
-    setup: initializePcTestEnv,
-    teardown: cleanupPcTestEnv,
-  },
-  MW: {
-    setup: initializeMobileWebTestEnv,
-    teardown: cleanupMobileWebTestEnv,
-  },
-  AOS: {
-    setup: initializeAndroidTestEnv,
-    teardown: cleanupAndroidTestEnv,
-  },
-  IOS: {
-    setup: initializeIosTestEnv,
-    teardown: cleanupIosTestEnv,
-  },
-  API: {
-    setup: initializeApiTestEnv,
-    teardown: cleanupApiTestEnv,
-  },
-};
+type POCKey = keyof typeof POC_CLASS_MAP;
 
-// POC 테스트 환경 초기화/정리 전용 클래스
 export class PocInitializer {
-  // POC별 초기화 작업
-  public static async setup(poc: POCType): Promise<void> {
-    const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
+  private static readonly loggerMap = new Map<POCKey, winston.Logger>();
+
+  private static get logger(): Record<POCKey, winston.Logger> {
+    const result = {} as Record<POCKey, winston.Logger>;
+    const pocList = POCEnv.getList() as POCKey[];
+
+    for (const poc of pocList) {
+      if (!this.loggerMap.has(poc)) {
+        this.loggerMap.set(poc, Logger.getLogger(poc) as winston.Logger);
+      }
+      result[poc] = this.loggerMap.get(poc)!;
+    }
+
+    return result;
+  }
+
+  public static async setup(): Promise<void> {
+    const pocList = POCEnv.getList() as POCKey[];
 
     await Promise.all(
-      pocList.map(async (current: POCKey) => {
-        const logger = Logger.getLogger(current) as winston.Logger;
-        logger.info(`[SETUP] ${current.toUpperCase()} 시작`);
+      pocList.map(async poc => {
+        const handler = POC_CLASS_MAP[poc];
 
-        const handler = POC_HANDLER_MAP[current];
+        this.logger[poc].info(`[SETUP] ${poc.toUpperCase()} 시작`);
+
         if (!handler) {
-          logger.warn(`[SETUP] 알 수 없는 POC: ${current}`);
+          this.logger[poc].warn(`[SETUP] 알 수 없는 POC: ${poc}`);
           return;
         }
 
         try {
-          // 오래된 파일 삭제
-          await cleanupOldFiles(current);
-          // POC-specific 환경 초기화
-          await handler.setup(current);
-          logger.info(`[SETUP] ${current.toUpperCase()} 완료`);
+          await new CleanupInitializer().run();
+          await handler.setup();
+          this.logger[poc].info(`[SETUP] ${poc.toUpperCase()} 완료`);
         } catch (error: any) {
-          logger.error(`[SETUP] ${current.toUpperCase()} 실패 - ${error.message || error}`);
+          this.logger[poc].error(`[SETUP] ${poc.toUpperCase()} 실패 - ${error.message || error}`);
           throw error;
         }
       }),
     );
   }
 
-  // POC별 정리 작업
-  public static async teardown(poc: POCType): Promise<void> {
-    const pocList: POCKey[] = poc === 'ALL' ? ALL_POCS : [poc as POCKey];
+  public static async teardown(): Promise<void> {
+    const pocList = POCEnv.getList() as POCKey[];
 
     await Promise.all(
-      pocList.map(async (current: POCKey) => {
-        const logger = Logger.getLogger(current) as winston.Logger;
-        logger.info(`[TEARDOWN] ${current.toUpperCase()} 시작`);
+      pocList.map(async poc => {
+        const handler = POC_CLASS_MAP[poc];
 
-        const handler = POC_HANDLER_MAP[current];
+        this.logger[poc].info(`[TEARDOWN] ${poc.toUpperCase()} 시작`);
+
         if (!handler) {
-          logger.warn(`[TEARDOWN] 알 수 없는 POC: ${current}`);
+          this.logger[poc].warn(`[TEARDOWN] 알 수 없는 POC: ${poc}`);
           return;
         }
 
         try {
-          await handler.teardown(current);
-          logger.info(`[TEARDOWN] ${current.toUpperCase()} 완료`);
+          await handler.teardown();
+          this.logger[poc].info(`[TEARDOWN] ${poc.toUpperCase()} 완료`);
         } catch (error: any) {
-          logger.error(`[TEARDOWN] ${current.toUpperCase()} 실패 - ${error.message || error}`);
+          this.logger[poc].error(
+            `[TEARDOWN] ${poc.toUpperCase()} 실패 - ${error.message || error}`,
+          );
           throw error;
         }
       }),

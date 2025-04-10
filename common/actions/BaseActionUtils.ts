@@ -7,6 +7,7 @@
  * - MobileActionUtils 에서는 Playwright + Appium 드라이버 객체를 함께 관리
  */
 import { JsForceActions } from '@common/actions/JsForceActions.js';
+import type { POCKey, POCType } from '@common/types/platform-types';
 import type { Locator, Page } from '@playwright/test';
 
 export class BaseActionUtils<TDriver = unknown> {

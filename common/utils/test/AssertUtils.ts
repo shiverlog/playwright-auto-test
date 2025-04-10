@@ -1,22 +1,33 @@
 /**
- * Description : AssertUtils.ts - 📌 테스트 검증 로직을 모듈화한 유틸리티 클래스
+ * Description : AssertUtils.ts - 📌 Assertion 유틸리티 클래스 (인스턴스 기반)
  * Author : Shiwoo Min
- * Date : 2024-04-07
+ * Date : 2024-04-10
  */
+import { Logger } from '@common/logger/customLogger';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import { expect, test } from '@playwright/test';
 import type { Locator, Page } from '@playwright/test';
+import type winston from 'winston';
 
-/**
- * Playwright: Assertion 유틸리티 클래스 (인스턴스 기반)
- */
 export class AssertUtils {
   constructor(private softAssert: boolean = false) {}
+  // 현재 POC 타입
+  private readonly poc = POCEnv.getType();
+  // 해당 테스트의 로거
+  private readonly logger = Logger.getLogger(this.poc) as winston.Logger;
 
   /**
    *  Playwright: 에러 핸들링
    */
   private handleError(error: unknown) {
-    if (!this.softAssert) throw new Error(error instanceof Error ? error.message : String(error));
+    const message = error instanceof Error ? error.message : String(error);
+    const tagged = `[AssertUtils][${this.poc}] Assertion failed: ${message}`;
+
+    if (process.env.DEBUG_ASSERT === 'true') {
+      console.error(tagged);
+    }
+
+    if (!this.softAssert) throw new Error(tagged);
   }
 
   /**

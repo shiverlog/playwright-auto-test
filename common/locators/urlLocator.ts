@@ -1,3 +1,8 @@
+/**
+ * Description : urlLocator.ts - 📌  Url/Redirect 처리를 위한 Locator 정의
+ * Author : Shiwoo Min
+ * Date : 2025-04-10
+ */
 import { Platform as PLATFORM } from '@common/types/platform-types';
 
 // 타입만 따로 추출
