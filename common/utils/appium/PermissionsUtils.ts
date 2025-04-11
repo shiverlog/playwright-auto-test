@@ -9,9 +9,9 @@ import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 export class PermissionsUtils {
-  // 현재 POC 키
-  private readonly poc = POCEnv.getType();
-  // 로깅 인스턴스
+  // 현재 POC 키 (null 보호 차원)
+  private readonly poc: string = POCEnv.getType() ?? 'GLOBAL';
+  // 로그 인스턴스
   private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
   // 드라이버 인스턴스
   private readonly driver: Browser;
@@ -32,7 +32,7 @@ export class PermissionsUtils {
       '허용',
       '앱을 사용하는 동안 허용',
       '확인',
-      '나중에',
+      '남지어',
       '동의',
     ];
 
@@ -59,7 +59,7 @@ export class PermissionsUtils {
       const safariLabels = [
         '방문 기록 및 웹사이트 데이터 지우기',
         '모든 방문 기록',
-        '모든 탭 닫기',
+        '모든 타블 닫기',
         '방문 기록 지우기',
       ];
 

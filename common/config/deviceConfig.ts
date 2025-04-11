@@ -1,7 +1,7 @@
 /**
  * Description : BaseDeviceConfig.ts - 📌 Appium 실제 디바이스 및 플랫폼 설정 정의
  * Author : Shiwoo Min
- * Date : 2025-03-31
+ * Date : 2025-04-11
  */
 import type { DeviceConfig, DevicesJson } from '@common/types/device-config.js';
 import { devices } from '@playwright/test';
@@ -14,7 +14,33 @@ const apkPath = path.resolve(
   'common/assets/mobileCS_release_v7.0.4(352)_20250320_1207.apk',
 );
 
-// Android 기기
+/**
+ * PC 기기 정의 (13인치 / 15인치)
+ */
+export const PC_DEVICES: Record<string, DeviceConfig> = {
+  '13-inch': {
+    platformName: 'PC',
+    deviceName: 'Desktop 13-inch',
+    browserName: 'chromium',
+    ['appium:options']: undefined,
+    udid: '',
+    platformVersion: '',
+    app: '',
+  },
+  '15-inch': {
+    platformName: 'PC',
+    deviceName: 'Desktop 15-inch',
+    browserName: 'chromium',
+    ['appium:options']: undefined,
+    udid: '',
+    platformVersion: '',
+    app: '',
+  },
+};
+
+/**
+ * Android 기기
+ */
 export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
   // 개발 전용 기기
   'Galaxy Note20 Ultra': {
@@ -89,7 +115,9 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
   },
 };
 
-// iOS 기기
+/**
+ * iOS 기기
+ */
 export const IOS_DEVICES: Record<string, DeviceConfig> = {
   // 개발 전용 기기
   'iPhone 15 Plus': {

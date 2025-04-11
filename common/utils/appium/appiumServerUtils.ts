@@ -15,8 +15,7 @@ dotenv.config();
 
 export class AppiumServerUtils {
   // 현재 POC 키
-  private readonly poc = POCEnv.getType();
-  // 로깅 인스턴스
+  private readonly poc: string = POCEnv.getType() ?? 'GLOBAL';
   private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
   // 포트별 Appium 서버 프로세스 맵
   private serverProcessMap = new Map<number, ChildProcess>();
@@ -33,12 +32,9 @@ export class AppiumServerUtils {
       killPortPromises.push(
         new Promise<void>((resolve, reject) => {
           if (platform() === 'win32') {
-            exec(`netstat -ano | findstr :${port}`, (error, stdout, stderr) => {
+            exec(`netstat -ano | findstr :${port}`, (error, stdout) => {
               this.logger.debug(`[WIN] netstat stdout (${port}): ${stdout}`);
-              if (error) {
-                this.logger.warn(`[WIN] netstat error (${port}): ${error.message}`);
-                return resolve();
-              }
+              if (error) return resolve();
               const pid = stdout?.trim().split(/\s+/)[4];
               if (pid) {
                 this.logger.info(`[WIN] 포트 ${port} 사용중인 PID: ${pid}, 종료 시도`);
@@ -49,12 +45,9 @@ export class AppiumServerUtils {
               }
             });
           } else {
-            exec(`lsof -i :${port}`, (error, stdout, stderr) => {
+            exec(`lsof -i :${port}`, (error, stdout) => {
               this.logger.debug(`[UNIX] lsof stdout (${port}):\n${stdout}`);
-              if (error && !stdout) {
-                this.logger.warn(`[UNIX] lsof error (${port}): ${error.message}`);
-                return resolve();
-              }
+              if (error && !stdout) return resolve();
               const line = stdout.split('\n')[1];
               const pid = line?.split(/\s+/)[1];
               if (pid) {
@@ -79,7 +72,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * Appium 서버 실행
+   * Appium 서버 시작
    */
   public startAppiumServer(port: number): void {
     this.logger.info(`Appium 서버 시작 중 (포트: ${port})...`);
@@ -100,7 +93,7 @@ export class AppiumServerUtils {
     );
     appiumProcess.on('close', code => this.logger.warn(`[Appium ${port}] 종료됨 (코드: ${code})`));
     appiumProcess.on('error', err =>
-      this.logger.error(`[Appium ${port}] 실행 실패: ${err.message}`),
+      this.logger.error(`[Appium ${port}] 시작 실패: ${err.message}`),
     );
   }
 
@@ -156,7 +149,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * iOS 앱 설치 (시뮬레이터)
+   * iOS 앱 설치 (시미러링)
    */
   public async installIosApp(appPath: string): Promise<void> {
     if (!fs.existsSync(appPath)) {
@@ -172,7 +165,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * iOS 앱 강제 종료 (시뮬레이터)
+   * iOS 앱 강제 종료 (시미러링)
    */
   public async forceStopIosApp(bundleId: string): Promise<void> {
     this.logger.info(`iOS 앱 종료 요청: ${bundleId}`);
@@ -184,7 +177,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * iOS 앱 캐시 삭제 (시뮬레이터)
+   * iOS 앱 캐시 삭제 (시미러링)
    */
   public async clearIosAppCache(bundleId: string): Promise<void> {
     this.logger.info(`iOS 앱 캐시 삭제 요청: ${bundleId}`);

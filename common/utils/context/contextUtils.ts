@@ -11,18 +11,29 @@ import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 export class ContextUtils {
-  // 현재 POC 키
-  private static readonly poc = POCEnv.getType();
-  // 로깅 인스턴스
-  private static readonly logger = Logger.getLogger(this.poc) as winston.Logger;
+  // 현재 POC 키 동적 추출
+  private static get poc(): string {
+    return POCEnv.getType() || 'ALL';
+  }
 
-  // POC별 page 객체 저장
+  // 로깅 인스턴스
+  private static get logger(): winston.Logger {
+    return Logger.getLogger(this.poc) as winston.Logger;
+  }
+
+  // POC별 page 객체 저장용
   private static readonly pageMap: Map<string, Page> = new Map();
 
+  /**
+   * 현재 POC에 해당하는 page 저장
+   */
   public static setPageForCurrentPOC(page: Page): void {
     this.pageMap.set(this.poc, page);
   }
 
+  /**
+   * 현재 POC에 해당하는 page 반환
+   */
   public static getPageIfAvailable(): Page | undefined {
     return this.pageMap.get(this.poc);
   }
@@ -63,7 +74,7 @@ export class ContextUtils {
   }
 
   /**
-   * iOS: WEBVIEW context 반환
+   * iOS: 기본 WebView 콘텍스트 반환
    */
   public static async getDefaultIOSWebviewContext(driver: Browser): Promise<string | null> {
     const contexts = await driver.getContexts();
@@ -71,11 +82,11 @@ export class ContextUtils {
 
     if (stringContexts.length === 2) {
       const webview = stringContexts[1];
-      this.logger.info(`[ContextUtils] default webview context: ${webview}`);
+      this.logger.info(`[ContextUtils][${this.poc}] default webview context: ${webview}`);
       return webview;
     }
 
-    this.logger.warn(`[ContextUtils] WEBVIEW 콘텍스트를 찾을 수 없습니다.`);
+    this.logger.warn(`[ContextUtils][${this.poc}] WEBVIEW 콘텍스트를 찾을 수 없습니다.`);
     return null;
   }
 
@@ -86,7 +97,7 @@ export class ContextUtils {
     const currentContext = await driver.getContext();
     const isNative = typeof currentContext === 'string' && currentContext.includes('NATIVE_APP');
     this.logger.info(
-      `[ContextUtils] 현재 콘텍스트: ${currentContext} (NATIVE_APP 여부: ${isNative})`,
+      `[ContextUtils][${this.poc}] 현재 콘텍스트: ${currentContext} (NATIVE_APP 여부: ${isNative})`,
     );
     return isNative;
   }
@@ -98,7 +109,7 @@ export class ContextUtils {
     const currentContext = await driver.getContext();
     const isWebview = typeof currentContext === 'string' && currentContext.includes('WEBVIEW');
     this.logger.info(
-      `[ContextUtils] 현재 콘텍스트: ${currentContext} (WEBVIEW 여부: ${isWebview})`,
+      `[ContextUtils][${this.poc}] 현재 콘텍스트: ${currentContext} (WEBVIEW 여부: ${isWebview})`,
     );
     return isWebview;
   }
@@ -113,11 +124,11 @@ export class ContextUtils {
 
     if (webview) {
       await driver.switchContext(webview);
-      this.logger.info(`[ContextUtils] Switched to WEBVIEW: ${webview}`);
+      this.logger.info(`[ContextUtils][${this.poc}] Switched to WEBVIEW: ${webview}`);
       return true;
     }
 
-    this.logger.warn(`[ContextUtils] WEBVIEW 콘텍스트가 존재하지 않습니다.`);
+    this.logger.warn(`[ContextUtils][${this.poc}] WEBVIEW 콘텍스트가 존재하지 않습니다.`);
     return false;
   }
 
@@ -131,9 +142,9 @@ export class ContextUtils {
 
     if (native) {
       await driver.switchContext(native);
-      this.logger.info(`[ContextUtils] Switched to NATIVE_APP: ${native}`);
+      this.logger.info(`[ContextUtils][${this.poc}] Switched to NATIVE_APP: ${native}`);
     } else {
-      this.logger.warn(`[ContextUtils] NATIVE_APP 콘텍스트가 존재하지 않습니다.`);
+      this.logger.warn(`[ContextUtils][${this.poc}] NATIVE_APP 콘텍스트가 존재하지 않습니다.`);
     }
   }
 }

@@ -1,7 +1,7 @@
 /**
  * Description : notificationConfig.ts - 📌 Slack, Teams, Email 등 알림 관련 설정 분리 파일
  * Author : Shiwoo Min
- * Date : 2025-04-07
+ * Date : 2025-04-11
  */
 import type { EmailConfig, SlackConfig, TeamsConfig } from '@common/types/notification-config.js';
 import dotenv from 'dotenv';
@@ -49,3 +49,46 @@ export const PUBSUB = {
     process.env.PUBSUB_PUBLISHER_AUDIENCE ||
     'https://pubsub.googleapis.com/google.pubsub.v1.Publisher',
 };
+
+/**
+ * 알림 활성화 여부 (환경변수 기반)
+ */
+export const NOTIFY_SLACK = process.env.NOTIFY_SLACK === 'true';
+export const NOTIFY_TEAMS = process.env.NOTIFY_TEAMS === 'true';
+export const NOTIFY_EMAIL = process.env.NOTIFY_EMAIL === 'true';
+
+/**
+ * 통합 알림 설정
+ */
+export const notificationConfig = {
+  slack: slackConfig,
+  teams: teamsConfig,
+  email: emailConfig,
+  pubsub: PUBSUB,
+  enabled: {
+    slack: NOTIFY_SLACK,
+    teams: NOTIFY_TEAMS,
+    email: NOTIFY_EMAIL,
+  },
+};
+
+/**
+ * 알림 설정 유효성 검증 함수
+ */
+export function validateNotificationConfig(): void {
+  if (NOTIFY_SLACK && (!slackConfig.SLACK_TOKEN || !slackConfig.SLACK_CHANNEL)) {
+    console.warn('[SlackConfig] Slack Token 또는 Channel ID가 누락되었습니다.');
+  }
+  if (NOTIFY_TEAMS && !teamsConfig.TEAMS_WEBHOOK_URL) {
+    console.warn('[TeamsConfig] Microsoft Teams Webhook URL이 누락되었습니다.');
+  }
+  if (
+    NOTIFY_EMAIL &&
+    (!emailConfig.SMTP_HOST || !emailConfig.SMTP_USER || !emailConfig.SMTP_PASS)
+  ) {
+    console.warn('[EmailConfig] SMTP 설정이 불완전합니다.');
+  }
+  if (!PUBSUB.PROJECT_ID || !PUBSUB.TOPIC_ID) {
+    console.warn('[PubSubConfig] PubSub 설정이 불완전합니다.');
+  }
+}

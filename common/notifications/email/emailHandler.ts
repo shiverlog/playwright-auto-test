@@ -5,7 +5,7 @@
  */
 import { emailConfig } from '@common/config/notificationConfig';
 import { Logger } from '@common/logger/customLogger';
-import { NotificationHandler } from '@common/notifications/notificationHandler';
+import { NotificationHandler } from '@common/notifications/NotificationHandler';
 import { POCEnv } from '@common/utils/env/POCEnv';
 import nodemailer from 'nodemailer';
 import type winston from 'winston';

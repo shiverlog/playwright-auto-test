@@ -1,16 +1,21 @@
 /**
  * Description : playwright-config.ts - 📌 Playwright 런타임 설정 관련 타입
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-11
  */
-import type { POCKey, POCType } from '@common/types/platform-types';
+import type { AllPocList, POCType } from '@common/types/platform-types';
 import type { BrowserContextOptions, LaunchOptions } from '@playwright/test';
 
-// 전체 POC 배열 타입
-export type AllPOCs = POCKey[];
+/**
+ * 전체 POC 리스트 타입
+ */
+export type AllPOCs = AllPocList[];
 
-// POC 별 매핑 폴더 타입 (단일 또는 다중 경로 지원)
-export type POCFolderMap = Record<POCKey, string | string[]>;
+/**
+ * POC 별 테스트 폴더 매핑 타입
+ * 단일 경로나 다중 경로 가능
+ */
+export type POCFolderMap = Record<AllPocList, string | string[]>;
 
 /**
  * E2E 테스트 프로젝트 타입 정의
@@ -34,24 +39,40 @@ export type E2EProjectConfig = {
   platform?: NodeJS.Platform[];
   // 리포트/로그 저장용 키
   outputKey: string;
+  // Android/iOS 기기 설정값
+  deviceConfig?: unknown;
 };
 
 /**
- * LaunchOptions  커스텀 -> @playwright/test 사용
+ * LaunchOptions 확장 타입 (필요 시 사용자 정의 속성 추가 가능)
  */
-// export interface LaunchOptions {
-//   // 동작을 느리게 실행할 시간(ms)
-//   slowMo: number;
-//   // 개발자 도구 열기 여부
-//   devtools: boolean;
-//   // 최대화면 크기 설정
-//   args: string[];
-// }
+export type ExtendedLaunchOptions = LaunchOptions & {
+  // 최대화 여부, GPU 사용 여부 등 CI 환경 최적화 옵션 추가 가능
+  args?: string[];
+};
+
+/**
+ * ContextOptions 확장 타입 (기본값 + 모바일 시뮬레이션 등)
+ */
+export type ExtendedContextOptions = BrowserContextOptions & {
+  // 터치 지원 여부, 모바일 에뮬레이션 여부 등
+  isMobile?: boolean;
+  hasTouch?: boolean;
+};
 
 /**
  * 브라우저 매트릭스 타입 정의 (POC 별 사용 브라우저 목록)
  */
-export type BrowserMatrix = Record<Exclude<POCType, ''>, string[]>;
+export type BrowserMatrix = Record<AllPocList, string[]>;
+
+/**
+ * 테스트 결과 경로 매핑 타입 (report/log 결과 저장용)
+ */
+export type TestResultPaths = {
+  log: [string];
+  playwrightReport: [string];
+  allureResult: [string];
+};
 
 /**
  * 테스트 전역(Global)에 등록될 수 있는 변수 타입 정의
@@ -77,6 +98,7 @@ declare global {
       testRunId?: string;
       // pnpm 워크스페이스 루트
       pnpmWorkspaceRoot?: string;
+      // 공통 환경 변수
       envConfig?: {
         // 실행 환경 변수 설정
         baseUrl: string;

@@ -1,7 +1,7 @@
 /**
  * Description : NetworkUtils.ts - 📌 네트워크 유틸
  * Author : Shiwoo Min
- * Date : 2024-04-04
+ * Date : 2024-04-11
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -9,15 +9,14 @@ import type { BrowserContext, Page, Request, Route } from '@playwright/test';
 import type winston from 'winston';
 
 export class NetworkUtils {
-  // 현재 POC 키
-  private readonly poc = POCEnv.getType();
-  // 로깅 인스턴스
-  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
+  private readonly logger: winston.Logger;
+  private readonly poc: string;
 
   constructor(
-    private page: Page,
-    private context: BrowserContext,
+    private readonly page: Page,
+    private readonly context: BrowserContext,
   ) {
+    this.poc = POCEnv.getType() || 'ALL';
     this.logger = Logger.getLogger(this.poc) as winston.Logger;
   }
 
@@ -30,7 +29,7 @@ export class NetworkUtils {
   }
 
   /**
-   * 특정 요청을 mock 응답으로 대체
+   * 요청을 Mock 응답으로 대체
    */
   public async mockResponse(
     urlPattern: string,
@@ -57,7 +56,7 @@ export class NetworkUtils {
   }
 
   /**
-   * 응답 로그 출력 활성화
+   * 응답 로그 출력
    */
   public async logResponses(): Promise<void> {
     this.page.on('response', response => {
@@ -66,7 +65,7 @@ export class NetworkUtils {
   }
 
   /**
-   * 느린 네트워크 환경 시뮬레이션 (Chromium 전용)
+   * Chromium에서 모은 느린 네트워크 환경 시뮬레이션
    */
   public async emulateSlowNetwork(): Promise<void> {
     this.logger.warn(`[${this.poc}] [Network] 느린 네트워크 시뮬레이션 시작`);

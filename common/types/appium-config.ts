@@ -4,7 +4,7 @@
  * Date : 2025-04-08
  */
 
-// 지원되는 브라우저 이름 정의 (Chrome, ChromeBeta, Safari 등)
+// 지원되는 브라우저 이름 정의
 export type SupportedBrowser = 'Chrome' | 'ChromeBeta' | 'Safari';
 
 // Chrome 전용 옵션 정의

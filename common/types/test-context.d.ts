@@ -3,8 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-04
  */
-import type { POCType } from '@common/constants/PathConstants';
-import type { Platform, PlatformValue } from '@common/constants/PlatformConstants';
+import type { Platform, UIType } from '@common/types/platform-types';
 
 export interface TestContext {
   // 테스트 대상 플랫폼

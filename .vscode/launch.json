@@ -1,7 +1,7 @@
 /**
  * Description : launch.json - 📌 VS Code에서 Debug 및 Testing 실행 설정 파일
  * Author : Shiwoo Min
- * Date : 2025-04-03
+ * Date : 2025-04-11
  */
 {
   "version": "0.2.0",
@@ -15,7 +15,7 @@
       "args": ["test", "e2e/**", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "ALL"
+        "POC": "all"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -30,7 +30,7 @@
       "args": ["test", "e2e/**", "--headed", "--debug", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "ALL"
+        "POC": "all"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -45,7 +45,7 @@
       "args": ["test", "e2e/pc-web", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "PC"
+        "POC": "pc"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -60,7 +60,7 @@
       "args": ["test", "e2e/pc-mobile-web", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "MW"
+        "POC": "mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -75,7 +75,7 @@
       "args": ["test", "e2e/emulator-mobile-web", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "MW"
+        "POC": "mw"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -89,7 +89,7 @@
       "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
       "args": ["test", "e2e/android-app", "--headed", "--reporter=html"],
       "env": {
-        "POC": "AOS"
+        "POC": "aos"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -104,7 +104,7 @@
       "args": ["test", "e2e/ios-app", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "IOS"
+        "POC": "ios"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -119,7 +119,7 @@
       "args": ["test", "e2e/api", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "API"
+        "POC": "api"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -134,7 +134,7 @@
       "args": ["test", "speedtest", "--headed", "--reporter=html"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "PC"
+        "POC": "aos"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
@@ -149,7 +149,7 @@
       "args": ["test", "--ui"],
       "runtimeArgs": ["--require", "tsconfig-paths/register.js"],
       "env": {
-        "POC": "ALL"
+        "POC": "all"
       },
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"

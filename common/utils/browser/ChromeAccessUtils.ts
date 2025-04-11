@@ -1,7 +1,7 @@
 /**
  * Description : ChromeAccessUtils.ts - 📌 Android 기반의 Chrome 브라우저 초기 셋업 자동화 유틸리티
  * Author : Shiwoo Min
- * Date : 2024-04-10
+ * Date : 2024-04-11
  */
 import { Logger } from '@common/logger/customLogger';
 import type { ChromeAccessConfig } from '@common/types/device-config';
@@ -47,23 +47,24 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
 };
 
 export class ChromeAccessUtils {
-  // Appium 드라이버
   private readonly driver: Browser;
-  // 콘텍스트 전환 함수
   private readonly switchContext: (view: string) => Promise<void>;
-  // 디바이스 UDID
   private readonly udid: string;
-  // 현재 POC 키
-  private readonly poc = POCEnv.getType();
-  // 로깅 인스턴스
-  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
+
+  /** 현재 POC 동적 추출 */
+  private get poc(): string {
+    return POCEnv.getType() || 'ALL';
+  }
+
+  /** 로깅 인스턴스 */
+  private get logger(): winston.Logger {
+    return Logger.getLogger(this.poc) as winston.Logger;
+  }
 
   constructor(driver: Browser, switchContext: (view: string) => Promise<void>, udid: string) {
     this.driver = driver;
     this.switchContext = switchContext;
     this.udid = udid;
-    this.poc = POCEnv.getType();
-    this.logger = Logger.getLogger(this.poc) as winston.Logger;
   }
 
   /**

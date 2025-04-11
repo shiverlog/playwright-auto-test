@@ -1,79 +1,72 @@
 /**
- * Description : PathConstants.ts - 📌 POC 타입 정의와 경로 매핑, 파일명 관련 로직 정의
+ * Description : PathConstants.ts - 📌 POC 타입 정의와 경로 매핑, 파일명 관련 로지구 정의
  * Author : Shiwoo Min
  * Date : 2025-04-04
  */
+// 타임스탬프 포맷터 유틸
 import { getCurrentTimestamp } from '@common/formatters/formatters.js';
-import type { POCType } from '@common/types/platform-types.js';
+import { POCEnv } from '@common/utils/env/POCEnv.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+// 현재 파일 위치 기준 디렉토리 설정
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// 루트 경로 설정
+
+// 프로젝트 루트 경로
 export const BASE_PATH = path.resolve(__dirname, '..');
-const POC_ALL: POCType = 'ALL';
 
 /**
- * POC 별 폴더 이름 매핑 함수
- * - PC -> 'pc-web'
- * - MW -> ['pc-mobile-web','emulator-mobile-web','device-mobile-web']
- * - AOS -> 'android-app'
- * - IOS -> 'ios-app'
- * - API -> 'api'
+ * 각 POC별 실제 테스트 디렉토리 매핑
  */
-export const POC_FOLDER_MAP: Record<Exclude<POCType, 'ALL'>, string | string[]> = {
+export const POC_FOLDER_MAP = {
   PC: 'pc-web',
-  // MW는 PC, Emulator, Device 로 테스트
   MW: ['pc-mobile-web'],
-  // AOS는 Android App으로 테스트
   AOS: ['android-app'],
-  // IOS는 IOS App으로 테스트
   IOS: ['ios-app'],
-  // API 미정
   API: 'api',
-};
+} as const;
 
-// 테스트 mw 매핑
+/**
+ * 모바일 웹 (MW) 브라우저 디렉토리 - 브라우저 이름 매핑
+ */
 export const MW_BROWSER_MAP: Record<string, string> = {
   'pc-mobile-web': 'pc-mobile-chrome',
   'android-mobile-web': 'android-mobile-chrome',
   'ios-mobile-web': 'ios-mobile-safari',
 };
 
-// 테스트 and 매핑
+/**
+ * 안드로이드 브라우저 매핑
+ */
 export const AND_BROWSER_MAP: Record<string, string> = {
   'android-app': 'android-app',
   'android-emulator-app': 'android-emulator-app',
 };
-// 테스트 ios 매핑
+
+/**
+ * iOS 브라우저 매핑
+ */
 export const IOS_BROWSER_MAP: Record<string, string> = {
   'ios-app': 'ios-app',
   'ios-emulator-app': 'ios-emulator-app',
 };
 
 /**
- * POC 별 폴더 경로 반환 함수
- * - e2e/pc-web
- * - e2e/pc-mobile-web
- * - e2e/emulator-mobile-web
- * - e2e/device-mobile-web
- * - e2e/android-app
- * - e2e/ios-app
- * - e2e/api
- * - POC_PATH('ALL') -> 모든 POC 경로 배열
+ * POC에 따른 테스트 실행 경로(e2e/*) 리스트 반환
+ * - ALL인 경우 전체 POC에 대한 경로를 반환
  */
-export const POC_PATH = (poc: POCType): string[] => {
-  if (!poc) {
-    throw new Error(`[POC_PATH] 유효하지 않은 poc 값: '${poc}'`);
-  }
-  if (poc === POC_ALL) {
-    return Object.values(POC_FOLDER_MAP)
-      .flatMap(folder => (Array.isArray(folder) ? folder : [folder]))
+export const POC_PATH = (poc: string): string[] => {
+  if (poc === 'ALL') {
+    return POCEnv.getPOCList()
+      .flatMap(key => {
+        const folders = POC_FOLDER_MAP[key as keyof typeof POC_FOLDER_MAP];
+        return Array.isArray(folders) ? folders : [folders];
+      })
       .map(folder => `${BASE_PATH}/e2e/${folder}`);
   }
 
-  const folders = POC_FOLDER_MAP[poc as Exclude<POCType, 'ALL'>];
+  const folders = POC_FOLDER_MAP[poc as keyof typeof POC_FOLDER_MAP];
   if (!folders) {
     throw new Error(`[POC_PATH] '${poc}'에 대한 경로가 POC_FOLDER_MAP에 정의되어 있지 않습니다.`);
   }
@@ -84,30 +77,23 @@ export const POC_PATH = (poc: POCType): string[] => {
 };
 
 /**
- * 하위 경로 포함한 POC 경로 생성 (단일 poc만 처리)
+ * 특정 서브디렉토리를 포함한 경로 반환
+ * ex) src/components, tests, etc...
  */
-export const getPOCPathWithSubdir = (poc: POCType, subPath: string): string[] => {
+export const getPOCPathWithSubdir = (poc: string, subPath: string): string[] => {
   return POC_PATH(poc).map(base => `${base}/${subPath}`);
 };
 
 /**
- * 특정 경로 배열에 타임스탬프 포함 파일명을 매핑
+ * 경로에 파일명 타임스탬프를 포함해 리턴
  */
 const mapToTimestampedPath = (basePaths: string[], fileName: string): string[] =>
   basePaths.map(p => `${p}/${fileName}`);
 
 /**
- * 테스트 관련 폴더 경로 (단일 poc 기준)
- * - POC_RESULT_PATHS('PC')
- * - e2e/pc-web/playwright-report
- * - e2e/pc-web/coverage
- * - e2e/pc-web/test-results/logs
- * - e2e/pc-web/test-results/allure-results
- * - e2e/pc-web/test-results/screenshots
- * - e2e/pc-web/test-results/videos
- * - e2e/pc-web/test-results/traces
+ * 테스트 실행 시 생성되는 결과 리포트 경로 모음
  */
-export const POC_RESULT_PATHS = (poc: POCType) => ({
+export const POC_RESULT_PATHS = (poc: string) => ({
   playwrightReport: getPOCPathWithSubdir(poc, 'playwright-report'),
   coverage: getPOCPathWithSubdir(poc, 'coverage'),
   log: getPOCPathWithSubdir(poc, 'test-results/logs'),
@@ -118,17 +104,9 @@ export const POC_RESULT_PATHS = (poc: POCType) => ({
 });
 
 /**
- * 코드 관련 폴더 경로 (단일 poc 기준)
- * - common/locators
- * - e2e/pc-web/src/pages
- * - e2e/pc-web/src/steps
- * - e2e/pc-web/src/Dockerfile
- * - e2e/pc-web/tests
- * - e2e/pc-web/test-results/screenshots
- * - e2e/pc-web/test-results/videos
- * - e2e/pc-web/test-results/traces
+ * 테스트 코드/리소스 위치 반환 (pages, steps 등)
  */
-export const FOLDER_PATHS = (poc: POCType) => ({
+export const FOLDER_PATHS = (poc: string) => ({
   locators: '/common/locators',
   components: getPOCPathWithSubdir(poc, 'src/components'),
   constants: getPOCPathWithSubdir(poc, 'src/constants'),
@@ -140,28 +118,10 @@ export const FOLDER_PATHS = (poc: POCType) => ({
 });
 
 /**
- * 테스트 결과 파일명 생성 함수 (병렬 저장용)
- * - TEST_RESULT_FILE_NAME('MW') →
- * {
- *   playwrightReport: [
- *     '/e2e/pc-mobile-web/playwright-report/MW_report_20240404T142200.html',
- *     '/e2e/emulator-mobile-web/playwright-report/MW_report_20240404T142200.html',
- *     '/e2e/device-mobile-web/playwright-report/MW_report_20240404T142200.html'
- *   ],
- *   log: [
- *     '/e2e/pc-mobile-web/test-results/logs/MW_20240404T142200.json',
- *     '/e2e/emulator-mobile-web/test-results/logs/MW_20240404T142200.json',
- *     '/e2e/device-mobile-web/test-results/logs/MW_20240404T142200.json'
- *   ],
- *   allureResult: [...],
- *   screenshots: [...],
- *   videos: [...],
- *   traces: [...],
- *   coverage: [...]
- * }
+ * 테스트 결과 파일 이름 자동 생성 (timestamp 포함)
  */
 export const TEST_RESULT_FILE_NAME = (
-  poc: POCType,
+  poc: string,
 ): Record<keyof ReturnType<typeof POC_RESULT_PATHS>, string[]> => {
   const timestamp = getCurrentTimestamp();
   const paths = POC_RESULT_PATHS(poc);

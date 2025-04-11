@@ -6,9 +6,9 @@
  */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { ActionConstants } from '@common/constants/ActionConstants.js';
-import type { POCKey } from '@common/types/platform-types';
 import type { Platform } from '@common/types/platform-types.js';
 import { ContextUtils } from '@common/utils/context/ContextUtils.js';
+import { POCEnv } from '@common/utils/env/POCEnv';
 import { chromium, type Page } from '@playwright/test';
 import { execSync } from 'child_process';
 import type { CDPSession } from 'playwright-core';
@@ -18,7 +18,8 @@ const DEFAULT_RETRY = 5;
 
 export class MobileActionUtils extends BaseActionUtils<Browser> {
   protected driver: Browser;
-  protected platform?: Platform;
+  protected platform: Platform;
+  private readonly poc: string = POCEnv.getType() ?? 'GLOBAL';
 
   // Android/iOS 공통처리
   // page - webview / driver - native
@@ -44,9 +45,11 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    * WebView 연결 후 ContextUtils에서 page 주입
    */
   public setPageFromContext(): void {
-    const page = ContextUtils.getPageIfAvailable(poc);
+    const page = ContextUtils.getPageIfAvailable();
     if (!page) {
-      throw new Error(`[MobileActionUtils] WebView page가 아직 설정되지 않았습니다. (POC: ${poc})`);
+      throw new Error(
+        `[MobileActionUtils] WebView page가 아직 설정되지 않았습니다. (POC: ${this.poc})`,
+      );
     }
     this.setPage(page); // BaseActionUtils의 setPage 사용
   }

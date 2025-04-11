@@ -1,7 +1,7 @@
 /**
  * Description : SafariAccessUtils.ts - 📌 iOS 기반의 Safari 브라우저 및 설정 앱 자동화를 위한 유틸리티 클래스
  * Author : Shiwoo Min
- * Date : 2024-04-04
+ * Date : 2024-04-10
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -9,20 +9,24 @@ import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 export class SafariAccessUtils {
-  // 현재 POC 키
-  private readonly poc = POCEnv.getType();
-  // 로깅 인스턴스
-  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
   // WebDriverIO 기반 iOS 드라이버 인스턴스
   private readonly driver: Browser;
   // Appium 콘텍스트 전환 함수 (NATIVE_APP, WEBVIEW 등 전환용)
   private readonly switchContext: (view: string) => Promise<void>;
 
+  /** 현재 POC 동적 추출 */
+  private get poc(): string {
+    return POCEnv.getType() || 'ALL';
+  }
+
+  /** 로깅 인스턴스 */
+  private get logger(): winston.Logger {
+    return Logger.getLogger(this.poc) as winston.Logger;
+  }
+
   constructor(driver: Browser, switchContext: (view: string) => Promise<void>) {
     this.driver = driver;
     this.switchContext = switchContext;
-    this.poc = POCEnv.getType();
-    this.logger = Logger.getLogger(this.poc) as winston.Logger;
   }
 
   /**
@@ -124,6 +128,9 @@ export class SafariAccessUtils {
     await this.pause(1000);
   }
 
+  /**
+   * 지연 시간 대기
+   */
   private async pause(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
