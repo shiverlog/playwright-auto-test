@@ -20,8 +20,9 @@
     "mosaic-db"
   ],
   "scripts": {
-    "build:all": "turbo run build",
+    "prepare": "husky install",
     "build": "pnpm -r run build",
+    "build:all": "turbo run build",
     "build:ts": "turbo run build --filter=...common",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
@@ -31,7 +32,6 @@
     "lint:all": "turbo run lint",
     "typecheck:all": "turbo run typecheck",
     "start": "vite",
-    "prepare": "husky install",
     "test:pc:debug": "cross-env POC=PC npx playwright test --headed --debug",
     "test:mw:debug": "cross-env POC=MW npx playwright test --headed --debug",
     "test:aos:debug": "cross-env POC=AOS npx playwright test --headed --debug",

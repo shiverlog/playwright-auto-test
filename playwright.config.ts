@@ -174,7 +174,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
     name: 'PC Web - Chrome',
     path: 'e2e/pc-web',
     device: 'Desktop Chrome',
-    outputKey: 'PC',
+    outputKey: 'pc',
     viewport: { width: 1920, height: 1080 },
     launchOptions: {
       slowMo: 100,
@@ -200,7 +200,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       hasTouch: true,
       deviceScaleFactor: 3.5,
     },
-    outputKey: 'MW',
+    outputKey: 'mw',
   },
   // 갤럭시 노트20 울트라 기기로 android-app 테스트
   ...Object.entries(ANDROID_DEVICES)
@@ -210,7 +210,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       path: 'e2e/android-app',
       device: name,
       deviceConfig: config,
-      outputKey: 'AOS',
+      outputKey: 'aos',
     })),
   // iOS App - LGUPLUS
   ...Object.entries(IOS_DEVICES)
@@ -220,7 +220,7 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       path: 'e2e/ios-app',
       device: name,
       deviceConfig: config,
-      outputKey: 'IOS',
+      outputKey: 'ios',
     })),
 ];
 
@@ -288,17 +288,22 @@ export default defineConfig({
   // 테스트 프로젝트별 설정 (Test Project Configuration)
   projects: [...generateE2EProjects(), ...(pocProjects.length ? pocProjects : [])],
   /* Run your local dev server before starting the tests */
-  webServer: {
-    command: 'npm run start',
-    url: 'http://localhost:3000',
-    reuseExistingServer: !process.env.CI,
-    // HTML 파일 entry 오류 방지를 위해 추
-    ignoreHTTPSErrors: true,
-  },
+  // 로컬 개발 서버 설정 (Local Dev Server Configuration)
+  webServer:
+    process.env.START_WEB_SERVER === 'true'
+      ? {
+          command: 'npm run start',
+          url: 'http://localhost:3000',
+          reuseExistingServer: true,
+          ignoreHTTPSErrors: true,
+        }
+      : undefined,
 });
 
 // 테스트 프로젝트 콘솔 출력
-console.log(
-  'Generated Projects:',
-  [...generateE2EProjects(), ...pocProjects].map(p => p.name),
-);
+if (process.env.DEBUG_PROJECTS === 'true') {
+  console.log(
+    'Generated Projects:',
+    [...generateE2EProjects(), ...pocProjects].map(p => p.name),
+  );
+}

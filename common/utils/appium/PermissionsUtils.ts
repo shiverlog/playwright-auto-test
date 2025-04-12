@@ -1,7 +1,7 @@
 /**
  * Description : PermissionsUtils.ts - 📌 Android/iOS 통합 초기 권한 처리 유틸
  * Author : Shiwoo Min
- * Date : 2024-04-10
+ * Date : 2024-04-11
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -9,15 +9,14 @@ import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 
 export class PermissionsUtils {
-  // 현재 POC 키 (null 보호 차원)
-  private readonly poc: string = POCEnv.getType() ?? 'GLOBAL';
-  // 로그 인스턴스
-  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
-  // 드라이버 인스턴스
+  private readonly poc: string;
+  private readonly logger: winston.Logger;
   private readonly driver: Browser;
 
   constructor(driver: Browser) {
     this.driver = driver;
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
 
   /**

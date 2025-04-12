@@ -55,13 +55,16 @@ const ensureDirectoryExists = (filePath: string) => {
 export class Logger {
   private static instances: Map<string, winston.Logger> = new Map();
 
+  // 오버로드 시그니처
+  public static getLogger(poc: 'ALL'): Record<string, winston.Logger>;
+  public static getLogger(poc: string): winston.Logger;
   public static getLogger(poc: string): winston.Logger | Record<string, winston.Logger> {
     if (!poc) throw new Error(`[Logger] poc 값이 누락되었습니다.`);
 
     if (poc === 'ALL') {
       const allLoggers: Record<string, winston.Logger> = {};
-      for (const key of POCEnv.getPOCList()) {
-        allLoggers[key] = Logger.getLogger(key) as winston.Logger;
+      for (const value of POCEnv.getPOCList()) {
+        allLoggers[value] = Logger.getLogger(value);
       }
       return allLoggers;
     }

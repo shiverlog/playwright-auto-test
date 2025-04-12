@@ -1,9 +1,9 @@
 /**
- * Description : BaseDeviceConfig.ts - 📌 Appium 실제 디바이스 및 플랫폼 설정 정의
+ * Description : deviceConfig.ts - 📌 Appium 실제 디바이스 및 플랫폼 설정 정의
  * Author : Shiwoo Min
  * Date : 2025-04-11
  */
-import type { DeviceConfig, DevicesJson } from '@common/types/device-config.js';
+import type { DeviceConfig } from '@common/types/device-config.js';
 import { devices } from '@playwright/test';
 import path from 'path';
 

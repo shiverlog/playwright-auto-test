@@ -1,5 +1,5 @@
 /**
- * Description : StealthContext.ts - 📌 Playwright용 자동화 감지 우회 유틸리티 (클래스 기반)
+ * Description : StealthContext.ts - 📌 Playwright용 자동화 감지 우회 클래스
  * Author : Shiwoo Min
  * Date : 2025-04-11
  */
@@ -10,17 +10,12 @@ import { type Browser, type BrowserContext, chromium } from '@playwright/test';
 import type winston from 'winston';
 
 export class StealthContext {
-  /** 옵션 정보 */
-  constructor(private readonly options: StealthContextOptions = {}) {}
+  private readonly poc: string;
+  private readonly logger: winston.Logger;
 
-  /** 현재 POC 동적 추출 */
-  private get poc(): string {
-    return POCEnv.getType() || 'ALL';
-  }
-
-  /** 로깅 인스턴스 */
-  private get logger(): winston.Logger {
-    return Logger.getLogger(this.poc) as winston.Logger;
+  constructor(private readonly options: StealthContextOptions = {}) {
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
 
   /**
@@ -46,13 +41,58 @@ export class StealthContext {
   public async createContext(browser: Browser): Promise<BrowserContext> {
     this.logger.info(`[StealthContext][${this.poc}] Stealth Context 생성 시작`);
 
+    const platform = this.options.platform;
+
+    let userAgent = this.options.userAgent;
+    let viewport = this.options.viewport;
+    let isMobile = false;
+    let hasTouch = false;
+    let deviceScaleFactor = this.options.deviceScaleFactor ?? 1;
+
+    if (!userAgent || !viewport) {
+      switch (platform) {
+        case 'PC_WEB':
+        default:
+          userAgent ??=
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36';
+          viewport ??= undefined;
+          deviceScaleFactor = 1;
+          break;
+        case 'MOBILE_WEB':
+          userAgent ??=
+            'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36';
+          viewport ??= { width: 414, height: 896 };
+          isMobile = true;
+          hasTouch = true;
+          deviceScaleFactor = 3;
+          break;
+        case 'ANDROID_APP':
+          userAgent ??=
+            'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36';
+          viewport ??= { width: 412, height: 915 };
+          isMobile = true;
+          hasTouch = true;
+          deviceScaleFactor = 3;
+          break;
+        case 'IOS_APP':
+          userAgent ??=
+            'Mozilla/5.0 (iPhone; CPU iPhone OS 15_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.5 Mobile Safari/604.1';
+          viewport ??= { width: 390, height: 844 };
+          isMobile = true;
+          hasTouch = true;
+          deviceScaleFactor = 3;
+          break;
+      }
+    }
+
     const context = await browser.newContext({
       locale: this.options.locale ?? 'ko-KR',
       timezoneId: this.options.timezoneId ?? 'Asia/Seoul',
-      userAgent:
-        this.options.userAgent ??
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-      viewport: this.options.viewport ?? { width: 1366, height: 768 },
+      userAgent,
+      viewport,
+      isMobile,
+      hasTouch,
+      deviceScaleFactor,
       storageState: this.options.storageStatePath ?? undefined,
     });
 
@@ -60,20 +100,29 @@ export class StealthContext {
       Object.defineProperty(navigator, 'webdriver', { get: () => false });
       Object.defineProperty(navigator, 'languages', { get: () => ['ko-KR', 'ko'] });
       Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
-      Object.defineProperty(navigator, 'hardwareConcurrency', { get: () => 8 });
-      Object.defineProperty(navigator, 'deviceMemory', { get: () => 8 });
 
-      if (!('chrome' in window)) {
-        // @ts-ignore
-        window.chrome = { runtime: {} };
-      }
-
-      Object.defineProperty(navigator, 'connection', {
-        get: () => ({ rtt: 50, downlink: 10, effectiveType: '4g' }),
+      Object.defineProperty(navigator, 'hardwareConcurrency', {
+        get: () => (isMobile ? 4 : 8),
+      });
+      Object.defineProperty(navigator, 'deviceMemory', {
+        get: () => (isMobile ? 4 : 8),
       });
 
-      Object.defineProperty(window.screen, 'width', { get: () => 1366 });
-      Object.defineProperty(window.screen, 'height', { get: () => 768 });
+      Object.defineProperty(window.screen, 'width', {
+        get: () => viewport?.width ?? 1366,
+      });
+      Object.defineProperty(window.screen, 'height', {
+        get: () => viewport?.height ?? 768,
+      });
+
+      Object.defineProperty(navigator, 'connection', {
+        get: () => ({
+          rtt: isMobile ? 100 : 50,
+          downlink: isMobile ? 5 : 10,
+          effectiveType: '4g',
+        }),
+      });
+
       Object.defineProperty(document, 'visibilityState', { get: () => 'visible' });
 
       const originalQuery = window.navigator.permissions.query;
@@ -95,6 +144,11 @@ export class StealthContext {
         }
         return originalQuery(parameters);
       };
+
+      if (!('chrome' in window)) {
+        // @ts-ignore
+        window.chrome = { runtime: {} };
+      }
     });
 
     this.logger.info(`[StealthContext][${this.poc}] Stealth Context 생성 완료`);

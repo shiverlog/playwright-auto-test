@@ -1,36 +1,43 @@
 /**
- * Description : playwright.config.local.ts - 📌 Playwright Config 로컬 실행 환경 정의 파일
+ * Description : playwright.config.local.ts - 📌 Playwright Config 로컬
  * Author : Shiwoo Min
- * Date : 2025-04-02
+ * Date : 2025-04-11
  */
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices, type Project } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
 
 import baseConfig from './playwright.config';
 
-// local 전용 headless 설정 및 slowMo를 launchOptions에 오버라이드
-const localProjects = baseConfig.projects?.map(project => ({
-  ...project,
-  use: {
-    ...devices['Desktop Chrome'],
-    ...project.use,
-    headless: false,
-    launchOptions: {
-      ...(project.use?.launchOptions ?? {}),
-      slowMo: 200,
-    },
-  },
-}));
+dotenv.config({ path: path.resolve(__dirname, '.env.local') });
 
-// baseConfig를 확장하여 로컬 전용 설정으로 export
+const localProjects: Project[] = (baseConfig.projects ?? []).map(p => {
+  const project = p as Project;
+  return {
+    ...project,
+    use: {
+      ...devices['Desktop Chrome'],
+      ...(project.use || {}),
+      headless: false,
+      slowMo: 200,
+      ignoreHTTPSErrors: true,
+      screenshot: 'on',
+      video: 'retain-on-failure',
+      trace: 'retain-on-failure',
+    },
+  };
+});
+
 export default defineConfig({
   ...baseConfig,
   use: {
     ...baseConfig.use,
     headless: false,
-    launchOptions: {
-      ...(baseConfig.use?.launchOptions ?? {}),
-      slowMo: 200,
-    },
+    ignoreHTTPSErrors: true,
+    screenshot: 'on',
+    video: 'retain-on-failure',
+    trace: 'retain-on-failure',
   },
   projects: localProjects,
+  reporter: [['list'], ['html', { open: 'on-failure' }]],
 });

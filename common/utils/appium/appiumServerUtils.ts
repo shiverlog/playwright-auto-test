@@ -1,7 +1,7 @@
 /**
  * Description : AppiumServerUtils.ts - 📌 Appium 서버/앱 제어 유틸리티 클래스
  * Author : Shiwoo Min
- * Date : 2024-04-10
+ * Date : 2024-04-11
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -14,12 +14,14 @@ import type winston from 'winston';
 dotenv.config();
 
 export class AppiumServerUtils {
-  // 현재 POC 키
-  private readonly poc: string = POCEnv.getType() ?? 'GLOBAL';
-  private readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
-  // 포트별 Appium 서버 프로세스 맵
+  private readonly poc: string;
+  private readonly logger: winston.Logger;
   private serverProcessMap = new Map<number, ChildProcess>();
 
+  constructor() {
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
+  }
   /**
    * 실행 중인 포트를 찾아 종료 (4723 - 4733 범위)
    */

@@ -1,7 +1,7 @@
 /**
  * Description : NetworkUtils.ts - 📌 네트워크 유틸
  * Author : Shiwoo Min
- * Date : 2024-04-11
+ * Date : 2024-04-12
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -16,8 +16,8 @@ export class NetworkUtils {
     private readonly page: Page,
     private readonly context: BrowserContext,
   ) {
-    this.poc = POCEnv.getType() || 'ALL';
-    this.logger = Logger.getLogger(this.poc) as winston.Logger;
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
 
   /**

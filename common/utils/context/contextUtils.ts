@@ -1,7 +1,7 @@
 /**
  * Description : ContextUtils.ts - 📌 Appium 연결에서 컨텍스트 전환을 지원하는 유틸 클래스
  * Author : Shiwoo Min
- * Date : 2024-04-10
+ * Date : 2024-04-11
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -12,14 +12,10 @@ import type winston from 'winston';
 
 export class ContextUtils {
   // 현재 POC 키 동적 추출
-  private static get poc(): string {
-    return POCEnv.getType() || 'ALL';
-  }
-
-  // 로깅 인스턴스
-  private static get logger(): winston.Logger {
-    return Logger.getLogger(this.poc) as winston.Logger;
-  }
+  private static readonly poc: string = POCEnv.getType();
+  private static readonly logger: winston.Logger = Logger.getLogger(
+    this.poc.toUpperCase(),
+  ) as winston.Logger;
 
   // POC별 page 객체 저장용
   private static readonly pageMap: Map<string, Page> = new Map();

@@ -13,20 +13,22 @@ dotenv.config();
 
 class GlobalSetup {
   // 단일 실행 POC 타입
-  private readonly poc: string = POCEnv.getType() || 'ALL';
+  private readonly poc: string;
   // 전역 로거 인스턴스
   private readonly logger: winston.Logger;
 
   constructor() {
     this.poc = POCEnv.getType();
-    this.logger = Logger.getLogger('GLOBAL') as winston.Logger;
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
 
   public async run(): Promise<void> {
     this.logger.info(`[GLOBAL SETUP] 시작 - 대상 POC: ${this.poc || 'ALL'}`);
 
     try {
-      await PocInitializer.setup();
+      // POC 기반 초기화기 생성
+      const initializer = new PocInitializer(this.poc);
+      await initializer.setup(); // 환경 설정 실행
       this.logger.info(`[GLOBAL SETUP] 전체 테스트 환경 설정 완료`);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);

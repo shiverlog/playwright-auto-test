@@ -38,7 +38,7 @@ class BaseAppFixture extends BasePocFixture {
    * POC 테스트 시작 전 세팅 (디바이스 초기화, 로그 디렉토리 생성 등)
    */
   public async setupForPoc(poc: string): Promise<{ driver: Browser; port: number }> {
-    this.loggerPerPoc[poc].info(`[BaseAppFixture] ${poc} 환경 준비 시작`);
+    this.getLogger(poc).info(`[BaseAppFixture] ${poc} 환경 준비 시작`);
     await this.beforeAll(poc);
     const { driver, port } = await this.initializeAppDriver(poc);
     this.appDrivers.set(poc, driver);
@@ -49,7 +49,7 @@ class BaseAppFixture extends BasePocFixture {
    * Appium 드라이버 초기화 + Appium 서버 시작 (동시 실행 대응)
    */
   public async initializeAppDriver(poc: string): Promise<{ driver: Browser; port: number }> {
-    const logger = this.loggerPerPoc[poc];
+    const logger = this.getLogger(poc);
     logger.info(`[BaseAppFixture] ${poc} 디바이스 초기화 중...`);
 
     const deviceConfig = this.getDeviceConfig(poc);
@@ -124,7 +124,7 @@ class BaseAppFixture extends BasePocFixture {
    * Appium 드라이버 종료 + Appium 서버 종료
    */
   public async destroyAppDriver(poc: string): Promise<void> {
-    const logger = this.loggerPerPoc[poc];
+    const logger = this.getLogger(poc);
     const driver = this.appDrivers.get(poc);
     const server = this.appiumServers.get(poc);
     const port = this.appiumPorts.get(poc);
@@ -146,7 +146,7 @@ class BaseAppFixture extends BasePocFixture {
    * 테스트 준비 단계 - BasePocFixture 추상 메서드 구현
    */
   public async prepare(poc: string): Promise<void> {
-    if (poc === 'ALL') return;
+    if (poc === 'all') return;
     await this.initializeAppDriver(poc);
   }
 
@@ -156,7 +156,7 @@ class BaseAppFixture extends BasePocFixture {
   public async teardownForPoc(poc: string): Promise<void> {
     await this.destroyAppDriver(poc);
     await this.afterAll(poc);
-    this.loggerPerPoc[poc].info(`[BaseAppFixture] ${poc} 환경 정리 완료`);
+    this.getLogger(poc).info(`[BaseAppFixture] ${poc} 환경 정리 완료`);
   }
 
   /**

@@ -1,7 +1,7 @@
 /**
  * Description : PortUtils.ts - 📌 사용 가능한 포트를 비동기로 세팅 유틸
  * Author : Shiwoo Min
- * Date : 2024-04-11
+ * Date : 2024-04-12
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -22,8 +22,8 @@ export class PortUtils {
     private readonly maxPort = 4800,
     private readonly usedPorts: Set<number> = new Set(),
   ) {
-    this.poc = POCEnv.getType() || 'ALL';
-    this.logger = Logger.getLogger(this.poc) as winston.Logger;
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
 
   /**

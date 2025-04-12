@@ -47,24 +47,18 @@ const CHROME_CONFIGS: Record<ChromeFlavor, ChromeAccessConfig> = {
 };
 
 export class ChromeAccessUtils {
+  private readonly logger: winston.Logger;
+  private readonly poc: string;
   private readonly driver: Browser;
   private readonly switchContext: (view: string) => Promise<void>;
   private readonly udid: string;
-
-  /** 현재 POC 동적 추출 */
-  private get poc(): string {
-    return POCEnv.getType() || 'ALL';
-  }
-
-  /** 로깅 인스턴스 */
-  private get logger(): winston.Logger {
-    return Logger.getLogger(this.poc) as winston.Logger;
-  }
 
   constructor(driver: Browser, switchContext: (view: string) => Promise<void>, udid: string) {
     this.driver = driver;
     this.switchContext = switchContext;
     this.udid = udid;
+    this.poc = POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
 
   /**

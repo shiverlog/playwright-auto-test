@@ -1,7 +1,7 @@
 /**
  * Description : BaseWebFixture.ts - 📌 Web 테스트를 위한 Fixture 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-10
+ * Date : 2025-04-11
  */
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
 import { StealthContext } from '@common/utils/browser/StealthContext';
@@ -12,19 +12,21 @@ import { spawn } from 'child_process';
 class BaseWebFixture extends BasePocFixture {
   private configMap: Partial<Record<string, string>> = {};
 
-  /** 테스트 baseURL 세팅 */
+  // 테스트 baseURL 세팅
   public setBaseURL(poc: string, url: string) {
     this.configMap[poc] = url;
   }
 
-  /** baseURL 조회 */
+  // baseURL 조회
   public getBaseURL(poc: string): string {
     return this.configMap[poc] || 'https://www.lguplus.com';
   }
 
-  /** 테스트 환경 구성 */
+  /**
+   * 테스트 환경 구성
+   */
   public async setupForPoc(poc: string): Promise<string> {
-    this.loggerPerPoc[poc].info(`[WebFixture] ${poc} 상황 준비 시작`);
+    this.getLogger(poc).info(`[WebFixture] ${poc} 상황 준비 시작`);
     await this.beforeAll(poc);
 
     const baseURL = process.env.BASE_URL || 'https://www.lguplus.com';
@@ -32,16 +34,24 @@ class BaseWebFixture extends BasePocFixture {
     return baseURL;
   }
 
-  /** 테스트 종료 후 정리 */
+  /**
+   * 테스트 종료 후 정리
+   */
   public async teardownForPoc(poc: string): Promise<void> {
     await this.afterAll(poc);
-    this.loggerPerPoc[poc].info(`[WebFixture] ${poc} 상황 정리 완료`);
+    this.getLogger(poc).info(`[WebFixture] ${poc} 상황 정리 완료`);
   }
 
-  /** 실행 환경별 커스텀 준비 (하위 클래스에서 오버라이딩 가능) */
-  protected async prepare(poc: string): Promise<void> {}
+  /**
+   * 실행 환경별 커스텀 준비 (하위 클래스에서 오버라이딩)
+   */
+  protected async prepare(poc: string): Promise<void> {
+    // 기본 동작 없음 (필요 시 override)
+  }
 
-  /** Chromium 브라우저 최대화 (CDP 기반) */
+  /**
+   * Chromium 브라우저 최대화 (CDP 기반)
+   */
   private async maximizeWindowIfChromium(page: Page): Promise<void> {
     try {
       const browserName = page.context().browser()?.browserType().name();
@@ -61,7 +71,9 @@ class BaseWebFixture extends BasePocFixture {
     }
   }
 
-  /** 전체 POC 병렬 실행 */
+  /**
+   * 전체 POC 병렬 실행
+   */
   public async runAllPOCsInParallel(): Promise<void> {
     this.logger.info('[WebFixture] POC=ALL -> 전체 병렬 실행 시작');
 
@@ -87,7 +99,9 @@ class BaseWebFixture extends BasePocFixture {
     this.logger.info('[WebFixture] 전체 POC 병렬 실행 완료');
   }
 
-  /** test.extend 정의 */
+  /**
+   * test.extend 정의
+   */
   public getTestExtend() {
     return base.extend<{
       poc: string;
@@ -113,11 +127,14 @@ class BaseWebFixture extends BasePocFixture {
       },
 
       baseURL: async ({ poc }, use) => {
-        this.loggerPerPoc[poc].info(`[Test] Web 테스트 시작 - POC: ${poc}`);
+        const logger = this.getLogger(poc);
+        logger.info(`[Test] Web 테스트 시작 - POC: ${poc}`);
+
         const baseURL = await this.setupForPoc(poc);
         await use(baseURL);
+
         await this.teardownForPoc(poc);
-        this.loggerPerPoc[poc].info(`[Test] Web 테스트 종료 - POC: ${poc}`);
+        logger.info(`[Test] Web 테스트 종료 - POC: ${poc}`);
       },
     });
   }

@@ -20,11 +20,11 @@ export const BASE_PATH = path.resolve(__dirname, '..');
  * 각 POC별 실제 테스트 디렉토리 매핑
  */
 export const POC_FOLDER_MAP = {
-  PC: 'pc-web',
-  MW: ['pc-mobile-web'],
-  AOS: ['android-app'],
-  IOS: ['ios-app'],
-  API: 'api',
+  pc: 'pc-web',
+  mw: ['pc-mobile-web'],
+  aos: ['android-app'],
+  ios: ['ios-app'],
+  api: 'api',
 } as const;
 
 /**
@@ -57,16 +57,20 @@ export const IOS_BROWSER_MAP: Record<string, string> = {
  * - ALL인 경우 전체 POC에 대한 경로를 반환
  */
 export const POC_PATH = (poc: string): string[] => {
-  if (poc === 'ALL') {
+  // ALL 처리: 모든 POC value 기준으로 실행
+  if (poc.toLowerCase() === 'all') {
     return POCEnv.getPOCList()
-      .flatMap(key => {
-        const folders = POC_FOLDER_MAP[key as keyof typeof POC_FOLDER_MAP];
+      .flatMap(value => {
+        const normalized = value.toLowerCase();
+        const folders = POC_FOLDER_MAP[normalized as keyof typeof POC_FOLDER_MAP];
         return Array.isArray(folders) ? folders : [folders];
       })
       .map(folder => `${BASE_PATH}/e2e/${folder}`);
   }
 
-  const folders = POC_FOLDER_MAP[poc as keyof typeof POC_FOLDER_MAP];
+  // 단일 POC 처리
+  const normalized = poc.toLowerCase();
+  const folders = POC_FOLDER_MAP[normalized as keyof typeof POC_FOLDER_MAP];
   if (!folders) {
     throw new Error(`[POC_PATH] '${poc}'에 대한 경로가 POC_FOLDER_MAP에 정의되어 있지 않습니다.`);
   }

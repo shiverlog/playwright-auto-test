@@ -12,67 +12,58 @@ import { type BrowserContext, chromium, type Page } from 'playwright';
 import type winston from 'winston';
 
 export class ResultHandler {
-  private static readonly logger: winston.Logger = Logger.getLogger('ALL') as winston.Logger;
+  private readonly poc: string;
+  private readonly logger: winston.Logger;
 
+  constructor(poc?: string) {
+    this.poc = poc ?? POCEnv.getType();
+    this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
+  }
   /**
    * 테스트 결과 저장 메서드
    */
-  public static async saveTestResult(
+  public async saveTestResult(
     status: 'PASS' | 'FAIL',
     details?: string,
     page?: Page,
   ): Promise<void> {
-    const pocList = POCEnv.getPOCList();
     const timestamp = new Date().toISOString();
     const logData = `[${timestamp}] [${status}] ${details || ''}\n`;
+    const results = TEST_RESULT_FILE_NAME(this.poc);
+    const testResultData = {
+      timestamp,
+      status,
+      details: details || 'No additional details',
+    };
 
-    for (const poc of pocList) {
-      const results = TEST_RESULT_FILE_NAME(poc);
-      const testResultData = {
-        timestamp,
-        status,
-        details: details || 'No additional details',
-      };
-
-      try {
-        for (const path of results.playwrightReport) {
-          await fs.writeFile(path, JSON.stringify(testResultData, null, 2));
-          this.logger.info(`테스트 결과 저장됨: ${path}`);
-        }
-
-        for (const path of results.log) {
-          await fs.appendFile(path, logData);
-          this.logger.info(`로그 저장됨: ${path}`);
-        }
-
-        for (const path of results.allureResult) {
-          await fs.writeFile(path, JSON.stringify(testResultData, null, 2));
-          this.logger.info(`Allure 결과 저장됨: ${path}`);
-        }
-
-        if (status === 'FAIL' && page) {
-          await ResultHandler.handleError(
-            page,
-            poc,
-            new Error(details || 'Test failed'),
-            '테스트 실패',
-          );
-        }
-      } catch (err) {
-        this.logger.error(`테스트 결과 저장 중 오류 발생 (POC: ${poc}):`, err);
+    try {
+      for (const path of results.playwrightReport) {
+        await fs.writeFile(path, JSON.stringify(testResultData, null, 2));
+        this.logger.info(`테스트 결과 저장됨: ${path}`);
       }
+
+      for (const path of results.log) {
+        await fs.appendFile(path, logData);
+        this.logger.info(`로그 저장됨: ${path}`);
+      }
+
+      for (const path of results.allureResult) {
+        await fs.writeFile(path, JSON.stringify(testResultData, null, 2));
+        this.logger.info(`Allure 결과 저장됨: ${path}`);
+      }
+
+      if (status === 'FAIL' && page) {
+        await this.errorHandler(page, new Error(details || 'Test failed'), '테스트 실패');
+      }
+    } catch (err) {
+      this.logger.error(`테스트 결과 저장 중 오류 발생 (POC: ${this.poc}):`, err);
     }
   }
 
   /**
    * 오류 처리 및 관련 리소스 저장 (스크린샷, 트레이스, 비디오)
    */
-  private static async handleError(
-    page: Page,
-    poc: string,
-    error: Error,
-    message: string,
-  ): Promise<void> {
+  private async errorHandler(page: Page, error: Error, message: string): Promise<void> {
     this.logger.error(`${message}: ${error.message}`);
     this.logger.error(error.stack);
 
@@ -89,7 +80,7 @@ export class ResultHandler {
 
     this.logger.warn(knownErrors[error.name] || `예상치 못한 예외 발생: ${error.name}`);
 
-    const results = TEST_RESULT_FILE_NAME(poc as POCType);
+    const results = TEST_RESULT_FILE_NAME(this.poc as POCType);
 
     const browser = await chromium.launch();
     const context = await browser.newContext();
@@ -116,7 +107,7 @@ export class ResultHandler {
   /**
    * 오류 발생 시 스크린샷 저장
    */
-  private static async screenshotOnError(page: Page, filePath: string) {
+  private async screenshotOnError(page: Page, filePath: string) {
     try {
       await page.screenshot({ path: filePath, fullPage: true });
       this.logger.info(`스크린샷 저장됨: ${filePath}`);
@@ -128,7 +119,7 @@ export class ResultHandler {
   /**
    * 오류 발생 시 트레이스 저장
    */
-  private static async saveTestTrace(context: BrowserContext, filePath: string) {
+  private async saveTestTrace(context: BrowserContext, filePath: string) {
     try {
       await context.tracing.stop({ path: filePath });
       this.logger.info(`트레이스 파일 저장됨: ${filePath}`);
@@ -140,7 +131,7 @@ export class ResultHandler {
   /**
    * 오류 발생 시 비디오 저장 (현재 비디오 캡처 로직은 placeholder)
    */
-  private static async saveTestVideo(filePath: string) {
+  private async saveTestVideo(filePath: string) {
     try {
       this.logger.info(`비디오 파일 저장됨: ${filePath}`);
     } catch (err) {
