@@ -1,7 +1,7 @@
 /**
  * Description : TestPerformance.ts - 📌 Playwright 테스트의 성능 체크와 복잡한 이야기 등 구현
  * Author : Shiwoo Min
- * Date : 2024-04-11
+ * Date : 2024-04-12
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -10,7 +10,7 @@ import type winston from 'winston';
 
 export class TestPerformance {
   // 현재 POC 타입
-  private readonly poc = POCEnv.getType() || 'ALL';
+  private readonly poc = POCEnv.getType();
   // 해당 테스트의 로거
   private readonly logger = Logger.getLogger(this.poc) as winston.Logger;
 

@@ -1,14 +1,14 @@
 /**
  * Description : AppiumServerUtils.ts - 📌 Appium 서버/앱 제어 유틸리티 클래스
  * Author : Shiwoo Min
- * Date : 2024-04-11
+ * Date : 2024-04-12
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
+import { PortUtils } from '@common/utils/network/PortUtils';
 import { type ChildProcess, exec, spawn } from 'child_process';
 import dotenv from 'dotenv';
 import * as fs from 'fs';
-import { platform } from 'os';
 import type winston from 'winston';
 
 dotenv.config();
@@ -22,81 +22,90 @@ export class AppiumServerUtils {
     this.poc = POCEnv.getType();
     this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
+
   /**
-   * 실행 중인 포트를 찾아 종료 (4723 - 4733 범위)
+   * Appium 서버 시작 (EADDRINUSE 발생 시 다른 포트로 최대 3회 재시도)
    */
-  public async checkAndKillPort(startPort: number): Promise<void> {
-    this.logger.info(`포트 ${startPort} - ${startPort + 10} 확인 및 종료 시도 중...`);
+  public async startAppiumServer(port: number, retryCount = 3): Promise<number> {
+    this.logger.info(`Appium 서버 시작 시도 (포트: ${port})...`);
 
-    const killPortPromises = [];
+    const tryStart = async (targetPort: number, attemptsLeft: number): Promise<number> => {
+      return new Promise((resolve, reject) => {
+        const appiumProcess = spawn(
+          'appium',
+          [
+            '--port',
+            targetPort.toString(),
+          ],
+          {
+            detached: true,
+            stdio: 'pipe',
+            shell: true,
+            env: {
+              ...process.env,
+              // Chromedriver 자동 다운로드 설정
+              APPIUM_CHROMEDRIVER_AUTODOWNLOAD: 'true',
+            },
+          },
+        );
 
-    for (let port = startPort; port <= startPort + 10; port++) {
-      killPortPromises.push(
-        new Promise<void>((resolve, reject) => {
-          if (platform() === 'win32') {
-            exec(`netstat -ano | findstr :${port}`, (error, stdout) => {
-              this.logger.debug(`[WIN] netstat stdout (${port}): ${stdout}`);
-              if (error) return resolve();
-              const pid = stdout?.trim().split(/\s+/)[4];
-              if (pid) {
-                this.logger.info(`[WIN] 포트 ${port} 사용중인 PID: ${pid}, 종료 시도`);
-                exec(`taskkill /F /PID ${pid}`, err => (err ? reject(err) : resolve()));
-              } else {
-                this.logger.info(`[WIN] 포트 ${port}는 사용 중이지 않음`);
-                resolve();
-              }
-            });
-          } else {
-            exec(`lsof -i :${port}`, (error, stdout) => {
-              this.logger.debug(`[UNIX] lsof stdout (${port}):\n${stdout}`);
-              if (error && !stdout) return resolve();
-              const line = stdout.split('\n')[1];
-              const pid = line?.split(/\s+/)[1];
-              if (pid) {
-                this.logger.info(`[UNIX] 포트 ${port} 사용중인 PID: ${pid}, 종료 시도`);
-                exec(`kill -9 ${pid}`, err => (err ? reject(err) : resolve()));
-              } else {
-                this.logger.info(`[UNIX] 포트 ${port}는 사용 중이지 않음`);
-                resolve();
-              }
-            });
+        appiumProcess.unref();
+
+        appiumProcess.stdout?.on('data', data => {
+          const msg = data.toString();
+          this.logger.info(`[Appium ${targetPort}] ${msg}`);
+
+          if (msg.includes('Appium v') && msg.includes('Welcome')) {
+            this.logger.info(`[Appium ${targetPort}] 서버 시작 성공`);
+            this.serverProcessMap.set(targetPort, appiumProcess);
+            PortUtils.registerPort(targetPort);
+            resolve(targetPort);
           }
-        }),
-      );
-    }
+        });
 
-    try {
-      await Promise.all(killPortPromises);
-      this.logger.info(`포트 종료 작업 완료`);
-    } catch (err) {
-      this.logger.error(`포트 종료 중 에러 발생: ${err}`);
-    }
-  }
+        appiumProcess.stderr?.on('data', data => {
+          const errMsg = data.toString().trim();
 
-  /**
-   * Appium 서버 시작
-   */
-  public startAppiumServer(port: number): void {
-    this.logger.info(`Appium 서버 시작 중 (포트: ${port})...`);
+          // 디버거 연결 메시지는 무시
+          if (errMsg === 'Debugger attached.') {
+            this.logger.debug(`[Appium ${targetPort}] 디버거 연결 감지됨 → 무시`);
+            return;
+          }
 
-    const appiumProcess = spawn('appium', ['--port', port.toString()], {
-      detached: true,
-      stdio: 'pipe',
-      shell: true,
-    });
+          this.logger.error(`[Appium ${targetPort} 오류] ${errMsg}`);
 
-    this.serverProcessMap.set(port, appiumProcess);
+          // 포트 충돌인 경우: 재시도
+          if (errMsg.includes('EADDRINUSE') && attemptsLeft > 0) {
+            this.logger.warn(
+              `[개발 ${targetPort}] 포트 충돌, 재시도 중 (${retryCount - attemptsLeft + 1}/${retryCount})`,
+            );
+            appiumProcess.kill('SIGKILL');
 
-    appiumProcess.stdout?.on('data', data =>
-      this.logger.info(`[Appium ${port}] ${data.toString()}`),
-    );
-    appiumProcess.stderr?.on('data', data =>
-      this.logger.error(`[Appium ${port} 오류] ${data.toString()}`),
-    );
-    appiumProcess.on('close', code => this.logger.warn(`[Appium ${port}] 종료됨 (코드: ${code})`));
-    appiumProcess.on('error', err =>
-      this.logger.error(`[Appium ${port}] 시작 실패: ${err.message}`),
-    );
+            setTimeout(async () => {
+              try {
+                const portUtils = new PortUtils();
+                await portUtils.killProcessOnPorts(targetPort); // 포트 강제 종료 시도
+                const newPort = await portUtils.getAvailablePort();
+                this.logger.info(`[Appium] 재시도용 새 포트 할당: ${newPort}`);
+                const result = await tryStart(newPort, attemptsLeft - 1);
+                resolve(result);
+              } catch (retryErr) {
+                reject(retryErr);
+              }
+            }, 1000);
+          } else {
+            appiumProcess.kill('SIGKILL');
+            reject(new Error(`[Appium ${targetPort}] 서버 시작 실패: ${errMsg}`));
+          }
+        });
+
+        appiumProcess.on('error', err => {
+          reject(new Error(`[Appium ${targetPort}] 프로세스 에러: ${err.message}`));
+        });
+      });
+    };
+
+    return tryStart(port, retryCount);
   }
 
   /**
@@ -104,7 +113,21 @@ export class AppiumServerUtils {
    */
   public async stopAppiumServer(port: number): Promise<void> {
     this.logger.info(`Appium 서버 종료 중 (포트: ${port})...`);
-    await this.checkAndKillPort(port);
+
+    const process = this.serverProcessMap.get(port);
+    if (process && process.pid) {
+      this.logger.info(`내가 시작한 Appium 프로세스(PID: ${process.pid}) 종료 시도`);
+      try {
+        process.kill('SIGKILL');
+        this.serverProcessMap.delete(port);
+        this.logger.info(`Appium 프로세스 정상 종료됨`);
+        PortUtils.releasePort(port);
+      } catch (e) {
+        this.logger.error(`Appium 프로세스 종료 실패: ${e}`);
+      }
+    } else {
+      this.logger.warn(`내가 시작한 Appium 프로세스가 아니므로 종료하지 않음`);
+    }
   }
 
   /**
@@ -151,7 +174,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * iOS 앱 설치 (시미러링)
+   * iOS 앱 설치
    */
   public async installIosApp(appPath: string): Promise<void> {
     if (!fs.existsSync(appPath)) {
@@ -167,7 +190,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * iOS 앱 강제 종료 (시미러링)
+   * iOS 앱 강제 종료
    */
   public async forceStopIosApp(bundleId: string): Promise<void> {
     this.logger.info(`iOS 앱 종료 요청: ${bundleId}`);
@@ -179,7 +202,7 @@ export class AppiumServerUtils {
   }
 
   /**
-   * iOS 앱 캐시 삭제 (시미러링)
+   * iOS 앱 캐시 삭제
    */
   public async clearIosAppCache(bundleId: string): Promise<void> {
     this.logger.info(`iOS 앱 캐시 삭제 요청: ${bundleId}`);

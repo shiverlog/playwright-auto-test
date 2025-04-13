@@ -25,7 +25,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   // page - webview / driver - native
   constructor(driver: Browser, page?: Page | undefined) {
     // page는 WebView 연결 이후에만 세팅
-    super(undefined, driver);
+    super();
     this.driver = driver;
 
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();
@@ -198,8 +198,13 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    */
   public async findAppiumElement(selector: string) {
     try {
-      return await this.driver?.$(selector);
-    } catch {
+      const el = await this.driver?.$(selector);
+      if (!el) {
+        console.warn(`[findAppiumElement] 요소가 null입니다: ${selector}`);
+      }
+      return el;
+    } catch (e) {
+      console.error(`[findAppiumElement] 요소 탐색 중 오류 발생: ${selector}`, e);
       return undefined;
     }
   }
@@ -361,7 +366,10 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    */
   public async click(selector: string): Promise<void> {
     const element = await this.findAppiumElement(selector);
-    await element?.click();
+    if (!element) {
+      throw new Error(`[click] 요소를 찾을 수 없습니다: ${selector}`);
+    }
+    await element.click();
   }
 
   /**

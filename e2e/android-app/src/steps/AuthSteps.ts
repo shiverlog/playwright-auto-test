@@ -3,14 +3,26 @@ import type { Page } from '@playwright/test';
 import type { Browser } from 'webdriverio';
 
 export class AuthSteps {
-  private authPage: AuthPage;
+  private readonly authPage: AuthPage;
 
-  constructor(page: Page, driver: Browser) {
-    this.authPage = new AuthPage(page, driver);
+  constructor(page: Page | undefined, driver: Browser, port: number) {
+    this.authPage = new AuthPage(page, driver, port);
   }
-  // 로그인
+
+  /**
+   * LG U+ 로그인
+   */
   async loginWithValidCredentials(id: string, pw: string): Promise<void> {
+    if (!id || !pw) {
+      throw new Error(
+        `[AuthSteps] 유효하지 않은 ID 또는 PW (id: ${id}, pw: ${pw ? '***' : 'empty'})`,
+      );
+    }
+
     const success = await this.authPage.doUplusLogin(id, pw);
-    if (!success) throw new Error('로그인 실패');
+
+    if (!success) {
+      throw new Error('[AuthSteps] 로그인 실패 - URL 전환 확인 불가');
+    }
   }
 }

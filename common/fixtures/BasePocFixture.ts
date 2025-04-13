@@ -16,7 +16,7 @@ const execAsync = promisify(exec);
 export abstract class BasePocFixture {
   // 단일 POC 환경
   protected get poc(): string {
-    return POCEnv.getType() || 'ALL';
+    return POCEnv.getType() || 'all';
   }
 
   // POC 별 로깅 인스턴스

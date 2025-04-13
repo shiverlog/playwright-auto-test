@@ -55,6 +55,13 @@ export class PocInitializer {
       this.logger.info(`[SETUP] ${this.poc} 완료`);
     } catch (error: any) {
       this.logger.error(`[SETUP] ${this.poc} 실패 - ${error.message || error}`);
+
+      // 안전하게 teardown 호출
+      try {
+        await this.handler.teardown();
+      } catch (teardownError) {
+        this.logger.warn(`[SETUP] 오류 발생 후 정리 중 추가 오류: ${teardownError}`);
+      }
       throw error;
     }
   }

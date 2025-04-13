@@ -9,12 +9,14 @@ import { POCEnv } from '@common/utils/env/POCEnv';
 import type winston from 'winston';
 
 export class IosTestEnv {
+  // 테스트 대상 POC 리스트
   private readonly pocList = POCEnv.getPOCList();
+
+  // 공통 로거 인스턴스
   private readonly logger: winston.Logger;
 
   constructor() {
-    const currentPoc = POCEnv.getType();
-    this.logger = Logger.getLogger(currentPoc.toUpperCase()) as winston.Logger;
+    this.logger = Logger.getLogger(POCEnv.getType().toUpperCase()) as winston.Logger;
   }
 
   /**
@@ -28,7 +30,7 @@ export class IosTestEnv {
         await appFixture.setupForPoc(poc);
         this.logger.info(`[${poc}] iOS 테스트 환경 설정 완료`);
       } catch (error) {
-        this.logger.error(`[${poc}] iOS 테스트 환경 설정 실패: ${error}`);
+        await this.handleSetupError(poc, error);
         throw error;
       }
     }
@@ -46,8 +48,22 @@ export class IosTestEnv {
         this.logger.info(`[${poc}] iOS 테스트 환경 정리 완료`);
       } catch (error) {
         this.logger.error(`[${poc}] iOS 테스트 환경 정리 실패: ${error}`);
-        throw error;
+        // 다음 POC도 계속 정리되도록 throw 생략
       }
+    }
+  }
+
+  /**
+   * 테스트 설정 중 오류 발생 시 리소스 정리 및 로그 처리
+   */
+  private async handleSetupError(poc: string, error: unknown): Promise<void> {
+    this.logger.error(`[${poc}] iOS 테스트 환경 설정 실패: ${error}`);
+
+    try {
+      await appFixture.teardownForPoc(poc);
+      this.logger.warn(`[${poc}] 실패 후 리소스 정리 완료`);
+    } catch (teardownErr) {
+      this.logger.error(`[${poc}] 정리 중 추가 오류: ${teardownErr}`);
     }
   }
 }

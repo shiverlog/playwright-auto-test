@@ -15,10 +15,12 @@ export interface StealthContextOptions {
   headless?: boolean;
   // PC 웹 환경 여부 (크롬/사파리/엣지)
   isPc?: boolean;
-  // Android/iOS 여부
+  // 네이티브 앱 기반 Android/iOS 테스트 여부
   isDevice?: boolean;
   // 모바일 웹 환경 여부 (브라우저 기반 모바일 UI 테스트)
   isMobileWeb?: boolean;
+  // Playwright 내부용 isMobile
+  isMobile?: boolean;
   // 브라우저 locale
   locale?: string;
   // 시간대 설정
@@ -31,8 +33,6 @@ export interface StealthContextOptions {
   deviceScaleFactor?: number;
   // 터치 지원 여부
   hasTouch?: boolean;
-  // Playwright 내부용 isMobile
-  isMobile?: boolean;
   // 인증 상태 저장 파일 경로
   storageStatePath?: string;
 }

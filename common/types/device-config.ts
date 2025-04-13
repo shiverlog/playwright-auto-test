@@ -101,7 +101,7 @@ export interface DeviceOptions {
   // WebView 자동 전환 여부
   autoWebview?: boolean;
   // chromedriver 버젼 다운로드
-  chromedriver_autodownload?: boolean;
+  chromedriverAutodownload?: true;
   // 테스트 종료 시 앱 종료 여부
   shouldTerminateApp?: boolean;
   // 앱 강제 실행 여부

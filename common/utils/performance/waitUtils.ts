@@ -9,8 +9,8 @@ import type { Locator, Page } from '@playwright/test';
 import type winston from 'winston';
 
 export class WaitUtils {
-  // 현재 POC 타입 (없으면 'ALL')
-  private static readonly poc: string = POCEnv.getType() || 'ALL';
+  // 현재 POC 타입
+  private static readonly poc: string = POCEnv.getType();
   // 해당 테스트의 로거
   private static readonly logger: winston.Logger = Logger.getLogger(this.poc) as winston.Logger;
 

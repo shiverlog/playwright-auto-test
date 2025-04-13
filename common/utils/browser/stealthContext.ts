@@ -12,8 +12,10 @@ import type winston from 'winston';
 export class StealthContext {
   private readonly poc: string;
   private readonly logger: winston.Logger;
+  private readonly options: StealthContextOptions;
 
-  constructor(private readonly options: StealthContextOptions = {}) {
+  constructor(options: StealthContextOptions = {}) {
+    this.options = options;
     this.poc = POCEnv.getType();
     this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
@@ -96,60 +98,66 @@ export class StealthContext {
       storageState: this.options.storageStatePath ?? undefined,
     });
 
-    await context.addInitScript(() => {
-      Object.defineProperty(navigator, 'webdriver', { get: () => false });
-      Object.defineProperty(navigator, 'languages', { get: () => ['ko-KR', 'ko'] });
-      Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
+    await context.addInitScript(
+      (env: { viewport?: { width: number; height: number }; isMobile: boolean }) => {
+        const vp = env.viewport;
+        const isMobile = env.isMobile;
 
-      Object.defineProperty(navigator, 'hardwareConcurrency', {
-        get: () => (isMobile ? 4 : 8),
-      });
-      Object.defineProperty(navigator, 'deviceMemory', {
-        get: () => (isMobile ? 4 : 8),
-      });
+        Object.defineProperty(navigator, 'webdriver', { get: () => false });
+        Object.defineProperty(navigator, 'languages', { get: () => ['ko-KR', 'ko'] });
+        Object.defineProperty(navigator, 'plugins', { get: () => [1, 2, 3] });
 
-      Object.defineProperty(window.screen, 'width', {
-        get: () => viewport?.width ?? 1366,
-      });
-      Object.defineProperty(window.screen, 'height', {
-        get: () => viewport?.height ?? 768,
-      });
+        Object.defineProperty(navigator, 'hardwareConcurrency', {
+          get: () => (isMobile ? 4 : 8),
+        });
+        Object.defineProperty(navigator, 'deviceMemory', {
+          get: () => (isMobile ? 4 : 8),
+        });
 
-      Object.defineProperty(navigator, 'connection', {
-        get: () => ({
-          rtt: isMobile ? 100 : 50,
-          downlink: isMobile ? 5 : 10,
-          effectiveType: '4g',
-        }),
-      });
+        Object.defineProperty(window.screen, 'width', {
+          get: () => vp?.width ?? 1366,
+        });
+        Object.defineProperty(window.screen, 'height', {
+          get: () => vp?.height ?? 768,
+        });
 
-      Object.defineProperty(document, 'visibilityState', { get: () => 'visible' });
+        Object.defineProperty(navigator, 'connection', {
+          get: () => ({
+            rtt: isMobile ? 100 : 50,
+            downlink: isMobile ? 5 : 10,
+            effectiveType: '4g',
+          }),
+        });
 
-      const originalQuery = window.navigator.permissions.query;
-      window.navigator.permissions.query = parameters => {
-        if (parameters.name === 'notifications') {
-          const permission = Notification.permission;
-          const mappedState = permission === 'default' ? 'prompt' : permission;
+        Object.defineProperty(document, 'visibilityState', { get: () => 'visible' });
 
-          return Promise.resolve({
-            state: mappedState,
-            name: 'notifications',
-            onchange: null,
-            addEventListener() {},
-            removeEventListener() {},
-            dispatchEvent() {
-              return false;
-            },
-          } as PermissionStatus);
+        const originalQuery = window.navigator.permissions.query;
+        window.navigator.permissions.query = parameters => {
+          if (parameters.name === 'notifications') {
+            const permission = Notification.permission;
+            const mappedState = permission === 'default' ? 'prompt' : permission;
+
+            return Promise.resolve({
+              state: mappedState,
+              name: 'notifications',
+              onchange: null,
+              addEventListener() {},
+              removeEventListener() {},
+              dispatchEvent() {
+                return false;
+              },
+            } as PermissionStatus);
+          }
+          return originalQuery(parameters);
+        };
+
+        if (!('chrome' in window)) {
+          // @ts-ignore
+          window.chrome = { runtime: {} };
         }
-        return originalQuery(parameters);
-      };
-
-      if (!('chrome' in window)) {
-        // @ts-ignore
-        window.chrome = { runtime: {} };
-      }
-    });
+      },
+      { viewport, isMobile },
+    );
 
     this.logger.info(`[StealthContext][${this.poc}] Stealth Context 생성 완료`);
     return context;
