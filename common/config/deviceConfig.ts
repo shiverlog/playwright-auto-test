@@ -58,7 +58,7 @@ export const ANDROID_DEVICES: Record<string, DeviceConfig> = {
         appActivity: 'com.lguplus.mobile.cs.activity.main.MainActivity',
         appPackage: 'com.lguplus.mobile.cs',
         automationName: 'UiAutomator2',
-        chromedriverAutodownload: true,
+        chromedriver_autodownload: true,
         noReset: true,
         app: apkPath,
         autoLaunch: true,
@@ -143,6 +143,8 @@ export const IOS_DEVICES: Record<string, DeviceConfig> = {
   'iPhone 12 Pro Max': {
     platformName: 'iOS',
     deviceName: 'iPhone 12 Pro Max',
+    udid: '00008101-00052DEE22C1001E',
+    platformVersion: '18.1.1',
     appium: {
       options: {
         udid: '00008101-00052DEE22C1001E',

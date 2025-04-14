@@ -64,7 +64,7 @@ export interface BrowserConfig {
   // 명령 시간 초과 제한
   newCommandTimeout?: number;
   // WebView 자동 전환 여부
-  autoWebview?: boolean;
+  autoWebview?: true;
   // WebView 디버깅 활성화 여부
   setWebContentsDebuggingEnabled?: boolean;
   // 브라우저 옵션 묶음
@@ -98,7 +98,7 @@ export interface AppiumCapabilities {
     // Appium 자동화 엔진 이름
     automationName: 'UiAutomator2' | 'XCUITest';
     // WebView 자동 전환 여부
-    autoWebview?: boolean;
+    autoWebview?: true;
     // WebView 디버깅 활성화 여부
     setWebContentsDebuggingEnabled?: boolean;
     // 브라우저 전용 옵션들

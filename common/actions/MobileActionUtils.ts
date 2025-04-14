@@ -44,11 +44,10 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   /**
    * WebView 연결 후 ContextUtils에서 page 주입
    */
-  public setPageFromContext(): void {
-    const page = ContextUtils.getPageIfAvailable();
+  public setPageFromContext(page: Page): void {
     if (!page) {
       throw new Error(
-        `[MobileActionUtils] WebView page가 아직 설정되지 않았습니다. (POC: ${this.poc})`,
+        `[MobileActionUtils] WebView Page가 전달되지 않았습니다. (POC: ${this.poc})`,
       );
     }
     this.setPage(page); // BaseActionUtils의 setPage 사용

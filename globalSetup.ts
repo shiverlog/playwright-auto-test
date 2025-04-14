@@ -1,7 +1,7 @@
 /**
  * Description : GlobalSetup.ts - 📌 Playwright 테스트 실행 초기화 작업
  * Author : Shiwoo Min
- * Date : 2025-04-11
+ * Date : 2025-04-12
  */
 import { PocInitializer } from '@common/initializers/PocInitializer.js';
 import { Logger } from '@common/logger/customLogger.js';
@@ -23,12 +23,13 @@ class GlobalSetup {
   }
 
   public async run(): Promise<void> {
-    this.logger.info(`[GLOBAL SETUP] 시작 - 대상 POC: ${this.poc || 'ALL'}`);
+    this.logger.info(`[GLOBAL SETUP] 시작 - 대상 POC: ${this.poc || 'all'}`);
 
     try {
-      // POC 기반 초기화기 생성
+      // POC 기반 초기화 생성
       const initializer = new PocInitializer(this.poc);
-      await initializer.setup(); // 환경 설정 실행
+      // 환경 설정 실행
+      await initializer.setup();
       this.logger.info(`[GLOBAL SETUP] 전체 테스트 환경 설정 완료`);
     } catch (err: unknown) {
       const errorMessage = err instanceof Error ? err.message : String(err);

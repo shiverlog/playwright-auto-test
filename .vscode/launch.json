@@ -1,7 +1,7 @@
 /**
  * Description : launch.json - 📌 VS Code에서 Debug 및 Testing 실행 설정 파일
  * Author : Shiwoo Min
- * Date : 2025-04-11
+ * Date : 2025-04-14
  */
 {
   "version": "0.2.0",
@@ -92,7 +92,8 @@
         "POC": "aos"
       },
       "console": "integratedTerminal",
-      "internalConsoleOptions": "neverOpen"
+      // "internalConsoleOptions": "neverOpen",
+      // "autoAttachChildProcesses": false
     },
 
     // iOS 앱 테스트 실행

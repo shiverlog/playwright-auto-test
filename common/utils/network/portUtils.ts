@@ -45,6 +45,13 @@ export class PortUtils {
   }
 
   /**
+   * 포트를 체크
+   */
+  public async isPortAvailable(port: number): Promise<boolean> {
+    return await this.checkPort(port);
+  }
+
+  /**
    * 사용 가능한 포트 여부 확인
    */
   private async checkPort(port: number): Promise<boolean> {

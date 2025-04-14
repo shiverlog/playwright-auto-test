@@ -1,16 +1,16 @@
 /**
  * Description : AppElement.ts - 📌 Appium 기반의 단일 Element 조작을 위한 Wrapper 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-01
+ * Date : 2025-04-14
  */
-import type { Browser, Element } from 'webdriverio';
+import type { ChainablePromiseElement, Browser} from 'webdriverio';
 
 /**
  * Appium 기반의 단일 Element Wrapper 클래스
  */
 export class AppElement {
   constructor(
-    private element: Element,
+    private element: ChainablePromiseElement,
     private driver: Browser,
   ) {}
 
@@ -33,7 +33,7 @@ export class AppElement {
   }
 
   /**
-   * 표시될 때까지 기다렸다가 클릭
+   * 표시될 때까지 기다린다가 클릭
    */
   async waitAndClick(timeout = 5000): Promise<this> {
     await this.element.waitForDisplayed({ timeout });
@@ -113,7 +113,7 @@ export class AppElement {
   }
 
   /**
-   * 요소가 사라질 때까지 대기
+   * 요소가 사라지기 까지 대기
    */
   async waitForHidden(timeout = 5000): Promise<this> {
     await this.element.waitForDisplayed({ reverse: true, timeout });
@@ -124,7 +124,10 @@ export class AppElement {
    * center 좌표로 터치
    */
   async tap(): Promise<this> {
-    const rect = await (this.element as any).getRect();
+    const raw = await this.element as unknown as WebdriverIO.Element & {
+      getRect: () => Promise<{ x: number; y: number; width: number; height: number }>;
+    };
+    const rect = await raw.getRect();
     const x = rect.x + rect.width / 2;
     const y = rect.y + rect.height / 2;
 
@@ -147,8 +150,8 @@ export class AppElement {
   /**
    * raw WebdriverIO element 반환
    */
-  getRaw(): Element {
-    return this.element;
+  async getRaw(): Promise<WebdriverIO.Element> {
+    return await this.element as unknown as WebdriverIO.Element;
   }
 
   /**
@@ -187,9 +190,13 @@ export class AppElement {
    * 길게 누르기
    */
   async longPress(duration = 1000): Promise<this> {
-    const rect = await (this.element as any).getRect();
+    const el = await this.element as unknown as WebdriverIO.Element & {
+      getRect: () => Promise<{ x: number; y: number; width: number; height: number }>;
+    };
+    const rect = await el.getRect();
     const x = rect.x + rect.width / 2;
     const y = rect.y + rect.height / 2;
+
     await this.driver.touchAction([
       { action: 'press', x, y },
       { action: 'wait', ms: duration },

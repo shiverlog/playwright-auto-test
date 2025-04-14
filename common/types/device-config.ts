@@ -1,7 +1,7 @@
 /**
  * Description : device-config.ts - 📌 Appium 옵션 상세 설정을 정의하는 인터페이스
  * Author : Shiwoo Min
- * Date : 2025-04-09
+ * Date : 2025-04-12
  */
 
 // Appium 포트와 함께 확장된 단일 디바이스 구성 타입
@@ -53,7 +53,7 @@ export interface DesiredCapabilities {
   // Android 앱 시작 액티비티
   appActivity?: string;
   // 디바이스 고유 식별자
-  udid?: string;
+  udid: string;
   // 앱 캐시 유지 여부
   noReset?: boolean;
   // 권한 자동 허용 여부
@@ -67,9 +67,9 @@ export interface DesiredCapabilities {
  */
 export interface DeviceOptions {
   // Appium 자동화 엔진
-  automationName?: 'UiAutomator2' | 'XCUITest' | string;
+  automationName: 'UiAutomator2' | 'XCUITest' | string;
   // 디바이스 고유 식별자 (UDID)
-  udid?: string;
+  udid: string;
   // iOS 앱 번들 ID
   bundleId?: string;
   // 앱 파일 경로
@@ -99,9 +99,9 @@ export interface DeviceOptions {
   // Xcode 서명 ID
   xcodeSigningId?: string;
   // WebView 자동 전환 여부
-  autoWebview?: boolean;
+  autoWebview?: true;
   // chromedriver 버젼 다운로드
-  chromedriverAutodownload?: true;
+  chromedriver_autodownload?: true;
   // 테스트 종료 시 앱 종료 여부
   shouldTerminateApp?: boolean;
   // 앱 강제 실행 여부
@@ -149,7 +149,7 @@ export interface DeviceConfig {
   // 브라우저 이름 (옵션)
   browserName?: string;
   // chrome driver
-  chromedriver_autodownload?: boolean;
+  chromedriver_autodownload?: true;
   // Appium W3C 표준 vendor prefix 옵션
   ['appium:options']?: DeviceOptions;
   // 레거시 구조 지원
@@ -158,9 +158,9 @@ export interface DeviceConfig {
   };
 
   // 디바이스 고유 식별자 (UDID)
-  udid?: string;
+  udid: string;
   // OS 버전 (예: '13' 또는 '17.4')
-  platformVersion?: string;
+  platformVersion: string;
   // Android 앱 패키지 이름
   appPackage?: string;
   // Android 앱 시작 Activity

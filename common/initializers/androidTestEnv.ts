@@ -10,11 +10,12 @@ import { ContextUtils } from '@common/utils/context/ContextUtils';
 import { POCEnv } from '@common/utils/env/POCEnv';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
+import { CDPConnectUtils } from '@common/utils/context/CDPConnectUtils';
+import { MobileActionUtils } from '@common/actions/MobileActionUtils';
 
 export class AndroidTestEnv implements TestEnvHandler {
-  // 현재 실행 대상 POC 리스트 (예: aos, ios 등)
+  // 현재 실행 대상 POC 리스트
   private readonly pocList = POCEnv.getPOCList();
-
   // 공통 로거
   private readonly logger: winston.Logger;
 
@@ -40,14 +41,60 @@ export class AndroidTestEnv implements TestEnvHandler {
           continue;
         }
 
-        // 현재 컨텍스트 상태 출력 (WebView, Native, 혹은 비정상)
+        // Appium 포트 확인
+        const port = appFixture.getPortForPOC(poc);
+        this.logger.info(`[${poc}] 연결된 Appium 포트: ${port}`);
+
+        // 현재 컨텍스트 상태 출력
         await this.logContextState(driver, poc);
+
+        // 앱 실행
+        const appPackage = driver.capabilities['appium:options']?.appPackage;
+        if (appPackage) {
+          await driver.activateApp(appPackage);
+          await driver.pause(3000);
+          this.logger.info(`[${poc}] 앱 실행 완료: ${appPackage}`);
+        }
+
+        // UDID 추출
+        const udid =
+          (driver.capabilities as any)['appium:udid'] || (driver.capabilities as any)['udid'] || '';
+
+        // WebView 연결 시도
+        if (port && udid) {
+          try {
+            // Appium 컨텍스트 전환 + 포트 포워딩
+            const { wsEndpoint } = await ContextUtils.switchToWebViewCDP(driver, udid);
+
+            if (!wsEndpoint) {
+              this.logger.warn(`[${poc}] WebView 포워딩 주소(wsEndpoint) 획득 실패`);
+              continue;
+            }
+
+            // Playwright CDP 연결
+            const { page } = await CDPConnectUtils.connectToWebView(wsEndpoint);
+
+            if (page) {
+              // page 객체 활용
+              const title = await page.title();
+              this.logger.info(`[${poc}] WebView 연결 완료 (title: ${title})`);
+
+              const actionUtils = new MobileActionUtils(driver);
+              actionUtils.setPageFromContext(page);
+            } else {
+              this.logger.warn(`[${poc}] Playwright Page 객체 연결 실패`);
+            }
+          } catch (e) {
+            this.logger.warn(`[${poc}] WebView 연결 중 예외 발생: ${e}`);
+          }
+        } else {
+          this.logger.warn(`[${poc}] WebView 연결에 필요한 포트 또는 UDID 누락`);
+        }
 
         this.logger.info(`[${poc}] Android 테스트 환경 설정 완료`);
       } catch (error) {
-        // 예외 발생 시 로그 및 리소스 정리
         await this.handleSetupError(poc, error);
-        throw error; // 전체 테스트 중단
+        throw error;
       }
     }
   }
