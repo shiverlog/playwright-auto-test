@@ -2,6 +2,7 @@
  * Description : ContextUtils.ts - 📌 Appium 연결에서 컨텍스트 전환 + CDP 포워딩 지원 유틸
  * Author : Shiwoo Min
  * Date : 2025-04-14
+ * - CDP 포워딩 에러 처리
  */
 
 import { Logger } from '@common/logger/customLogger';
@@ -45,51 +46,41 @@ export class ContextUtils {
   }
 
   /**
-   * WEBVIEW 컨텍스트로 전환 (CDP 사용하지 않는 단순 전환)
+   * WEBVIEW 컨텍스트로 전환
    */
-  public static async switchToWebviewContext(driver: Browser, udid?: string): Promise<boolean> {
+  public static async switchToWebviewContext(driver: Browser): Promise<boolean> {
     const contexts = await driver.getContexts();
     const stringContexts = contexts.map(ctx => (typeof ctx === 'string' ? ctx : ctx.id));
     const webview = stringContexts.find(ctx => ctx.includes('WEBVIEW'));
 
     if (webview) {
       await driver.switchContext(webview);
-      this.logger.info(`[ContextUtils][${this.poc}] Switched to WEBVIEW: ${webview}`);
-
-      if (udid) {
-        try {
-          const { wsEndpoint } = await CDPConnectUtils.getWebViewCDPEndpoint(udid);
-          this.logger.info(`[ContextUtils][${this.poc}] CDP 포워딩 주소: ${wsEndpoint}`);
-        } catch (e) {
-          this.logger.warn(`[ContextUtils][${this.poc}] CDP 포워딩 실패 (옵셔널): ${e}`);
-        }
-      }
-
+      this.logger.info(`[ContextUtils][${this.poc}] WEBVIEW 컨텍스트 전환 성공: ${webview}`);
       return true;
     }
 
-    this.logger.warn(`[ContextUtils][${this.poc}] WEBVIEW 컨텍스트가 존재하지 않습니다.`);
+    this.logger.warn(`[ContextUtils][${this.poc}] WEBVIEW 컨텍스트가 존재하지 않습니다. 전체 목록: ${JSON.stringify(stringContexts)}`);
     return false;
   }
 
   /**
-   * WEBVIEW 컨텍스트 전환 + CDP 연결용 포워딩 주소 반환
+   * Chrome WEBVIEW 컨텍스트 전환 + CDP 연결용 포워딩 주소 반환
    */
   public static async switchToWebViewCDP(
     driver: Browser,
-    udid: string,
+    udid: string
   ): Promise<{ success: boolean; wsEndpoint?: string }> {
     const contexts = await driver.getContexts();
-    const stringContexts = contexts.map(ctx => (typeof ctx === 'string' ? ctx : ctx.id));
-    const webview = stringContexts.find(ctx => ctx.includes('WEBVIEW'));
+    const stringContexts = contexts.map(ctx => (typeof ctx === 'string' ? ctx : ctx.id ?? ''));
+    const targetContext = stringContexts.find(ctx => ctx.includes('WEBVIEW_com.lguplus.mobile.cs'));
 
-    if (!webview) {
-      this.logger.warn(`[ContextUtils][${this.poc}] WEBVIEW 컨텍스트가 존재하지 않습니다.`);
+    if (!targetContext) {
+      this.logger.warn(`[ContextUtils][${this.poc}] WEBVIEW 컨텍스트가 없습니다: ${stringContexts}`);
       return { success: false };
     }
 
-    await driver.switchContext(webview);
-    this.logger.info(`[ContextUtils][${this.poc}] Switched to WEBVIEW: ${webview}`);
+    await driver.switchContext(targetContext);
+    this.logger.info(`[ContextUtils][${this.poc}] Switched to WEBVIEW: ${targetContext}`);
 
     try {
       const { wsEndpoint } = await CDPConnectUtils.getWebViewCDPEndpoint(udid);
@@ -97,7 +88,7 @@ export class ContextUtils {
       return { success: true, wsEndpoint };
     } catch (e) {
       this.logger.warn(`[ContextUtils][${this.poc}] 포워딩 주소 생성 실패: ${e}`);
-      return { success: true };
+      return { success: true, wsEndpoint: undefined };
     }
   }
 

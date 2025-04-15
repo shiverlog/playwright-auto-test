@@ -1,8 +1,9 @@
 /**
  * Description : customLogger.ts - 📌 공통 Logger 적용/winston 방식
  * Author : Shiwoo Min
- * Date : 2025-04-11
+ * Date : 2025-04-14
  * - 04/10 병력 실행 안전성 확보
+ * - 04/14 정규식 추가(파일명, 라인번호)
  */
 import { POC_RESULT_PATHS, TEST_RESULT_FILE_NAME } from '@common/constants/PathConstants';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -33,9 +34,34 @@ const ENABLE_LOGS = process.env.ENABLE_LOGS === 'true';
 
 // 커스텀 포맷터 (POC 표시)
 const createSimpleFormatter = (poc: string): winston.Logform.Format =>
-  winston.format.printf(({ level, message, timestamp }) => {
-    return `${timestamp} [${poc.toUpperCase()}] ${level.toUpperCase()}: ${message}`;
-  });
+  winston.format.combine(
+    winston.format((info) => {
+      const stack = (info._stack as string | undefined)?.split('\n') ?? new Error().stack?.split('\n') ?? [];
+
+      const userLine = stack.find(line =>
+        line.includes('at ') &&
+        !line.includes('node_modules') &&
+        !line.includes('internal') &&
+        !line.includes('customLogger') &&
+        !line.includes('Logger') &&
+        !line.includes('winston')
+      );
+      const match =
+        // (full/path/File.ts:line:col)
+        userLine?.match(/\((?:.*\/)?([^/]+\.ts|js):(\d+):(\d+)\)/) ||
+        // at full/path/File.ts:line:col
+        userLine?.match(/at .*\/([^/]+\.ts|js):(\d+):(\d+)/);
+
+      const fileName = match?.[1] || 'unknown.ts';
+      const line = match?.[2] || '0';
+
+      info.callsite = `${fileName}:${line}`;
+      return info;
+    })(),
+    winston.format.printf(({ level, message, timestamp, callsite }) => {
+      return `${timestamp} [${poc.toUpperCase()}] ${level.toUpperCase()} (${callsite}): ${message}`;
+    })
+  );
 
 const jsonFormatter = winston.format.printf(({ level, message, timestamp }) => {
   return JSON.stringify({ timestamp, level, message });
@@ -56,7 +82,7 @@ export class Logger {
   private static instances: Map<string, winston.Logger> = new Map();
 
   // 오버로드 시그니처
-  public static getLogger(poc: 'ALL'): Record<string, winston.Logger>;
+  public static getLogger(poc: 'all'): Record<string, winston.Logger>;
   public static getLogger(poc: string): winston.Logger;
   public static getLogger(poc: string): winston.Logger | Record<string, winston.Logger> {
     if (!poc) throw new Error(`[Logger] poc 값이 누락되었습니다.`);

@@ -9,10 +9,13 @@ import { execSync } from 'child_process';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
 import { PortUtils } from '@common/utils/network/PortUtils';
-import waitOn from 'wait-on';
-import { chromium } from 'playwright';
-import type { Page as PWPage } from '@playwright/test';
-import axios from 'axios';
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+import { pipeline } from 'stream/promises';
+import fetch from 'node-fetch';
+import unzipper from 'unzipper';
+import { Readable } from 'stream';
 
 export class ChromeSetup {
   // winston 로깅 인스턴스
@@ -33,11 +36,29 @@ export class ChromeSetup {
     this.poc = POCEnv.getType();
     this.logger = Logger.getLogger(this.poc.toUpperCase()) as winston.Logger;
   }
+  // 크롬 자동 다운로드
+  private getPlatformFolder(): string {
+    const platform = os.platform();
+    const arch = os.arch();
+
+    if (platform === 'darwin') {
+      return arch === 'arm64' ? 'mac-arm64' : 'mac-x64';
+    }
+    if (platform === 'linux') {
+      return 'linux64';
+    }
+    if (platform === 'win32') {
+      return 'win32';
+    }
+
+    throw new Error(`[Chromedriver] 지원되지 않는 플랫폼: ${platform} / ${arch}`);
+  }
 
   /**
-   * 디바이스의 크롬 버전에 맞는 Chromedriver 자동 다운로드 처리
+   * 디바이스의 크롬 버전 호환성 확인 밒 맞는 Chromedriver 자동 다운로드 처리
    */
   public async syncChromedriver(): Promise<void> {
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
     try {
       const versionCmd = `adb -s ${this.udid} shell dumpsys package com.android.chrome | grep versionName`;
       const result = execSync(versionCmd, { encoding: 'utf-8' });
@@ -48,13 +69,135 @@ export class ChromeSetup {
         this.logger.warn('[Chromedriver] Chrome 버전 탐지 실패');
         return;
       }
-
+      // Chrome 버전에서 major 버전만 추출
       const majorVersion = parseInt(chromeVersion.split('.')[0], 10);
-      this.logger.info(`[Chromedriver] Chrome 버전: ${chromeVersion} → major: ${majorVersion}`);
+      this.logger.info(`[Chromedriver] Chrome 버전: ${chromeVersion} -> major: ${majorVersion}`);
 
+      const platformFolder = this.getPlatformFolder();
+
+      // 자동으로 가장 가까운 버전의 다운로드 URL 찾기
+      const { version: resolvedVersion, url: chromedriverUrl } =
+        await this.resolveChromedriverUrl(majorVersion, platformFolder);
+
+      const downloadPath = path.resolve(os.tmpdir(), `chromedriver_${resolvedVersion}.zip`);
+      const extractDir = path.resolve(os.tmpdir(), `chromedriver_${resolvedVersion}`);
+
+      const possiblePaths = [
+        path.join(extractDir, 'chromedriver'),
+        path.join(extractDir, 'chromedriver.exe'),
+        path.join(extractDir, platformFolder, 'chromedriver'),
+        path.join(extractDir, platformFolder, 'chromedriver.exe'),
+        path.join(extractDir, `chromedriver-${platformFolder}`, 'chromedriver'),
+        path.join(extractDir, `chromedriver-${platformFolder}`, 'chromedriver.exe'),
+      ];
+      const existingDriverPath = possiblePaths.find(p => fs.existsSync(p));
+      if (existingDriverPath) {
+        this.logger.info(`[Chromedriver] 이미 설치된 chromedriver 사용: ${existingDriverPath}`);
+        process.env.CHROMEDRIVER_PATH = existingDriverPath;
+        return;
+      }
+
+      this.logger.info(`[Chromedriver] 다운로드 중: ${chromedriverUrl}`);
+      const response = await fetch(chromedriverUrl);
+      if (!response.ok || !response.body) {
+        throw new Error(`다운로드 실패 또는 본문 없음: ${response.statusText}`);
+      }
+
+      this.logger.info('[Chromedriver] 스트림 다운로드 시작');
+      await pipeline(
+        response.body as NodeJS.ReadableStream,
+        fs.createWriteStream(downloadPath)
+      );
+
+      this.logger.info('[Chromedriver] 압축 해제 준비');
+      await fs.promises.mkdir(extractDir, { recursive: true });
+
+      await fs
+        .createReadStream(downloadPath)
+        .pipe(unzipper.Extract({ path: extractDir }))
+        .promise();
+      this.logger.info('[Chromedriver] 압축 해제 완료');
+
+      const extractedDriverPath = possiblePaths.find(p => fs.existsSync(p));
+      if (!extractedDriverPath) {
+        throw new Error(`[Chromedriver] 실행 파일을 찾을 수 없습니다. 경로: ${extractDir}`);
+      }
+
+      fs.chmodSync(extractedDriverPath, 0o755);
+      process.env.CHROMEDRIVER_PATH = extractedDriverPath;
+      this.logger.info(`[Chromedriver] 실행 권한 부여 및 등록 완료: ${extractedDriverPath}`);
     } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      this.logger.error('[Chromedriver] 크롬 버전 확인 실패:', msg);
+      const errorMessage =
+        e instanceof Error
+          ? `${e.name}: ${e.message}\n${e.stack}`
+          : `Non-Error object: ${JSON.stringify(e)}`;
+
+      this.logger.error('[Chromedriver] 자동 다운로드 실패:', errorMessage);
+      console.error('[Chromedriver][DEBUG] Full error object:', e);
+    }
+  }
+
+  private async resolveChromedriverUrl(
+    majorVersion: number,
+    platformFolder: string
+  ): Promise<{ version: string; url: string }> {
+    const versionListUrl =
+      'https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json';
+
+    try {
+      this.logger.info(`[Chromedriver] 버전 목록 JSON 요청: ${versionListUrl}`);
+      const response = await fetch(versionListUrl);
+
+      if (!response.ok) {
+        throw new Error(`버전 목록 요청 실패 (HTTP ${response.status})`);
+      }
+
+      const rawText = await response.text();
+      this.logger.info('[Chromedriver] JSON 응답 일부:', rawText.slice(0, 300)); // 일부만 로그
+
+      let data: {
+        versions: {
+          version: string;
+          downloads: {
+            chromedriver: { platform: string; url: string }[];
+          };
+        }[];
+      };
+
+      try {
+        data = JSON.parse(rawText);
+      } catch (jsonErr) {
+        throw new Error(`JSON 파싱 실패: ${(jsonErr as Error).message}`);
+      }
+
+      const matched = data.versions
+        .filter(v => v.version.startsWith(`${majorVersion}.`))
+        .sort((a, b) => b.version.localeCompare(a.version))[0];
+
+      if (!matched) {
+        throw new Error(
+          `[Chromedriver] ${majorVersion}대 버전에 해당하는 chromedriver를 찾을 수 없습니다.`
+        );
+      }
+
+      const download = matched.downloads.chromedriver.find(
+        d => d.platform === platformFolder
+      );
+      if (!download) {
+        throw new Error(
+          `[Chromedriver] '${platformFolder}' 플랫폼 용 chromedriver가 존재하지 않습니다.`
+        );
+      }
+
+      this.logger.info(
+        `[Chromedriver] 자동 매칭된 버전: ${matched.version}, 다운로드 URL: ${download.url}`
+      );
+      return { version: matched.version, url: download.url };
+    } catch (e) {
+      const msg =
+        e instanceof Error ? `${e.name}: ${e.message}\n${e.stack}` : String(e);
+      this.logger.error(`[Chromedriver] 버전 정보 조회 실패: ${msg}`);
+      throw e;
     }
   }
 
@@ -142,31 +285,13 @@ export class ChromeSetup {
   }
 
   /**
-   * Playwright를 통해 WebView에 연결하고 Page 인스턴스를 반환
-   */
-  // TODO CDP 관련 주석처리
-  // public async connectToWebView(debuggerAddress: string): Promise<PWPage | undefined> {
-  //   try {
-  //     const wsEndpoint = `ws://${debuggerAddress}/devtools/browser`;
-  //     const pwBrowser = await chromium.connectOverCDP(wsEndpoint);
-  //     const context = pwBrowser.contexts()[0];
-  //     const page = context?.pages()[0] ?? await context?.newPage();
-  //     this.logger.info(`[ChromeAccess] Playwright WebView 페이지 연결 완료`);
-  //     return page;
-  //   } catch (e) {
-  //     this.logger.error('[ChromeAccess] Playwright WebView 연결 실패:', e);
-  //     return undefined;
-  //   }
-  // }
-
-  /**
    * Chrome 앱이 포그라운드에 없을 경우 강제로 앞으로 가져오기
    */
   async bringToFrontIfNotVisible(): Promise<void> {
     try {
       const currentPackage = await this.driver.getCurrentPackage?.();
       if (currentPackage !== 'com.android.chrome') {
-        this.logger.info(`[ChromeAccess] 현재 앱 (${currentPackage}) -> 강제 전환`);
+        this.logger.info(`[ChromeAccess] 현재 앱 (${currentPackage}) -> Chrome 강제 전환`);
         await this.driver.activateApp('com.android.chrome');
         await this.driver.pause(2000);
       } else {

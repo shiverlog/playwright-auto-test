@@ -2,6 +2,7 @@
  * Description : AppiumServerUtils.ts - 📌 Appium 서버/앱 제어 유틸리티 클래스
  * Author : Shiwoo Min
  * Date : 2024-04-14
+ * - 04/14 CDP 연결 확인, Appium 서버 시작/종료 메시지 간소화
  */
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
@@ -37,7 +38,7 @@ export class AppiumServerUtils {
         // 사전 포트 사용 여부 확인
         const isAvailable = await portUtils.isPortAvailable(targetPort);
         if (!isAvailable) {
-          this.logger.warn(`[Appium] 포트 ${targetPort} 이미 사용 중 → 새 포트로 재시도`);
+          this.logger.warn(`[Appium] 포트 ${targetPort} 이미 사용 중 -> 새 포트로 재시도`);
           const newPort = await portUtils.getAvailablePort();
           return resolve(await tryStart(newPort, attemptsLeft - 1));
         }
@@ -53,9 +54,10 @@ export class AppiumServerUtils {
 
           let started = false;
 
+          // Appium 서버 시작 메시지
           subprocess.stdout?.on('data', data => {
             const msg = data.toString();
-            this.logger.info(`[Appium ${targetPort}] ${msg}`);
+            // this.logger.info(`[Appium ${targetPort}] ${msg}`);
             if (msg.includes('Appium v') && msg.includes('Welcome')) {
               started = true;
               this.logger.info(`[Appium ${targetPort}] 서버 시작 성공`);
@@ -67,6 +69,10 @@ export class AppiumServerUtils {
 
           subprocess.stderr?.on('data', async data => {
             const errMsg = data.toString().trim();
+            // 다버깅 모드 사용 시 메시지 무시
+            if (errMsg.includes('Debugger attached.')) {
+              return;
+            }
             this.logger.error(`[Appium ${targetPort}] 오류: ${errMsg}`);
 
             // 포트 충돌 처리
@@ -82,10 +88,6 @@ export class AppiumServerUtils {
               } else {
                 reject(new Error(`[Appium ${targetPort}] 포트 충돌로 인해 시작 실패`));
               }
-
-            } else if (errMsg.includes('Debugger attached.')) {
-              // 디버깅 연결 메시지는 무시
-              this.logger.warn(`[Appium ${targetPort}] 디버거 메시지 무시됨`);
             } else {
               subprocess.kill('SIGKILL');
               reject(new Error(`[Appium ${targetPort}] 시작 실패: ${errMsg}`));

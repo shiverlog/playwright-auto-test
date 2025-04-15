@@ -7,7 +7,8 @@
  * - MobileActionUtils 에서는 Playwright + Appium 드라이버 객체를 함께 관리
  */
 import { JsForceActions } from '@common/actions/JsForceActions.js';
-import type { Locator, Page } from '@playwright/test';
+import type { Locator, Page as PWPage} from '@playwright/test';
+import type { Page as PPage } from 'puppeteer-core';
 
 export class BaseActionUtils<TDriver = unknown> {
   // Mobile 처리를 위해 일단은 부분적으로 page 를 받도록 처리

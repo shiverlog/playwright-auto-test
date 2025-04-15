@@ -18,6 +18,8 @@ export class AndroidTestEnv implements TestEnvHandler {
   private readonly pocList = POCEnv.getPOCList();
   // 공통 로거
   private readonly logger: winston.Logger;
+  // MobileActionUtils 저장
+  private readonly mobileUtilsMap = new Map<string, MobileActionUtils>();
 
   constructor() {
     // 현재 환경의 POC를 기반으로 로거 생성
@@ -45,54 +47,33 @@ export class AndroidTestEnv implements TestEnvHandler {
         const port = appFixture.getPortForPOC(poc);
         this.logger.info(`[${poc}] 연결된 Appium 포트: ${port}`);
 
-        // 현재 컨텍스트 상태 출력
-        await this.logContextState(driver, poc);
-
         // 앱 실행
-        const appPackage = driver.capabilities['appium:options']?.appPackage;
+        const appPackage = driver.capabilities['appium:options']?.appPackage || (driver.capabilities as any).appPackage;
         if (appPackage) {
           await driver.activateApp(appPackage);
           await driver.pause(3000);
           this.logger.info(`[${poc}] 앱 실행 완료: ${appPackage}`);
+        } else {
+          this.logger.warn(`[${poc}] appPackage 정보가 없습니다. 앱 실행 실패`);
         }
+
+        // 현재 컨텍스트 상태 출력
+        await this.logContextState(driver, poc);
 
         // UDID 추출
         const udid =
           (driver.capabilities as any)['appium:udid'] || (driver.capabilities as any)['udid'] || '';
 
-        // WebView 연결 시도
         if (port && udid) {
-          try {
-            // Appium 컨텍스트 전환 + 포트 포워딩
-            const { wsEndpoint } = await ContextUtils.switchToWebViewCDP(driver, udid);
-
-            if (!wsEndpoint) {
-              this.logger.warn(`[${poc}] WebView 포워딩 주소(wsEndpoint) 획득 실패`);
-              continue;
-            }
-
-            // Playwright CDP 연결
-            const { page } = await CDPConnectUtils.connectToWebView(wsEndpoint);
-
-            if (page) {
-              // page 객체 활용
-              const title = await page.title();
-              this.logger.info(`[${poc}] WebView 연결 완료 (title: ${title})`);
-
-              const actionUtils = new MobileActionUtils(driver);
-              actionUtils.setPageFromContext(page);
-            } else {
-              this.logger.warn(`[${poc}] Playwright Page 객체 연결 실패`);
-            }
-          } catch (e) {
-            this.logger.warn(`[${poc}] WebView 연결 중 예외 발생: ${e}`);
-          }
+          // WebView 연결 시도
+          await this.tryConnectToWebView(poc, driver, udid);
         } else {
           this.logger.warn(`[${poc}] WebView 연결에 필요한 포트 또는 UDID 누락`);
         }
 
         this.logger.info(`[${poc}] Android 테스트 환경 설정 완료`);
       } catch (error) {
+        // 오류 발생 시 정리 및 로그 처리
         await this.handleSetupError(poc, error);
         throw error;
       }
@@ -100,20 +81,32 @@ export class AndroidTestEnv implements TestEnvHandler {
   }
 
   /**
-   * Android 앱 테스트 환경 정리
+   * WebView 연결
    */
-  public async teardown(): Promise<void> {
-    for (const poc of this.pocList) {
-      this.logger.info(`[${poc}] Android 테스트 환경 정리 시작`);
+  private async tryConnectToWebView(poc: string, driver: Browser, udid: string): Promise<void> {
+    try {
+      const { wsEndpoint } = await ContextUtils.switchToWebViewCDP(driver, udid);
 
-      try {
-        // Appium 드라이버 정리
-        await appFixture.teardownForPoc(poc);
-        this.logger.info(`[${poc}] Android 테스트 환경 정리 완료`);
-      } catch (error) {
-        // 정리 실패 시에도 다음 POC 진행
-        this.logger.error(`[${poc}] Android 테스트 환경 정리 실패: ${error}`);
+      if (!wsEndpoint) {
+        this.logger.warn(`[${poc}] WebView 포워딩 주소(wsEndpoint) 획득 실패`);
+        return;
       }
+
+      const { page } = await CDPConnectUtils.connectToWebView(wsEndpoint);
+      if (page) {
+        const title = await page.title();
+        this.logger.info(`[${poc}] WebView 연결 완료 (title: ${title})`);
+
+        const actionUtils = new MobileActionUtils(driver);
+        actionUtils.setPageFromContext(page);
+        this.mobileUtilsMap.set(poc, actionUtils);
+      } else {
+        throw new Error(`[${poc}] Playwright Page 객체 연결 실패 또는 없음`);
+      }
+    } catch (e) {
+      // WebView 연결 예외 메시지 가독성 향상
+      this.logger.warn(`[${poc}] WebView 연결 중 예외 발생: ${e instanceof Error ? e.message : e}`);
+      throw e;
     }
   }
 
@@ -143,5 +136,24 @@ export class AndroidTestEnv implements TestEnvHandler {
     } catch (teardownErr) {
       this.logger.error(`[${poc}] 정리 중 추가 오류: ${teardownErr}`);
     }
+  }
+
+  /**
+   * Android 앱 테스트 환경 정리
+   */
+  public async teardown(): Promise<void> {
+    for (const poc of this.pocList) {
+      this.logger.info(`[${poc}] Android 테스트 환경 정리 시작`);
+
+      try {
+        // Appium 드라이버 정리
+        await appFixture.teardownForPoc(poc);
+        this.logger.info(`[${poc}] Android 테스트 환경 정리 완료`);
+      } catch (error) {
+        // 정리 실패 시에도 다음 POC 진행
+        this.logger.error(`[${poc}] Android 테스트 환경 정리 실패: ${error}`);
+      }
+    }
+    this.mobileUtilsMap.clear();
   }
 }

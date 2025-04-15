@@ -14,14 +14,12 @@ import { AppiumServerUtils } from '@common/utils/appium/AppiumServerUtils';
 import { ChromeSetup } from '@common/utils/browser/ChromeSetup';
 import { SafariSetup } from '@common/utils/browser/SafariSetup';
 import { PortUtils } from '@common/utils/network/PortUtils';
-import { ContextUtils } from '@common/utils/context/ContextUtils';
 import { test as base, expect } from '@playwright/test';
-import { chromium } from 'playwright';
 import { remote } from 'webdriverio';
 import type { Browser as WDIOBrowser } from 'webdriverio';
 import waitOn from 'wait-on';
 import type { Page as PWPage, Browser as PWBrowser } from 'playwright';
-import axios from 'axios';
+
 class BaseAppFixture extends BasePocFixture {
   // NativeView 제어용
   private nativeDrivers: Map<string, WDIOBrowser> = new Map();
@@ -73,6 +71,8 @@ class BaseAppFixture extends BasePocFixture {
    * Appium 드라이버 초기화 + Appium 서버 시작 (동시 실행 대응)
    */
   public async initializeAppDriver(poc: string): Promise<{ driver: WDIOBrowser; port: number; page?: PWPage }> {
+    // 로거는 ERROR 레벨로 설정
+    process.env.WDIO_LOG_LEVEL = 'error';
     const logger = this.getLogger(poc);
     const device = this.getDeviceConfig(poc);
     // PortUtils 사용
@@ -136,21 +136,6 @@ class BaseAppFixture extends BasePocFixture {
       await chrome.handleChromeSetup({ skipWebViewSwitch: !!mergedOpts.autoWebview });
       // chrome.clearChromeAppData(); // 필요시 사용
 
-      // TODO CDP 연결 주석 처리 -> 에러 발생 해결하지 못함
-      // try {
-      //   // Appium 세션에서 debuggerAddress 추출
-      //   const caps = driver.capabilities as any;
-      //   const debuggerAddress = caps['goog:chromeOptions']?.debuggerAddress;
-      //   if (!debuggerAddress) throw new Error('debuggerAddress 누락됨');
-
-      //   const wsEndpoint = `ws://${debuggerAddress}/devtools/browser`;
-      //   const pwBrowser = await chromium.connectOverCDP(wsEndpoint);
-      //   const context = pwBrowser.contexts()[0];
-      //   const page = context?.pages()[0] ?? await context?.newPage();
-      //   if (page) this.webviewPages.set(poc, page);
-      // } catch (err) {
-      //   logger.warn(`[BaseAppFixture] WebView 연결 실패: ${err}`);
-      // }
       // 앱 다시 앞으로 전환
       if (mergedOpts.appPackage) {
         await driver.activateApp(mergedOpts.appPackage);
@@ -168,6 +153,7 @@ class BaseAppFixture extends BasePocFixture {
         await driver.pause(3000);
       }
     }
+    // 드라이버, 포트, 페이지 반환
     return { driver, port, page };
   }
 

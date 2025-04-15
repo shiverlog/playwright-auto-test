@@ -1,7 +1,7 @@
 /**
  * Description : settings.json - 📌 VS Code에서 Setting 설정 파일
  * Author : Shiwoo Min
- * Date : 2025-03-20
+ * Date : 2025-04-14
  */
 {
   // 탭 크기
@@ -155,6 +155,9 @@
     "aapt",
     "mobilesafari",
     "WDIO",
-    "Filp4"
+    "Filp4",
+    "unzipper",
+    "callsite",
+    "Logform"
   ]
 }

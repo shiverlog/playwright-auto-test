@@ -1,5 +1,5 @@
 /**
- * Description : MobileActions.ts - 📌 Appium + Playwright: 모바일 전용 액션 유틸리티 클래스
+ * Description : MobileActions.ts - 📌 Appium + Playwright + Puppeteer: 모바일 전용 액션 유틸리티 클래스
  * Author : Shiwoo Min
  * Date : 2025-04-08
  * - Playwright와 Appium을 기반으로 다양한 모바일 테스트 액션을 제공하며, 플랫폼(Android/iOS)에 따라 서로 다른 로직을 처리
@@ -7,26 +7,25 @@
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
 import { ActionConstants } from '@common/constants/ActionConstants.js';
 import type { Platform } from '@common/types/platform-types.js';
-import { ContextUtils } from '@common/utils/context/ContextUtils.js';
 import { POCEnv } from '@common/utils/env/POCEnv';
-import { chromium, type Page } from '@playwright/test';
+import { chromium, type Page as PWPage } from '@playwright/test';
+import type { Page as PPage } from 'puppeteer-core';
 import { execSync } from 'child_process';
-import type { CDPSession } from 'playwright-core';
 import type { Browser } from 'webdriverio';
 
 const DEFAULT_RETRY = 5;
 
+export type UnifiedPage = PWPage | PPage;
+
 export class MobileActionUtils extends BaseActionUtils<Browser> {
   protected driver: Browser;
   protected platform: Platform;
-  private readonly poc: string = POCEnv.getType() ?? 'GLOBAL';
+  private readonly poc: string = POCEnv.getType();
 
-  // Android/iOS 공통처리
-  // page - webview / driver - native
-  constructor(driver: Browser, page?: Page | undefined) {
-    // page는 WebView 연결 이후에만 세팅
+  constructor(driver: Browser, page?: UnifiedPage) {
     super();
     this.driver = driver;
+    if (page) this.page = page;
 
     const platformName = driver.capabilities?.platformName?.toString().toLowerCase();
     if (platformName?.includes('android')) this.platform = 'ANDROID_APP';
@@ -35,26 +34,26 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   * Page 세팅
+   * WebView Page 세팅 (Playwright or Puppeteer)
    */
-  public setPage(page: Page): void {
+  public setPage(page: UnifiedPage): void {
     this.page = page;
   }
 
   /**
    * WebView 연결 후 ContextUtils에서 page 주입
    */
-  public setPageFromContext(page: Page): void {
+  public setPageFromContext(page: UnifiedPage): void {
     if (!page) {
       throw new Error(
         `[MobileActionUtils] WebView Page가 전달되지 않았습니다. (POC: ${this.poc})`,
       );
     }
-    this.setPage(page); // BaseActionUtils의 setPage 사용
+    this.setPage(page);
   }
 
   /**
-   * WebView가 연결됐는지 여부
+   * WebView 연결 여부
    */
   public hasWebView(): boolean {
     return !!this.page;
@@ -63,7 +62,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   /**
    * WebView page가 설정돼 있지 않으면 예외 발생
    */
-  private getPageOrThrow(): Page {
+  private getPageOrThrow(): UnifiedPage {
     if (!this.page) {
       throw new Error(
         '[MobileActionUtils] WebView가 연결되지 않았습니다. page가 설정되지 않았습니다.',
@@ -73,21 +72,43 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   * WebView에서만 동작해야 하는 예시 메서드
+   * WebView 내에서 특정 요소를 클릭 (Playwright or Puppeteer)
    */
   public async clickInWebView(selector: string): Promise<void> {
     const page = this.getPageOrThrow();
-    await page.locator(selector).click();
+
+    if ('locator' in page) {
+      await page.locator(selector).click();
+    } else {
+      await page.click(selector);
+    }
   }
 
+  /**
+   * WebView 내의 입력 필드에 값을 채움
+   */
   public async fillInWebView(selector: string, value: string): Promise<void> {
     const page = this.getPageOrThrow();
-    await page.locator(selector).fill(value);
+
+    if ('locator' in page) {
+      await page.locator(selector).fill(value);
+    } else {
+      await page.type(selector, value);
+    }
   }
 
+  /**
+   * WebView에서 텍스트를 가져오는 예시 메서드
+   */
   public async getTextInWebView(selector: string): Promise<string> {
     const page = this.getPageOrThrow();
-    return await page.locator(selector).innerText();
+
+    if ('locator' in page) {
+      return await page.locator(selector).innerText();
+    } else {
+      const element = await page.$(selector);
+      return (await page.evaluate(el => el?.innerText, element)) || '';
+    }
   }
 
   /**
