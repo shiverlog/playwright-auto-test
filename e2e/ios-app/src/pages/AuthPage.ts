@@ -1,4 +1,4 @@
-import { MobileActionUtils } from '@common/actions/MobileActionUtils.js';
+import { MobileActionUtils } from '@common/actions/MobileActions.js';
 import { authLocator } from '@common/locators/authLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';

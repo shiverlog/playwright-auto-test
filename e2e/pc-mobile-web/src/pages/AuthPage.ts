@@ -1,4 +1,4 @@
-import { WebActionUtils } from '@common/actions/WebActionUtils.js';
+import { WebActionUtils } from '@common/actions/WebActions.js';
 import { BaseModal } from '@common/components/BaseModal.js';
 import { authLocator } from '@common/locators/authLocator.js';
 import { uiLocator } from '@common/locators/uiLocator.js';

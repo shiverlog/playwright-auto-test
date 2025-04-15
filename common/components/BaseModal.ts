@@ -4,8 +4,8 @@
  * Date : 2025-04-02
  */
 import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
-import { MobileActionUtils } from '@common/actions/MobileActionUtils.js';
-import { WebActionUtils } from '@common/actions/WebActionUtils.js';
+import { MobileActionUtils } from '@common/actions/MobileActions.js';
+import { WebActionUtils } from '@common/actions/WebActions.js';
 import { uiLocator } from '@common/locators/uiLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';

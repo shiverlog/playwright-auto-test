@@ -7,10 +7,9 @@
  * - MobileActionUtils 에서는 Playwright + Appium 드라이버 객체를 함께 관리
  */
 import { JsForceActions } from '@common/actions/JsForceActions.js';
-import type { Locator, Page as PWPage} from '@playwright/test';
-import type { Page as PPage } from 'puppeteer-core';
+import type { Locator, Page } from '@playwright/test';
 
-export class BaseActionUtils<TDriver = unknown> {
+export class BaseActions<TDriver = unknown> {
   // Mobile 처리를 위해 일단은 부분적으로 page 를 받도록 처리
   public page?: Page;
   public js?: JsForceActions;
@@ -19,7 +18,6 @@ export class BaseActionUtils<TDriver = unknown> {
   constructor(page?: Page, driver?: TDriver) {
     if (page) {
       this.page = page;
-      this.js = new JsForceActions(page);
     }
   }
 
@@ -33,10 +31,18 @@ export class BaseActionUtils<TDriver = unknown> {
   }
 
   /**
+   * Puppeteer Page 객체를 런타임에 설정 (웹뷰 전환 시 사용)
+   */
+  public setPuppeteerPage(page: Page): void {
+    this.page = page;
+    this.js = undefined;
+  }
+
+  /**
    *  Common: 페이지 설정
    */
   protected ensurePage(): Page {
-    if (!this.page) throw new Error('[BaseActionUtils] page가 설정되지 않았습니다.');
+    if (!this.page) throw new Error('[BaseActionUtils] WebView Page가 설정되지 않았습니다.');
     return this.page;
   }
 

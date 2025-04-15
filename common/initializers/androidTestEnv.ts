@@ -3,15 +3,15 @@
  * Author : Shiwoo Min
  * Date : 2025-04-11
  */
+import { MobileActions } from '@common/actions/MobileActions';
 import { appFixture } from '@common/fixtures/BaseAppFixture';
 import { Logger } from '@common/logger/customLogger';
 import type { TestEnvHandler } from '@common/types/test-env-handler';
+import { CDPConnectUtils } from '@common/utils/context/CDPConnectUtils';
 import { ContextUtils } from '@common/utils/context/ContextUtils';
 import { POCEnv } from '@common/utils/env/POCEnv';
 import type { Browser } from 'webdriverio';
 import type winston from 'winston';
-import { CDPConnectUtils } from '@common/utils/context/CDPConnectUtils';
-import { MobileActionUtils } from '@common/actions/MobileActionUtils';
 
 export class AndroidTestEnv implements TestEnvHandler {
   // 현재 실행 대상 POC 리스트
@@ -19,7 +19,7 @@ export class AndroidTestEnv implements TestEnvHandler {
   // 공통 로거
   private readonly logger: winston.Logger;
   // MobileActionUtils 저장
-  private readonly mobileUtilsMap = new Map<string, MobileActionUtils>();
+  private readonly mobileUtilsMap = new Map<string, MobileActions>();
 
   constructor() {
     // 현재 환경의 POC를 기반으로 로거 생성
@@ -48,7 +48,9 @@ export class AndroidTestEnv implements TestEnvHandler {
         this.logger.info(`[${poc}] 연결된 Appium 포트: ${port}`);
 
         // 앱 실행
-        const appPackage = driver.capabilities['appium:options']?.appPackage || (driver.capabilities as any).appPackage;
+        const appPackage =
+          driver.capabilities['appium:options']?.appPackage ||
+          (driver.capabilities as any).appPackage;
         if (appPackage) {
           await driver.activateApp(appPackage);
           await driver.pause(3000);
@@ -97,7 +99,7 @@ export class AndroidTestEnv implements TestEnvHandler {
         const title = await page.title();
         this.logger.info(`[${poc}] WebView 연결 완료 (title: ${title})`);
 
-        const actionUtils = new MobileActionUtils(driver);
+        const actionUtils = new MobileActions(driver);
         actionUtils.setPageFromContext(page);
         this.mobileUtilsMap.set(poc, actionUtils);
       } else {

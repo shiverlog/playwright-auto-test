@@ -1,5 +1,5 @@
 import type { JsForceActions } from '@common/actions/JsForceActions.js';
-import { WebActionUtils } from '@common/actions/WebActionUtils.js';
+import { WebActionUtils } from '@common/actions/WebActions.js';
 import { BaseHeader } from '@common/components/BaseHeader.js';
 import { BaseModal } from '@common/components/BaseModal.js';
 import { authLocator } from '@common/locators/authLocator.js';

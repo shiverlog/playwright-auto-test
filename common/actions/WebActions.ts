@@ -3,10 +3,10 @@
  * Author : Shiwoo Min
  * Date : 2025-04-01
  */
-import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
+import { BaseActions } from '@common/actions/BaseActions.js';
 import type { Locator, Page } from '@playwright/test';
 
-export class WebActionUtils extends BaseActionUtils<undefined> {
+export class WebActionUtils extends BaseActions<undefined> {
   constructor(page: Page) {
     super(page);
   }

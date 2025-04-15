@@ -1,28 +1,25 @@
 /**
  * Description : MobileActions.ts - 📌 Appium + Playwright + Puppeteer: 모바일 전용 액션 유틸리티 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-08
+ * Date : 2025-04-15
  * - Playwright와 Appium을 기반으로 다양한 모바일 테스트 액션을 제공하며, 플랫폼(Android/iOS)에 따라 서로 다른 로직을 처리
  */
-import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
+import { BaseActions } from '@common/actions/BaseActions.js';
 import { ActionConstants } from '@common/constants/ActionConstants.js';
 import type { Platform } from '@common/types/platform-types.js';
 import { POCEnv } from '@common/utils/env/POCEnv';
-import { chromium, type Page as PWPage } from '@playwright/test';
-import type { Page as PPage } from 'puppeteer-core';
+import type { Page } from '@playwright/test';
 import { execSync } from 'child_process';
 import type { Browser } from 'webdriverio';
 
 const DEFAULT_RETRY = 5;
 
-export type UnifiedPage = PWPage | PPage;
-
-export class MobileActionUtils extends BaseActionUtils<Browser> {
+export class MobileActions extends BaseActions<Browser> {
   protected driver: Browser;
   protected platform: Platform;
   private readonly poc: string = POCEnv.getType();
 
-  constructor(driver: Browser, page?: UnifiedPage) {
+  constructor(driver: Browser, page?: Page) {
     super();
     this.driver = driver;
     if (page) this.page = page;
@@ -34,20 +31,18 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   * WebView Page 세팅 (Playwright or Puppeteer)
+   * WebView Page 세팅 (Playwright 전용)
    */
-  public setPage(page: UnifiedPage): void {
+  public setPage(page: Page): void {
     this.page = page;
   }
 
   /**
    * WebView 연결 후 ContextUtils에서 page 주입
    */
-  public setPageFromContext(page: UnifiedPage): void {
+  public setPageFromContext(page: Page): void {
     if (!page) {
-      throw new Error(
-        `[MobileActionUtils] WebView Page가 전달되지 않았습니다. (POC: ${this.poc})`,
-      );
+      throw new Error(`[MobileActionUtils] WebView Page가 전달되지 않았습니다. (POC: ${this.poc})`);
     }
     this.setPage(page);
   }
@@ -62,7 +57,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   /**
    * WebView page가 설정돼 있지 않으면 예외 발생
    */
-  private getPageOrThrow(): UnifiedPage {
+  private getPageOrThrow(): Page {
     if (!this.page) {
       throw new Error(
         '[MobileActionUtils] WebView가 연결되지 않았습니다. page가 설정되지 않았습니다.',
@@ -72,16 +67,11 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
   }
 
   /**
-   * WebView 내에서 특정 요소를 클릭 (Playwright or Puppeteer)
+   * WebView 내에서 특정 요소를 클릭
    */
   public async clickInWebView(selector: string): Promise<void> {
     const page = this.getPageOrThrow();
-
-    if ('locator' in page) {
-      await page.locator(selector).click();
-    } else {
-      await page.click(selector);
-    }
+    await page.locator(selector).click();
   }
 
   /**
@@ -89,12 +79,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    */
   public async fillInWebView(selector: string, value: string): Promise<void> {
     const page = this.getPageOrThrow();
-
-    if ('locator' in page) {
-      await page.locator(selector).fill(value);
-    } else {
-      await page.type(selector, value);
-    }
+    await page.locator(selector).fill(value);
   }
 
   /**
@@ -102,13 +87,7 @@ export class MobileActionUtils extends BaseActionUtils<Browser> {
    */
   public async getTextInWebView(selector: string): Promise<string> {
     const page = this.getPageOrThrow();
-
-    if ('locator' in page) {
-      return await page.locator(selector).innerText();
-    } else {
-      const element = await page.$(selector);
-      return (await page.evaluate(el => el?.innerText, element)) || '';
-    }
+    return await page.locator(selector).innerText();
   }
 
   /**

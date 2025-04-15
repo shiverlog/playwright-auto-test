@@ -4,7 +4,6 @@
  * Date : 2025-04-11
  */
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
-import '@common/initializers/MobileWebTestEnv';
 import { StealthContext } from '@common/utils/browser/StealthContext';
 import { test as base, expect } from '@playwright/test';
 import type { BrowserContext, Page } from '@playwright/test';
