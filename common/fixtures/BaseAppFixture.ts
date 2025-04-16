@@ -1,7 +1,7 @@
 /**
  * Description : BaseAppFixture.ts - 📌 Appium 기반 Android/iOS 테스트를 위한 Fixture 클래스
  * Author : Shiwoo Min
- * Date : 2025-04-12
+ * Date : 2025-04-16
  */
 import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/deviceConfig';
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
@@ -18,6 +18,7 @@ import { test as base, expect } from '@playwright/test';
 import { remote } from 'webdriverio';
 import type { Browser as WDIOBrowser } from 'webdriverio';
 import waitOn from 'wait-on';
+// Page 구분을 위한 as 문 사용(현재는 Puppeteer 사용하지 않아서 제거해도 무방)
 import type { Page as PWPage, Browser as PWBrowser } from 'playwright';
 
 class BaseAppFixture extends BasePocFixture {
@@ -93,6 +94,8 @@ class BaseAppFixture extends BasePocFixture {
     const isIOS = device.platformName.toUpperCase() === 'IOS';
 
     const baseOpts = (device.appium?.options ?? {}) as DeviceOptions;
+
+    // Appium 옵션 통합
     const mergedOpts: AppiumRemoteOptions['capabilities']['appium:options'] = {
       ...baseOpts,
       deviceName: device.deviceName,
@@ -103,7 +106,8 @@ class BaseAppFixture extends BasePocFixture {
       chromedriverExecutable: process.env.CHROMEDRIVER_PATH,
       adbExecTimeout: 30000,
     };
-    delete (mergedOpts as any).browserName;
+    // browserName 주석처리
+    // delete (mergedOpts as any).browserName;
 
     const remoteOpts: AppiumRemoteOptions = {
       protocol: 'http',
@@ -115,6 +119,7 @@ class BaseAppFixture extends BasePocFixture {
         'appium:options': mergedOpts,
       },
     };
+
     // 드라이버 셋팅
     const driver = await remote(remoteOpts);
     let page: PWPage | undefined;

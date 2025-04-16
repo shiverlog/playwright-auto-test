@@ -6,7 +6,7 @@
 import { BaseActions } from '@common/actions/BaseActions.js';
 import type { Locator, Page } from '@playwright/test';
 
-export class WebActionUtils extends BaseActions<undefined> {
+export class WebActions extends BaseActions<undefined> {
   constructor(page: Page) {
     super(page);
   }

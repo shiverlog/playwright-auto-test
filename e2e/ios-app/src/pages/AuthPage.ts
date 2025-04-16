@@ -1,58 +1,56 @@
-import { MobileActionUtils } from '@common/actions/MobileActions.js';
+/**
+ * Description : AuthPage.ts - 📌 TC01. LGUPlus 로그인 & 로그아웃 시나리오 정의
+ * Author : Shiwoo Min
+ * Date : 2025-04-11
+ */
+import { AppActions } from '@common/actions/AppActions.js';
 import { authLocator } from '@common/locators/authLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';
 import { ContextUtils } from '@common/utils/context/ContextUtils.js';
-import type { Page } from '@playwright/test';
 import type { Browser } from 'webdriverio';
 
-export class AuthPage extends MobileActionUtils {
+export class AuthPage extends AppActions {
   protected platform: Platform;
   protected uiType: UIType;
-  private readonly port: number;
 
-  constructor(page: Page | undefined, driver: Browser, port: number) {
-    super(driver, page);
-    this.platform = 'ANDROID_APP';
+  constructor(driver: Browser) {
+    super(driver);
+    this.platform = 'IOS_APP';
     this.uiType = 'APP';
-    this.port = port;
-    if (page) this.setPage(page); // WebView용 page 설정
   }
 
   /**
-   * 앱 첫 화면에서 '로그인하지 않고 입장할게요' 클릭 + WebView 전환
+   * 앱 첫 화면에서 '로그인하지 않고 입장할게요' 클릭 + WebView 컨텍스트 전환
    */
   async gotoHomePage(): Promise<void> {
     try {
-      await this.switchToNativeContext();
+      await ContextUtils.switchToNativeContext(this.driver);
     } catch (e) {
       console.warn('[AuthPage] Native 컨텍스트 전환 실패', e);
     }
+
     await this.click(authLocator.guestButton[this.uiType]);
     await this.driver.pause(2000);
 
     try {
-      if (!this.port) throw new Error('[AuthPage] WebView CDP 포트가 유효하지 않습니다.');
-      const { page } = await ContextUtils.switchToWebView(this.driver, this.port);
-      this.setPage(page);
+      await ContextUtils.forceSwitchToWebviewContext(this.driver);
     } catch (e) {
-      console.error('[AuthPage] WebView 전환 실패', e);
+      console.error('[AuthPage] WebView 컨텍스트 전환 실패', e);
       throw e;
     }
   }
 
   /**
-   * 로그인 버튼 → ID 로그인 페이지 진입 + WebView 전환
+   * 로그인 버튼 → ID 로그인 페이지 진입 + WebView 컨텍스트 전환
    */
   async gotoLoginPage(): Promise<void> {
     await this.click(authLocator.mainLoginButton[this.uiType]);
 
     try {
-      if (!this.port) throw new Error('[AuthPage] WebView CDP 포트가 유효하지 않습니다.');
-      const { page } = await ContextUtils.switchToWebView(this.driver, this.port);
-      this.setPage(page);
+      await ContextUtils.forceSwitchToWebviewContext(this.driver);
     } catch (e) {
-      console.error('[AuthPage] WebView 전환 실패', e);
+      console.error('[AuthPage] WebView 컨텍스트 전환 실패', e);
       throw e;
     }
   }

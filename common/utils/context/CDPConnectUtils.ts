@@ -5,14 +5,13 @@
  */
 
 import { PortUtils } from '@common/utils/network/PortUtils';
-// type Page, type CDPSession 은 puppeteer 사용으로 변경
-import { chromium, type Browser as PWBrowser } from '@playwright/test';
+import { chromium, type Browser as PWBrowser, type CDPSession, type Page } from '@playwright/test';
 import type { BrowserContext} from 'playwright-core';
 import { execSync } from 'child_process';
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
-import puppeteer from 'puppeteer-core';
-import type { Page, CDPSession } from 'puppeteer-core';
+// import puppeteer from 'puppeteer-core';
+// import type { Page, CDPSession } from 'puppeteer-core';
 
 export class CDPConnectUtils {
   private static readonly poc = POCEnv.getType();
@@ -46,81 +45,81 @@ export class CDPConnectUtils {
   /**
    * Puppeteer를 사용한 WebView 연결
    */
-  public static async connectToWebView(wsEndpoint: string): Promise<{ page?: Page; session?: CDPSession }> {
-    let browser;
-    for (let i = 0; i < this.MAX_RETRIES; i++) {
-      try {
-        browser = await puppeteer.connect({ browserWSEndpoint: wsEndpoint });
-        break;
-      } catch (err: any) {
-        const msg = err?.message || String(err);
-        this.logger?.warn(`[CDPConnectUtils][aos] CDP 연결 시도 실패 (${i + 1}/${this.MAX_RETRIES}): ${msg}`);
-        await new Promise(res => setTimeout(res, this.RETRY_DELAY_MS));
-      }
-    }
-
-    if (!browser) {
-      throw new Error(`[CDPConnectUtils][aos] CDP 연결에 ${this.MAX_RETRIES}회 시도했지만 실패했습니다.`);
-    }
-
-    const pages = await browser.pages();
-    const page = pages.find(p => p.url() !== 'about:blank') || pages[0];
-    if (!page) {
-      this.logger?.warn(`[CDPConnectUtils][aos] WebView 페이지가 없습니다.`);
-      return {};
-    }
-
-    try {
-      const session = await page.target().createCDPSession();
-      return { page, session };
-    } catch (e) {
-      this.logger?.warn(`[CDPConnectUtils][aos] CDP 세션 생성 실패 (WebView 제한 가능성): ${e}`);
-      return { page };
-    }
-  }
-
-  /**
-   * CDP 기반으로 Playwright 페이지 및 세션 연결
-   */
-  // NOTE: WebView는 devtools/browser endpoint를 지원하지 않아 주석처리 -> json/list를 통한 endpoint 파싱 방식으로 변경
   // public static async connectToWebView(wsEndpoint: string): Promise<{ page?: Page; session?: CDPSession }> {
-  //   let browser: PWBrowser | undefined;
-
+  //   let browser;
   //   for (let i = 0; i < this.MAX_RETRIES; i++) {
   //     try {
-  //       browser = await chromium.connectOverCDP(wsEndpoint);
+  //       browser = await puppeteer.connect({ browserWSEndpoint: wsEndpoint });
   //       break;
   //     } catch (err: any) {
   //       const msg = err?.message || String(err);
-  //       this.logger?.warn(`[CDPConnectUtils][${this.poc}] CDP 연결 시도 실패 (${i + 1}/${this.MAX_RETRIES}): ${msg}`);
+  //       this.logger?.warn(`[CDPConnectUtils][aos] CDP 연결 시도 실패 (${i + 1}/${this.MAX_RETRIES}): ${msg}`);
   //       await new Promise(res => setTimeout(res, this.RETRY_DELAY_MS));
   //     }
   //   }
 
   //   if (!browser) {
-  //     throw new Error(`[CDPConnectUtils][${this.poc}] CDP 연결에 ${this.MAX_RETRIES}회 시도했지만 실패했습니다.`);
+  //     throw new Error(`[CDPConnectUtils][aos] CDP 연결에 ${this.MAX_RETRIES}회 시도했지만 실패했습니다.`);
   //   }
 
-  //   // context 타입 명시 + 필터링
-  //   const context: BrowserContext | undefined = browser.contexts().find((ctx: BrowserContext) => ctx.pages().length > 0);
-  //   if (!context) {
-  //     this.logger?.warn(`[CDPConnectUtils][${this.poc}] WebView에 BrowserContext가 없습니다.`);
+  //   const pages = await browser.pages();
+  //   const page = pages.find(p => p.url() !== 'about:blank') || pages[0];
+  //   if (!page) {
+  //     this.logger?.warn(`[CDPConnectUtils][aos] WebView 페이지가 없습니다.`);
   //     return {};
   //   }
 
-  //   const page: Page = context.pages()[0] || await context.newPage();
-  //   await page.waitForLoadState('domcontentloaded');
-
   //   try {
-  //     // session은 추후 DevTools 조작용으로 사용 가능
-  //     const session: CDPSession = await context.newCDPSession(page);
-  //     return { page, session};
+  //     const session = await page.target().createCDPSession();
+  //     return { page, session };
   //   } catch (e) {
-  //     this.logger?.warn(`[CDPConnectUtils][${this.poc}] CDP 세션 생성 실패 (WebView 제한 가능성): ${e}`);
-  //     // 세션 없이도 fallback 가능
+  //     this.logger?.warn(`[CDPConnectUtils][aos] CDP 세션 생성 실패 (WebView 제한 가능성): ${e}`);
   //     return { page };
   //   }
   // }
+
+  /**
+   * CDP 기반으로 Playwright 페이지 및 세션 연결
+   */
+  // NOTE: WebView는 devtools/browser endpoint를 지원하지 않아 주석처리 -> json/list를 통한 endpoint 파싱 방식으로 변경
+  public static async connectToWebView(wsEndpoint: string): Promise<{ page?: Page; session?: CDPSession }> {
+    let browser: PWBrowser | undefined;
+
+    for (let i = 0; i < this.MAX_RETRIES; i++) {
+      try {
+        browser = await chromium.connectOverCDP(wsEndpoint);
+        break;
+      } catch (err: any) {
+        const msg = err?.message || String(err);
+        this.logger?.warn(`[CDPConnectUtils][${this.poc}] CDP 연결 시도 실패 (${i + 1}/${this.MAX_RETRIES}): ${msg}`);
+        await new Promise(res => setTimeout(res, this.RETRY_DELAY_MS));
+      }
+    }
+
+    if (!browser) {
+      throw new Error(`[CDPConnectUtils][${this.poc}] CDP 연결에 ${this.MAX_RETRIES}회 시도했지만 실패했습니다.`);
+    }
+
+    // context 타입 명시 + 필터링
+    const context: BrowserContext | undefined = browser.contexts().find((ctx: BrowserContext) => ctx.pages().length > 0);
+    if (!context) {
+      this.logger?.warn(`[CDPConnectUtils][${this.poc}] WebView에 BrowserContext가 없습니다.`);
+      return {};
+    }
+
+    const page: Page = context.pages()[0] || await context.newPage();
+    await page.waitForLoadState('domcontentloaded');
+
+    try {
+      // session은 추후 DevTools 조작용으로 사용 가능
+      const session: CDPSession = await context.newCDPSession(page);
+      return { page, session};
+    } catch (e) {
+      this.logger?.warn(`[CDPConnectUtils][${this.poc}] CDP 세션 생성 실패 (WebView 제한 가능성): ${e}`);
+      // 세션 없이도 fallback 가능
+      return { page };
+    }
+  }
 
   /**
    * WebView 페이지 대기 (최대 3회)
