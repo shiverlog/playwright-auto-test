@@ -26,7 +26,6 @@
 - [1w-6. 프로젝트 협업을 위한 규칙](docs/1w-6_NamingConventions.md)
 - [1w-7. VScode 튜토리얼](docs/1w-7_VScode-extensions.md)
 - [1w-8. NPM 의존성 및 설치 모듈](docs/1w-8_NPM-related.md)
-- [2w-1. Playwright Architecture 설계](docs/2w-1_PlaywrightArch.md)
 
 #### 3. Chat GPT 사용 후기 작성
 

@@ -17,14 +17,9 @@ export class AuthSteps {
    * LG U+ 로그인
    */
   async loginWithValidCredentials(id: string, pw: string): Promise<void> {
-    if (!id || !pw) {
-      throw new Error(
-        `[AuthSteps] 유효하지 않은 ID 또는 PW (id: ${id}, pw: ${pw ? '***' : 'empty'})`,
-      );
-    }
     const success = await this.authPage.doUplusLogin(id, pw);
     if (!success) {
-      throw new Error('[AuthSteps] 로그인 실패 - URL 전환 확인 불가');
+      throw new Error('로그인 실패');
     }
   }
 }

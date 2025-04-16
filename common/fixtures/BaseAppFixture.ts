@@ -5,29 +5,26 @@
  */
 import { ANDROID_DEVICES, IOS_DEVICES } from '@common/config/deviceConfig';
 import { BasePocFixture } from '@common/fixtures/BasePocFixture';
-import type {
-  AppiumRemoteOptions,
-  DeviceConfig,
-  DeviceOptions,
-} from '@common/types/device-config';
+import type { AppiumRemoteOptions, DeviceConfig, DeviceOptions } from '@common/types/device-config';
 import { AppiumServerUtils } from '@common/utils/appium/AppiumServerUtils';
 import { ChromeSetup } from '@common/utils/browser/ChromeSetup';
 import { SafariSetup } from '@common/utils/browser/SafariSetup';
 import { PortUtils } from '@common/utils/network/PortUtils';
 import { test as base, expect } from '@playwright/test';
+import waitOn from 'wait-on';
 import { remote } from 'webdriverio';
 import type { Browser as WDIOBrowser } from 'webdriverio';
-import waitOn from 'wait-on';
+
 // Page 구분을 위한 as 문 사용(현재는 Puppeteer 사용하지 않아서 제거해도 무방)
-import type { Page as PWPage, Browser as PWBrowser } from 'playwright';
+// import type { Page, Browser } from 'playwright';
 
 class BaseAppFixture extends BasePocFixture {
   // NativeView 제어용
   private nativeDrivers: Map<string, WDIOBrowser> = new Map();
   // WebView 제어용 Playwright 브라우저 인스턴스
-  private webviewBrowsers: Map<string, PWBrowser> = new Map();
+  // private webviewBrowsers: Map<string, Browser> = new Map();
   // WebView 제어용 Playwright 페이지 객체
-  private webviewPages: Map<string, PWPage> = new Map();
+  // private webviewPages: Map<string, Page> = new Map();
   // Appium 서버 유틸리티 (포트 제어, 실행/종료 관리 등)
   private appiumServers: Map<string, AppiumServerUtils> = new Map();
   // Appium 서버 포트 번호 (POC별 포트 추적용)
@@ -49,7 +46,8 @@ class BaseAppFixture extends BasePocFixture {
    */
   private getDeviceConfig(poc: string): DeviceConfig {
     const key = poc.toLowerCase();
-    if (key.includes('android') || key.includes('aos')) return ANDROID_DEVICES['Galaxy Note20 Ultra'];
+    if (key.includes('android') || key.includes('aos'))
+      return ANDROID_DEVICES['Galaxy Note20 Ultra'];
     if (key.includes('ios')) return IOS_DEVICES['iPhone 12 Pro Max'];
     throw new Error(`[BaseAppFixture] '${poc}' 디바이스 설정 없음`);
   }
@@ -57,29 +55,29 @@ class BaseAppFixture extends BasePocFixture {
   /**
    * POC 테스트 시작 전 세팅
    */
-  public async setupForPoc(poc: string): Promise<{ driver: WDIOBrowser; port: number; page?: PWPage }> {
+  public async setupForPoc(poc: string): Promise<{ driver: WDIOBrowser }> {
     this.getLogger(poc).info(`[BaseAppFixture] ${poc} 환경 준비 시작`);
-    // BasePocFixture
+    // 중복 실행 방지
+    if (this.nativeDrivers.has(poc)) {
+      this.getLogger(poc).info(`[BaseAppFixture] ${poc} 이미 초기화된 드라이버 재사용`);
+      return { driver: this.nativeDrivers.get(poc)! };
+    }
     await this.beforeAll(poc);
-    // initializeAppDriver
-    const result = await this.initializeAppDriver(poc);
-    this.nativeDrivers.set(poc, result.driver);
-    if (result.page) this.webviewPages.set(poc, result.page);
-    return result;
+    const { driver } = await this.initializeAppDriver(poc);
+    this.nativeDrivers.set(poc, driver);
+    return { driver };
   }
 
   /**
    * Appium 드라이버 초기화 + Appium 서버 시작 (동시 실행 대응)
    */
-  public async initializeAppDriver(poc: string): Promise<{ driver: WDIOBrowser; port: number; page?: PWPage }> {
-    // 로거는 ERROR 레벨로 설정
+  public async initializeAppDriver(poc: string): Promise<{ driver: WDIOBrowser }> {
     process.env.WDIO_LOG_LEVEL = 'error';
     const logger = this.getLogger(poc);
     const device = this.getDeviceConfig(poc);
-    // PortUtils 사용
     const portUtils = new PortUtils();
     const port = await portUtils.getAvailablePort();
-    // AppiumServerUtils 사용
+
     const appiumServer = new AppiumServerUtils();
     this.appiumServers.set(poc, appiumServer);
     this.appiumPorts.set(poc, port);
@@ -89,13 +87,11 @@ class BaseAppFixture extends BasePocFixture {
       await waitOn({ resources: [`http://127.0.0.1:${port}/status`], timeout: 10000 });
     }
 
-    // 플랫폼 분기
     const isAndroid = device.platformName.toUpperCase() === 'ANDROID';
     const isIOS = device.platformName.toUpperCase() === 'IOS';
 
     const baseOpts = (device.appium?.options ?? {}) as DeviceOptions;
 
-    // Appium 옵션 통합
     const mergedOpts: AppiumRemoteOptions['capabilities']['appium:options'] = {
       ...baseOpts,
       deviceName: device.deviceName,
@@ -106,8 +102,6 @@ class BaseAppFixture extends BasePocFixture {
       chromedriverExecutable: process.env.CHROMEDRIVER_PATH,
       adbExecTimeout: 30000,
     };
-    // browserName 주석처리
-    // delete (mergedOpts as any).browserName;
 
     const remoteOpts: AppiumRemoteOptions = {
       protocol: 'http',
@@ -120,46 +114,24 @@ class BaseAppFixture extends BasePocFixture {
       },
     };
 
-    // 드라이버 셋팅
     const driver = await remote(remoteOpts);
-    let page: PWPage | undefined;
-    const switchCtx = async (ctx: string) => await driver.switchContext(ctx);
 
-    // WebView 연결 전에 컨텍스트 목록 로깅
-    const contexts = await driver.getContexts();
-    logger.info(`[BaseAppFixture] Appium 컨텍스트 목록: ${JSON.stringify(contexts)}`);
-    if (!contexts.some((ctx: any) => (typeof ctx === 'string' ? ctx.includes('WEBVIEW') : ctx.id?.includes('WEBVIEW')))) {
-      logger.warn(`[BaseAppFixture] WebView 컨텍스트 없음 -> Playwright 연결 생략`);
-    }
-
-    // Android로 분기
-    if (isAndroid) {
-      const chrome = new ChromeSetup(driver, switchCtx, device.udid);
-      // 크롬 호환성 확인
+    if (isAndroid && mergedOpts.appPackage) {
+      const chrome = new ChromeSetup(driver, ctx => driver.switchContext(ctx), device.udid);
       await chrome.syncChromedriver();
-      // 크롬 초기 설정
       await chrome.handleChromeSetup({ skipWebViewSwitch: !!mergedOpts.autoWebview });
-      // chrome.clearChromeAppData(); // 필요시 사용
-
-      // 앱 다시 앞으로 전환
-      if (mergedOpts.appPackage) {
-        await driver.activateApp(mergedOpts.appPackage);
-        await driver.pause(3000);
-      }
+      await driver.activateApp(mergedOpts.appPackage);
+      await driver.pause(3000);
     }
 
-    // iOS로 분기
-    if (isIOS) {
-      const safari = new SafariSetup(driver, switchCtx, device.udid);
+    if (isIOS && mergedOpts.bundleId) {
+      const safari = new SafariSetup(driver, ctx => driver.switchContext(ctx), device.udid);
       await safari.handleSafariSetup();
-
-      if (mergedOpts.bundleId) {
-        await driver.activateApp(mergedOpts.bundleId);
-        await driver.pause(3000);
-      }
+      await driver.activateApp(mergedOpts.bundleId);
+      await driver.pause(3000);
     }
-    // 드라이버, 포트, 페이지 반환
-    return { driver, port, page };
+
+    return { driver };
   }
 
   /**
@@ -170,30 +142,19 @@ class BaseAppFixture extends BasePocFixture {
     const driver = this.nativeDrivers.get(poc);
     const server = this.appiumServers.get(poc);
     const port = this.appiumPorts.get(poc);
-    const page = this.webviewPages.get(poc);
     const portUtils = new PortUtils();
 
-    if (page) {
-      try {
-        await page.context()?.close();
-        logger.info(`[BaseAppFixture] ${poc} Playwright 페이지 종료 완료`);
-      } catch (e) {
-        logger.warn(`[BaseAppFixture] ${poc} Playwright 페이지 종료 실패: ${e}`);
-      }
-      this.webviewPages.delete(poc);
-    }
-
     if (driver) {
-        try {
-          if ((driver as any).sessionId) {
-            await driver.deleteSession();
-          }
-          logger.info(`[BaseAppFixture] ${poc} Appium 드라이버 세션 종료 완료`);
-        } catch (e) {
-          logger.warn(`[BaseAppFixture] ${poc} 드라이버 세션 종료 실패: ${e}`);
+      try {
+        if ((driver as any).sessionId) {
+          await driver.deleteSession();
         }
-        this.nativeDrivers.delete(poc);
+        logger.info(`[BaseAppFixture] ${poc} Appium 드라이버 세션 종료 완료`);
+      } catch (e) {
+        logger.warn(`[BaseAppFixture] ${poc} 드라이버 세션 종료 실패: ${e}`);
       }
+      this.nativeDrivers.delete(poc);
+    }
 
     if (server && port) {
       try {
@@ -209,14 +170,6 @@ class BaseAppFixture extends BasePocFixture {
   }
 
   /**
-   * 테스트 준비 단계 - BasePocFixture 추상 메서드 구현
-   */
-  public async prepare(poc: string): Promise<void> {
-    if (poc === 'all') return;
-    await this.setupForPoc(poc);
-  }
-
-  /**
    * POC 테스트 종료 후 정리 작업
    */
   public async teardownForPoc(poc: string): Promise<void> {
@@ -226,16 +179,20 @@ class BaseAppFixture extends BasePocFixture {
   }
 
   /**
-   * Playwright용 테스트 fixture 확장 정의
+   * Playwright용 테스트 fixture 확장 정의 (Appium driver만 포함)
    */
   public getTestExtend() {
     return base.extend<{
       poc: string;
       appDriver: WDIOBrowser;
-      page?: PWPage;
     }>({
       poc: [(process.env.POC as string) || '', { option: true }],
       appDriver: async ({ poc }, use) => {
+        if (this.appiumServers.has(poc)) {
+          await use(this.nativeDrivers.get(poc)!);
+          return;
+        }
+
         const { driver } = await this.setupForPoc(poc);
         try {
           await use(driver);
@@ -243,15 +200,206 @@ class BaseAppFixture extends BasePocFixture {
           await this.teardownForPoc(poc);
         }
       },
-      page: async ({ poc }, use) => {
-        const page = this.webviewPages.get(poc);
-        if (page) await use(page);
-      },
     });
   }
+
+  /** / Appium + Playwright Webview 적용 호환실패로 주석처리 */
+  // /**
+  //  * POC 테스트 시작 전 세팅
+  //  */
+  // public async setupForPoc(poc: string): Promise<{ driver: WDIOBrowser; port: number; page?: PWPage }> {
+  //   this.getLogger(poc).info(`[BaseAppFixture] ${poc} 환경 준비 시작`);
+  //   // BasePocFixture
+  //   await this.beforeAll(poc);
+  //   // initializeAppDriver
+  //   const result = await this.initializeAppDriver(poc);
+  //   this.nativeDrivers.set(poc, result.driver);
+  //   if (result.page) this.webviewPages.set(poc, result.page);
+  //   return result;
+  // }
+
+  // /**
+  //  * Appium 드라이버 초기화 + Appium 서버 시작 (동시 실행 대응)
+  //  */
+  // public async initializeAppDriver(poc: string): Promise<{ driver: WDIOBrowser; port: number; page?: PWPage }> {
+  //   // 로거는 ERROR 레벨로 설정
+  //   process.env.WDIO_LOG_LEVEL = 'error';
+  //   const logger = this.getLogger(poc);
+  //   const device = this.getDeviceConfig(poc);
+  //   // PortUtils 사용
+  //   const portUtils = new PortUtils();
+  //   const port = await portUtils.getAvailablePort();
+  //   // AppiumServerUtils 사용
+  //   const appiumServer = new AppiumServerUtils();
+  //   this.appiumServers.set(poc, appiumServer);
+  //   this.appiumPorts.set(poc, port);
+
+  //   if (!process.env.MANUAL_APPIUM) {
+  //     await appiumServer.startAppiumServer(port);
+  //     await waitOn({ resources: [`http://127.0.0.1:${port}/status`], timeout: 10000 });
+  //   }
+
+  //   // 플랫폼 분기
+  //   const isAndroid = device.platformName.toUpperCase() === 'ANDROID';
+  //   const isIOS = device.platformName.toUpperCase() === 'IOS';
+
+  //   const baseOpts = (device.appium?.options ?? {}) as DeviceOptions;
+
+  //   // Appium 옵션 통합
+  //   const mergedOpts: AppiumRemoteOptions['capabilities']['appium:options'] = {
+  //     ...baseOpts,
+  //     deviceName: device.deviceName,
+  //     udid: device.udid,
+  //     platformVersion: device.platformVersion,
+  //     app: device.app,
+  //     automationName: baseOpts.automationName || (isAndroid ? 'UiAutomator2' : 'XCUITest'),
+  //     chromedriverExecutable: process.env.CHROMEDRIVER_PATH,
+  //     adbExecTimeout: 30000,
+  //   };
+  //   // browserName 주석처리
+  //   // delete (mergedOpts as any).browserName;
+
+  //   const remoteOpts: AppiumRemoteOptions = {
+  //     protocol: 'http',
+  //     hostname: '127.0.0.1',
+  //     port,
+  //     path: '/',
+  //     capabilities: {
+  //       platformName: device.platformName as 'Android' | 'iOS',
+  //       'appium:options': mergedOpts,
+  //     },
+  //   };
+
+  //   // 드라이버 셋팅
+  //   const driver = await remote(remoteOpts);
+  //   let page: PWPage | undefined;
+  //   const switchCtx = async (ctx: string) => await driver.switchContext(ctx);
+
+  //   // WebView 연결 전에 컨텍스트 목록 로깅
+  //   const contexts = await driver.getContexts();
+  //   logger.info(`[BaseAppFixture] Appium 컨텍스트 목록: ${JSON.stringify(contexts)}`);
+  //   if (!contexts.some((ctx: any) => (typeof ctx === 'string' ? ctx.includes('WEBVIEW') : ctx.id?.includes('WEBVIEW')))) {
+  //     logger.warn(`[BaseAppFixture] WebView 컨텍스트 없음 -> Playwright 연결 생략`);
+  //   }
+
+  //   // Android로 분기
+  //   if (isAndroid) {
+  //     const chrome = new ChromeSetup(driver, switchCtx, device.udid);
+  //     // 크롬 호환성 확인
+  //     await chrome.syncChromedriver();
+  //     // 크롬 초기 설정
+  //     await chrome.handleChromeSetup({ skipWebViewSwitch: !!mergedOpts.autoWebview });
+  //     // chrome.clearChromeAppData(); // 필요시 사용
+
+  //     // 앱 다시 앞으로 전환
+  //     if (mergedOpts.appPackage) {
+  //       await driver.activateApp(mergedOpts.appPackage);
+  //       await driver.pause(3000);
+  //     }
+  //   }
+
+  //   // iOS로 분기
+  //   if (isIOS) {
+  //     const safari = new SafariSetup(driver, switchCtx, device.udid);
+  //     await safari.handleSafariSetup();
+
+  //     if (mergedOpts.bundleId) {
+  //       await driver.activateApp(mergedOpts.bundleId);
+  //       await driver.pause(3000);
+  //     }
+  //   }
+  //   // 드라이버, 포트, 페이지 반환
+  //   return { driver, port, page };
+  // }
+
+  // /**
+  //  * Appium 드라이버 종료 + Appium 서버 종료
+  //  */
+  // public async destroyAppDriver(poc: string): Promise<void> {
+  //   const logger = this.getLogger(poc);
+  //   const driver = this.nativeDrivers.get(poc);
+  //   const server = this.appiumServers.get(poc);
+  //   const port = this.appiumPorts.get(poc);
+  //   const page = this.webviewPages.get(poc);
+  //   const portUtils = new PortUtils();
+
+  //   if (page) {
+  //     try {
+  //       await page.context()?.close();
+  //       logger.info(`[BaseAppFixture] ${poc} Playwright 페이지 종료 완료`);
+  //     } catch (e) {
+  //       logger.warn(`[BaseAppFixture] ${poc} Playwright 페이지 종료 실패: ${e}`);
+  //     }
+  //     this.webviewPages.delete(poc);
+  //   }
+
+  //   if (driver) {
+  //       try {
+  //         if ((driver as any).sessionId) {
+  //           await driver.deleteSession();
+  //         }
+  //         logger.info(`[BaseAppFixture] ${poc} Appium 드라이버 세션 종료 완료`);
+  //       } catch (e) {
+  //         logger.warn(`[BaseAppFixture] ${poc} 드라이버 세션 종료 실패: ${e}`);
+  //       }
+  //       this.nativeDrivers.delete(poc);
+  //     }
+
+  //   if (server && port) {
+  //     try {
+  //       await server.stopAppiumServer(port);
+  //       await portUtils.killProcessOnPorts(port);
+  //       logger.info(`[BaseAppFixture] ${poc} Appium 서버 종료 완료 (포트: ${port})`);
+  //     } catch (e) {
+  //       logger.warn(`[BaseAppFixture] ${poc} Appium 서버 종료 실패: ${e}`);
+  //     }
+  //     this.appiumServers.delete(poc);
+  //     this.appiumPorts.delete(poc);
+  //   }
+  // }
+
+  // /**
+  //  * POC 테스트 종료 후 정리 작업
+  //  */
+  // public async teardownForPoc(poc: string): Promise<void> {
+  //   await this.destroyAppDriver(poc);
+  //   await this.afterAll(poc);
+  //   this.getLogger(poc).info(`[BaseAppFixture] ${poc} 정리 완료`);
+  // }
+
+  // /**
+  //  * Playwright용 테스트 fixture 확장 정의
+  //  */
+  // public getTestExtend() {
+  //   return base.extend<{
+  //     poc: string;
+  //     appDriver: WDIOBrowser;
+  //     page?: PWPage;
+  //   }>({
+  //     poc: [(process.env.POC as string) || '', { option: true }],
+  //     appDriver: async ({ poc }, use) => {
+  //       const { driver } = await this.setupForPoc(poc);
+  //       try {
+  //         await use(driver);
+  //       } finally {
+  //         await this.teardownForPoc(poc);
+  //       }
+  //     },
+  //     page: async ({ poc }, use) => {
+  //       const page = this.webviewPages.get(poc);
+  //       if (page) await use(page);
+  //     },
+  //   });
+  // }
+  /** Appium + Playwright Webview 적용 호환실패로 주석처리 / */
+
+  /**
+   * 테스트 준비 단계 - BasePocFixture 추상 메서드 구현
+   */
+  public async prepare(poc: string): Promise<void> {
+    // 기본 동작 없음 (필요 시 override)
+  }
 }
-
-
 export const appFixture = new BaseAppFixture();
 export const test = appFixture.getTestExtend();
 export { expect };

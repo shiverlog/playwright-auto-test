@@ -9,9 +9,9 @@ import { POCEnv } from '@common/utils/env/POCEnv';
 import { PortUtils } from '@common/utils/network/PortUtils';
 import { type ChildProcess, exec } from 'child_process';
 import dotenv from 'dotenv';
+import { execa } from 'execa';
 import * as fs from 'fs';
 import type winston from 'winston';
-import { execa } from 'execa';
 
 dotenv.config();
 
@@ -47,7 +47,8 @@ export class AppiumServerUtils {
           const subprocess = execa('appium', ['--port', `${targetPort}`], {
             env: {
               ...process.env,
-              CHROMEDRIVER_PATH: '/opt/homebrew/Caskroom/chromedriver/135.0.7049.84/chromedriver-mac-arm64/chromedriver',
+              CHROMEDRIVER_PATH:
+                '/opt/homebrew/Caskroom/chromedriver/135.0.7049.84/chromedriver-mac-arm64/chromedriver',
               CHROMEDRIVER_AUTODOWNLOAD: 'true',
             },
           });
@@ -97,11 +98,12 @@ export class AppiumServerUtils {
           // 조기 종료 감지
           subprocess.on('exit', code => {
             if (!started) {
-              this.logger.error(`[Appium ${targetPort}] 프로세스가 시작되기 전에 종료됨 (code=${code})`);
+              this.logger.error(
+                `[Appium ${targetPort}] 프로세스가 시작되기 전에 종료됨 (code=${code})`,
+              );
               reject(new Error(`[Appium ${targetPort}] 조기 종료됨`));
             }
           });
-
         } catch (e) {
           this.logger.warn(`[Appium ${targetPort}] 예외 발생: ${e}`);
           await portUtils.killProcessOnPorts(targetPort);
@@ -117,7 +119,6 @@ export class AppiumServerUtils {
     };
     return tryStart(port, retryCount);
   }
-
 
   /**
    * Appium 서버 종료
@@ -140,7 +141,6 @@ export class AppiumServerUtils {
     }
   }
 
-
   /**
    * ADB 명령 실행
    */
@@ -155,7 +155,6 @@ export class AppiumServerUtils {
       });
     });
   }
-
 
   /**
    * Android 앱 강제 종료
@@ -184,7 +183,6 @@ export class AppiumServerUtils {
     this.logger.info(`[APK] 앱 설치 중: ${apkPath}`);
     await this.runAdbCommand(`install -r ${apkPath}`);
   }
-
 
   /**
    * iOS 앱 설치

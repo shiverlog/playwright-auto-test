@@ -16,7 +16,7 @@ export class AuthPage extends AppActions {
 
   constructor(driver: Browser) {
     super(driver);
-    this.platform = 'IOS_APP';
+    this.platform = 'ANDROID_APP';
     this.uiType = 'APP';
   }
 

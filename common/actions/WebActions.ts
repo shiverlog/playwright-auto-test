@@ -9,6 +9,7 @@ import type { Locator, Page } from '@playwright/test';
 export class WebActions extends BaseActions<undefined> {
   constructor(page: Page) {
     super(page);
+    this.setPlaywrightPage(page);
   }
 
   /**

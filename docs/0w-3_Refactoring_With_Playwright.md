@@ -116,7 +116,7 @@ E2E(End-to-End) 테스트는 애플리케이션의 전체적인 사용자 플로
 7. 빠른 테스트 실행 속도
 
 - Selenium/Appium은 WebDriver와 실제 브라우저 간 클라이언트-서버 방식으로 작동하여 속도가 느리다.
-- Playwright는 브라우저와 같은 프로세스 내에서 실행하여 Selenium보다 3~4배 빠르다.
+- Playwright는 브라우저와 같은 프로세스 내에서 실행하여 Selenium보다 3-4배 빠르다.
 
 8. 강력한 디버깅 기능
 
@@ -132,6 +132,7 @@ E2E(End-to-End) 테스트는 애플리케이션의 전체적인 사용자 플로
 
 - Selenium/Appium은 웹 테스트(Selenium), 모바일 테스트(Appium)를 별도로 구현해야 한다
 - Playwright: 하나의 코드베이스에서 웹과 모바일을 동시에 자동화 가능하다. 다만 도커라이징을 위해, 별도의 프로젝트로 구분하여 아키텍쳐를 구성할 예정이다.
+- (2025-04-10: 테스트 결과 모바일 앱 자동화를 위해서는 Appium 사용 필수 - Appium Server와 Webview CDP 연결시 Not Support Page, Browser 이 왕왕 발생 )
 
 ---
 

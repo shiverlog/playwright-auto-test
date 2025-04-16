@@ -42,7 +42,7 @@ export class BaseActions<TDriver = unknown> {
    *  Common: 페이지 설정
    */
   protected ensurePage(): Page {
-    if (!this.page) throw new Error('[BaseActionUtils] WebView Page가 설정되지 않았습니다.');
+    if (!this.page) throw new Error('WebView Page가 설정되지 않았습니다.');
     return this.page;
   }
 
@@ -50,7 +50,7 @@ export class BaseActions<TDriver = unknown> {
    *  Common: 자바스크립트 Action Utils 설정
    */
   protected ensureJs(): JsForceActions {
-    if (!this.js) throw new Error('[BaseActionUtils] js가 설정되지 않았습니다.');
+    if (!this.js) throw new Error('js가 설정되지 않았습니다.');
     return this.js;
   }
 

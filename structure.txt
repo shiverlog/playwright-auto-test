@@ -1,16 +1,16 @@
 // tree -L 5 -I "node_modules|dist|coverage|.git|output" > structure.txt
 .
 ├── CODEOWNERS
+├── GlobalSetup.ts
+├── GlobalTeardown.ts
 ├── common
 │   ├── Dockerfile
 │   ├── actions
-│   │   ├── BaseActionUtils.ts
+│   │   ├── AppActions.ts
+│   │   ├── BaseActions.ts
 │   │   ├── JsForceActions.ts
-│   │   ├── MobileActionUtils.ts
-│   │   ├── WebActionUtils.ts
-│   │   ├── dsl
-│   │   │   ├── ElementActions.ts
-│   │   │   └── IElementActions.ts
+│   │   ├── MobileActions.ts
+│   │   ├── WebActions.ts
 │   │   └── elements
 │   │       └── AppElement.ts
 │   ├── assets
@@ -27,7 +27,7 @@
 │   │   ├── BaseSidebar.ts
 │   │   └── BaseTab.ts
 │   ├── config
-│   │   ├── BaseConfig.ts
+│   │   ├── \010baseConfig.ts
 │   │   ├── deviceConfig.ts
 │   │   └── notificationConfig.ts
 │   ├── constants
@@ -48,36 +48,30 @@
 │   │   ├── formatters.ts
 │   │   ├── slackForm.ts
 │   │   └── teamsForm.ts
-│   ├── handlers
-│   │   ├── errorHandler.ts
-│   │   ├── notificationHandler.ts
-│   │   └── resultHandler.ts
 │   ├── initializers
-│   │   ├── PocInitializer.ts
-│   │   ├── androidTestEnv.ts
-│   │   ├── apiTestEnv.ts
-│   │   ├── cleanupOldFiles.ts
-│   │   ├── iosTestEnv.ts
-│   │   ├── mobileWebTestEnv.ts
-│   │   └── pcTestEnv.ts
+│   │   ├── AndroidTestEnv.ts
+│   │   ├── ApiTestEnv.ts
+│   │   ├── CleanupInitializer.ts
+│   │   ├── IosTestEnv.ts
+│   │   ├── MobileWebTestEnv.ts
+│   │   ├── PcTestEnv.ts
+│   │   └── PocInitializer.ts
 │   ├── locators
 │   │   ├── authLocator.ts
 │   │   ├── uiLocator.ts
 │   │   └── urlLocator.ts
 │   ├── logger
+│   │   ├── ResultHandler.ts
 │   │   └── customLogger.ts
 │   ├── notifications
-│   │   ├── email
-│   │   │   └── emailHandler.ts
-│   │   ├── slack
-│   │   │   ├── slack.ts
-│   │   │   └── slackHandler.ts
-│   │   └── teams
-│   │       ├── teams.ts
-│   │       └── teamsHandler.ts
+│   │   ├── EmailHandler.ts
+│   │   ├── NotificationHandler.ts
+│   │   ├── SlackHandler.ts
+│   │   └── TeamsHandler.ts
 │   ├── package.json
 │   ├── tsconfig.json
 │   ├── types
+│   │   ├── appium-config.ts
 │   │   ├── chromedriver.d.ts
 │   │   ├── device-config.ts
 │   │   ├── import-meta-env.d.ts
@@ -86,33 +80,35 @@
 │   │   ├── platform-types.ts
 │   │   ├── playwright-config.ts
 │   │   ├── pubsub-config.ts
-│   │   └── test-context.d.ts
+│   │   ├── stealth-context.ts
+│   │   ├── test-context.d.ts
+│   │   └── test-env-handler.ts
 │   └── utils
 │       ├── appium
-│       │   ├── AndPermissionsUtils.ts
-│       │   ├── AppiumServerUtils.ts
-│       │   ├── BasePermissionsUtils.ts
-│       │   └── IosPermissionsUtils.ts
+│       │   └── AppiumServerUtils.ts
 │       ├── browser
-│       │   ├── ChromeAccessUtils.ts
-│       │   ├── SafariAccessUtils.ts
-│       │   └── stealthContext.ts
+│       │   ├── ChromeSetup.ts
+│       │   ├── SafariSetup.ts
+│       │   └── StealthContext.ts
 │       ├── context
-│       │   └── contextUtils.ts
+│       │   ├── CDPConnectUtils.ts
+│       │   └── ContextUtils.ts
+│       ├── env
+│       │   └── POCEnv.ts
 │       ├── network
 │       │   ├── NetworkUtils.ts
-│       │   └── portUtils.ts
+│       │   └── PortUtils.ts
 │       ├── other
 │       │   ├── LocatorToExcel.ts
 │       │   ├── locator-map.xlsx
 │       │   └── locatorUtils.ts
 │       ├── performance
-│       │   ├── testPerformance.ts
-│       │   └── waitUtils.ts
+│       │   ├── TestPerformance.ts
+│       │   └── WaitUtils.ts
 │       └── test
 │           ├── AssertUtils.ts
-│           ├── TestPathUtils.ts
-│           └── scriptRunner.ts
+│           ├── ScriptRunner.ts
+│           └── TestPathUtils.ts
 ├── docker-compose.base.yml
 ├── docker-compose.yml
 ├── docs
@@ -153,12 +149,6 @@
 │   │   │   │   └── AuthPage.ts
 │   │   │   └── steps
 │   │   │       └── AuthSteps.ts
-│   │   ├── test-results
-│   │   │   ├── allure-results
-│   │   │   ├── logs
-│   │   │   ├── screenshots
-│   │   │   ├── traces
-│   │   │   └── videos
 │   │   ├── tests
 │   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
@@ -309,30 +299,26 @@
 │   │   ├── tests
 │   │   │   └── auth.spec.ts
 │   │   └── tsconfig.json
-│   ├── pc-web
-│   │   ├── Dockerfile
-│   │   ├── package.json
-│   │   ├── playwright-report
-│   │   ├── src
-│   │   │   ├── pages
-│   │   │   │   └── AuthPage.ts
-│   │   │   └── steps
-│   │   │       └── AuthStep.ts
-│   │   ├── test-results
-│   │   │   ├── allure-results
-│   │   │   ├── logs
-│   │   │   ├── screenshots
-│   │   │   ├── traces
-│   │   │   └── videos
-│   │   │       ├── PC_video_2025-04-07_15-38-53.mp4
-│   │   │       └── PC_video_2025-04-07_15-38-55.mp4
-│   │   ├── tests
-│   │   │   └── auth.spec.ts
-│   │   └── tsconfig.json
-│   └── scripts
-│       └── run-all-pocs.ts
-├── globalSetup.ts
-├── globalTeardown.ts
+│   └── pc-web
+│       ├── Dockerfile
+│       ├── package.json
+│       ├── playwright-report
+│       ├── src
+│       │   ├── pages
+│       │   │   └── AuthPage.ts
+│       │   └── steps
+│       │       └── AuthStep.ts
+│       ├── test-results
+│       │   ├── allure-results
+│       │   ├── logs
+│       │   ├── screenshots
+│       │   ├── traces
+│       │   └── videos
+│       │       ├── PC_video_2025-04-07_15-38-53.mp4
+│       │       └── PC_video_2025-04-07_15-38-55.mp4
+│       ├── tests
+│       │   └── auth.spec.ts
+│       └── tsconfig.json
 ├── index.html
 ├── mosaic-db
 │   ├── CMakeLists.txt
@@ -766,6 +752,8 @@
 │   ├── util.h
 │   └── varstr.h
 ├── package.json
+├── playwright-report
+│   └── index.html
 ├── playwright.config.local.ts
 ├── playwright.config.ts
 ├── pnpm-lock.yaml
@@ -809,8 +797,9 @@
 │   │   └── redirect.spec.ts
 │   └── tsconfig.json
 ├── structure.txt
+├── test-results
 ├── tsconfig.json
 ├── turbo.json
 └── vite.config.ts
 
-177 directories, 636 files
+168 directories, 634 files

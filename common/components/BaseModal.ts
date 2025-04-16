@@ -3,9 +3,9 @@
  * Author : Shiwoo Min
  * Date : 2025-04-02
  */
-import { BaseActionUtils } from '@common/actions/BaseActionUtils.js';
-import { MobileActionUtils } from '@common/actions/MobileActions.js';
-import { WebActionUtils } from '@common/actions/WebActions.js';
+import { BaseActions } from '@common/actions/BaseActions.js';
+import { MobileActions } from '@common/actions/MobileActions.js';
+import { WebActions } from '@common/actions/WebActions.js';
 import { uiLocator } from '@common/locators/uiLocator.js';
 import { urlLocator } from '@common/locators/urlLocator.js';
 import { Platform, UIType } from '@common/types/platform-types.js';
@@ -18,24 +18,24 @@ export class BaseModal {
 
   // Appium 등 Browser 인스턴스
   protected driver?: Browser;
-  protected baseActions: BaseActionUtils;
-  protected webActions?: WebActionUtils;
-  protected mobileActions?: MobileActionUtils;
+  protected baseActions: BaseActions;
+  protected webActions?: WebActions;
+  protected mobileActions?: MobileActions;
 
   constructor(page?: Page, driver?: Browser) {
     this.page = page;
     this.driver = driver;
 
-    // page가 없으면 BaseActionUtils 생성 불가 → 에러 방지
+    // page가 없으면 BaseActions 생성 불가 -> 에러 방지
     if (page) {
-      this.baseActions = new BaseActionUtils(page, driver);
+      this.baseActions = new BaseActions(page, driver);
       // Appium 드라이버가 있으면 모바일 액션 유틸로 분기
       if (driver !== undefined) {
         // Mobile 은 page 가 옵션이므로 뒤로 위치
-        this.mobileActions = new MobileActionUtils(driver, page);
+        this.mobileActions = new MobileActions(driver, page);
       } else {
         // 드라이버가 없으면 Web 전용 유틸 사용
-        this.webActions = new WebActionUtils(page);
+        this.webActions = new WebActions(page);
       }
     } else {
       throw new Error('[BaseModal] page 객체가 필요합니다.');

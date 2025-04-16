@@ -29,16 +29,19 @@ export class AndroidTestEnv implements TestEnvHandler {
     this.logger = Logger.getLogger(POCEnv.getType().toUpperCase()) as winston.Logger;
   }
 
-   /**
+  /**
    * Android 앱 테스트 환경 초기화
    */
   public async setup(): Promise<void> {
     for (const poc of this.pocList) {
       this.logger.info(`[${poc}] Android 테스트 환경 설정 시작`);
-
       try {
-        // Appium 드라이버 초기화
-        const { driver }: { driver: Browser } = await appFixture.setupForPoc(poc);
+        // Appium 드라이버
+        const driver = appFixture['nativeDrivers'].get(poc);
+        if (!driver) {
+          this.logger.warn(`[${poc}] 기존 드라이버 없음 -> 테스트 환경 초기화 실패`);
+          return;
+        }
 
         if (!driver) {
           this.logger.warn(`[${poc}] 드라이버 초기화 실패`);
@@ -69,7 +72,7 @@ export class AndroidTestEnv implements TestEnvHandler {
 
         // Appium만으로 WebView 전환
         if (port && udid) {
-          await this.switchToWebViewContext(poc, driver); // 🔄 주요 변경: Appium 컨텍스트 전환 방식
+          await this.switchToWebViewContext(poc, driver);
         } else {
           this.logger.warn(`[${poc}] WebView 연결에 필요한 포트 또는 UDID 누락`);
         }
@@ -91,9 +94,7 @@ export class AndroidTestEnv implements TestEnvHandler {
     try {
       const contexts = await driver.getContexts();
       const webviewCtx = contexts.find((ctx: any) =>
-        typeof ctx === 'string'
-          ? ctx.includes('WEBVIEW')
-          : ctx.id?.includes('WEBVIEW')
+        typeof ctx === 'string' ? ctx.includes('WEBVIEW') : ctx.id?.includes('WEBVIEW'),
       );
 
       if (webviewCtx) {
@@ -105,13 +106,15 @@ export class AndroidTestEnv implements TestEnvHandler {
         this.logger.info(`[${poc}] WebView 페이지 타이틀: ${title}`);
 
         // MobileActions 생성 (page 없이 driver만 사용)
-        const actionUtils = new MobileActions(driver);
-        this.mobileUtilsMap.set(poc, actionUtils);
+        // const actionUtils = new MobileActions(driver);
+        // this.mobileUtilsMap.set(poc, actionUtils);
       } else {
         this.logger.warn(`[${poc}] WebView 컨텍스트 없음 → WebView 조작 생략`);
       }
     } catch (e) {
-      this.logger.warn(`[${poc}] WebView 컨텍스트 전환 중 예외 발생: ${e instanceof Error ? e.message : e}`);
+      this.logger.warn(
+        `[${poc}] WebView 컨텍스트 전환 중 예외 발생: ${e instanceof Error ? e.message : e}`,
+      );
       throw e;
     }
   }
