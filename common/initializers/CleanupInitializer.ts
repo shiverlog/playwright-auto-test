@@ -3,7 +3,7 @@
  * Author : Shiwoo Min
  * Date : 2025-04-12
  */
-import { FILE_RETENTION_DAYS } from '@common/config/baseConfig';
+import { FILE_RETENTION_DAYS } from '@common/config/baseConfig';
 import { POC_RESULT_PATHS } from '@common/constants/PathConstants';
 import { Logger } from '@common/logger/customLogger';
 import { POCEnv } from '@common/utils/env/POCEnv';
