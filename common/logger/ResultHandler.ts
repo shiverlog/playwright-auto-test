@@ -1,5 +1,5 @@
 /**
- * Description : ResultHandler.ts - 테스트 결과 저장 및 오류 처리 클래스 (POCEnv 기반)
+ * Description : ResultHandler.ts - 테스트 결과 저장 및 오류 처리 클래스
  * Author : Shiwoo Min
  * Date : 2025-04-11
  */

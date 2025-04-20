@@ -35,16 +35,18 @@ const ENABLE_LOGS = process.env.ENABLE_LOGS === 'true';
 // 커스텀 포맷터 (POC 표시)
 const createSimpleFormatter = (poc: string): winston.Logform.Format =>
   winston.format.combine(
-    winston.format((info) => {
-      const stack = (info._stack as string | undefined)?.split('\n') ?? new Error().stack?.split('\n') ?? [];
+    winston.format(info => {
+      const stack =
+        (info._stack as string | undefined)?.split('\n') ?? new Error().stack?.split('\n') ?? [];
 
-      const userLine = stack.find(line =>
-        line.includes('at ') &&
-        !line.includes('node_modules') &&
-        !line.includes('internal') &&
-        !line.includes('customLogger') &&
-        !line.includes('Logger') &&
-        !line.includes('winston')
+      const userLine = stack.find(
+        line =>
+          line.includes('at ') &&
+          !line.includes('node_modules') &&
+          !line.includes('internal') &&
+          !line.includes('customLogger') &&
+          !line.includes('Logger') &&
+          !line.includes('winston'),
       );
       const match =
         // (full/path/File.ts:line:col)
@@ -60,7 +62,7 @@ const createSimpleFormatter = (poc: string): winston.Logform.Format =>
     })(),
     winston.format.printf(({ level, message, timestamp, callsite }) => {
       return `${timestamp} [${poc.toUpperCase()}] ${level.toUpperCase()} (${callsite}): ${message}`;
-    })
+    }),
   );
 
 const jsonFormatter = winston.format.printf(({ level, message, timestamp }) => {
@@ -87,7 +89,7 @@ export class Logger {
   public static getLogger(poc: string): winston.Logger | Record<string, winston.Logger> {
     if (!poc) throw new Error(`[Logger] poc 값이 누락되었습니다.`);
 
-    if (poc === 'ALL') {
+    if (poc === 'all') {
       const allLoggers: Record<string, winston.Logger> = {};
       for (const value of POCEnv.getPOCList()) {
         allLoggers[value] = Logger.getLogger(value);

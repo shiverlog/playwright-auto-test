@@ -212,6 +212,16 @@ const E2E_CONFIGS: E2EProjectConfig[] = [
       deviceConfig: config,
       outputKey: 'aos',
     })),
+  // 갤럭시 노트20 울트라 기기로 speedtest 테스트
+  ...Object.entries(ANDROID_DEVICES)
+    .filter(([name]) => name === 'Galaxy Note20 Ultra')
+    .map(([name, config]) => ({
+      name: `Android App - ${name}`,
+      path: 'speedtest',
+      device: name,
+      deviceConfig: config,
+      outputKey: 'aos',
+    })),
   // iOS App - LGUPLUS
   ...Object.entries(IOS_DEVICES)
     .filter(([name]) => name === 'iPhone 15 Plus')

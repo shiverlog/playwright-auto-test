@@ -1,16 +1,48 @@
-import { speedtestUrls } from './speedtestUrls.js';
+/**
+ * Description : carrierTestPages.ts - 📌 리다이렉션 확인 URL
+ * Author : Shiwoo Min
+ * Date : 2025-04-18
+ */
+import { speedtestUrls } from '@speedtest/config/speedtestUrls.js';
 
+// 인터페이스는 speedtest에서만 쓰이므로, 코드 안에 기재
 export interface TestPage {
   page_id: string;
   url: string;
   measurements: number[];
 }
 
-export interface CarrierPages {
-  [key: string]: TestPage;
-}
+// 각 통신사에서 제공하는 페이지 키
+export type CarrierPageKey =
+  | '메인'
+  | '검색'
+  | 'gnb'
+  | '모바일요금제'
+  | '모바일'
+  | '인터넷IPTV'
+  | '혜택_멤버십'
+  | '고객지원'
+  | '다이렉트'
+  | '해외로밍';
 
-export const carrierPages = {
+/**
+ * 각 통신사 타입
+ */
+export type Carrier = 'lg' | 'skt' | 'kt';
+
+/**
+ * 통신사별 페이지 맵
+ */
+export type CarrierPerformancePages = {
+  [C in Carrier]: {
+    [P in CarrierPageKey]: TestPage;
+  };
+};
+
+/**
+ * 최종 데이터 객체
+ */
+export const carrierPerformancePages: CarrierPerformancePages = {
   lg: {
     메인: { page_id: 'MW_LG_1', url: speedtestUrls.lg.main, measurements: [] },
     검색: { page_id: 'MW_LG_2', url: speedtestUrls.lg.search, measurements: [] },

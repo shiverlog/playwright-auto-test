@@ -89,6 +89,20 @@ export const authLocator = {
   naver_login_btn: 'div.btn_login_wrap .btn_login',
   naver_clear_btn: '#id_clear',
   main_logout_btn: '.btn-logout c-btn-outline-2-s',
+
+  // 속도측정용 타사(KT) 로그인(MW)
+  ktLoginButton: '//a[@class="btn_blk" and normalize-space(text())="로그인"]',
+  ktLoginTitle: '//h2[@class="title-main" and normalize-space(.)="T ID 로그인"]',
+  ktIdInput: '//input[@id="userId"]',
+  ktPwInput: '//input[@id="password"]',
+  ktLoginSubmitButton: '//button[@id="authLogin"]',
+
+  // 속도측정용 타사(SKT) 로그인(MW)
+  sktLoginButton: '//a[contains(normalize-space(.), "로그인하기")]',
+  sktLoginTitle: '//h2[@class="title-main" and normalize-space(.)="T ID 로그인"]',
+  sktIdInput: '//input[@id="userId"]',
+  sktPwInput: '//input[@id="password"]',
+  sktLoginSubmitButton: '//button[@id="login"]',
 } as const;
 
 // 전체 타입

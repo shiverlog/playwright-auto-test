@@ -1,0 +1,21 @@
+{
+  "name": "@myorg/pubsub",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "description": "Common Utilities For The Auto Test Project",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rimraf dist",
+    "start": "ts-node src/pubsubRunner.ts",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@google-cloud/pubsub": "^3.0.0",
+    "winston": "^3.0.0"
+  },
+  "author": "Shiwoo Min",
+  "license": "MIT"
+}

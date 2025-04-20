@@ -1,3 +1,8 @@
+/**
+ * Description : RedirectPage.ts - 📌 리다이렉션 속도측정 페이지
+ * Author : Shiwoo Min
+ * Date : 2025-04-18
+ */
 import type { Page } from '@playwright/test';
 
 export class RedirectPage {
@@ -32,7 +37,8 @@ export class RedirectPage {
       const [navigationEntry] = performance.getEntriesByType(
         'navigation',
       ) as PerformanceNavigationTiming[];
-      return navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime; // DCL 시간 계산
+      // DCL 시간 계산
+      return navigationEntry.domContentLoadedEventEnd - navigationEntry.startTime;
     });
 
     return dclTime / 1000;

@@ -33,6 +33,11 @@ const mappingUrls = (path: string): Record<Platform, string> => {
 export const urlLocator = {
   main: baseUrls,
 
+  // 속도측정용 url
+  lguplusUrl: 'https://m.lguplus.com',
+  ktUrl: 'https://m.kt.com',
+  SktUrl: 'https://m.tworld.co.kr',
+
   // 로그인
   login_: mappingUrls('/login'),
   login_outh: mappingUrls('/login'),

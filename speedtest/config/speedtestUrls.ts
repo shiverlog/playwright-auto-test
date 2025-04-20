@@ -1,3 +1,8 @@
+/**
+ * Description : speedtestUrls.ts - 📌 리다이렉션 확인 URL
+ * Author : Shiwoo Min
+ * Date : 2025-04-18
+ */
 export const speedtestUrls = {
   lg: {
     main: 'https://m.lguplus.com/main',

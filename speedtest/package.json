@@ -11,9 +11,9 @@
   },
   "opencv4nodejs": {
     "disableAutoBuild": 1,
-    "opencvIncludeDir": "C:\\tools\\opencv\\build\\include",
-    "opencvLibDir": "C:\\tools\\opencv\\build\\x64\\vc16\\lib",
-    "opencvBinDir": "C:\\tools\\opencv\\build\\x64\\vc16\\bin"
+    "opencvIncludeDir": "/opt/homebrew/opt/opencv/include/opencv4",
+    "opencvLibDir": "/opt/homebrew/opt/opencv/lib",
+    "opencvBinDir": "/opt/homebrew/opt/opencv/bin"
   },
   "dependencies": {
     "@your-org/common": "file:../common",
