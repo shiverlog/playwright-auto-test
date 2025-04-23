@@ -5,6 +5,27 @@
  */
 import { UIType } from '@common/types/platform-types';
 
+// 웹/모바일 메뉴 탭 라벨
+export enum MenuTabLabel {
+  MOBILE = '모바일',
+  INTERNET = '인터넷/IPTV',
+  MYPAGE = '마이페이지',
+  BENEFIT = '혜택/멤버십',
+  SUPPORT = '고객지원',
+  DIRECT = '다이렉트샵',
+  ROAMING = '해외로밍', // 모바일만
+  UDOC = '유독',
+}
+
+// 웹 헤드메뉴 라벨
+export enum WebHeadMenuLabel {
+  HAMBURGER = '전체메뉴',
+  STORE = '스토어 가이드',
+  SEARCH = '검색',
+  CART = '장바구니',
+  MYINFO = '내정보 메뉴 펼치기',
+}
+
 /**
  * UI 관련 로케이터
  */
@@ -51,7 +72,7 @@ export const uiLocator = {
     APP: '',
   },
 
-  // 햄버거 > 메인 바로가기
+  // (Mobile) 햄버거 > 메인 바로가기
   homeShortcutGNB: {
     PC: '',
     MOBILE:
@@ -59,7 +80,7 @@ export const uiLocator = {
     APP: '',
   },
 
-  // 햄버거 > Global 바로가기
+  // (Mobile) 햄버거 > Global 바로가기
   globalShortcutGNB: {
     PC: '',
     MOBILE:
@@ -67,17 +88,31 @@ export const uiLocator = {
     APP: '',
   },
 
-  // GNB, 햄버거 > 모바일
+  // (Mobile) (햄버거 > 메뉴탭 > 모바일
+  mobileMenuTab: {
+    PC: '',
+    MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "모바일")]',
+    APP: '',
+  },
+
+  // GNB 모바일
   mobileMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "모바일")]',
-    MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "모바일")]',
+    MOBILE: '//a[@role="button" and .//img[@alt="모바일"]]',
     APP: '//button[.//span[contains(text(), "전체메뉴")]]',
   },
 
-  // GNB, 햄버거 > 인터넷/IPTV
+  // 햄버거 > 메뉴탭 > 인터넷/IPTV
+  internetMenuTab: {
+    PC: '',
+    MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "모바일")]',
+    APP: '',
+  },
+
+  // GNB  인터넷/IPTV
   internetMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "인터넷/IPTV")]',
-    MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "인터넷/IPTV")]',
+    MOBILE: '//a[@role="button" and .//img[@alt="인터넷/IPTV"]]',
     APP: '',
   },
 
@@ -113,6 +148,20 @@ export const uiLocator = {
   udocMenu: {
     PC: '//*[@class="header-gnb-list"]//a[span and contains(normalize-space(span/text()), "유독")]',
     MOBILE: '//li[button/span and contains(normalize-space(button/span/text()), "유독")]',
+    APP: '',
+  },
+
+  // 전체 서브메뉴 펼침 버튼
+  expandAllButton: {
+    PC: '',
+    MOBILE: '//button[@class="dep_all" and contains(text(), "전체 펼침")]',
+    APP: '',
+  },
+
+  // 뒤로가기 버튼
+  backButton: {
+    PC: '',
+    MOBILE: '//button[@class="history_back" and span[text()="뒤로가기"]]',
     APP: '',
   },
 

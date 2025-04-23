@@ -8,7 +8,6 @@ import { getCurrentTimestamp } from '@common/formatters/formatters.js';
 import type { DeviceConfig } from '@common/types/device-config.js';
 import chromedriver from 'chromedriver';
 import dotenv from 'dotenv';
-import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 

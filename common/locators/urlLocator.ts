@@ -43,6 +43,14 @@ export const urlLocator = {
   login_outh: mappingUrls('/login'),
   login_fallback: mappingUrls('/login/fallback'),
 
+  // 메인
+  downloadApp: mappingUrls('/html-push'),
+
+  // 외부 서비스 url
+  udocUrl: mappingUrls('/pogg/main'),
+  ujamUrl: mappingUrls('/ujam'),
+  ixiUrl: mappingUrls('/ixi'),
+
   // GNB - 모바일
   mobile: mappingUrls('/mobile'),
 
@@ -59,6 +67,7 @@ export const urlLocator = {
 
   // GNB - 인터넷/IPTV
   iptv: mappingUrls('/internet-iptv'),
+  iptvPlan: mappingUrls('/internet-iptv/internet-iptv-package/plan'),
 
   // 마이페이지
   mypage: mappingUrls('/mypage'),
@@ -83,6 +92,7 @@ export const urlLocator = {
   combined_discount: mappingUrls('/benefit-uplus/combined-discount'),
   price_discount: mappingUrls('/benefit-uplus/price-discount'),
   online_benefit: mappingUrls('/benefit-uplus/online-purchase-benefit'),
+  memberPrivateBenefit: mappingUrls('/benefit-uplus/member-private-benefit'),
 
   // 고객지원
   support: mappingUrls('/support'),
