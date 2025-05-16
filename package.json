@@ -92,7 +92,7 @@
     "@types/unzipper": "^0.10.11",
     "@types/wait-on": "^5.3.4",
     "@types/webdriverio": "^5.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.29.1",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.29.1",
     "@wdio/types": "^9.12.3",
     "@xmldom/xmldom": "^0.9.8",
