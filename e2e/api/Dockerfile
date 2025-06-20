@@ -1,5 +1,5 @@
 # Playwright 공식 이미지 (v1.51.0 기반, Ubuntu Noble)
-FROM mcr.microsoft.com/playwright:v1.51.0-noble
+FROM mcr.microsoft.com/playwright:v1.53.1-noble
 
 # 컨테이너 내 작업 디렉토리 설정
 WORKDIR /app
