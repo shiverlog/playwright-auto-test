@@ -1,5 +1,5 @@
 # Playwright 공식 Docker 이미지 사용 (Node + Playwright + Browsers 포함)
-FROM mcr.microsoft.com/playwright:v1.51.0-noble
+FROM mcr.microsoft.com/playwright:v1.53.2-noble
 
 # 컨테이너 내 작업 디렉토리 설정
 WORKDIR /app
