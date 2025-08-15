@@ -26,7 +26,7 @@ jobs:
     steps:
       # 저장소 코드 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Node.js 설정 (버전: 20)
       - name: Setup Node.js
@@ -60,7 +60,7 @@ jobs:
     steps:
       # 저장소 코드 체크아웃
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # 전체 Git 히스토리 가져오기 (Nx 빌드 분석에 필요)
 
